@@ -331,6 +331,11 @@ img, video {
   grid-row-start: 3;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .mb-2 {
   margin-bottom: .5rem;
 }
@@ -349,6 +354,22 @@ img, video {
 
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-screen-xl {
+  max-width: 1280px;
 }
 
 .list-inside {
@@ -379,6 +400,10 @@ img, video {
   justify-content: center;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .justify-items-center {
   justify-items: center;
 }
@@ -401,6 +426,14 @@ img, video {
 
 .gap-8 {
   gap: 2rem;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
 }
 
 .rounded {
@@ -427,12 +460,31 @@ img, video {
   border-color: rgba(0, 0, 0, 0);
 }
 
+.bg-\[\#2563eb\] {
+  --tw-bg-opacity: 1;
+  background-color: rgba(37, 99, 235, var(--tw-bg-opacity, 1));
+}
+
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity, 1));
+}
+
 .bg-black\/\[\.05\] {
   background-color: rgba(0, 0, 0, .05);
 }
 
 .bg-foreground {
   background-color: var(--foreground);
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 255, 255, var(--tw-bg-opacity, 1));
+}
+
+.p-2 {
+  padding: .5rem;
 }
 
 .p-8 {
@@ -449,9 +501,24 @@ img, video {
   padding-right: 1rem;
 }
 
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 .py-0\.5 {
   padding-top: .125rem;
   padding-bottom: .125rem;
+}
+
+.py-3 {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .pb-20 {
@@ -470,17 +537,81 @@ img, video {
   font-family: var(--font-geist-sans);
 }
 
+.text-\[13px\] {
+  font-size: 13px;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
 .text-sm {
   font-size: .875rem;
   line-height: 1.25rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: .75rem;
+  line-height: 1rem;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .font-semibold {
   font-weight: 600;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
+.leading-tight {
+  line-height: 1.25;
+}
+
+.tracking-wider {
+  letter-spacing: .05em;
+}
+
+.tracking-widest {
+  letter-spacing: .1em;
+}
+
+.text-\[\#3b82f6\] {
+  --tw-text-opacity: 1;
+  color: rgba(59, 130, 246, var(--tw-text-opacity, 1));
+}
+
+.text-\[\#ef4444\] {
+  --tw-text-opacity: 1;
+  color: rgba(239, 68, 68, var(--tw-text-opacity, 1));
+}
+
+.text-\[\#f87171\] {
+  --tw-text-opacity: 1;
+  color: rgba(248, 113, 113, var(--tw-text-opacity, 1));
+}
+
 .text-background {
   color: var(--background);
+}
+
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgba(156, 163, 175, var(--tw-text-opacity, 1));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity, 1));
 }
 
 .antialiased {
@@ -490,6 +621,12 @@ img, video {
 
 .transition-colors {
   transition-property: color, background-color, border-color, -webkit-text-decoration-color, text-decoration-color, fill, stroke;
+  transition-duration: .15s;
+  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+
+.transition-opacity {
+  transition-property: opacity;
   transition-duration: .15s;
   transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
@@ -526,6 +663,11 @@ body {
   background-color: rgba(242, 242, 242, var(--tw-bg-opacity, 1));
 }
 
+.hover\:text-white:hover {
+  --tw-text-opacity: 1;
+  color: rgba(255, 255, 255, var(--tw-text-opacity, 1));
+}
+
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
   text-decoration-line: underline;
@@ -533,6 +675,10 @@ body {
 
 .hover\:underline-offset-4:hover {
   text-underline-offset: 4px;
+}
+
+.hover\:opacity-80:hover {
+  opacity: .8;
 }
 
 @media (min-width: 640px) {
@@ -568,6 +714,16 @@ body {
   .sm\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:flex-row {
+    flex-direction: row;
+  }
+
+  .md\:justify-end {
+    justify-content: flex-end;
   }
 }
 
