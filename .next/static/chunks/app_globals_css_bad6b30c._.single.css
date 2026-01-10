@@ -385,16 +385,8 @@ img, video {
   bottom: -1.5rem;
 }
 
-.-left-2 {
-  left: -.5rem;
-}
-
 .-left-6 {
   left: -1.5rem;
-}
-
-.-right-2 {
-  right: -.5rem;
 }
 
 .-right-6 {
@@ -477,6 +469,10 @@ img, video {
   z-index: 50;
 }
 
+.m-4 {
+  margin: 1rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -484,10 +480,6 @@ img, video {
 
 .mb-1 {
   margin-bottom: .25rem;
-}
-
-.mb-10 {
-  margin-bottom: 2.5rem;
 }
 
 .mb-12 {
@@ -520,6 +512,10 @@ img, video {
 
 .mb-8 {
   margin-bottom: 2rem;
+}
+
+.mr-2 {
+  margin-right: .5rem;
 }
 
 .mt-0\.5 {
@@ -611,6 +607,10 @@ img, video {
 
 .h-64 {
   height: 16rem;
+}
+
+.h-72 {
+  height: 18rem;
 }
 
 .h-8 {
@@ -780,10 +780,6 @@ img, video {
   align-items: flex-start;
 }
 
-.items-end {
-  align-items: flex-end;
-}
-
 .items-center {
   align-items: center;
 }
@@ -858,12 +854,6 @@ img, video {
   overflow: hidden;
 }
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -924,6 +914,11 @@ img, video {
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgba(243, 244, 246, var(--tw-border-opacity, 1));
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgba(229, 231, 235, var(--tw-border-opacity, 1));
 }
 
 .border-gray-50 {
@@ -1023,9 +1018,9 @@ img, video {
   background-color: rgba(30, 58, 138, .1);
 }
 
-.bg-gray-300 {
+.bg-gray-200 {
   --tw-bg-opacity: 1;
-  background-color: rgba(209, 213, 219, var(--tw-bg-opacity, 1));
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-50 {
@@ -1054,10 +1049,6 @@ img, video {
   background-color: rgba(255, 255, 255, var(--tw-bg-opacity, 1));
 }
 
-.bg-white\/20 {
-  background-color: rgba(255, 255, 255, .2);
-}
-
 .bg-white\/5 {
   background-color: rgba(255, 255, 255, .05);
 }
@@ -1076,10 +1067,6 @@ img, video {
 
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-}
-
-.bg-gradient-to-t {
-  background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
 
 .bg-gradient-to-tr {
@@ -1101,12 +1088,6 @@ img, video {
 .from-blue-600\/20 {
   --tw-gradient-from: rgba(37, 99, 235, .2) var(--tw-gradient-from-position);
   --tw-gradient-to: rgba(37, 99, 235, 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.from-blue-900\/60 {
-  --tw-gradient-from: rgba(30, 58, 138, .6) var(--tw-gradient-from-position);
-  --tw-gradient-to: rgba(30, 58, 138, 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -1138,11 +1119,6 @@ img, video {
   --tw-gradient-from: rgba(234, 179, 8, .2) var(--tw-gradient-from-position);
   --tw-gradient-to: rgba(234, 179, 8, 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-}
-
-.via-transparent {
-  --tw-gradient-to: rgba(0, 0, 0, 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), transparent var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .to-amber-500\/20 {
@@ -1218,11 +1194,6 @@ img, video {
   padding: 2rem;
 }
 
-.px-2 {
-  padding-left: .5rem;
-  padding-right: .5rem;
-}
-
 .px-3 {
   padding-left: .75rem;
   padding-right: .75rem;
@@ -1258,6 +1229,11 @@ img, video {
   padding-bottom: .5rem;
 }
 
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
 .py-24 {
   padding-top: 6rem;
   padding-bottom: 6rem;
@@ -1284,10 +1260,6 @@ img, video {
 
 .pb-12 {
   padding-bottom: 3rem;
-}
-
-.pb-6 {
-  padding-bottom: 1.5rem;
 }
 
 .pl-12 {
@@ -1638,6 +1610,12 @@ img, video {
   transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
+.transition-shadow {
+  transition-property: box-shadow;
+  transition-duration: .15s;
+  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+
 .transition-transform {
   transition-property: transform;
   transition-duration: .15s;
@@ -1728,14 +1706,14 @@ body {
   background-color: rgba(0, 0, 0, .4);
 }
 
-.hover\:bg-blue-600:hover {
+.hover\:bg-blue-700:hover {
   --tw-bg-opacity: 1;
-  background-color: rgba(37, 99, 235, var(--tw-bg-opacity, 1));
+  background-color: rgba(29, 78, 216, var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-gray-400:hover {
+.hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
-  background-color: rgba(156, 163, 175, var(--tw-bg-opacity, 1));
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-white:hover {
@@ -1760,6 +1738,11 @@ body {
 .hover\:text-blue-700:hover {
   --tw-text-opacity: 1;
   color: rgba(29, 78, 216, var(--tw-text-opacity, 1));
+}
+
+.hover\:text-blue-800:hover {
+  --tw-text-opacity: 1;
+  color: rgba(30, 64, 175, var(--tw-text-opacity, 1));
 }
 
 .hover\:text-white:hover {
@@ -1793,11 +1776,6 @@ body {
   --tw-shadow: var(--tw-shadow-colored);
 }
 
-.focus\:outline-none:focus {
-  outline-offset: 2px;
-  outline: 2px solid rgba(0, 0, 0, 0);
-}
-
 .focus\:ring-2:focus {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -1812,6 +1790,10 @@ body {
   --tw-scale-x: .95;
   --tw-scale-y: .95;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.disabled\:opacity-30:disabled {
+  opacity: .3;
 }
 
 .group:hover .group-hover\:translate-x-1 {
@@ -1856,14 +1838,6 @@ body {
 }
 
 @media (min-width: 768px) {
-  .md\:-left-12 {
-    left: -3rem;
-  }
-
-  .md\:-right-12 {
-    right: -3rem;
-  }
-
   .md\:bottom-10 {
     bottom: 2.5rem;
   }
@@ -1892,14 +1866,6 @@ body {
     height: 2.5rem;
   }
 
-  .md\:h-6 {
-    height: 1.5rem;
-  }
-
-  .md\:h-72 {
-    height: 18rem;
-  }
-
   .md\:h-\[600px\] {
     height: 600px;
   }
@@ -1914,10 +1880,6 @@ body {
 
   .md\:w-40 {
     width: 10rem;
-  }
-
-  .md\:w-6 {
-    width: 1.5rem;
   }
 
   .md\:w-96 {
@@ -1952,16 +1914,8 @@ body {
     gap: .75rem;
   }
 
-  .md\:gap-8 {
-    gap: 2rem;
-  }
-
   .md\:bg-black\/40 {
     background-color: rgba(0, 0, 0, .4);
-  }
-
-  .md\:p-3 {
-    padding: .75rem;
   }
 
   .md\:px-10 {
@@ -1994,6 +1948,11 @@ body {
     line-height: 1;
   }
 
+  .md\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+
   .md\:text-7xl {
     font-size: 4.5rem;
     line-height: 1;
@@ -2020,10 +1979,6 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .lg\:h-64 {
-    height: 16rem;
-  }
-
   .lg\:max-w-xl {
     max-width: 36rem;
   }
