@@ -57,8 +57,10 @@ export default function OurTeam() {
   }, [nextSlide]);
 
   const getVisibleItems = () => {
+    // Show 1 item on mobile, 2 on tablet/small laptops, 3 on large screens
+    // For now, let's keep the logic simple and handle visibility via Tailwind
     const items = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) { // Fetch more items to be safe
       items.push(team[(currentIndex + i) % team.length]);
     }
     return items;
@@ -91,12 +93,12 @@ export default function OurTeam() {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all focus:outline-none"
+            className="absolute -left-2 md:-left-12 top-1/2 -translate-y-1/2 z-20 bg-white p-2 md:p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all focus:outline-none"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={20} className="md:w-6 md:h-6" />
           </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-2 md:px-4">
             <AnimatePresence mode="popLayout" initial={false}>
               {getVisibleItems().map((member, idx) => (
                 <motion.div
@@ -106,10 +108,10 @@ export default function OurTeam() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col h-full"
+                  className={`bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col h-full ${idx > 0 ? "hidden md:flex" : "flex"}`}
                 >
                   {/* Image Container */}
-                  <div className="relative h-64 overflow-hidden shrink-0">
+                  <div className="relative h-64 md:h-72 lg:h-64 overflow-hidden shrink-0">
                     <Image
                       src={member.image}
                       alt={member.name}
@@ -162,9 +164,9 @@ export default function OurTeam() {
 
           <button
             onClick={nextSlide}
-            className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-20 bg-white p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all focus:outline-none"
+            className="absolute -right-2 md:-right-12 top-1/2 -translate-y-1/2 z-20 bg-white p-2 md:p-3 rounded-full shadow-lg hover:bg-blue-600 hover:text-white transition-all focus:outline-none"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={20} className="md:w-6 md:h-6" />
           </button>
         </div>
 

@@ -38,26 +38,26 @@ export default function Header() {
   return (
     <header className="w-full">
       {/* Top Part: Black Background */}
-      <div className="bg-black text-white py-4 px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-black text-white py-4 px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Left: Logo and Name */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start">
           <div className="bg-white p-2 rounded shrink-0">
             <Image
               src="/vercel.svg"
               alt="Logo"
               width={40}
               height={40}
-              className="w-10 h-10"
+              className="w-8 h-8 md:w-10 md:h-10"
             />
           </div>
           <div className="leading-tight">
-            <h1 className="text-2xl font-black tracking-tighter text-[#3b82f6] leading-none">SINGHLAB</h1>
-            <p className="text-[10px] font-bold tracking-[0.2em] text-[#ef4444] uppercase mt-1">Environment</p>
+            <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[#3b82f6] leading-none text-center md:text-left">SINGHLAB</h1>
+            <p className="text-[8px] md:text-[10px] font-bold tracking-[0.2em] text-[#ef4444] uppercase mt-1 text-center md:text-left">Environment</p>
           </div>
         </div>
 
         {/* Center: Typing Animation */}
-        <div className="max-w-md text-center h-10 flex items-center justify-center">
+        <div className="max-w-md text-center h-12 md:h-10 flex items-center justify-center px-4">
           <AnimatePresence mode="wait">
             <motion.p
               key={index}
@@ -65,7 +65,7 @@ export default function Header() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.5 }}
-              className="text-gray-400 text-sm leading-tight italic"
+              className="text-gray-400 text-xs md:text-sm leading-tight italic"
             >
               {texts[index]}
             </motion.p>
@@ -73,7 +73,7 @@ export default function Header() {
         </div>
 
         {/* Right: Social Icons */}
-        <div className="flex items-center gap-5 text-gray-400">
+        <div className="flex items-center gap-4 md:gap-5 text-gray-400 w-full md:w-auto justify-center md:justify-end">
           <Link href="#" className="hover:text-white transition-colors">
             <Globe size={20} strokeWidth={1.5} />
           </Link>

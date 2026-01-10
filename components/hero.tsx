@@ -41,7 +41,7 @@ export default function Hero() {
   const prevSlide = () => setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
   return (
-    <section className="relative h-[600px] w-full overflow-hidden bg-black">
+    <section className="relative h-[400px] md:h-[600px] w-full overflow-hidden bg-black">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
@@ -55,17 +55,17 @@ export default function Hero() {
             className="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] ease-linear scale-110"
             style={{ backgroundImage: `url(${slides[current].image})` }}
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 md:px-4 text-center text-white">
         <motion.h2
           key={`title-${current}`}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="max-w-4xl text-5xl font-black md:text-7xl"
+          className="max-w-4xl text-3xl font-black md:text-7xl leading-tight"
         >
           {slides[current].title}
         </motion.h2>
@@ -75,7 +75,7 @@ export default function Hero() {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-6 max-w-2xl text-lg font-medium md:text-xl text-gray-200"
+          className="mt-4 md:mt-6 max-w-2xl text-base font-medium md:text-xl text-gray-200"
         >
           {slides[current].subtitle}
         </motion.p>
@@ -84,15 +84,15 @@ export default function Hero() {
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          className="mt-10"
+          className="mt-8 md:mt-10"
         >
-          <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-10 py-4 text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
+          <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
             Learn More <span>→</span>
           </button>
         </motion.div>
 
         {/* Navigation Dots */}
-        <div className="absolute bottom-10 flex gap-3">
+        <div className="absolute bottom-6 md:bottom-10 flex gap-2 md:gap-3">
           {slides.map((_, i) => (
             <button
               key={i}
