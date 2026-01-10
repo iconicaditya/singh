@@ -7,6 +7,7 @@ import {
   Linkedin,
   ChevronLeft,
   ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,11 +64,8 @@ export default function OurTeam() {
   }, [nextSlide]);
 
   const getVisibleItems = () => {
-    // Show 1 item on mobile, 2 on tablet/small laptops, 3 on large screens
-    // For now, let's keep the logic simple and handle visibility via Tailwind
     const items = [];
     for (let i = 0; i < 4; i++) {
-      // Fetch more items to be safe
       items.push(team[(currentIndex + i) % team.length]);
     }
     return items;
@@ -76,25 +74,41 @@ export default function OurTeam() {
   return (
     <section className="py-24 bg-gray-50 overflow-hidden relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+          <div className="text-center md:text-left">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4"
+            >
+              Meet Our <span className="text-blue-600">Team</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-gray-600 max-w-2xl mx-auto md:mx-0 text-lg"
+            >
+              A dedicated group of researchers and professionals working towards a
+              sustainable future.
+            </motion.p>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4"
+            transition={{ delay: 0.2 }}
           >
-            Meet Our <span className="text-blue-600">Team</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 max-w-2xl mx-auto text-lg"
-          >
-            A dedicated group of researchers and professionals working towards a
-            sustainable future.
-          </motion.p>
+            <Link
+              href="#"
+              className="inline-flex items-center gap-2 bg-[#2563eb] text-white px-8 py-3 rounded-full font-bold hover:bg-[#1d4ed8] transition-all shadow-lg hover:shadow-blue-500/25 group"
+            >
+              VIEW ALL OUR TEAMS <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
         </div>
 
         <div className="relative max-w-7xl mx-auto">
@@ -155,10 +169,10 @@ export default function OurTeam() {
                     <h3 className="text-xl font-bold text-[#1e293b] mb-1">
                       {member.name}
                     </h3>
-                    <p className="text-blue-600 font-bold text-xs mb-3 uppercase tracking-widest">
+                    <p className="text-blue-600 font-bold text-xs mb-3 uppercase tracking-widest truncate">
                       {member.role}
                     </p>
-                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
+                    <p className="text-gray-500 text-sm leading-relaxed truncate">
                       {member.bio}
                     </p>
                     {/* Social Icons always visible on mobile/default if preferred, or hover */}
