@@ -1544,7 +1544,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$ne
 ;
 const team = [
     {
-        name: "Aaditya Singh",
+        name: "Er. Aaditya Chaudhary",
         role: "Research Member",
         image: "/ourteamimages/aaditya.png",
         bio: "Focusing on environmental sustainability and social impacts.",
@@ -1555,9 +1555,9 @@ const team = [
         }
     },
     {
-        name: "Aakroshan",
-        role: "Research Member",
-        image: "/ourteamimages/Aakroshan.png",
+        name: "Dr. Nabin Rokaya",
+        role: "Managing Director",
+        image: "/ourteamimages/nabin.png",
         bio: "Specializing in community resilience and climate data analysis.",
         social: {
             facebook: "#",
@@ -1566,7 +1566,7 @@ const team = [
         }
     },
     {
-        name: "Bibas",
+        name: "Mr. Bibas Ghatani",
         role: "Research Member",
         image: "/ourteamimages/bibas.png",
         bio: "Expert in waste management and resource efficiency.",
@@ -1577,9 +1577,9 @@ const team = [
         }
     },
     {
-        name: "Nabin",
-        role: "Research Member",
-        image: "/ourteamimages/nabin.png",
+        name: "Mr. Aakroshan Chaudhary",
+        role: "Managing Director",
+        image: "/ourteamimages/Aakroshan.png",
         bio: "Policy analyst focusing on sustainability frameworks.",
         social: {
             facebook: "#",
@@ -1610,6 +1610,7 @@ function OurTeam() {
         // For now, let's keep the logic simple and handle visibility via Tailwind
         const items = [];
         for(let i = 0; i < 4; i++){
+            // Fetch more items to be safe
             items.push(team[(currentIndex + i) % team.length]);
         }
         return items;
@@ -1642,13 +1643,13 @@ function OurTeam() {
                                     children: "Team"
                                 }, void 0, false, {
                                     fileName: "[project]/components/ourteam.tsx",
-                                    lineNumber: 79,
+                                    lineNumber: 86,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 73,
+                            lineNumber: 80,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$framer$2d$motion$40$12$2e$25$2e$0_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -1670,13 +1671,13 @@ function OurTeam() {
                             children: "A dedicated group of researchers and professionals working towards a sustainable future."
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 81,
+                            lineNumber: 88,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 72,
+                    lineNumber: 79,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1690,12 +1691,12 @@ function OurTeam() {
                                 className: "md:w-6 md:h-6"
                             }, void 0, false, {
                                 fileName: "[project]/components/ourteam.tsx",
-                                lineNumber: 98,
+                                lineNumber: 106,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 94,
+                            lineNumber: 102,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1733,7 +1734,7 @@ function OurTeam() {
                                                         className: "object-cover"
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 115,
+                                                        lineNumber: 123,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1748,12 +1749,12 @@ function OurTeam() {
                                                                         size: 18
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/ourteam.tsx",
-                                                                        lineNumber: 124,
+                                                                        lineNumber: 135,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 123,
+                                                                    lineNumber: 131,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1763,12 +1764,12 @@ function OurTeam() {
                                                                         size: 18
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/ourteam.tsx",
-                                                                        lineNumber: 127,
+                                                                        lineNumber: 141,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 126,
+                                                                    lineNumber: 137,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1778,29 +1779,29 @@ function OurTeam() {
                                                                         size: 18
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/components/ourteam.tsx",
-                                                                        lineNumber: 130,
+                                                                        lineNumber: 147,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 129,
+                                                                    lineNumber: 143,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/components/ourteam.tsx",
-                                                            lineNumber: 122,
+                                                            lineNumber: 130,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 121,
+                                                        lineNumber: 129,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 114,
+                                                lineNumber: 122,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1811,7 +1812,7 @@ function OurTeam() {
                                                         children: member.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 138,
+                                                        lineNumber: 155,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1819,7 +1820,7 @@ function OurTeam() {
                                                         children: member.role
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 141,
+                                                        lineNumber: 158,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1827,7 +1828,7 @@ function OurTeam() {
                                                         children: member.bio
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 144,
+                                                        lineNumber: 161,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1840,13 +1841,13 @@ function OurTeam() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 150,
-                                                                    columnNumber: 27
+                                                                    lineNumber: 170,
+                                                                    columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/ourteam.tsx",
-                                                                lineNumber: 149,
-                                                                columnNumber: 25
+                                                                lineNumber: 166,
+                                                                columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                                 href: member.social.twitter,
@@ -1855,13 +1856,13 @@ function OurTeam() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 153,
-                                                                    columnNumber: 27
+                                                                    lineNumber: 176,
+                                                                    columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/ourteam.tsx",
-                                                                lineNumber: 152,
-                                                                columnNumber: 25
+                                                                lineNumber: 172,
+                                                                columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                                                 href: member.social.linkedin,
@@ -1870,40 +1871,40 @@ function OurTeam() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/ourteam.tsx",
-                                                                    lineNumber: 156,
-                                                                    columnNumber: 27
+                                                                    lineNumber: 182,
+                                                                    columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/ourteam.tsx",
-                                                                lineNumber: 155,
-                                                                columnNumber: 25
+                                                                lineNumber: 178,
+                                                                columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 148,
+                                                        lineNumber: 165,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 137,
+                                                lineNumber: 154,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, `${member.name}-${currentIndex}-${idx}`, true, {
                                         fileName: "[project]/components/ourteam.tsx",
-                                        lineNumber: 104,
+                                        lineNumber: 112,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/components/ourteam.tsx",
-                                lineNumber: 102,
+                                lineNumber: 110,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 101,
+                            lineNumber: 109,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1914,18 +1915,18 @@ function OurTeam() {
                                 className: "md:w-6 md:h-6"
                             }, void 0, false, {
                                 fileName: "[project]/components/ourteam.tsx",
-                                lineNumber: 169,
+                                lineNumber: 195,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 165,
+                            lineNumber: 191,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 92,
+                    lineNumber: 100,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1938,23 +1939,23 @@ function OurTeam() {
                             className: `h-2 rounded-full transition-all duration-300 ${currentIndex === i ? "w-8 bg-blue-600" : "w-2 bg-gray-300 hover:bg-gray-400"}`
                         }, i, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 176,
+                            lineNumber: 202,
                             columnNumber: 13
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 174,
+                    lineNumber: 200,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/ourteam.tsx",
-            lineNumber: 71,
+            lineNumber: 78,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/ourteam.tsx",
-        lineNumber: 70,
+        lineNumber: 77,
         columnNumber: 5
     }, this);
 }

@@ -1,40 +1,46 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Facebook, Twitter, Linkedin, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Facebook,
+  Twitter,
+  Linkedin,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 
 const team = [
   {
-    name: "Aaditya Singh",
+    name: "Er. Aaditya Chaudhary",
     role: "Research Member",
     image: "/ourteamimages/aaditya.png",
     bio: "Focusing on environmental sustainability and social impacts.",
-    social: { facebook: "#", twitter: "#", linkedin: "#" }
+    social: { facebook: "#", twitter: "#", linkedin: "#" },
   },
   {
-    name: "Aakroshan",
-    role: "Research Member",
-    image: "/ourteamimages/Aakroshan.png",
+    name: "Dr. Nabin Rokaya",
+    role: "Managing Director",
+    image: "/ourteamimages/nabin.png",
     bio: "Specializing in community resilience and climate data analysis.",
-    social: { facebook: "#", twitter: "#", linkedin: "#" }
+    social: { facebook: "#", twitter: "#", linkedin: "#" },
   },
   {
-    name: "Bibas",
+    name: "Mr. Bibas Ghatani",
     role: "Research Member",
     image: "/ourteamimages/bibas.png",
     bio: "Expert in waste management and resource efficiency.",
-    social: { facebook: "#", twitter: "#", linkedin: "#" }
+    social: { facebook: "#", twitter: "#", linkedin: "#" },
   },
   {
-    name: "Nabin",
-    role: "Research Member",
-    image: "/ourteamimages/nabin.png",
+    name: "Mr. Aakroshan Chaudhary",
+    role: "Managing Director",
+    image: "/ourteamimages/Aakroshan.png",
     bio: "Policy analyst focusing on sustainability frameworks.",
-    social: { facebook: "#", twitter: "#", linkedin: "#" }
-  }
+    social: { facebook: "#", twitter: "#", linkedin: "#" },
+  },
 ];
 
 export default function OurTeam() {
@@ -60,7 +66,8 @@ export default function OurTeam() {
     // Show 1 item on mobile, 2 on tablet/small laptops, 3 on large screens
     // For now, let's keep the logic simple and handle visibility via Tailwind
     const items = [];
-    for (let i = 0; i < 4; i++) { // Fetch more items to be safe
+    for (let i = 0; i < 4; i++) {
+      // Fetch more items to be safe
       items.push(team[(currentIndex + i) % team.length]);
     }
     return items;
@@ -70,7 +77,7 @@ export default function OurTeam() {
     <section className="py-24 bg-gray-50 overflow-hidden relative">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -78,14 +85,15 @@ export default function OurTeam() {
           >
             Meet Our <span className="text-blue-600">Team</span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
             className="text-gray-600 max-w-2xl mx-auto text-lg"
           >
-            A dedicated group of researchers and professionals working towards a sustainable future.
+            A dedicated group of researchers and professionals working towards a
+            sustainable future.
           </motion.p>
         </div>
 
@@ -120,13 +128,22 @@ export default function OurTeam() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-900/60 via-transparent to-transparent flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity">
                       <div className="flex gap-4">
-                        <Link href={member.social.facebook} className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-600 transition-all">
+                        <Link
+                          href={member.social.facebook}
+                          className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-600 transition-all"
+                        >
                           <Facebook size={18} />
                         </Link>
-                        <Link href={member.social.twitter} className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-400 transition-all">
+                        <Link
+                          href={member.social.twitter}
+                          className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-400 transition-all"
+                        >
                           <Twitter size={18} />
                         </Link>
-                        <Link href={member.social.linkedin} className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-700 transition-all">
+                        <Link
+                          href={member.social.linkedin}
+                          className="bg-white/20 backdrop-blur-md p-2 rounded-full hover:bg-white hover:text-blue-700 transition-all"
+                        >
                           <Linkedin size={18} />
                         </Link>
                       </div>
@@ -146,15 +163,24 @@ export default function OurTeam() {
                     </p>
                     {/* Social Icons always visible on mobile/default if preferred, or hover */}
                     <div className="mt-auto pt-4 flex justify-center gap-3">
-                        <Link href={member.social.facebook} className="text-gray-400 hover:text-blue-600 transition-all">
-                          <Facebook size={18} />
-                        </Link>
-                        <Link href={member.social.twitter} className="text-gray-400 hover:text-blue-400 transition-all">
-                          <Twitter size={18} />
-                        </Link>
-                        <Link href={member.social.linkedin} className="text-gray-400 hover:text-blue-700 transition-all">
-                          <Linkedin size={18} />
-                        </Link>
+                      <Link
+                        href={member.social.facebook}
+                        className="text-gray-400 hover:text-blue-600 transition-all"
+                      >
+                        <Facebook size={18} />
+                      </Link>
+                      <Link
+                        href={member.social.twitter}
+                        className="text-gray-400 hover:text-blue-400 transition-all"
+                      >
+                        <Twitter size={18} />
+                      </Link>
+                      <Link
+                        href={member.social.linkedin}
+                        className="text-gray-400 hover:text-blue-700 transition-all"
+                      >
+                        <Linkedin size={18} />
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
@@ -180,7 +206,9 @@ export default function OurTeam() {
                 setCurrentIndex(i);
               }}
               className={`h-2 rounded-full transition-all duration-300 ${
-                currentIndex === i ? "w-8 bg-blue-600" : "w-2 bg-gray-300 hover:bg-gray-400"
+                currentIndex === i
+                  ? "w-8 bg-blue-600"
+                  : "w-2 bg-gray-300 hover:bg-gray-400"
               }`}
             />
           ))}
