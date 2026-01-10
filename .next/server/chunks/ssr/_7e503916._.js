@@ -1018,17 +1018,18 @@ function ResearchFocus() {
                         transition: {
                             duration: 0.8
                         },
-                        className: "flex-1 relative",
+                        className: "flex-1 relative self-stretch",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative rounded-[2rem] overflow-hidden shadow-2xl group",
+                                className: "relative rounded-[2rem] overflow-hidden shadow-2xl group h-full",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                         src: "/researchfocus.png",
                                         alt: "Research Data Visualization",
-                                        width: 800,
-                                        height: 600,
-                                        className: "w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                                        fill: true,
+                                        className: "object-cover transition-transform duration-700 group-hover:scale-105",
+                                        sizes: "(max-width: 768px) 100vw, 50vw",
+                                        priority: true
                                     }, void 0, false, {
                                         fileName: "[project]/components/researchfocus.tsx",
                                         lineNumber: 109,
@@ -1038,7 +1039,7 @@ function ResearchFocus() {
                                         className: "absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
                                     }, void 0, false, {
                                         fileName: "[project]/components/researchfocus.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 117,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -1051,14 +1052,14 @@ function ResearchFocus() {
                                 className: "absolute -bottom-6 -right-6 w-32 h-32 bg-blue-100 rounded-full -z-10 blur-2xl opacity-60"
                             }, void 0, false, {
                                 fileName: "[project]/components/researchfocus.tsx",
-                                lineNumber: 120,
+                                lineNumber: 121,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$7_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "absolute -top-6 -left-6 w-32 h-32 bg-blue-50 rounded-full -z-10 blur-2xl opacity-60"
                             }, void 0, false, {
                                 fileName: "[project]/components/researchfocus.tsx",
-                                lineNumber: 121,
+                                lineNumber: 122,
                                 columnNumber: 13
                             }, this)
                         ]

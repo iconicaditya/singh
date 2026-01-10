@@ -557,10 +557,6 @@ img, video {
   height: 600px;
 }
 
-.h-auto {
-  height: auto;
-}
-
 .h-full {
   height: 100%;
 }
@@ -766,6 +762,10 @@ img, video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.self-stretch {
+  align-self: stretch;
 }
 
 .overflow-hidden {

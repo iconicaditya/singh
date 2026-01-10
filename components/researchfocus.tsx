@@ -103,15 +103,16 @@ export default function ResearchFocus() {
             whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="flex-1 relative"
+            className="flex-1 relative self-stretch"
           >
-            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl group">
+            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl group h-full">
               <Image
                 src="/researchfocus.png"
                 alt="Research Data Visualization"
-                width={800}
-                height={600}
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
