@@ -65,8 +65,14 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
-              className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group"
+              whileHover={{ 
+                y: -15,
+                rotateX: 5,
+                rotateY: 5,
+                scale: 1.05,
+                transition: { duration: 0.4, ease: "easeOut" }
+              }}
+              className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-300 group hover:border-blue-500/50 hover:shadow-[0_25px_60px_rgba(37,99,235,0.3)] perspective-1000"
             >
               <div className="mb-6 p-3 bg-blue-500/10 rounded-xl w-fit group-hover:scale-110 transition-transform">
                 {card.icon}

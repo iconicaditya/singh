@@ -403,16 +403,23 @@ function About() {
                                     delay: index * 0.2
                                 },
                                 whileHover: {
-                                    y: -10
+                                    y: -15,
+                                    rotateX: 5,
+                                    rotateY: 5,
+                                    scale: 1.05,
+                                    transition: {
+                                        duration: 0.4,
+                                        ease: "easeOut"
+                                    }
                                 },
-                                className: "p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group",
+                                className: "p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-300 group hover:border-blue-500/50 hover:shadow-[0_25px_60px_rgba(37,99,235,0.3)] perspective-1000",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "mb-6 p-3 bg-blue-500/10 rounded-xl w-fit group-hover:scale-110 transition-transform",
                                         children: card.icon
                                     }, void 0, false, {
                                         fileName: "[project]/components/about.tsx",
-                                        lineNumber: 71,
+                                        lineNumber: 77,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -420,7 +427,7 @@ function About() {
                                         children: card.title
                                     }, void 0, false, {
                                         fileName: "[project]/components/about.tsx",
-                                        lineNumber: 74,
+                                        lineNumber: 80,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -428,7 +435,7 @@ function About() {
                                         children: card.description
                                     }, void 0, false, {
                                         fileName: "[project]/components/about.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 83,
                                         columnNumber: 15
                                     }, this)
                                 ]
