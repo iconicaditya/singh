@@ -1,6 +1,7 @@
 import Hero from "@/components/hero";
 import About from "@/components/about";
 import ResearchThemes from "@/components/researchtheme";
+import ResearchFocus from "@/components/researchfocus";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Hero />
       <About />
       <ResearchThemes />
+      <ResearchFocus />
     </div>
   );
 }
