@@ -95,7 +95,7 @@ export default function ResearchThemes() {
                   {theme.title}
                 </h3>
                 
-                <ul className="space-y-4 max-w-xs mx-auto">
+                <ul className="space-y-4 max-w-xs mx-auto flex flex-col items-center">
                   {theme.points.map((point, pIndex) => (
                     <motion.li 
                       key={pIndex}
@@ -103,7 +103,7 @@ export default function ResearchThemes() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: (index * 0.1) + (pIndex * 0.1) }}
-                      className="flex items-center gap-3 text-gray-400 text-sm group-hover:text-gray-300"
+                      className="flex items-center gap-3 text-gray-400 text-sm group-hover:text-gray-300 text-center"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
                       {point}
