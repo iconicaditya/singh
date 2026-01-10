@@ -10,23 +10,27 @@ export default function ResearchFocus() {
     {
       title: "Applied Environmental Science",
       icon: <Microscope className="w-6 h-6 text-blue-600" />,
-      description: "Utilizing advanced data analysis and field methods to monitor environmental changes and assess ecosystem health."
+      description:
+        "Utilizing advanced data analysis and field methods to monitor environmental changes and assess ecosystem health.",
     },
     {
       title: "Global Sustainability Policy",
       icon: <Globe className="w-6 h-6 text-blue-600" />,
-      description: "Analyzing international frameworks and local implementations to bridge the gap between policy goals and community action."
+      description:
+        "Analyzing international frameworks and local implementations to bridge the gap between policy goals and community action.",
     },
     {
       title: "Circular Economy Models",
       icon: <Repeat className="w-6 h-6 text-blue-600" />,
-      description: "Developing practical models for waste reduction and resource efficiency in urban and rural settings."
+      description:
+        "Developing practical models for waste reduction and resource efficiency in urban and rural settings.",
     },
     {
       title: "Impact Assessment",
       icon: <BarChart3 className="w-6 h-6 text-blue-600" />,
-      description: "Measuring the social and environmental outcomes of sustainability interventions to guide future decision-making."
-    }
+      description:
+        "Measuring the social and environmental outcomes of sustainability interventions to guide future decision-making.",
+    },
   ];
 
   return (
@@ -41,11 +45,15 @@ export default function ResearchFocus() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-4xl font-black text-[#1e293b] mb-4">Our Research Focus</h2>
+              <h2 className="text-4xl font-black text-[#1e293b] mb-4">
+                Our Research Focus
+              </h2>
               <div className="w-16 h-1 bg-blue-600 mb-8" />
               <p className="text-gray-600 text-lg mb-12 leading-relaxed">
-                We go beyond theoretical study to apply rigorous scientific methods to real-world problems. 
-                Our work informs policy, empowers communities, and contributes to the global body of sustainability knowledge.
+                We go beyond theoretical study to apply rigorous scientific
+                methods to real-world problems. Our work informs policy,
+                empowers communities, and contributes to the global body of
+                sustainability knowledge.
               </p>
             </motion.div>
 
@@ -62,7 +70,9 @@ export default function ResearchFocus() {
                   <div className="mb-4 p-3 bg-white rounded-xl w-fit shadow-sm group-hover:scale-110 transition-transform">
                     {item.icon}
                   </div>
-                  <h3 className="text-lg font-bold text-[#1e293b] mb-2">{item.title}</h3>
+                  <h3 className="text-lg font-bold text-[#1e293b] mb-2">
+                    {item.title}
+                  </h3>
                   <p className="text-gray-500 text-sm leading-relaxed">
                     {item.description}
                   </p>
@@ -77,8 +87,12 @@ export default function ResearchFocus() {
               transition={{ delay: 0.6 }}
               className="mt-12"
             >
-              <Link href="#" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all group">
-                View Our Research <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <Link
+                href="#"
+                className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all group"
+              >
+                View Our Research{" "}
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
           </div>
@@ -101,7 +115,7 @@ export default function ResearchFocus() {
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
-            
+
             {/* Decorative element */}
             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-100 rounded-full -z-10 blur-2xl opacity-60" />
             <div className="absolute -top-6 -left-6 w-32 h-32 bg-blue-50 rounded-full -z-10 blur-2xl opacity-60" />

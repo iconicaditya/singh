@@ -1,25 +1,5 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/845e7_next_dist_f2b399e2._.js",
-      "static/chunks/app_favicon_ico_mjs_69e9a1ce._.js",
-      "static/chunks/[root-of-the-server]__28bc9c2a._.css",
-      "static/chunks/845e7_next_dd25e181._.js",
-      "static/chunks/02e3d_motion-dom_dist_es_5a5585ec._.js",
-      "static/chunks/e7653_framer-motion_dist_es_3fb9af69._.js",
-      "static/chunks/node_modules__pnpm_adf01810._.js",
-      "static/chunks/components_header_tsx_59596cc5._.js",
-      "static/chunks/app_layout_tsx_0146a443._.js",
-      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_7b7abe27._.js",
-      "static/chunks/845e7_next_dist_compiled_react-dom_3f63d757._.js",
-      "static/chunks/845e7_next_dist_compiled_next-devtools_index_f1deb001.js",
-      "static/chunks/845e7_next_dist_compiled_016d6732._.js",
-      "static/chunks/845e7_next_dist_client_7eb3b7bd._.js",
-      "static/chunks/845e7_next_dist_e9882dda._.js",
-      "static/chunks/69652_@swc_helpers_cjs_77b72907._.js",
-      "static/chunks/_a0ff3932._.js",
-      "static/chunks/turbopack-_5bcd1415._.js"
-    ],
     "/page": [
       "static/chunks/845e7_next_dist_f2b399e2._.js",
       "static/chunks/app_favicon_ico_mjs_69e9a1ce._.js",
