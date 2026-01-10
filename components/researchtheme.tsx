@@ -85,15 +85,17 @@ export default function ResearchThemes() {
               <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
               <div className="relative z-10">
-                <div className="mb-6 inline-block p-4 rounded-2xl bg-slate-800/80 group-hover:scale-110 transition-transform duration-300 group-hover:bg-slate-800">
-                  {theme.icon}
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 rounded-2xl bg-slate-800/80 group-hover:scale-110 transition-transform duration-300 group-hover:bg-slate-800">
+                    {theme.icon}
+                  </div>
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-6 group-hover:text-blue-400 transition-colors">
+                <h3 className="text-2xl font-bold text-white mb-6 text-center group-hover:text-blue-400 transition-colors">
                   {theme.title}
                 </h3>
                 
-                <ul className="space-y-4">
+                <ul className="space-y-4 max-w-xs mx-auto">
                   {theme.points.map((point, pIndex) => (
                     <motion.li 
                       key={pIndex}
