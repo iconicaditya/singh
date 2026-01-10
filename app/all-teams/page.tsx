@@ -77,7 +77,8 @@ export default function AllTeams() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col h-full group"
+              whileHover={{ y: -5 }}
+              className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 flex flex-col h-full group transition-all hover:shadow-2xl"
             >
               <div className="relative h-64 overflow-hidden shrink-0">
                 <Image
@@ -89,7 +90,7 @@ export default function AllTeams() {
               </div>
 
               <div className="p-6 text-center flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-[#1e293b] mb-1">
+                <h3 className="text-xl font-bold text-[#1e293b] mb-1 group-hover:text-blue-600 transition-colors">
                   {member.name}
                 </h3>
                 <p className="text-blue-600 font-bold text-xs mb-3 uppercase tracking-widest">
@@ -117,35 +118,26 @@ export default function AllTeams() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-2">
-            <button
-              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="p-2 rounded-full border border-gray-200 disabled:opacity-30 hover:bg-white transition-colors"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            
+          <div className="flex justify-center items-center gap-3">
             {Array.from({ length: totalPages }).map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`w-10 h-10 rounded-full font-bold transition-all ${
+                className={`w-12 h-12 rounded-2xl font-black transition-all ${
                   currentPage === i + 1
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "text-gray-500 hover:bg-gray-200"
+                    ? "bg-blue-600 text-white shadow-xl shadow-blue-200 scale-110"
+                    : "bg-white text-gray-400 hover:bg-gray-100 border border-gray-100"
                 }`}
               >
                 {i + 1}
               </button>
             ))}
-
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="p-2 rounded-full border border-gray-200 disabled:opacity-30 hover:bg-white transition-colors"
+              className="px-6 h-12 rounded-2xl bg-white border border-gray-100 font-black text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-all"
             >
-              <ChevronRight size={24} />
+              NEXT
             </button>
           </div>
         )}
