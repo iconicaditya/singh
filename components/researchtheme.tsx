@@ -78,8 +78,12 @@ export default function ResearchThemes() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className={`group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/10`}
+              whileHover={{ 
+                y: -12,
+                scale: 1.02,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
+              className="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_20px_50px_rgba(37,99,235,0.2)]"
             >
               {/* Inner Gradient Glow */}
               <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />

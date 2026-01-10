@@ -695,15 +695,20 @@ function ResearchThemes() {
                                     delay: index * 0.1
                                 },
                                 whileHover: {
-                                    y: -5
+                                    y: -12,
+                                    scale: 1.02,
+                                    transition: {
+                                        duration: 0.3,
+                                        ease: "easeOut"
+                                    }
                                 },
-                                className: "group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/10",
+                                className: "group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-blue-500/50 hover:shadow-[0_20px_50px_rgba(37,99,235,0.2)]",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "absolute inset-0 bg-gradient-to-br ".concat(theme.gradient, " opacity-0 group-hover:opacity-100 transition-opacity duration-500")
                                     }, void 0, false, {
                                         fileName: "[project]/components/researchtheme.tsx",
-                                        lineNumber: 85,
+                                        lineNumber: 89,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -716,12 +721,12 @@ function ResearchThemes() {
                                                     children: theme.icon
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/researchtheme.tsx",
-                                                    lineNumber: 89,
+                                                    lineNumber: 93,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 88,
+                                                lineNumber: 92,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -729,7 +734,7 @@ function ResearchThemes() {
                                                 children: theme.title
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 94,
+                                                lineNumber: 98,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -755,25 +760,25 @@ function ResearchThemes() {
                                                                 className: "w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                                lineNumber: 108,
+                                                                lineNumber: 112,
                                                                 columnNumber: 23
                                                             }, this),
                                                             point
                                                         ]
                                                     }, pIndex, true, {
                                                         fileName: "[project]/components/researchtheme.tsx",
-                                                        lineNumber: 100,
+                                                        lineNumber: 104,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 98,
+                                                lineNumber: 102,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/researchtheme.tsx",
-                                        lineNumber: 87,
+                                        lineNumber: 91,
                                         columnNumber: 15
                                     }, this)
                                 ]
