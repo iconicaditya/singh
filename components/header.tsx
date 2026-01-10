@@ -22,7 +22,19 @@ export default function Header() {
     { name: "CONTACT", href: "#" },
   ];
 
-  const scrollingText = "Research, education, and community action for a sustainable future. Empowering communities through innovative environmental research. Working together for a greener and cleaner planet.";
+  const ScrollingContent = () => (
+    <div className="flex items-center gap-12 whitespace-nowrap">
+      <span className="text-gray-300 text-xs md:text-sm font-bold">
+        <span className="text-blue-400">Research</span>, education, and community action for a <span className="text-blue-400">sustainable</span> future.
+      </span>
+      <span className="text-gray-300 text-xs md:text-sm font-bold">
+        Empowering <span className="text-blue-400">communities</span> through innovative environmental research.
+      </span>
+      <span className="text-gray-300 text-xs md:text-sm font-bold">
+        Working <span className="text-blue-400">together</span> for a greener and cleaner planet.
+      </span>
+    </div>
+  );
 
   return (
     <header className="w-full sticky top-0 z-50 shadow-md">
@@ -56,27 +68,29 @@ export default function Header() {
         </div>
 
         {/* Center: Marquee Animation */}
-        <div className="w-full md:max-w-md lg:max-w-xl overflow-hidden bg-white/5 py-1.5 rounded-full border border-white/10">
+        <div className="w-full md:max-w-md lg:max-w-xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative">
           <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: "-100%" }}
+            initial={{ x: "0%" }}
+            animate={{ x: "-50%" }}
             transition={{
               repeat: Infinity,
-              duration: 20,
+              duration: 35,
               ease: "linear",
             }}
-            className="whitespace-nowrap inline-block"
+            className="flex w-fit"
           >
-            <span className="text-gray-300 text-xs md:text-sm font-medium px-4">
-              {scrollingText}
-            </span>
-            <span className="text-gray-300 text-xs md:text-sm font-medium px-4">
-              {scrollingText}
-            </span>
+            <div className="flex shrink-0">
+              <ScrollingContent />
+              <div className="w-12" /> {/* Spacer */}
+            </div>
+            <div className="flex shrink-0">
+              <ScrollingContent />
+              <div className="w-12" /> {/* Spacer */}
+            </div>
           </motion.div>
         </div>
 
-        {/* Right: Social Icons (Desktop only or hidden on small mobile) */}
+        {/* Right: Social Icons */}
         <div className="hidden md:flex items-center gap-4 text-gray-400">
           <Link href="#" className="hover:text-white transition-colors">
             <Globe size={18} strokeWidth={1.5} />
