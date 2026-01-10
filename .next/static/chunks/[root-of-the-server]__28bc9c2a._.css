@@ -505,6 +505,10 @@ img, video {
   left: 25%;
 }
 
+.left-3 {
+  left: .75rem;
+}
+
 .left-4 {
   left: 1rem;
 }
@@ -535,6 +539,10 @@ img, video {
 
 .top-1\/2 {
   top: 50%;
+}
+
+.top-3 {
+  top: .75rem;
 }
 
 .top-4 {
@@ -638,6 +646,13 @@ img, video {
   margin-top: auto;
 }
 
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
 .line-clamp-3 {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -681,12 +696,20 @@ img, video {
   height: 2.5rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-2 {
   height: .5rem;
 }
 
 .h-32 {
   height: 8rem;
+}
+
+.h-48 {
+  height: 12rem;
 }
 
 .h-5 {
@@ -1286,6 +1309,11 @@ img, video {
   padding: 2rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
 .px-3 {
   padding-left: .75rem;
   padding-right: .75rem;
@@ -1304,6 +1332,11 @@ img, video {
 .px-8 {
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.py-1 {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
 }
 
 .py-1\.5 {
@@ -1407,6 +1440,10 @@ img, video {
 
 .text-\[8px\] {
   font-size: 8px;
+}
+
+.text-\[9px\] {
+  font-size: 9px;
 }
 
 .text-base {
@@ -1632,6 +1669,16 @@ img, video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 }
 
+.shadow-blue-200 {
+  --tw-shadow-color: #bfdbfe;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-blue-500\/25 {
+  --tw-shadow-color: rgba(59, 130, 246, .25);
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
 .shadow-gray-200\/50 {
   --tw-shadow-color: rgba(229, 231, 235, .5);
   --tw-shadow: var(--tw-shadow-colored);
@@ -1803,6 +1850,11 @@ body {
   background-color: rgba(29, 78, 216, var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgba(229, 231, 235, var(--tw-bg-opacity, 1));
@@ -1886,6 +1938,11 @@ body {
 
 .disabled\:opacity-30:disabled {
   opacity: .3;
+}
+
+.group:hover .group-hover\:-translate-x-1 {
+  --tw-translate-x: -.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .group:hover .group-hover\:translate-x-1 {
@@ -2077,6 +2134,10 @@ body {
 
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .lg\:flex-row {

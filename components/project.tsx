@@ -33,6 +33,60 @@ const projects = [
     status: "Ongoing...",
     image: "/projectimages/climate_ai.jpg",
     year: "2024"
+  },
+  {
+    id: 4,
+    title: "RENEWABLE ENERGY TRANSITION",
+    category: "TECHNOLOGY",
+    description: "Strategic plan for transitioning urban centers to 100% renewable energy sources within the next decade.",
+    status: "Ongoing...",
+    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    year: "2024"
+  },
+  {
+    id: 5,
+    title: "URBAN GARDENING INITIATIVE",
+    category: "COMMUNITY",
+    description: "Establishing vertical gardens in high-density urban areas to improve air quality and provide local produce.",
+    status: "Completed",
+    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    year: "2023"
+  },
+  {
+    id: 6,
+    title: "WATER PURIFICATION SYSTEMS",
+    category: "RESEARCH",
+    description: "Developing low-cost, high-efficiency water filtration systems for rural communities using local materials.",
+    status: "Ongoing...",
+    image: "/attached_assets/stock_images/professional_researc_b446b59e.jpg",
+    year: "2024"
+  },
+  {
+    id: 7,
+    title: "WILDLIFE HABITAT RESTORATION",
+    category: "RESEARCH",
+    description: "Restoring critical wildlife corridors through reforestation and community-led conservation efforts.",
+    status: "Completed",
+    image: "/attached_assets/stock_images/professional_researc_f172db13.jpg",
+    year: "2023"
+  },
+  {
+    id: 8,
+    title: "SUSTAINABLE PACKAGING SOLUTIONS",
+    category: "TECHNOLOGY",
+    description: "Researching and developing biodegradable alternatives to single-use plastics in the manufacturing sector.",
+    status: "Ongoing...",
+    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    year: "2024"
+  },
+  {
+    id: 9,
+    title: "ECO-FRIENDLY TRANSPORTATION",
+    category: "COMMUNITY",
+    description: "Promoting carbon-neutral transit options through infrastructure development and public awareness campaigns.",
+    status: "Completed",
+    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    year: "2023"
   }
 ];
 
@@ -115,7 +169,7 @@ export default function Projects() {
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -165,6 +219,21 @@ export default function Projects() {
             </motion.div>
           ))}
         </div>
+
+        {/* View All Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex justify-center"
+        >
+          <Link
+            href="/all-projects"
+            className="inline-flex items-center gap-2 bg-[#2563eb] text-white px-10 py-4 rounded-full font-black hover:bg-[#1d4ed8] transition-all shadow-xl shadow-blue-500/25 group"
+          >
+            VIEW ALL PROJECTS <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
