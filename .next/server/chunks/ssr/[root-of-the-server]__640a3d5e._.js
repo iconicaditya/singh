@@ -87,7 +87,7 @@ function Header() {
         },
         {
             name: "GALLERY",
-            href: "#"
+            href: "/all-gallery"
         },
         {
             name: "CONTACT",

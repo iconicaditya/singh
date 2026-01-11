@@ -18,7 +18,7 @@ export default function Header() {
     { name: "RESEARCH", href: "/research" },
     { name: "RESOURCES", href: "#" },
     { name: "ACTIVITIES", href: "/all-activities" },
-    { name: "GALLERY", href: "#" },
+    { name: "GALLERY", href: "/all-gallery" },
     { name: "CONTACT", href: "#" },
   ];
 
