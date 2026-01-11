@@ -119,19 +119,6 @@ export default function ResearchThemes() {
             </motion.div>
           ))}
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center mt-16"
-        >
-          <Link
-            href="/research"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-10 py-4 rounded-full font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/25 group"
-          >
-            VIEW OUR RESEARCH <Globe2 size={20} className="group-hover:rotate-12 transition-transform" />
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

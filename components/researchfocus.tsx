@@ -88,7 +88,7 @@ export default function ResearchFocus() {
               className="mt-12"
             >
               <Link
-                href="#"
+                href="/research"
                 className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all group"
               >
                 View Our Research{" "}
