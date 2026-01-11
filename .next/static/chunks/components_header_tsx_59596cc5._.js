@@ -61,7 +61,7 @@ function Header() {
         },
         {
             name: "ACTIVITIES",
-            href: "#"
+            href: "/all-activities"
         },
         {
             name: "GALLERY",

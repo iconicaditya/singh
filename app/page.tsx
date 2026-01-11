@@ -6,6 +6,7 @@ import ResearchThemes from "@/components/researchtheme";
 import ResearchFocus from "@/components/researchfocus";
 import Projects from "@/components/project";
 import OurTeam from "@/components/ourteam";
+import Activities from "@/components/activities";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <ResearchFocus />
       <Projects />
       <OurTeam />
+      <Activities />
     </div>
   );
 }
