@@ -19,7 +19,7 @@ export default function Header() {
     { name: "RESOURCES", href: "#" },
     { name: "ACTIVITIES", href: "/all-activities" },
     { name: "GALLERY", href: "/all-gallery" },
-    { name: "CONTACT", href: "#" },
+    { name: "CONTACT", href: "/#contact" },
   ];
 
   const ScrollingContent = () => (

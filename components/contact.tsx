@@ -20,7 +20,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="py-24 bg-[#f8fafc]">
+    <section id="contact" className="py-24 bg-[#f8fafc]">
       <div className="container mx-auto px-6 max-w-7xl">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
