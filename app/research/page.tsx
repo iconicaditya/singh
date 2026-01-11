@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, BookOpen, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, Search, Globe2, Beaker, FileText, Lightbulb } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -55,7 +55,6 @@ const researchPapers = [
     image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
     tags: ["Energy", "Innovation", "Tech"]
   },
-  // Adding more mock research to showcase pagination (Total 20)
   ...Array.from({ length: 14 }).map((_, i) => ({
     id: i + 7,
     title: `Research Initiative ${i + 7}: Environmental Analysis`,
@@ -76,93 +75,101 @@ export default function ResearchPage() {
   const visibleResearch = researchPapers.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#020617] text-white">
       {/* Hero Section */}
-      <section className="relative h-[50vh] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/attached_assets/stock_images/professional_researc_2d676eab.jpg"
-          alt="Research Hero"
-          fill
-          className="object-cover brightness-50"
-        />
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/attached_assets/stock_images/professional_researc_2d676eab.jpg"
+            alt="Research Hero"
+            fill
+            className="object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/50 via-[#020617]/80 to-[#020617]" />
+        </div>
+        
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter"
+            transition={{ duration: 0.8 }}
           >
-            Our <span className="text-blue-500 underline decoration-white/30">Research</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-xl text-gray-200 max-w-2xl mx-auto"
-          >
-            Pioneering scientific investigations into the most pressing environmental challenges of our time.
-          </motion.p>
+            <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tighter">
+              ADVANCED <span className="text-blue-500">RESEARCH</span>
+            </h1>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
+              Pioneering interdisciplinary studies to solve global environmental challenges through local action and scientific excellence.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 relative">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
-            <Link href="/" className="flex items-center gap-2 text-blue-600 font-bold hover:gap-3 transition-all group">
-              <ArrowLeft size={20} /> BACK TO HOME
+            <Link href="/" className="flex items-center gap-2 text-blue-500 font-bold hover:gap-4 transition-all group">
+              <ArrowLeft size={20} className="group-hover:-translate-x-1" /> BACK TO PORTAL
             </Link>
             
             <div className="relative w-full md:w-96">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
               <input 
                 type="text" 
-                placeholder="Search publications..."
-                className="w-full pl-12 pr-6 py-4 rounded-2xl bg-white border border-gray-100 shadow-sm focus:ring-2 focus:ring-blue-500/20 transition-all"
+                placeholder="Search publications & data..."
+                className="w-full pl-12 pr-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-600"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
             {visibleResearch.map((paper, idx) => (
               <motion.div
                 key={paper.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
-                className="group bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col h-full"
+                whileHover={{ 
+                  y: -15,
+                  rotateX: 2,
+                  rotateY: 2,
+                  scale: 1.02
+                }}
+                className="group relative bg-slate-900/40 rounded-[2.5rem] overflow-hidden border border-white/5 hover:border-blue-500/50 transition-all duration-500 flex flex-col h-full perspective-1000 shadow-[0_0_50px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.2)]"
               >
                 <div className="relative h-64 overflow-hidden">
                   <Image
                     src={paper.image}
                     alt={paper.title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                   />
                   <div className="absolute top-6 left-6">
-                    <span className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-black tracking-widest text-blue-600 shadow-sm uppercase">
+                    <span className="bg-blue-600 px-4 py-2 rounded-full text-[10px] font-black tracking-widest text-white shadow-lg uppercase">
                       {paper.category}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-8 flex flex-col flex-grow">
-                  <h3 className="text-2xl font-black text-slate-800 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-blue-400 transition-colors">
                     {paper.title}
                   </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">
+                  <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
                     {paper.description}
                   </p>
                   
-                  <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between">
+                  <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
                     <div className="flex gap-2">
-                      {paper.tags.slice(0, 2).map(tag => (
-                        <span key={tag} className="text-[10px] bg-blue-50 text-blue-500 px-3 py-1 rounded-lg font-bold">
-                          #{tag.toUpperCase()}
-                        </span>
-                      ))}
+                      <span className="p-2 bg-blue-500/10 rounded-lg text-blue-400">
+                        <FileText size={18} />
+                      </span>
+                      <span className="p-2 bg-purple-500/10 rounded-lg text-purple-400">
+                        <Lightbulb size={18} />
+                      </span>
                     </div>
-                    <Link href="#" className="p-3 bg-slate-50 rounded-2xl text-slate-400 hover:bg-blue-600 hover:text-white transition-all group-hover:rotate-12">
-                      <ArrowRight size={20} />
+                    <Link href="#" className="flex items-center gap-2 text-xs font-black text-blue-500 hover:text-white transition-all">
+                      EXPLORE DATA <ArrowRight size={16} />
                     </Link>
                   </div>
                 </div>
@@ -178,12 +185,12 @@ export default function ResearchPage() {
                   key={i}
                   onClick={() => {
                     setCurrentPage(i + 1);
-                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
                   }}
-                  className={`w-14 h-14 rounded-2xl font-black transition-all ${
+                  className={`w-14 h-14 rounded-2xl font-black transition-all border ${
                     currentPage === i + 1
-                      ? "bg-blue-600 text-white shadow-xl shadow-blue-200 scale-110"
-                      : "bg-white text-gray-400 hover:bg-gray-100 border border-gray-100"
+                      ? "bg-blue-600 text-white border-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.4)] scale-110"
+                      : "bg-white/5 text-gray-500 border-white/10 hover:bg-white/10"
                   }`}
                 >
                   {i + 1}
@@ -192,10 +199,10 @@ export default function ResearchPage() {
               <button
                 onClick={() => {
                   setCurrentPage(p => Math.min(totalPages, p + 1));
-                  window.scrollTo({ top: 400, behavior: 'smooth' });
+                  window.scrollTo({ top: 300, behavior: 'smooth' });
                 }}
                 disabled={currentPage === totalPages}
-                className="px-8 h-14 rounded-2xl bg-white border border-gray-100 font-black text-gray-400 hover:bg-gray-100 disabled:opacity-30 transition-all flex items-center gap-2"
+                className="px-8 h-14 rounded-2xl bg-blue-600 border border-blue-500 font-black text-white hover:bg-blue-700 disabled:opacity-30 shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all flex items-center gap-2"
               >
                 NEXT <ArrowRight size={18} />
               </button>
