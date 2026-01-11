@@ -67,11 +67,11 @@ function Header() {
         },
         {
             name: "PROJECTS",
-            href: "#"
+            href: "/all-projects"
         },
         {
             name: "PUBLICATIONS",
-            href: "#"
+            href: "/all-publications"
         },
         {
             name: "RESEARCH",
