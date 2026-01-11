@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight, Bell } from "lucide-react";
+import { Calendar, ArrowRight, Bell, Tag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -51,7 +51,7 @@ const activities = [
 export default function Activities() {
   return (
     <section className="py-24 bg-[#f8fafc]">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 max-w-5xl">
         <div className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -71,39 +71,44 @@ export default function Activities() {
           </motion.h2>
         </div>
 
-        <div className="space-y-6 max-w-5xl mx-auto mb-16">
+        <div className="space-y-8 mb-16">
           {activities.map((activity, index) => (
-            <motion.div
+            <motion.article
               key={activity.id}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ x: 10 }}
-              className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all flex flex-col md:flex-row gap-6 items-center"
+              transition={{ delay: index * 0.05 }}
+              className="flex flex-col md:flex-row gap-8 items-center bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
             >
-              <div className="relative w-full md:w-48 h-32 shrink-0 overflow-hidden rounded-2xl">
+              <div className="relative w-full md:w-64 aspect-[4/3] overflow-hidden rounded-3xl shrink-0">
                 <Image
                   src={activity.image}
                   alt={activity.title}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="flex-grow">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-blue-600 font-bold text-[10px] tracking-widest uppercase">{activity.category}</span>
-                  <span className="text-gray-400 text-xs flex items-center gap-1">
-                    <Calendar size={12} /> {activity.date}
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="flex items-center gap-1.5 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                    <Tag size={12} /> {activity.category}
+                  </span>
+                  <span className="text-gray-400 text-sm flex items-center gap-1.5 font-medium">
+                    <Calendar size={14} /> {activity.date}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-[#1e293b] mb-2">{activity.title}</h3>
-                <p className="text-gray-500 text-sm line-clamp-1">{activity.description}</p>
+                <h3 className="text-2xl font-black text-[#1e293b] mb-4 leading-tight group-hover:text-blue-600 transition-colors cursor-pointer">
+                  {activity.title}
+                </h3>
+                <p className="text-gray-500 leading-relaxed mb-6 line-clamp-2">
+                  {activity.description}
+                </p>
+                <Link href="#" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all">
+                  Read Full Story <ArrowRight size={18} />
+                </Link>
               </div>
-              <Link href="#" className="p-4 bg-gray-50 rounded-full text-gray-400 hover:bg-blue-600 hover:text-white transition-all shrink-0">
-                <ArrowRight size={20} />
-              </Link>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
 

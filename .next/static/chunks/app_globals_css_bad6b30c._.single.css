@@ -574,13 +574,6 @@ img, video {
   margin-top: auto;
 }
 
-.line-clamp-1 {
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  overflow: hidden;
-}
-
 .line-clamp-2 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -918,10 +911,10 @@ img, video {
   gap: 2rem;
 }
 
-.space-y-12 > :not([hidden]) ~ :not([hidden]) {
+.space-y-10 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
-  margin-top: calc(3rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(3rem * var(--tw-space-y-reverse));
+  margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
 }
 
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
@@ -940,6 +933,12 @@ img, video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
 }
 
 .self-stretch {
@@ -2126,10 +2125,6 @@ body {
 
   .md\:w-40 {
     width: 10rem;
-  }
-
-  .md\:w-48 {
-    width: 12rem;
   }
 
   .md\:w-64 {
