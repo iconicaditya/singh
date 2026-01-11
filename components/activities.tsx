@@ -105,7 +105,7 @@ export default function Activities() {
                   {activity.description}
                 </p>
                 <Link href="#" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all">
-                  Read Full Story <ArrowRight size={18} />
+                  Read More <ArrowRight size={18} />
                 </Link>
               </div>
             </motion.article>
