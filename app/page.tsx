@@ -8,6 +8,7 @@ import Projects from "@/components/project";
 import Publication from "@/components/publication";
 import OurTeam from "@/components/ourteam";
 import Activities from "@/components/activities";
+import Gallery from "@/components/gallery";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Projects />
       <Publication />
       <OurTeam />
+      <Gallery />
       <Activities />
     </div>
   );
