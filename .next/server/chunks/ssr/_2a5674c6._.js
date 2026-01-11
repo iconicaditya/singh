@@ -26,151 +26,151 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 const galleryData = [
     {
         id: 1,
-        title: "Laboratory Waste Analysis",
-        category: "LABORATORY",
-        image: "/galleryimages/gallery1.jpg",
-        description: "Analyzing chemical waste components in a controlled lab environment."
+        title: "Plastic Pollution Research",
+        category: "PLASTIC WASTE",
+        image: "/galleryimages/env_gallery1.jpg",
+        description: "Documenting microplastic accumulation in natural water bodies."
     },
     {
         id: 2,
-        title: "Chemical Processing Research",
-        category: "LABORATORY",
-        image: "/galleryimages/gallery2.jpg",
-        description: "Researching safe chemical waste neutralization methods."
+        title: "Ocean Debris Analysis",
+        category: "PLASTIC WASTE",
+        image: "/galleryimages/env_gallery2.jpg",
+        description: "Studying the impact of non-biodegradable waste on marine ecosystems."
     },
     {
         id: 3,
-        title: "Microscopic Sample Study",
-        category: "LABORATORY",
-        image: "/galleryimages/gallery3.jpg",
-        description: "Examining environmental micro-particles under high magnification."
+        title: "Coastal Cleanup Monitoring",
+        category: "PLASTIC WASTE",
+        image: "/galleryimages/env_gallery3.jpg",
+        description: "Tracking the effectiveness of coastal waste removal programs."
     },
     {
         id: 4,
-        title: "Biotech Waste Solutions",
-        category: "LABORATORY",
-        image: "/galleryimages/gallery4.jpg",
-        description: "Developing biological solutions for organic waste breakdown."
+        title: "Riverine Waste Flow",
+        category: "PLASTIC WASTE",
+        image: "/galleryimages/env_gallery4.jpg",
+        description: "Analyzing how plastic waste travels through urban river systems."
     },
     {
         id: 5,
-        title: "Water Quality Testing",
-        category: "LABORATORY",
-        image: "/galleryimages/gallery5.jpg",
-        description: "Assessing heavy metal concentrations in industrial runoff."
+        title: "Urban Litter Assessment",
+        category: "PLASTIC WASTE",
+        image: "/galleryimages/env_gallery5.jpg",
+        description: "Statistical sampling of plastic litter in metropolitan green spaces."
     },
     {
         id: 6,
-        title: "River Sediment Sampling",
-        category: "FIELD STUDY",
-        image: "/galleryimages/gallery6.jpg",
-        description: "Collecting riverbed samples for pollution longitudinal study."
+        title: "Industrial Recycling Workflow",
+        category: "RECYCLING",
+        image: "/galleryimages/env_gallery6.jpg",
+        description: "Optimizing sorting processes for multi-material recycling streams."
     },
     {
         id: 7,
-        title: "Soil Contamination Mapping",
-        category: "FIELD STUDY",
-        image: "/galleryimages/gallery7.jpg",
-        description: "In-situ soil analysis for industrial site remediation."
+        title: "Material Recovery Analysis",
+        category: "RECYCLING",
+        image: "/galleryimages/env_gallery7.jpg",
+        description: "Evaluating the purity of recovered secondary raw materials."
     },
     {
         id: 8,
-        title: "Ecosystem Health Audit",
-        category: "FIELD STUDY",
-        image: "/galleryimages/gallery8.jpg",
-        description: "Monitoring biodiversity markers in waste-adjacent zones."
+        title: "Circular Economy Research",
+        category: "RECYCLING",
+        image: "/galleryimages/env_gallery8.jpg",
+        description: "Designing closed-loop systems for industrial byproduct management."
     },
     {
         id: 9,
-        title: "Coastal Impact Study",
-        category: "FIELD STUDY",
-        image: "/galleryimages/gallery9.jpg",
-        description: "Studying the effects of marine debris on local flora."
+        title: "Waste-to-Energy Process",
+        category: "RECYCLING",
+        image: "/galleryimages/env_gallery9.jpg",
+        description: "Monitoring thermal conversion of non-recyclable waste into energy."
     },
     {
         id: 10,
-        title: "Groundwater Extraction",
-        category: "FIELD STUDY",
-        image: "/galleryimages/gallery10.jpg",
-        description: "Sampling deep aquifer water for landfill leakage detection."
+        title: "Electronic Waste Sorting",
+        category: "RECYCLING",
+        image: "/galleryimages/env_gallery10.jpg",
+        description: "Advanced separation techniques for high-value metal recovery from E-waste."
     },
     {
         id: 11,
-        title: "Waste Sorting Efficiency",
-        category: "MONITORING",
-        image: "/galleryimages/gallery11.jpg",
-        description: "Automated analysis of waste stream segregation quality."
+        title: "Landfill Methane Monitoring",
+        category: "LANDFILL MGMT",
+        image: "/galleryimages/env_gallery11.jpg",
+        description: "Remote sensing of greenhouse gas emissions from active landfill sites."
     },
     {
         id: 12,
-        title: "Air Quality Station",
-        category: "MONITORING",
-        image: "/galleryimages/gallery12.jpg",
-        description: "Continuous monitoring of emissions at processing facilities."
+        title: "Geosynthetic Barrier Audit",
+        category: "LANDFILL MGMT",
+        image: "/galleryimages/env_gallery12.jpg",
+        description: "Inspecting integrity of containment systems for hazardous waste."
     },
     {
         id: 13,
-        title: "Landfill Thermal Imaging",
-        category: "MONITORING",
-        image: "/galleryimages/gallery13.jpg",
-        description: "Detecting underground heat signatures in waste deposits."
+        title: "Leachate Treatment Study",
+        category: "LANDFILL MGMT",
+        image: "/galleryimages/env_gallery13.jpg",
+        description: "Testing biological treatment methods for landfill runoff."
     },
     {
         id: 14,
-        title: "Odor Dispersion Modeling",
-        category: "MONITORING",
-        image: "/galleryimages/gallery14.jpg",
-        description: "Mapping atmospheric dispersion of waste processing byproducts."
+        title: "Groundwater Contamination Mapping",
+        category: "LANDFILL MGMT",
+        image: "/galleryimages/env_gallery14.jpg",
+        description: "3D visualization of subsurface pollutant plumes."
     },
     {
         id: 15,
-        title: "Recycling Plant Throughput",
-        category: "MONITORING",
-        image: "/galleryimages/gallery15.jpg",
-        description: "Monitoring material recovery rates in modern facilities."
+        title: "Landfill Rehabilitation Plan",
+        category: "LANDFILL MGMT",
+        image: "/galleryimages/env_gallery15.jpg",
+        description: "Planning the conversion of closed landfill cells into community parks."
     },
     {
         id: 16,
-        title: "Field Data Digitization",
-        category: "DATA COLLECTION",
-        image: "/galleryimages/gallery16.jpg",
-        description: "Real-time logging of environmental parameters on-site."
+        title: "Large-Scale Composting",
+        category: "ORGANIC WASTE",
+        image: "/galleryimages/env_gallery16.jpg",
+        description: "Industrial-scale processing of municipal organic waste."
     },
     {
         id: 17,
-        title: "Survey Site Surveying",
-        category: "DATA COLLECTION",
-        image: "/galleryimages/gallery17.jpg",
-        description: "Using GPS to map exact sampling coordinates."
+        title: "Anaerobic Digestion Research",
+        category: "ORGANIC WASTE",
+        image: "/galleryimages/env_gallery17.jpg",
+        description: "Optimizing biogas yields from high-nitrogen organic substrates."
     },
     {
         id: 18,
-        title: "Sensor Array Deployment",
-        category: "DATA COLLECTION",
-        image: "/galleryimages/gallery18.jpg",
-        description: "Setting up remote sensing equipment for long-term data."
+        title: "Vermin Control in Waste Sites",
+        category: "ORGANIC WASTE",
+        image: "/galleryimages/env_gallery18.jpg",
+        description: "Study on managing biodiversity in organic waste processing facilities."
     },
     {
         id: 19,
-        title: "Water Flow Measurement",
-        category: "DATA COLLECTION",
-        image: "/galleryimages/gallery19.jpg",
-        description: "Recording discharge rates in drainage systems."
+        title: "Bio-Fertilizer Quality Test",
+        category: "ORGANIC WASTE",
+        image: "/galleryimages/env_gallery19.jpg",
+        description: "Chemical analysis of nutrient profiles in waste-derived fertilizers."
     },
     {
         id: 20,
-        title: "Community Waste Surveys",
-        category: "DATA COLLECTION",
-        image: "/galleryimages/gallery20.jpg",
-        description: "Gathering statistical data on household waste habits."
+        title: "Food Waste Reduction Program",
+        category: "ORGANIC WASTE",
+        image: "/galleryimages/env_gallery20.jpg",
+        description: "Data-driven approach to minimizing institutional food waste."
     }
 ];
 const CATEGORIES = [
     "ALL",
-    "LABORATORY",
-    "FIELD STUDY",
-    "MONITORING",
-    "DATA COLLECTION"
+    "PLASTIC WASTE",
+    "RECYCLING",
+    "LANDFILL MGMT",
+    "ORGANIC WASTE"
 ];
 const ITEMS_PER_PAGE = 16;
 function AllGallery() {

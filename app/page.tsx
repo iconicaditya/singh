@@ -9,6 +9,7 @@ import Publication from "@/components/publication";
 import OurTeam from "@/components/ourteam";
 import Activities from "@/components/activities";
 import Gallery from "@/components/gallery";
+import Contact from "@/components/contact";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <OurTeam />
       <Gallery />
       <Activities />
+      <Contact />
     </div>
   );
 }
