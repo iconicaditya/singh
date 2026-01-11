@@ -75,7 +75,7 @@ function Header() {
         },
         {
             name: "RESEARCH",
-            href: "#"
+            href: "/research"
         },
         {
             name: "RESOURCES",
