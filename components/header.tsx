@@ -119,9 +119,7 @@ export default function Header() {
               <li key={link.name}>
                 <Link 
                   href={link.href}
-                  className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] ${
-                    link.name === "HOME" ? "text-[#f87171]" : "text-white"
-                  }`}
+                  className="inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white"
                 >
                   {link.name}
                 </Link>
@@ -139,15 +137,13 @@ export default function Header() {
               exit={{ height: 0, opacity: 0 }}
               className="md:hidden bg-[#1d4ed8] border-t border-white/10"
             >
-              <ul className="flex flex-col py-2">
+              <ul className="flex flex-col py-2 text-center">
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link 
                       href={link.href}
                       onClick={() => setIsMenuOpen(false)}
-                      className={`block px-6 py-3 text-sm font-bold border-b border-white/5 last:border-0 ${
-                        link.name === "HOME" ? "text-[#f87171]" : "text-white"
-                      }`}
+                      className="block px-6 py-3 text-sm font-bold border-b border-white/5 last:border-0 text-white hover:bg-white/10 transition-colors"
                     >
                       {link.name}
                     </Link>

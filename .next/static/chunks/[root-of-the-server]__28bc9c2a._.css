@@ -1705,11 +1705,6 @@ img, video {
   color: rgba(239, 68, 68, var(--tw-text-opacity, 1));
 }
 
-.text-\[\#f87171\] {
-  --tw-text-opacity: 1;
-  color: rgba(248, 113, 113, var(--tw-text-opacity, 1));
-}
-
 .text-blue-400 {
   --tw-text-opacity: 1;
   color: rgba(96, 165, 250, var(--tw-text-opacity, 1));
