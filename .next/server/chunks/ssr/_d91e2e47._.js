@@ -3439,7 +3439,7 @@ function Contact() {
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                     type: "text",
                                                     placeholder: "John Doe",
-                                                    className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm"
+                                                    className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/contact.tsx",
                                                     lineNumber: 107,
@@ -3485,7 +3485,7 @@ function Contact() {
                                                     type: "email",
                                                     onChange: handleEmailChange,
                                                     placeholder: "john@example.com",
-                                                    className: `w-full px-5 py-3 rounded-xl bg-[#f8fafc] border outline-none focus:ring-2 transition-all text-sm ${errors.email ? 'border-red-300 focus:ring-red-100' : 'border-gray-100 focus:ring-blue-500/10 focus:border-blue-500'}`
+                                                    className: `w-full px-5 py-3 rounded-xl bg-[#f8fafc] border outline-none focus:ring-2 transition-all text-sm text-black ${errors.email ? 'border-red-300 focus:ring-red-100' : 'border-gray-100 focus:ring-blue-500/10 focus:border-blue-500'}`
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/contact.tsx",
                                                     lineNumber: 115,
@@ -3517,7 +3517,7 @@ function Contact() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                             type: "text",
                                             placeholder: "Research collaboration...",
-                                            className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm"
+                                            className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                                         }, void 0, false, {
                                             fileName: "[project]/components/contact.tsx",
                                             lineNumber: 129,
@@ -3553,7 +3553,7 @@ function Contact() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                                             rows: 6,
                                             placeholder: "How can we help you?",
-                                            className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm resize-none"
+                                            className: "w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm resize-none text-black"
                                         }, void 0, false, {
                                             fileName: "[project]/components/contact.tsx",
                                             lineNumber: 138,

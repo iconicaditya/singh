@@ -107,7 +107,7 @@ export default function Contact() {
                   <input 
                     type="text" 
                     placeholder="John Doe"
-                    className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm"
+                    className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                   />
                 </div>
                 <div className="space-y-2">
@@ -117,7 +117,7 @@ export default function Contact() {
                     type="email" 
                     onChange={handleEmailChange}
                     placeholder="john@example.com"
-                    className={`w-full px-5 py-3 rounded-xl bg-[#f8fafc] border outline-none focus:ring-2 transition-all text-sm ${
+                    className={`w-full px-5 py-3 rounded-xl bg-[#f8fafc] border outline-none focus:ring-2 transition-all text-sm text-black ${
                       errors.email ? 'border-red-300 focus:ring-red-100' : 'border-gray-100 focus:ring-blue-500/10 focus:border-blue-500'
                     }`}
                   />
@@ -129,7 +129,7 @@ export default function Contact() {
                 <input 
                   type="text" 
                   placeholder="Research collaboration..."
-                  className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm"
+                  className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                 />
               </div>
 
@@ -138,7 +138,7 @@ export default function Contact() {
                 <textarea 
                   rows={6}
                   placeholder="How can we help you?"
-                  className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm resize-none"
+                  className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm resize-none text-black"
                 ></textarea>
               </div>
 
