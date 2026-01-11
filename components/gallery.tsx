@@ -7,21 +7,21 @@ import Link from "next/link";
 import { ArrowRight, Maximize2 } from "lucide-react";
 
 const galleryData = [
-  { id: 1, title: "Laboratory Waste Analysis", category: "LABORATORY", image: "/galleryimages/gallery1.jpg", description: "Analyzing chemical waste components in a controlled lab environment." },
-  { id: 2, title: "Chemical Processing Research", category: "LABORATORY", image: "/galleryimages/gallery2.jpg", description: "Researching safe chemical waste neutralization methods." },
-  { id: 3, title: "Microscopic Sample Study", category: "LABORATORY", image: "/galleryimages/gallery3.jpg", description: "Examining environmental micro-particles under high magnification." },
-  { id: 4, title: "Biotech Waste Solutions", category: "LABORATORY", image: "/galleryimages/gallery4.jpg", description: "Developing biological solutions for organic waste breakdown." },
-  { id: 5, title: "Water Quality Testing", category: "LABORATORY", image: "/galleryimages/gallery5.jpg", description: "Assessing heavy metal concentrations in industrial runoff." },
-  { id: 6, title: "River Sediment Sampling", category: "FIELD STUDY", image: "/galleryimages/gallery6.jpg", description: "Collecting riverbed samples for pollution longitudinal study." },
-  { id: 7, title: "Soil Contamination Mapping", category: "FIELD STUDY", image: "/galleryimages/gallery7.jpg", description: "In-situ soil analysis for industrial site remediation." },
-  { id: 8, title: "Ecosystem Health Audit", category: "FIELD STUDY", image: "/galleryimages/gallery8.jpg", description: "Monitoring biodiversity markers in waste-adjacent zones." },
-  { id: 9, title: "Coastal Impact Study", category: "FIELD STUDY", image: "/galleryimages/gallery9.jpg", description: "Studying the effects of marine debris on local flora." },
-  { id: 10, title: "Groundwater Extraction", category: "FIELD STUDY", image: "/galleryimages/gallery10.jpg", description: "Sampling deep aquifer water for landfill leakage detection." },
-  { id: 11, title: "Waste Sorting Efficiency", category: "MONITORING", image: "/galleryimages/gallery11.jpg", description: "Automated analysis of waste stream segregation quality." },
-  { id: 12, title: "Air Quality Station", category: "MONITORING", image: "/galleryimages/gallery12.jpg", description: "Continuous monitoring of emissions at processing facilities." },
+  { id: 1, title: "Plastic Pollution Research", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery1.jpg", description: "Documenting microplastic accumulation in natural water bodies." },
+  { id: 2, title: "Ocean Debris Analysis", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery2.jpg", description: "Studying the impact of non-biodegradable waste on marine ecosystems." },
+  { id: 3, title: "Coastal Cleanup Monitoring", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery3.jpg", description: "Tracking the effectiveness of coastal waste removal programs." },
+  { id: 4, title: "Riverine Waste Flow", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery4.jpg", description: "Analyzing how plastic waste travels through urban river systems." },
+  { id: 5, title: "Urban Litter Assessment", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery5.jpg", description: "Statistical sampling of plastic litter in metropolitan green spaces." },
+  { id: 6, title: "Industrial Recycling Workflow", category: "RECYCLING", image: "/galleryimages/env_gallery6.jpg", description: "Optimizing sorting processes for multi-material recycling streams." },
+  { id: 7, title: "Material Recovery Analysis", category: "RECYCLING", image: "/galleryimages/env_gallery7.jpg", description: "Evaluating the purity of recovered secondary raw materials." },
+  { id: 8, title: "Circular Economy Research", category: "RECYCLING", image: "/galleryimages/env_gallery8.jpg", description: "Designing closed-loop systems for industrial byproduct management." },
+  { id: 9, title: "Waste-to-Energy Process", category: "RECYCLING", image: "/galleryimages/env_gallery9.jpg", description: "Monitoring thermal conversion of non-recyclable waste into energy." },
+  { id: 10, title: "Electronic Waste Sorting", category: "RECYCLING", image: "/galleryimages/env_gallery10.jpg", description: "Advanced separation techniques for high-value metal recovery from E-waste." },
+  { id: 11, title: "Landfill Methane Monitoring", category: "LANDFILL MGMT", image: "/galleryimages/env_gallery11.jpg", description: "Remote sensing of greenhouse gas emissions from active landfill sites." },
+  { id: 12, title: "Geosynthetic Barrier Audit", category: "LANDFILL MGMT", image: "/galleryimages/env_gallery12.jpg", description: "Inspecting integrity of containment systems for hazardous waste." },
 ];
 
-const CATEGORIES = ["ALL", "LABORATORY", "FIELD STUDY", "MONITORING", "DATA COLLECTION"];
+const CATEGORIES = ["ALL", "PLASTIC WASTE", "RECYCLING", "LANDFILL MGMT", "ORGANIC WASTE"];
 
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("ALL");
@@ -54,7 +54,7 @@ export default function Gallery() {
             transition={{ delay: 0.1 }}
             className="text-gray-500 max-w-2xl mx-auto text-lg"
           >
-            Explore our authentic field operations, laboratory analysis, and environmental monitoring initiatives.
+            Visual documentation of our fieldwork and environmental research initiatives.
           </motion.p>
         </div>
 
