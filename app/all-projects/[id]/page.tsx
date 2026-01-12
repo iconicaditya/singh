@@ -3,12 +3,8 @@
 import { motion } from "framer-motion";
 import { 
   ArrowLeft, 
-  Calendar, 
-  Tag, 
-  Users, 
   Share2, 
   FileText, 
-  MapPin,
   CheckCircle2,
   Trophy,
   Target
@@ -248,7 +244,7 @@ export default function ProjectDetail() {
                     <h3 className="text-3xl font-black">MAJOR IMPACT</h3>
                   </div>
                   <p className="text-2xl font-bold opacity-90 leading-relaxed italic">
-                    "{project.impact}"
+                    &quot;{project.impact}&quot;
                   </p>
                 </div>
               </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Facebook, Twitter, Linkedin, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { Facebook, Twitter, Linkedin, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -39,7 +39,7 @@ const team = [
   ...Array.from({ length: 16 }).map((_, i) => ({
     name: `Team Member ${i + 5}`,
     role: i % 2 === 0 ? "RESEARCHER" : "ADVISOR",
-    image: `/attached_assets/stock_images/professional_researc_${["2d676eab", "b03bfae3", "b446b59e", "f172db13"][i % 4]}.jpg`,
+    image: `/researchimages/research_${(i % 5) + 1}.jpg`,
     bio: "Passionate professional dedicated to sustainable development and environmental research.",
     social: { facebook: "#", twitter: "#", linkedin: "#" },
   }))
