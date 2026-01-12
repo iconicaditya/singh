@@ -1,7 +1,13 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
+  "/login/dashboard/collaborators/page": "app/login/dashboard/collaborators/page.js",
+  "/login/dashboard/gallery/page": "app/login/dashboard/gallery/page.js",
+  "/login/dashboard/messages/page": "app/login/dashboard/messages/page.js",
   "/login/dashboard/page": "app/login/dashboard/page.js",
+  "/login/dashboard/private-gallery/page": "app/login/dashboard/private-gallery/page.js",
+  "/login/dashboard/projects/page": "app/login/dashboard/projects/page.js",
+  "/login/dashboard/publications/page": "app/login/dashboard/publications/page.js",
   "/login/dashboard/research/page": "app/login/dashboard/research/page.js",
-  "/login/page": "app/login/page.js",
+  "/login/dashboard/team/page": "app/login/dashboard/team/page.js",
+  "/login/dashboard/users/page": "app/login/dashboard/users/page.js",
   "/page": "app/page.js"
 }

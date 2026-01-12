@@ -921,10 +921,6 @@ img, video {
   width: 6rem;
 }
 
-.w-3\/4 {
-  width: 75%;
-}
-
 .w-32 {
   width: 8rem;
 }
@@ -947,10 +943,6 @@ img, video {
 
 .w-8 {
   width: 2rem;
-}
-
-.w-80 {
-  width: 20rem;
 }
 
 .w-96 {
@@ -996,14 +988,6 @@ img, video {
 
 .max-w-7xl {
   max-width: 80rem;
-}
-
-.max-w-\[200px\] {
-  max-width: 200px;
-}
-
-.max-w-lg {
-  max-width: 32rem;
 }
 
 .max-w-md {
@@ -1251,12 +1235,6 @@ img, video {
   overflow-y: auto;
 }
 
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .whitespace-nowrap {
   white-space: nowrap;
 }
@@ -1295,10 +1273,6 @@ img, video {
 
 .rounded-lg {
   border-radius: .5rem;
-}
-
-.rounded-md {
-  border-radius: .375rem;
 }
 
 .rounded-xl {
@@ -1384,10 +1358,6 @@ img, video {
 .border-slate-200 {
   --tw-border-opacity: 1;
   border-color: rgba(226, 232, 240, var(--tw-border-opacity, 1));
-}
-
-.border-slate-200\/50 {
-  border-color: rgba(226, 232, 240, .5);
 }
 
 .border-slate-50 {
@@ -1580,10 +1550,6 @@ img, video {
 
 .bg-slate-900\/50 {
   background-color: rgba(15, 23, 42, .5);
-}
-
-.bg-slate-900\/60 {
-  background-color: rgba(15, 23, 42, .6);
 }
 
 .bg-slate-900\/80 {
@@ -1806,10 +1772,6 @@ img, video {
   object-fit: cover;
 }
 
-.p-1 {
-  padding: .25rem;
-}
-
 .p-1\.5 {
   padding: .375rem;
 }
@@ -1854,11 +1816,6 @@ img, video {
 .px-2 {
   padding-left: .5rem;
   padding-right: .5rem;
-}
-
-.px-2\.5 {
-  padding-left: .625rem;
-  padding-right: .625rem;
 }
 
 .px-3 {
@@ -1906,11 +1863,6 @@ img, video {
   padding-bottom: .5rem;
 }
 
-.py-2\.5 {
-  padding-top: .625rem;
-  padding-bottom: .625rem;
-}
-
 .py-20 {
   padding-top: 5rem;
   padding-bottom: 5rem;
@@ -1944,11 +1896,6 @@ img, video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-}
-
-.py-7 {
-  padding-top: 1.75rem;
-  padding-bottom: 1.75rem;
 }
 
 .pb-1 {
@@ -2392,12 +2339,6 @@ img, video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
 }
 
-.shadow-\[0_8px_40px_rgb\(0\,0\,0\,0\.03\)\] {
-  --tw-shadow: 0 8px 40px rgba(0, 0, 0, .03);
-  --tw-shadow-colored: 0 8px 40px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-ring-shadow, 0 0 rgba(0, 0, 0, 0)), var(--tw-shadow);
-}
-
 .shadow-inner {
   --tw-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, .05);
   --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
@@ -2618,10 +2559,6 @@ body {
   background-color: rgba(37, 99, 235, .1);
 }
 
-.placeholder\:font-medium::placeholder {
-  font-weight: 500;
-}
-
 .placeholder\:text-gray-400::placeholder {
   --tw-text-opacity: 1;
   color: rgba(156, 163, 175, var(--tw-text-opacity, 1));
@@ -2675,11 +2612,6 @@ body {
   background-color: rgba(51, 65, 85, var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-black:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgba(0, 0, 0, var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-black\/40:hover {
   background-color: rgba(0, 0, 0, .4);
 }
@@ -2725,10 +2657,6 @@ body {
 .hover\:bg-slate-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgba(248, 250, 252, var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-slate-50\/30:hover {
-  background-color: rgba(248, 250, 252, .3);
 }
 
 .hover\:bg-slate-50\/50:hover {
@@ -2780,11 +2708,6 @@ body {
 .hover\:text-slate-600:hover {
   --tw-text-opacity: 1;
   color: rgba(71, 85, 105, var(--tw-text-opacity, 1));
-}
-
-.hover\:text-slate-800:hover {
-  --tw-text-opacity: 1;
-  color: rgba(30, 41, 59, var(--tw-text-opacity, 1));
 }
 
 .hover\:text-white:hover {
@@ -2840,15 +2763,6 @@ body {
   border-color: rgba(59, 130, 246, var(--tw-border-opacity, 1));
 }
 
-.focus\:border-blue-500\/50:focus {
-  border-color: rgba(59, 130, 246, .5);
-}
-
-.focus\:bg-white:focus {
-  --tw-bg-opacity: 1;
-  background-color: rgba(255, 255, 255, var(--tw-bg-opacity, 1));
-}
-
 .focus\:outline-none:focus {
   outline-offset: 2px;
   outline: 2px solid rgba(0, 0, 0, 0);
@@ -2877,10 +2791,6 @@ body {
 
 .focus\:ring-blue-500\/20:focus {
   --tw-ring-color: rgba(59, 130, 246, .2);
-}
-
-.focus\:ring-blue-500\/5:focus {
-  --tw-ring-color: rgba(59, 130, 246, .05);
 }
 
 .focus\:ring-blue-500\/50:focus {
