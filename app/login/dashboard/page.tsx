@@ -29,13 +29,13 @@ export default function Dashboard() {
   useEffect(() => {
     const isAdmin = localStorage.getItem("isAdmin");
     if (!isAdmin) {
-      router.push("/admin");
+      router.push("/login");
     }
   }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("isAdmin");
-    router.push("/admin");
+    router.push("/login");
   };
 
   const navItems = [

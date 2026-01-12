@@ -16,7 +16,7 @@ export default function LoginPage() {
     // Simple hardcoded check for demonstration
     if (username === "admin" && password === "admin123") {
       localStorage.setItem("isAdmin", "true");
-      router.push("/admin/dashboard");
+      router.push("/login/dashboard");
     } else {
       setError("Invalid credentials");
     }
