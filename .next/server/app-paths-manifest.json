@@ -5,5 +5,6 @@
   "/login/dashboard/publications/page": "app/login/dashboard/publications/page.js",
   "/login/dashboard/research/add/page": "app/login/dashboard/research/add/page.js",
   "/login/dashboard/research/page": "app/login/dashboard/research/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/research/page": "app/research/page.js"
 }
