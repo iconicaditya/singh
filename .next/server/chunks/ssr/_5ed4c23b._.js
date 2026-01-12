@@ -24,6 +24,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 ;
 ;
 ;
+// Full dataset for all projects
 const projects = [
     {
         id: 1,
@@ -60,12 +61,89 @@ const projects = [
             "Create a digital marketplace for recyclable materials",
             "Establish sustainable funding models for local recycling hubs"
         ]
+    },
+    {
+        id: 3,
+        title: "CLIMATE DATA VISUALIZATION AI",
+        category: "TECHNOLOGY",
+        description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
+        image: "/projectimages/project_3.jpg",
+        status: "Ongoing...",
+        year: "2024",
+        location: "Global Data Centers",
+        team: "AI Research Team",
+        impact: "Increased visualization speed by 300%",
+        fullDescription: "Using deep learning architectures, we've developed a visualization engine that processes petabytes of climate data in real-time. This tool allows researchers to simulate 'what-if' scenarios for carbon emission reduction policies.",
+        objectives: [
+            "Process multi-source satellite data streams",
+            "Generate high-fidelity predictive heatmaps",
+            "Integrate with existing policy-making frameworks"
+        ]
+    },
+    {
+        id: 4,
+        title: "RENEWABLE ENERGY TRANSITION",
+        category: "TECHNOLOGY",
+        description: "Strategic plan for transitioning urban centers to 100% renewable energy sources within the next decade.",
+        image: "/projectimages/project_4.jpg",
+        status: "Ongoing...",
+        year: "2024",
+        location: "Urban Centers",
+        team: "Energy Policy Experts",
+        impact: "Infrastructure roadmap for 5 major cities",
+        fullDescription: "A comprehensive technological and policy roadmap designed to phase out fossil fuel dependency in high-density urban environments. We analyze grid stability, storage solutions, and localized production possibilities.",
+        objectives: [
+            "Audit existing urban power infrastructure",
+            "Model hybrid solar-wind distribution networks",
+            "Draft legislative recommendations for clean energy adoption"
+        ]
+    },
+    {
+        id: 5,
+        title: "URBAN GARDENING INITIATIVE",
+        category: "COMMUNITY",
+        description: "Establishing vertical gardens in high-density urban areas to improve air quality and provide local produce.",
+        image: "/projectimages/project_5.jpg",
+        status: "Completed",
+        year: "2023",
+        location: "Metropolitan Areas",
+        team: "Urban Agriculturists",
+        impact: "Created 20+ community vertical farms",
+        fullDescription: "This initiative transformed underutilized vertical spaces into productive green zones. Beyond food production, these installations serve as natural air filtration systems and community educational hubs.",
+        objectives: [
+            "Maximize yield in minimal spatial footprints",
+            "Implement automated hydroponic nutrient systems",
+            "Foster community ownership of agricultural spaces"
+        ]
     }
 ];
+// Fallback for generated projects (IDs 6+)
+const getGeneratedProject = (id)=>({
+        id,
+        title: `Sustainable Project Initiative ${id}`,
+        category: [
+            "RESEARCH",
+            "COMMUNITY",
+            "TECHNOLOGY"
+        ][id % 3],
+        description: "A professional initiative focused on implementing cutting-edge sustainability solutions and environmental protection strategies.",
+        image: `/projectimages/project_${id % 5 + 1}.jpg`,
+        status: id % 2 === 0 ? "Ongoing..." : "Completed",
+        year: (2020 + id % 5).toString(),
+        location: "Field Location",
+        team: "International Taskforce",
+        impact: "Significant advancement in sustainable methodology",
+        fullDescription: "This research initiative explores advanced sustainability frameworks through rigorous field testing and data analysis. Our findings contribute to a global knowledge base dedicated to environmental preservation and efficient resource management.",
+        objectives: [
+            "Develop scalable sustainability protocols",
+            "Analyze cross-sector environmental impacts",
+            "Establish long-term monitoring benchmarks"
+        ]
+    });
 function ProjectDetail() {
     const params = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useParams"])();
     const id = parseInt(params.id);
-    const project = projects.find((p)=>p.id === id) || projects[0];
+    const project = projects.find((p)=>p.id === id) || getGeneratedProject(id);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen bg-white selection:bg-blue-600/10",
         children: [
@@ -93,19 +171,19 @@ function ProjectDetail() {
                             priority: true
                         }, void 0, false, {
                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                            lineNumber: 75,
+                            lineNumber: 150,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/all-projects/[id]/page.tsx",
-                        lineNumber: 69,
+                        lineNumber: 144,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"
                     }, void 0, false, {
                         fileName: "[project]/app/all-projects/[id]/page.tsx",
-                        lineNumber: 84,
+                        lineNumber: 159,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -133,14 +211,14 @@ function ProjectDetail() {
                                             className: "transition-transform group-hover:-translate-x-1"
                                         }, void 0, false, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 97,
+                                            lineNumber: 172,
                                             columnNumber: 15
                                         }, this),
                                         "All Projects"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 93,
+                                    lineNumber: 168,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -151,7 +229,7 @@ function ProjectDetail() {
                                             children: project.category
                                         }, void 0, false, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 102,
+                                            lineNumber: 177,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -159,13 +237,13 @@ function ProjectDetail() {
                                             children: project.status
                                         }, void 0, false, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 105,
+                                            lineNumber: 180,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 101,
+                                    lineNumber: 176,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -173,7 +251,7 @@ function ProjectDetail() {
                                     children: project.title
                                 }, void 0, false, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 185,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -187,7 +265,7 @@ function ProjectDetail() {
                                                     children: "Year"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 116,
+                                                    lineNumber: 191,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -195,13 +273,13 @@ function ProjectDetail() {
                                                     children: project.year
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 117,
+                                                    lineNumber: 192,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 115,
+                                            lineNumber: 190,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -212,7 +290,7 @@ function ProjectDetail() {
                                                     children: "Location"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 120,
+                                                    lineNumber: 195,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -220,13 +298,13 @@ function ProjectDetail() {
                                                     children: project.location
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 121,
+                                                    lineNumber: 196,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 119,
+                                            lineNumber: 194,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -237,7 +315,7 @@ function ProjectDetail() {
                                                     children: "Team"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 199,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -245,13 +323,13 @@ function ProjectDetail() {
                                                     children: project.team
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 125,
+                                                    lineNumber: 200,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 123,
+                                            lineNumber: 198,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -262,7 +340,7 @@ function ProjectDetail() {
                                                     children: "Client"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 128,
+                                                    lineNumber: 203,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -270,36 +348,36 @@ function ProjectDetail() {
                                                     children: "Scientific Lab"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 129,
+                                                    lineNumber: 204,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 127,
+                                            lineNumber: 202,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 114,
+                                    lineNumber: 189,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                            lineNumber: 87,
+                            lineNumber: 162,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/all-projects/[id]/page.tsx",
-                        lineNumber: 86,
+                        lineNumber: 161,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/all-projects/[id]/page.tsx",
-                lineNumber: 68,
+                lineNumber: 143,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -335,14 +413,14 @@ function ProjectDetail() {
                                                             className: "text-blue-600"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 150,
+                                                            lineNumber: 225,
                                                             columnNumber: 21
                                                         }, this),
                                                         "PROJECT OVERVIEW"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 224,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -350,13 +428,13 @@ function ProjectDetail() {
                                                     children: project.fullDescription
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 153,
+                                                    lineNumber: 228,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 148,
+                                            lineNumber: 223,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -367,7 +445,7 @@ function ProjectDetail() {
                                                     children: "Key Objectives"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 159,
+                                                    lineNumber: 234,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -379,7 +457,7 @@ function ProjectDetail() {
                                                                     className: "text-blue-600 shrink-0 mt-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                                    lineNumber: 163,
+                                                                    lineNumber: 238,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -387,24 +465,24 @@ function ProjectDetail() {
                                                                     children: obj
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                                    lineNumber: 164,
+                                                                    lineNumber: 239,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, idx, true, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 162,
+                                                            lineNumber: 237,
                                                             columnNumber: 23
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 160,
+                                                    lineNumber: 235,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 158,
+                                            lineNumber: 233,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -417,7 +495,7 @@ function ProjectDetail() {
                                                             className: "w-12 h-12"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 172,
+                                                            lineNumber: 247,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -425,13 +503,13 @@ function ProjectDetail() {
                                                             children: "MAJOR IMPACT"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 173,
+                                                            lineNumber: 248,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 171,
+                                                    lineNumber: 246,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -443,24 +521,24 @@ function ProjectDetail() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 175,
+                                                    lineNumber: 250,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 170,
+                                            lineNumber: 245,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 142,
+                                    lineNumber: 217,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                lineNumber: 141,
+                                lineNumber: 216,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -476,7 +554,7 @@ function ProjectDetail() {
                                                     children: "DOCUMENTS"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 186,
+                                                    lineNumber: 261,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -490,13 +568,13 @@ function ProjectDetail() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                                    lineNumber: 189,
+                                                                    lineNumber: 264,
                                                                     columnNumber: 37
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 188,
+                                                            lineNumber: 263,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -507,25 +585,25 @@ function ProjectDetail() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                                    lineNumber: 192,
+                                                                    lineNumber: 267,
                                                                     columnNumber: 37
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                            lineNumber: 191,
+                                                            lineNumber: 266,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 187,
+                                                    lineNumber: 262,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 185,
+                                            lineNumber: 260,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -536,7 +614,7 @@ function ProjectDetail() {
                                                     children: "NEED DETAILS?"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 198,
+                                                    lineNumber: 273,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -544,7 +622,7 @@ function ProjectDetail() {
                                                     children: "Our team is available to provide more detailed information about our methodologies and findings."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 199,
+                                                    lineNumber: 274,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -553,46 +631,46 @@ function ProjectDetail() {
                                                     children: "CONTACT TEAM"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                                    lineNumber: 202,
+                                                    lineNumber: 277,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                            lineNumber: 197,
+                                            lineNumber: 272,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 259,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/all-projects/[id]/page.tsx",
-                                lineNumber: 183,
+                                lineNumber: 258,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/all-projects/[id]/page.tsx",
-                        lineNumber: 139,
+                        lineNumber: 214,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/all-projects/[id]/page.tsx",
-                    lineNumber: 138,
+                    lineNumber: 213,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/all-projects/[id]/page.tsx",
-                lineNumber: 137,
+                lineNumber: 212,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/all-projects/[id]/page.tsx",
-        lineNumber: 66,
+        lineNumber: 141,
         columnNumber: 5
     }, this);
 }

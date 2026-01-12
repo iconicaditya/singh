@@ -1,0 +1,74 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# replit
+.replit
+replit.nix
+.local/
+.config/
+.cache/
+.npm/
+.python_history
+.bash_history
+.python_packages/
+venv/
+.upm/
+.replit_db
+.replit_logs
+.replit_state
+.replit_temp
+.replit_trash
+.replit_backup
+.replit_metadata
+.replit_session
+.replit_socket
+.replit_vnc
+.replitrc
+.replit_auth
+.replit_connector
+.replit_deploy
+.replit_environment
+.replit_git
+.replit_history
+.replit_lock
+.replit_lsp
+.replit_nix
+.replit_package_manager
+.replit_publish
+.replit_search
+.replit_secrets
+.replit_shell
+.replit_vfs
+.replit_workflow
+.replit_workspace
