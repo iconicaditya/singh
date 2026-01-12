@@ -10,7 +10,9 @@ import {
   ExternalLink, 
   CheckCircle2, 
   Clock, 
-  BookOpen 
+  BookOpen,
+  List,
+  ArrowRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -128,6 +130,36 @@ const researchPapers = [
   }
 ];
 
+const publications = [
+  {
+    id: 1,
+    title: "Socio-economic impacts of plastic pollution in coastal communities",
+    authors: "Singh, A., Rokaya, N., & Chaudhary, A.",
+    journal: "Journal of Environmental Management",
+    year: "2024",
+    doi: "10.1016/j.jenvman.2024.120000",
+    category: "RESEARCH PAPER"
+  },
+  {
+    id: 2,
+    title: "Microplastic distribution patterns in urban river systems",
+    authors: "Ghatani, B., & Singh, A.",
+    journal: "Water Research",
+    year: "2023",
+    doi: "10.1016/j.watres.2023.110000",
+    category: "RESEARCH PAPER"
+  },
+  {
+    id: 3,
+    title: "Community-led waste management: A case study from Nepal",
+    authors: "Rokaya, N., & Singh, A.",
+    journal: "Sustainability Science",
+    year: "2024",
+    doi: "10.1007/s11625-024-01500-w",
+    category: "CASE STUDY"
+  }
+];
+
 // Fallback for generated items (IDs 7+)
 const getGeneratedPaper = (id: number) => ({
   id,
@@ -153,6 +185,12 @@ export default function ResearchDetail() {
   const id = parseInt(params.id as string);
   
   const paper = researchPapers.find(p => p.id === id) || getGeneratedPaper(id);
+
+  const sections = [
+    { id: "abstract", label: "Abstract & Overview", icon: BookOpen },
+    { id: "methodology", label: "Methodology", icon: ExternalLink },
+    { id: "findings", label: "Key Findings", icon: CheckCircle2 },
+  ];
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-blue-500/30">
@@ -189,7 +227,7 @@ export default function ResearchDetail() {
             </Link>
             
             <div className="flex flex-wrap gap-3 mb-6">
-              <span className="bg-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase">
+              <span className="bg-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase text-white">
                 {paper.category}
               </span>
               <div className="flex gap-2">
@@ -235,39 +273,45 @@ export default function ResearchDetail() {
               className="lg:col-span-8"
             >
               <div className="prose prose-invert max-w-none">
-                <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                  <BookOpen className="text-blue-500" />
-                  Abstract & Overview
-                </h2>
-                <p className="text-xl text-gray-300 leading-relaxed mb-10 border-l-4 border-blue-600 pl-8 py-2">
-                  {paper.description}
-                </p>
-                <div className="text-gray-400 text-lg leading-relaxed space-y-6 mb-16">
-                  {paper.fullContent}
-                </div>
-
-                <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                  <ExternalLink className="text-blue-500" />
-                  Methodology
-                </h2>
-                <div className="bg-slate-900/50 rounded-3xl p-8 border border-white/5 mb-16">
-                  <p className="text-gray-300 text-lg italic leading-relaxed">
-                    &quot;{paper.methodology}&quot;
+                <div id="abstract" className="scroll-mt-32">
+                  <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+                    <BookOpen className="text-blue-500" />
+                    Abstract & Overview
+                  </h2>
+                  <p className="text-xl text-gray-300 leading-relaxed mb-10 border-l-4 border-blue-600 pl-8 py-2">
+                    {paper.description}
                   </p>
+                  <div className="text-gray-400 text-lg leading-relaxed space-y-6 mb-16">
+                    {paper.fullContent}
+                  </div>
                 </div>
 
-                <h2 className="text-3xl font-bold mb-8">Key Findings</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-                  {paper.keyFindings.map((finding, idx) => (
-                    <motion.div
-                      key={idx}
-                      whileHover={{ y: -5 }}
-                      className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all flex gap-4"
-                    >
-                      <CheckCircle2 className="text-blue-500 shrink-0 mt-1" />
-                      <p className="text-gray-300 font-medium">{finding}</p>
-                    </motion.div>
-                  ))}
+                <div id="methodology" className="scroll-mt-32">
+                  <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+                    <ExternalLink className="text-blue-500" />
+                    Methodology
+                  </h2>
+                  <div className="bg-slate-900/50 rounded-3xl p-8 border border-white/5 mb-16">
+                    <p className="text-gray-300 text-lg italic leading-relaxed">
+                      &quot;{paper.methodology}&quot;
+                    </p>
+                  </div>
+                </div>
+
+                <div id="findings" className="scroll-mt-32">
+                  <h2 className="text-3xl font-bold mb-8">Key Findings</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                    {paper.keyFindings.map((finding, idx) => (
+                      <motion.div
+                        key={idx}
+                        whileHover={{ y: -5 }}
+                        className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all flex gap-4"
+                      >
+                        <CheckCircle2 className="text-blue-500 shrink-0 mt-1" />
+                        <p className="text-gray-300 font-medium">{finding}</p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -275,45 +319,139 @@ export default function ResearchDetail() {
             {/* Sidebar */}
             <aside className="lg:col-span-4">
               <div className="sticky top-24 space-y-8">
-                {/* Actions Card */}
+                {/* Table of Contents */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="bg-blue-600 rounded-[2rem] p-8 shadow-2xl shadow-blue-600/20"
+                  className="bg-slate-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5"
                 >
-                  <h3 className="text-2xl font-black mb-6">Resources</h3>
-                  <div className="space-y-4">
-                    <button className="w-full bg-white text-blue-600 font-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-gray-100 transition-colors">
-                      <Download size={20} />
-                      DOWNLOAD PDF
-                    </button>
-                    <button className="w-full bg-blue-500/20 backdrop-blur-md text-white border border-white/20 font-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-blue-500/30 transition-colors">
-                      <Share2 size={20} />
-                      SHARE RESEARCH
-                    </button>
-                  </div>
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <List size={20} className="text-blue-500" />
+                    Table of Contents
+                  </h3>
+                  <nav className="space-y-4">
+                    {sections.map((section) => (
+                      <a
+                        key={section.id}
+                        href={`#${section.id}`}
+                        className="flex items-center gap-3 text-gray-400 hover:text-blue-400 transition-colors group text-sm font-medium"
+                      >
+                        <section.icon size={16} className="group-hover:scale-110 transition-transform" />
+                        {section.label}
+                      </a>
+                    ))}
+                  </nav>
                 </motion.div>
 
-                {/* Newsletter/CTA */}
-                <div className="bg-slate-900/80 backdrop-blur-xl rounded-[2rem] p-8 border border-white/5">
-                  <h3 className="text-xl font-bold mb-4">Stay Informed</h3>
-                  <p className="text-gray-400 text-sm mb-6">
+                {/* Resources Card - Enhanced based on image */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-[#2563eb] rounded-[2.5rem] p-8 shadow-2xl shadow-blue-600/30 relative overflow-hidden group"
+                >
+                  <div className="relative z-10">
+                    <h3 className="text-3xl font-black mb-8 text-white tracking-tight">Resources</h3>
+                    <div className="space-y-4">
+                      <button className="w-full bg-white text-[#2563eb] font-black py-5 rounded-[1.25rem] flex items-center justify-center gap-3 hover:bg-gray-50 transition-all active:scale-[0.98] shadow-lg shadow-black/10">
+                        <Download size={24} strokeWidth={2.5} />
+                        DOWNLOAD PDF
+                      </button>
+                      <button className="w-full bg-[#3b82f6]/40 backdrop-blur-md text-white border border-white/30 font-black py-5 rounded-[1.25rem] flex items-center justify-center gap-3 hover:bg-[#3b82f6]/50 transition-all active:scale-[0.98]">
+                        <Share2 size={24} strokeWidth={2.5} />
+                        SHARE RESEARCH
+                      </button>
+                    </div>
+                  </div>
+                  <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all" />
+                </motion.div>
+
+                {/* Newsletter Card - Enhanced based on image */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-[#0f172a]/95 backdrop-blur-xl rounded-[2.5rem] p-10 border border-white/10 shadow-2xl"
+                >
+                  <h3 className="text-2xl font-black mb-4 text-white">Stay Informed</h3>
+                  <p className="text-gray-400 text-base leading-relaxed mb-8">
                     Get the latest research findings and sustainability insights delivered to your inbox.
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <input 
                       type="email" 
                       placeholder="Enter your email" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-500 font-medium"
                     />
-                    <button className="w-full bg-blue-600 font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+                    <button className="w-full bg-[#2563eb] text-white font-black py-5 rounded-2xl hover:bg-[#1d4ed8] transition-all active:scale-[0.98] shadow-xl shadow-blue-600/20 uppercase tracking-widest text-sm">
                       SUBSCRIBE
                     </button>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </aside>
+          </div>
+
+          {/* Related Publications Section */}
+          <div className="mt-32 pt-20 border-t border-white/10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-xs font-bold mb-6"
+                >
+                  <BookOpen size={14} /> RECOMMENDED READING
+                </motion.div>
+                <h2 className="text-4xl md:text-5xl font-black text-white">
+                  Related <span className="text-blue-500">Publications</span>
+                </h2>
+              </div>
+              <Link 
+                href="/all-publications" 
+                className="text-blue-500 font-black flex items-center gap-2 hover:text-white transition-colors group"
+              >
+                VIEW ALL <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {publications.map((pub, index) => (
+                <motion.div
+                  key={pub.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -10 }}
+                  className="bg-slate-900/40 p-8 rounded-[2.5rem] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col h-full group"
+                >
+                  <div className="mb-6">
+                    <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                      {pub.category}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-4 leading-tight group-hover:text-blue-400 transition-colors">
+                    {pub.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-4 font-medium italic">
+                    {pub.authors}
+                  </p>
+                  <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between text-xs font-bold text-gray-400">
+                    <span>{pub.journal} ({pub.year})</span>
+                    <Link 
+                      href={`https://doi.org/${pub.doi}`} 
+                      target="_blank" 
+                      className="text-blue-500 hover:text-white flex items-center gap-1 transition-colors"
+                    >
+                      DOI <ExternalLink size={12} />
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
