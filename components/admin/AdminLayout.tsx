@@ -47,9 +47,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const activeItem = navItems.find(item => item.path === pathname) || navItems[0];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex font-sans">
+    <div className="min-h-screen bg-[#f8fafc] flex font-sans relative">
       {/* Sidebar */}
-      <aside className="w-72 bg-[#1e293b] text-white flex flex-col fixed inset-y-0 shadow-2xl z-20">
+      <aside className="w-72 bg-[#1e293b] text-white flex flex-col sticky top-0 h-screen shadow-2xl z-20 overflow-hidden">
         <div className="p-8 mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -92,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-72 flex flex-col">
+      <main className="flex-1 min-h-screen flex flex-col">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-md h-24 flex items-center justify-between px-10 border-b border-slate-100 sticky top-0 z-10">
           <div>

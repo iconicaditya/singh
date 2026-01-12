@@ -1,18 +1,1 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/all-activities/page": "app/all-activities/page.js",
-  "/all-gallery/page": "app/all-gallery/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/login/dashboard/collaborators/page": "app/login/dashboard/collaborators/page.js",
-  "/login/dashboard/gallery/page": "app/login/dashboard/gallery/page.js",
-  "/login/dashboard/messages/page": "app/login/dashboard/messages/page.js",
-  "/login/dashboard/page": "app/login/dashboard/page.js",
-  "/login/dashboard/projects/page": "app/login/dashboard/projects/page.js",
-  "/login/dashboard/publications/page": "app/login/dashboard/publications/page.js",
-  "/login/dashboard/research/add/page": "app/login/dashboard/research/add/page.js",
-  "/login/dashboard/research/page": "app/login/dashboard/research/page.js",
-  "/login/dashboard/settings/page": "app/login/dashboard/settings/page.js",
-  "/login/dashboard/team/page": "app/login/dashboard/team/page.js",
-  "/page": "app/page.js",
-  "/research/page": "app/research/page.js"
-}
+{}
