@@ -402,11 +402,6 @@ img, video {
   right: 0;
 }
 
-.inset-y-0 {
-  top: 0;
-  bottom: 0;
-}
-
 .-bottom-1 {
   bottom: -.25rem;
 }
@@ -603,10 +598,6 @@ img, video {
 
 .mb-8 {
   margin-bottom: 2rem;
-}
-
-.ml-72 {
-  margin-left: 18rem;
 }
 
 .ml-auto {
@@ -808,6 +799,10 @@ img, video {
 
 .h-full {
   height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .min-h-\[40vh\] {
