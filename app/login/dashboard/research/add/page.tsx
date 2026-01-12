@@ -1,42 +1,56 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { 
   Plus, 
-  Image as ImageIcon, 
   Upload, 
   Trash2, 
-  Type, 
-  Bold, 
-  Italic, 
-  Underline, 
-  Palette, 
-  Link as LinkIcon, 
   AlignLeft, 
   AlignCenter, 
   AlignRight, 
   AlignJustify, 
-  List, 
-  ListOrdered,
-  X,
+  Palette, 
+  Link as LinkIcon, 
   ChevronDown,
   Search,
-  User
+  User,
+  X,
+  Loader2
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function AddResearchPage() {
   const router = useRouter();
-  const [sections, setSections] = useState([{ id: 1, title: "", content: "" }]);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    year: new Date().getFullYear().toString(),
+    summary: "",
+    titleImage: "",
+    abstract: "",
+    doi: "",
+    journal: "",
+  });
+  const [sections, setSections] = useState([{ id: 1, title: "", content: "", image: "" }]);
   const [authors, setAuthors] = useState([""]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const addSection = () => {
-    setSections([...sections, { id: Date.now(), title: "", content: "" }]);
+    setSections([...sections, { id: Date.now(), title: "", content: "", image: "" }]);
   };
 
   const removeSection = (id: number) => {
     setSections(sections.filter(s => s.id !== id));
+  };
+
+  const handleSectionChange = (id: number, field: string, value: string) => {
+    setSections(sections.map(s => s.id === id ? { ...s, [field]: value } : s));
   };
 
   const addAuthor = () => {
@@ -47,9 +61,49 @@ export default function AddResearchPage() {
     setAuthors(authors.filter((_, i) => i !== index));
   };
 
+  const handleAuthorChange = (index: number, value: string) => {
+    const newAuthors = [...authors];
+    newAuthors[index] = value;
+    setAuthors(newAuthors);
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.title) {
+      alert("Please enter a research title.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = {
+        ...formData,
+        authors: authors.filter(a => a.trim() !== ""),
+        sections: sections.map(({ title, content, image }) => ({ title, content, image })),
+      };
+
+      const res = await fetch("/api/research", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        router.push("/login/dashboard/research");
+      } else {
+        const error = await res.json();
+        alert(error.error || "Failed to add research");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <AdminLayout>
-      <div className="max-w-5xl mx-auto pb-20">
+      <div className="max-w-5xl mx-auto pb-20 px-4 md:px-0">
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-slate-800">Add New Research</h1>
           <p className="text-slate-500 mt-2 font-medium">Manage details for the research card and viewer.</p>
@@ -57,7 +111,7 @@ export default function AddResearchPage() {
 
         <div className="space-y-12">
           {/* 1. Basic Information */}
-          <section className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm relative">
+          <section className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-slate-50 shadow-sm relative">
             <div className="flex items-center gap-4 mb-10">
               <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
               <h2 className="text-xl font-bold text-slate-800">Basic Information</h2>
@@ -68,6 +122,9 @@ export default function AddResearchPage() {
                 <label className="text-sm font-bold text-slate-700">Title</label>
                 <input 
                   type="text" 
+                  name="title"
+                  value={formData.title}
+                  onChange={handleInputChange}
                   placeholder="Enter title" 
                   className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none"
                 />
@@ -77,14 +134,19 @@ export default function AddResearchPage() {
                 <label className="text-sm font-bold text-slate-700">Category</label>
                 <div className="flex gap-3">
                   <div className="relative flex-1">
-                    <select className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none appearance-none pr-12 text-slate-400">
-                      <option>Select Category</option>
+                    <select 
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none appearance-none pr-12"
+                    >
+                      <option value="">Select Category</option>
+                      <option value="SUSTAINABLE DEVELOPMENT">Sustainable Development</option>
+                      <option value="ENVIRONMENTAL SCIENCE">Environmental Science</option>
+                      <option value="SOCIAL IMPACT">Social Impact</option>
                     </select>
                     <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                   </div>
-                  <button className="w-12 h-12 flex items-center justify-center border-2 border-slate-800 rounded-xl hover:bg-slate-50 transition-colors">
-                    <Plus size={20} className="text-slate-800" />
-                  </button>
                 </div>
               </div>
 
@@ -92,6 +154,10 @@ export default function AddResearchPage() {
                 <label className="text-sm font-bold text-slate-700">Year</label>
                 <input 
                   type="text" 
+                  name="year"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                  placeholder="e.g. 2026"
                   className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none"
                 />
               </div>
@@ -99,31 +165,21 @@ export default function AddResearchPage() {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-bold text-slate-700">Summary Description *</label>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">0/30 words</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{formData.summary.split(/\s+/).filter(Boolean).length}/30 words</span>
                 </div>
                 <textarea 
+                  name="summary"
+                  value={formData.summary}
+                  onChange={handleInputChange}
                   placeholder="Brief summary (max 30 words)..." 
                   className="w-full h-32 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none resize-none"
                 />
-              </div>
-
-              <div className="space-y-4">
-                <label className="text-sm font-bold text-slate-700">Title Image</label>
-                <div className="flex items-center gap-6">
-                  <div className="w-32 h-32 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-300 gap-2 bg-slate-50/50">
-                    <Upload size={24} />
-                  </div>
-                  <button className="flex items-center gap-2 px-6 py-3 border-2 border-slate-800 rounded-xl text-sm font-bold hover:bg-slate-50 transition-colors">
-                    <Upload size={18} />
-                    Choose Image
-                  </button>
-                </div>
               </div>
             </div>
           </section>
 
           {/* 2. Advance Information */}
-          <section className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm relative">
+          <section className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-slate-50 shadow-sm relative">
             <div className="flex items-center gap-4 mb-10">
               <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">2</div>
               <h2 className="text-xl font-bold text-slate-800">Advance Information</h2>
@@ -133,6 +189,9 @@ export default function AddResearchPage() {
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-700">Abstract</label>
                 <textarea 
+                  name="abstract"
+                  value={formData.abstract}
+                  onChange={handleInputChange}
                   placeholder="Detailed abstract..." 
                   className="w-full h-40 px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none resize-none"
                 />
@@ -152,52 +211,31 @@ export default function AddResearchPage() {
                     
                     <input 
                       type="text" 
+                      value={section.title}
+                      onChange={(e) => handleSectionChange(section.id, "title", e.target.value)}
                       placeholder="Section Title (e.g. Introduction)" 
                       className="w-full px-6 py-5 border-b border-slate-100 text-sm font-bold text-slate-700 focus:outline-none bg-white"
                     />
 
-                    {/* Rich Text Toolbar Mockup */}
                     <div className="px-4 py-2 bg-slate-50 border-b border-slate-100 flex flex-wrap items-center gap-1">
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignLeft size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignCenter size={16} /></button>
-                      <div className="w-px h-6 bg-slate-200 mx-1"></div>
-                      <div className="relative px-3 py-1.5 bg-white border border-slate-200 rounded-lg flex items-center gap-2 text-xs font-bold text-slate-500 cursor-pointer min-w-[80px]">
-                        Font <ChevronDown size={14} className="ml-auto" />
-                      </div>
-                      <div className="relative px-3 py-1.5 bg-white border border-slate-200 rounded-lg flex items-center gap-2 text-xs font-bold text-slate-500 cursor-pointer min-w-[70px]">
-                        Size <ChevronDown size={14} className="ml-auto" />
-                      </div>
-                      <div className="w-px h-6 bg-slate-200 mx-1"></div>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all font-bold">B</button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all italic">I</button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all underline">U</button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><Palette size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><LinkIcon size={16} /></button>
-                      <div className="w-px h-6 bg-slate-200 mx-1"></div>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignLeft size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignCenter size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignRight size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><AlignJustify size={16} /></button>
-                      <div className="w-px h-6 bg-slate-200 mx-1"></div>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><List size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:bg-white rounded-lg transition-all"><ListOrdered size={16} /></button>
-                    </div>
-
-                    <div className="h-48 px-6 py-6 bg-white outline-none text-sm text-slate-500">
-                      {/* Section content placeholder */}
-                    </div>
-
-                    <div className="p-6 bg-slate-50/30 space-y-4">
-                       <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Section Image (Optional)</label>
-                       <div className="flex items-center gap-4">
-                          <div className="w-20 h-20 border border-dashed border-slate-200 rounded-xl flex items-center justify-center text-slate-300 bg-white">
-                            <Upload size={18} />
-                          </div>
-                          <button className="px-4 py-2 bg-white border-2 border-slate-800 rounded-xl text-xs font-bold hover:bg-slate-50 transition-colors shadow-sm">
-                            Upload Image
-                          </button>
+                       {/* Toolbar placeholders */}
+                       <div className="flex items-center gap-1 text-slate-400 p-1">
+                         <AlignLeft size={16} />
+                         <AlignCenter size={16} />
+                         <AlignRight size={16} />
+                         <AlignJustify size={16} />
+                         <div className="w-px h-4 bg-slate-200 mx-2" />
+                         <Palette size={16} />
+                         <LinkIcon size={16} />
                        </div>
                     </div>
+
+                    <textarea 
+                      value={section.content}
+                      onChange={(e) => handleSectionChange(section.id, "content", e.target.value)}
+                      placeholder="Enter section content..."
+                      className="w-full h-48 px-6 py-6 bg-white outline-none text-sm text-slate-500 resize-none"
+                    />
                   </div>
                 ))}
 
@@ -213,7 +251,7 @@ export default function AddResearchPage() {
           </section>
 
           {/* 3. Paper Details & Authors */}
-          <section className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm relative">
+          <section className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-slate-50 shadow-sm relative">
             <div className="flex items-center gap-4 mb-10">
               <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">3</div>
               <h2 className="text-xl font-bold text-slate-800">Paper Details & Authors</h2>
@@ -230,6 +268,8 @@ export default function AddResearchPage() {
                       </div>
                       <input 
                         type="text" 
+                        value={author}
+                        onChange={(e) => handleAuthorChange(index, e.target.value)}
                         placeholder="Author Name" 
                         className="flex-1 px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none"
                       />
@@ -255,6 +295,9 @@ export default function AddResearchPage() {
                   <label className="text-sm font-bold text-slate-700">DOI</label>
                   <input 
                     type="text" 
+                    name="doi"
+                    value={formData.doi}
+                    onChange={handleInputChange}
                     placeholder="10.1021/..." 
                     className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none"
                   />
@@ -263,6 +306,9 @@ export default function AddResearchPage() {
                   <label className="text-sm font-bold text-slate-700">Journal</label>
                   <input 
                     type="text" 
+                    name="journal"
+                    value={formData.journal}
+                    onChange={handleInputChange}
                     placeholder="e.g. Env. Sci. & Tech." 
                     className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:bg-white transition-all outline-none"
                   />
@@ -270,43 +316,23 @@ export default function AddResearchPage() {
               </div>
             </div>
           </section>
-
-          {/* 4. Related Publications */}
-          <section className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm relative">
-            <div className="flex items-center gap-4 mb-10">
-              <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">4</div>
-              <h2 className="text-xl font-bold text-slate-800">Related Publications</h2>
-            </div>
-
-            <div className="space-y-6">
-               <div className="relative">
-                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                 <input 
-                   type="text" 
-                   placeholder="Search and Add Publications..." 
-                   className="w-full pl-16 pr-6 py-5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-blue-400 transition-all outline-none font-medium text-slate-500"
-                 />
-               </div>
-               
-               <div className="h-20 bg-slate-50/50 rounded-2xl flex items-center justify-center border border-slate-100">
-                  <p className="text-sm font-medium text-slate-400">No related publications added yet</p>
-               </div>
-            </div>
-          </section>
         </div>
 
         {/* Footer Actions */}
-        <div className="mt-16 bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 flex items-center justify-end gap-4">
+        <div className="mt-16 bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border border-slate-100 flex flex-col sm:flex-row items-center justify-end gap-4">
            <button 
              onClick={() => router.push("/login/dashboard/research")}
-             className="px-10 py-4 text-slate-600 font-black hover:bg-slate-50 rounded-2xl transition-all"
+             disabled={loading}
+             className="w-full sm:w-auto px-10 py-4 text-slate-600 font-black hover:bg-slate-50 rounded-2xl transition-all disabled:opacity-50"
            >
              Cancel
            </button>
            <button 
-             onClick={() => router.push("/login/dashboard/research")}
-             className="px-12 py-4 bg-[#2563eb] text-white font-black rounded-2xl shadow-xl shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95"
+             onClick={handleSubmit}
+             disabled={loading}
+             className="w-full sm:w-auto px-12 py-4 bg-[#2563eb] text-white font-black rounded-2xl shadow-xl shadow-blue-500/30 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:translate-y-0"
            >
+             {loading ? <Loader2 className="animate-spin" size={20} /> : null}
              Publish Research
            </button>
         </div>
