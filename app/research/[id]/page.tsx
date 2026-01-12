@@ -350,24 +350,6 @@ export default function ResearchDetail() {
               </div>
             </motion.div>
 
-                <div id="findings" className="scroll-mt-32">
-                  <h2 className="text-3xl font-bold mb-8">Key Findings</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-                    {paper.keyFindings.map((finding, idx) => (
-                      <motion.div
-                        key={idx}
-                        whileHover={{ y: -5 }}
-                        className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all flex gap-4"
-                      >
-                        <CheckCircle2 className="text-blue-500 shrink-0 mt-1" />
-                        <p className="text-gray-300 font-medium">{finding}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
             {/* Sidebar */}
             <aside className="lg:col-span-4">
               <div className="sticky top-24 space-y-8">
