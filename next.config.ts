@@ -5,9 +5,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  allowedDevOrigins: ["https://*.replit.dev"],
 };
 
 export default nextConfig;
