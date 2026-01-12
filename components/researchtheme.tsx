@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Droplets, Recycle, ThermometerSun, Zap, Users, Globe2 } from "lucide-react";
-import Link from "next/link";
 
 export default function ResearchThemes() {
   const themes = [

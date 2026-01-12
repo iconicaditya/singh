@@ -1,17 +1,15 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Facebook,
   Twitter,
   Linkedin,
-  ChevronLeft,
-  ChevronRight,
   ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 
 const team = [
   {
@@ -38,8 +36,6 @@ const team = [
 ];
 
 export default function OurTeam() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   return (
     <section className="py-24 bg-white overflow-hidden relative">
       <div className="container mx-auto px-6 text-center">

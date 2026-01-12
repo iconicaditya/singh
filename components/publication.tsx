@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ArrowRight, Download, ExternalLink } from "lucide-react";
+import { BookOpen, ArrowRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 const publications = [

@@ -513,7 +513,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-blue-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 11,
+                lineNumber: 10,
                 columnNumber: 13
             }, this),
             points: [
@@ -529,7 +529,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-green-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 17,
+                lineNumber: 16,
                 columnNumber: 13
             }, this),
             points: [
@@ -545,7 +545,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-orange-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 23,
+                lineNumber: 22,
                 columnNumber: 13
             }, this),
             points: [
@@ -561,7 +561,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-yellow-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 29,
+                lineNumber: 28,
                 columnNumber: 13
             }, this),
             points: [
@@ -577,7 +577,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-purple-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 35,
+                lineNumber: 34,
                 columnNumber: 13
             }, this),
             points: [
@@ -593,7 +593,7 @@ function ResearchThemes() {
                 className: "w-10 h-10 text-pink-400"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 41,
+                lineNumber: 40,
                 columnNumber: 13
             }, this),
             points: [
@@ -611,14 +611,14 @@ function ResearchThemes() {
                 className: "absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 50,
+                lineNumber: 49,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-600/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"
             }, void 0, false, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 51,
+                lineNumber: 50,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -647,13 +647,13 @@ function ResearchThemes() {
                                         children: "Themes"
                                     }, void 0, false, {
                                         fileName: "[project]/components/researchtheme.tsx",
-                                        lineNumber: 61,
+                                        lineNumber: 60,
                                         columnNumber: 22
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/researchtheme.tsx",
-                                lineNumber: 55,
+                                lineNumber: 54,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -675,13 +675,13 @@ function ResearchThemes() {
                                 children: "Our interdisciplinary research spans multiple critical areas of environmental sustainability."
                             }, void 0, false, {
                                 fileName: "[project]/components/researchtheme.tsx",
-                                lineNumber: 63,
+                                lineNumber: 62,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/researchtheme.tsx",
-                        lineNumber: 54,
+                        lineNumber: 53,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -715,7 +715,7 @@ function ResearchThemes() {
                                         className: "absolute inset-0 bg-gradient-to-br ".concat(theme.gradient, " opacity-0 group-hover:opacity-100 transition-opacity duration-500")
                                     }, void 0, false, {
                                         fileName: "[project]/components/researchtheme.tsx",
-                                        lineNumber: 90,
+                                        lineNumber: 89,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -728,12 +728,12 @@ function ResearchThemes() {
                                                     children: theme.icon
                                                 }, void 0, false, {
                                                     fileName: "[project]/components/researchtheme.tsx",
-                                                    lineNumber: 94,
+                                                    lineNumber: 93,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 93,
+                                                lineNumber: 92,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -741,7 +741,7 @@ function ResearchThemes() {
                                                 children: theme.title
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 99,
+                                                lineNumber: 98,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -767,48 +767,48 @@ function ResearchThemes() {
                                                                 className: "w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                                lineNumber: 113,
+                                                                lineNumber: 112,
                                                                 columnNumber: 23
                                                             }, this),
                                                             point
                                                         ]
                                                     }, pIndex, true, {
                                                         fileName: "[project]/components/researchtheme.tsx",
-                                                        lineNumber: 105,
+                                                        lineNumber: 104,
                                                         columnNumber: 21
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/components/researchtheme.tsx",
-                                                lineNumber: 103,
+                                                lineNumber: 102,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/researchtheme.tsx",
-                                        lineNumber: 92,
+                                        lineNumber: 91,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, theme.title, true, {
                                 fileName: "[project]/components/researchtheme.tsx",
-                                lineNumber: 76,
+                                lineNumber: 75,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/researchtheme.tsx",
-                        lineNumber: 74,
+                        lineNumber: 73,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/researchtheme.tsx",
-                lineNumber: 53,
+                lineNumber: 52,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/components/researchtheme.tsx",
-        lineNumber: 48,
+        lineNumber: 47,
         columnNumber: 5
     }, this);
 }
@@ -1968,9 +1968,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-client] (ecmascript) <export default as ArrowRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/client/app-dir/link.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
@@ -2013,8 +2010,6 @@ const team = [
     }
 ];
 function OurTeam() {
-    _s();
-    const [currentIndex, setCurrentIndex] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
         className: "py-24 bg-white overflow-hidden relative",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2043,13 +2038,13 @@ function OurTeam() {
                                     children: "Team"
                                 }, void 0, false, {
                                     fileName: "[project]/components/ourteam.tsx",
-                                    lineNumber: 53,
+                                    lineNumber: 49,
                                     columnNumber: 22
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 47,
+                            lineNumber: 43,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].p, {
@@ -2071,13 +2066,13 @@ function OurTeam() {
                             children: "A dedicated group of researchers and professionals working towards a sustainable future."
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 55,
+                            lineNumber: 51,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 46,
+                    lineNumber: 42,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2110,12 +2105,12 @@ function OurTeam() {
                                             className: "object-cover"
                                         }, void 0, false, {
                                             fileName: "[project]/components/ourteam.tsx",
-                                            lineNumber: 78,
+                                            lineNumber: 74,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/components/ourteam.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 73,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2126,7 +2121,7 @@ function OurTeam() {
                                                 children: member.name
                                             }, void 0, false, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 87,
+                                                lineNumber: 83,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2134,7 +2129,7 @@ function OurTeam() {
                                                 children: member.role
                                             }, void 0, false, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 90,
+                                                lineNumber: 86,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2142,7 +2137,7 @@ function OurTeam() {
                                                 children: member.bio
                                             }, void 0, false, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 93,
+                                                lineNumber: 89,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2155,12 +2150,12 @@ function OurTeam() {
                                                             size: 18
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/ourteam.tsx",
-                                                            lineNumber: 99,
+                                                            lineNumber: 95,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 98,
+                                                        lineNumber: 94,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2170,12 +2165,12 @@ function OurTeam() {
                                                             size: 18
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/ourteam.tsx",
-                                                            lineNumber: 102,
+                                                            lineNumber: 98,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 101,
+                                                        lineNumber: 97,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2185,40 +2180,40 @@ function OurTeam() {
                                                             size: 18
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/ourteam.tsx",
-                                                            lineNumber: 105,
+                                                            lineNumber: 101,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/ourteam.tsx",
-                                                        lineNumber: 104,
+                                                        lineNumber: 100,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/ourteam.tsx",
-                                                lineNumber: 97,
+                                                lineNumber: 93,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/ourteam.tsx",
-                                        lineNumber: 86,
+                                        lineNumber: 82,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, member.name, true, {
                                 fileName: "[project]/components/ourteam.tsx",
-                                lineNumber: 69,
+                                lineNumber: 65,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/components/ourteam.tsx",
-                        lineNumber: 67,
+                        lineNumber: 63,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 66,
+                    lineNumber: 62,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2228,27 +2223,27 @@ function OurTeam() {
                             className: "h-2 w-2 rounded-full bg-gray-200"
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 115,
+                            lineNumber: 111,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "h-2 w-8 rounded-full bg-blue-600"
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 116,
+                            lineNumber: 112,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "h-2 w-2 rounded-full bg-gray-200"
                         }, void 0, false, {
                             fileName: "[project]/components/ourteam.tsx",
-                            lineNumber: 117,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 114,
+                    lineNumber: 110,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -2274,33 +2269,32 @@ function OurTeam() {
                                 className: "group-hover:translate-x-1 transition-transform"
                             }, void 0, false, {
                                 fileName: "[project]/components/ourteam.tsx",
-                                lineNumber: 130,
+                                lineNumber: 126,
                                 columnNumber: 32
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/ourteam.tsx",
-                        lineNumber: 126,
+                        lineNumber: 122,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/ourteam.tsx",
-                    lineNumber: 120,
+                    lineNumber: 116,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/ourteam.tsx",
-            lineNumber: 45,
+            lineNumber: 41,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/ourteam.tsx",
-        lineNumber: 44,
+        lineNumber: 40,
         columnNumber: 5
     }, this);
 }
-_s(OurTeam, "tusBbsahUVevXfyh6oH5R6YDC9Q=");
 _c = OurTeam;
 var _c;
 __turbopack_context__.k.register(_c, "OurTeam");
