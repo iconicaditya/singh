@@ -25,7 +25,8 @@ const researchPapers = [
     title: "Plastic lifecycle impacts",
     category: "WASTE MANAGEMENT",
     description: "Evaluating the environmental footprint of plastic products from production to disposal.",
-    fullContent: "This comprehensive study examines the entire lifecycle of plastic products, from raw material extraction and manufacturing to consumption and end-of-life management. We utilize Life Cycle Assessment (LCA) methodologies to quantify greenhouse gas emissions, energy consumption, and environmental toxicity at each stage.",
+    fullContent: "This comprehensive study examines the entire lifecycle of plastic products, from raw material extraction and manufacturing to consumption and end-of-life management. We utilize Life Cycle Assessment (LCA) methodologies to quantify greenhouse gas emissions, energy consumption, and environmental toxicity at each stage. Our analysis reveals critical intervention points in the supply chain where sustainable practices can yield the highest environmental dividends.",
+    detailedAnalysis: "The study identifies that the polymer production phase is responsible for over 60% of the total greenhouse gas emissions across the lifecycle. By transitioning to renewable energy sources for manufacturing and increasing the secondary material content, the carbon footprint can be reduced significantly. Furthermore, we explore the impact of additive chemicals on recyclability, noting that certain flame retardants and plasticizers create substantial barriers to high-quality mechanical recycling.",
     image: "/researchimages/research_1.jpg",
     tags: ["LCA", "Sustainability", "Environment"],
     date: "2024-03-15",
@@ -43,7 +44,8 @@ const researchPapers = [
     title: "Plastic-climate connections",
     category: "CLIMATE CHANGE",
     description: "Studying the intersection of plastic pollution and greenhouse gas emissions.",
-    fullContent: "The nexus between plastic pollution and climate change is often overlooked. Our research highlights how plastic production contributes significantly to global carbon budgets and how environmental degradation from plastic waste impairs the ocean's ability to sequester carbon.",
+    fullContent: "The nexus between plastic pollution and climate change is often overlooked. Our research highlights how plastic production contributes significantly to global carbon budgets and how environmental degradation from plastic waste impairs the ocean's ability to sequester carbon. This study provides a quantitative framework for understanding these dual threats as an integrated global challenge.",
+    detailedAnalysis: "Our findings indicate that if current trends continue, emissions from the plastic lifecycle could account for 15% of the global carbon budget by 2050. The research also investigates the 'albedo effect' of plastic debris in polar regions, suggesting that microplastics on ice surfaces may accelerate melting rates. Additionally, the disruption of biological carbon pumps by microplastic ingestion in marine organisms is quantified for the first time in this report.",
     image: "/researchimages/research_2.jpg",
     tags: ["Carbon", "Policy", "Climate"],
     date: "2024-01-20",
@@ -61,7 +63,8 @@ const researchPapers = [
     title: "Microplastics monitoring",
     category: "PLASTICS",
     description: "Advanced techniques for detecting and tracking microplastics in urban water systems.",
-    fullContent: "Microplastic contamination in urban water cycles poses significant challenges for water treatment and public health. This study presents a novel sensor-based monitoring framework that allows for real-time detection and characterization of microplastic particles in complex wastewater matrices.",
+    fullContent: "Microplastic contamination in urban water cycles poses significant challenges for water treatment and public health. This study presents a novel sensor-based monitoring framework that allows for real-time detection and characterization of microplastic particles in complex wastewater matrices. We demonstrate how automated systems can drastically reduce the cost and time required for standard laboratory analysis.",
+    detailedAnalysis: "The implementation of Raman spectroscopy combined with deep learning algorithms has allowed for the identification of polymer types with 98% accuracy. Our monitoring at three major metropolitan wastewater treatment plants showed that while 95% of particles are captured by tertiary treatment, the remaining 5% represents billions of particles released daily into aquatic environments. We also characterize the 'plastisphere'—the microbial communities that colonize these particles.",
     image: "/researchimages/research_3.jpg",
     tags: ["Technology", "Monitoring", "Water"],
     date: "2023-11-05",
@@ -188,6 +191,7 @@ export default function ResearchDetail() {
 
   const sections = [
     { id: "abstract", label: "Abstract & Overview", icon: BookOpen },
+    { id: "analysis", label: "Detailed Analysis", icon: List },
     { id: "methodology", label: "Methodology", icon: ExternalLink },
     { id: "findings", label: "Key Findings", icon: CheckCircle2 },
   ];
@@ -285,6 +289,18 @@ export default function ResearchDetail() {
                     {paper.fullContent}
                   </div>
                 </div>
+
+                {(paper as any).detailedAnalysis && (
+                  <div id="analysis" className="scroll-mt-32">
+                    <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+                      <List className="text-blue-500" />
+                      Detailed Analysis
+                    </h2>
+                    <div className="text-gray-400 text-lg leading-relaxed space-y-6 mb-16">
+                      {(paper as any).detailedAnalysis}
+                    </div>
+                  </div>
+                )}
 
                 <div id="methodology" className="scroll-mt-32">
                   <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
