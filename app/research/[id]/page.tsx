@@ -25,13 +25,15 @@ const researchPapers = [
     title: "Plastic lifecycle impacts",
     category: "WASTE MANAGEMENT",
     description: "Evaluating the environmental footprint of plastic products from production to disposal.",
-    fullContent: "This comprehensive study examines the entire lifecycle of plastic products, from raw material extraction and manufacturing to consumption and end-of-life management. We utilize Life Cycle Assessment (LCA) methodologies to quantify greenhouse gas emissions, energy consumption, and environmental toxicity at each stage. Our analysis reveals critical intervention points in the supply chain where sustainable practices can yield the highest environmental dividends.",
-    detailedAnalysis: "The study identifies that the polymer production phase is responsible for over 60% of the total greenhouse gas emissions across the lifecycle. By transitioning to renewable energy sources for manufacturing and increasing the secondary material content, the carbon footprint can be reduced significantly. Furthermore, we explore the impact of additive chemicals on recyclability, noting that certain flame retardants and plasticizers create substantial barriers to high-quality mechanical recycling.",
+    paragraphs: [
+      "This comprehensive study examines the entire lifecycle of plastic products, from raw material extraction and manufacturing to consumption and end-of-life management. We utilize Life Cycle Assessment (LCA) methodologies to quantify greenhouse gas emissions, energy consumption, and environmental toxicity at each stage. Our analysis reveals critical intervention points in the supply chain where sustainable practices can yield the highest environmental dividends.",
+      "The study identifies that the polymer production phase is responsible for over 60% of the total greenhouse gas emissions across the lifecycle. By transitioning to renewable energy sources for manufacturing and increasing the secondary material content, the carbon footprint can be reduced significantly. Furthermore, we explore the impact of additive chemicals on recyclability, noting that certain flame retardants and plasticizers create substantial barriers to high-quality mechanical recycling."
+    ],
     image: "/researchimages/research_1.jpg",
     tags: ["LCA", "Sustainability", "Environment"],
     date: "2024-03-15",
     author: "Dr. Sarah Chen",
-    readTime: "12 min read",
+    authorImage: "/ourteamimages/aaditya.png",
     methodology: "Quantitative LCA analysis using Ecoinvent databases and field data from 50+ manufacturing facilities.",
     keyFindings: [
       "Production stage accounts for 60% of total carbon footprint.",
@@ -44,13 +46,15 @@ const researchPapers = [
     title: "Plastic-climate connections",
     category: "CLIMATE CHANGE",
     description: "Studying the intersection of plastic pollution and greenhouse gas emissions.",
-    fullContent: "The nexus between plastic pollution and climate change is often overlooked. Our research highlights how plastic production contributes significantly to global carbon budgets and how environmental degradation from plastic waste impairs the ocean's ability to sequester carbon. This study provides a quantitative framework for understanding these dual threats as an integrated global challenge.",
-    detailedAnalysis: "Our findings indicate that if current trends continue, emissions from the plastic lifecycle could account for 15% of the global carbon budget by 2050. The research also investigates the 'albedo effect' of plastic debris in polar regions, suggesting that microplastics on ice surfaces may accelerate melting rates. Additionally, the disruption of biological carbon pumps by microplastic ingestion in marine organisms is quantified for the first time in this report.",
+    paragraphs: [
+      "The nexus between plastic pollution and climate change is often overlooked. Our research highlights how plastic production contributes significantly to global carbon budgets and how environmental degradation from plastic waste impairs the ocean's ability to sequester carbon. This study provides a quantitative framework for understanding these dual threats as an integrated global challenge.",
+      "Our findings indicate that if current trends continue, emissions from the plastic lifecycle could account for 15% of the global carbon budget by 2050. The research also investigates the 'albedo effect' of plastic debris in polar regions, suggesting that microplastics on ice surfaces may accelerate melting rates. Additionally, the disruption of biological carbon pumps by microplastic ingestion in marine organisms is quantified for the first time in this report."
+    ],
     image: "/researchimages/research_2.jpg",
     tags: ["Carbon", "Policy", "Climate"],
     date: "2024-01-20",
     author: "Prof. Michael Roberts",
-    readTime: "15 min read",
+    authorImage: "/ourteamimages/nabin.png",
     methodology: "Integrated climate modelling combined with global plastic trade flow analysis.",
     keyFindings: [
       "Current plastic production trends could consume 15% of the remaining carbon budget for 1.5°C.",
@@ -63,13 +67,15 @@ const researchPapers = [
     title: "Microplastics monitoring",
     category: "PLASTICS",
     description: "Advanced techniques for detecting and tracking microplastics in urban water systems.",
-    fullContent: "Microplastic contamination in urban water cycles poses significant challenges for water treatment and public health. This study presents a novel sensor-based monitoring framework that allows for real-time detection and characterization of microplastic particles in complex wastewater matrices. We demonstrate how automated systems can drastically reduce the cost and time required for standard laboratory analysis.",
-    detailedAnalysis: "The implementation of Raman spectroscopy combined with deep learning algorithms has allowed for the identification of polymer types with 98% accuracy. Our monitoring at three major metropolitan wastewater treatment plants showed that while 95% of particles are captured by tertiary treatment, the remaining 5% represents billions of particles released daily into aquatic environments. We also characterize the 'plastisphere'—the microbial communities that colonize these particles.",
+    paragraphs: [
+      "Microplastic contamination in urban water cycles poses significant challenges for water treatment and public health. This study presents a novel sensor-based monitoring framework that allows for real-time detection and characterization of microplastic particles in complex wastewater matrices. We demonstrate how automated systems can drastically reduce the cost and time required for standard laboratory analysis.",
+      "The implementation of Raman spectroscopy combined with deep learning algorithms has allowed for the identification of polymer types with 98% accuracy. Our monitoring at three major metropolitan wastewater treatment plants showed that while 95% of particles are captured by tertiary treatment, the remaining 5% represents billions of particles released daily into aquatic environments. We also characterize the 'plastisphere'—the microbial communities that colonize these particles."
+    ],
     image: "/researchimages/research_3.jpg",
     tags: ["Technology", "Monitoring", "Water"],
     date: "2023-11-05",
     author: "Dr. Elena Rodriguez",
-    readTime: "10 min read",
+    authorImage: "/ourteamimages/bibas.png",
     methodology: "Development of spectroscopic sensors and machine learning algorithms for particle identification.",
     keyFindings: [
       "Standard filtration methods miss up to 30% of smaller microplastic particles.",
@@ -82,12 +88,15 @@ const researchPapers = [
     title: "Composting & Biowaste processing",
     category: "WASTE MANAGEMENT",
     description: "Optimizing organic waste conversion for sustainable agricultural applications.",
-    fullContent: "Investigating advanced composting technologies to maximize nutrient recovery from organic waste streams. This research focuses on industrial-scale biowaste processing and its integration into circular agricultural systems.",
+    paragraphs: [
+      "Investigating advanced composting technologies to maximize nutrient recovery from organic waste streams. This research focuses on industrial-scale biowaste processing and its integration into circular agricultural systems.",
+      "The comparative study of thermophilic vs. mesophilic composting processes in urban environments reveals that optimized composting reduces methane emissions by 80% compared to landfilling. High-quality compost significantly improves soil carbon sequestration, making decentralized urban composting hubs viable at city-scale."
+    ],
     image: "/researchimages/research_4.jpg",
     tags: ["Circular Economy", "Agriculture"],
     date: "2023-09-12",
     author: "Prof. Alan Smith",
-    readTime: "14 min read",
+    authorImage: "/ourteamimages/aaditya.png",
     methodology: "Comparative study of thermophilic vs. mesophilic composting processes in urban environments.",
     keyFindings: [
       "Optimized composting reduces methane emissions by 80% compared to landfilling.",
@@ -100,12 +109,15 @@ const researchPapers = [
     title: "Municipal solid waste planning",
     category: "URBAN SYSTEMS",
     description: "Strategic frameworks for integrated waste management in rapidly growing cities.",
-    fullContent: "Addressing the logistical and policy challenges of waste management in high-density urban areas. This paper proposes an integrated framework that combines technological infrastructure with social behavioral programs.",
+    paragraphs: [
+      "Addressing the logistical and policy challenges of waste management in high-density urban areas. This paper proposes an integrated framework that combines technological infrastructure with social behavioral programs.",
+      "Systems dynamics modeling applied to five case study cities with diverse socioeconomic backgrounds shows that integrated planning can reduce operational costs by up to 25%. Public participation is the single biggest predictor of recycling success, and smart-bin technology improves collection efficiency by 30%."
+    ],
     image: "/researchimages/research_1.jpg",
     tags: ["Urban Planning", "Public Health"],
     date: "2023-07-28",
     author: "Dr. James Wilson",
-    readTime: "18 min read",
+    authorImage: "/ourteamimages/nabin.png",
     methodology: "Systems dynamics modeling applied to five case study cities with diverse socioeconomic backgrounds.",
     keyFindings: [
       "Integrated planning can reduce operational costs by up to 25%.",
@@ -118,12 +130,15 @@ const researchPapers = [
     title: "Waste-to-energy innovations",
     category: "RENEWABLE ENERGY",
     description: "Exploring next-generation technologies for energy recovery from non-recyclable waste.",
-    fullContent: "A deep dive into advanced thermal and biochemical conversion technologies. We evaluate the efficiency and environmental safety of modern waste-to-energy plants compared to traditional fossil fuel power generation.",
+    paragraphs: [
+      "A deep dive into advanced thermal and biochemical conversion technologies. We evaluate the efficiency and environmental safety of modern waste-to-energy plants compared to traditional fossil fuel power generation.",
+      "Techno-economic assessment and emission profiling of plasma gasification systems show that modern gasification has 50% lower air pollutants than standard incineration. Waste-to-energy can provide up to 10% of a city's base-load power, and carbon capture integration makes waste-to-energy carbon-negative."
+    ],
     image: "/researchimages/research_2.jpg",
     tags: ["Energy", "Innovation", "Tech"],
     date: "2023-05-15",
     author: "Dr. Emily Brown",
-    readTime: "20 min read",
+    authorImage: "/ourteamimages/bibas.png",
     methodology: "Techno-economic assessment and emission profiling of plasma gasification systems.",
     keyFindings: [
       "Modern gasification has 50% lower air pollutants than standard incineration.",
@@ -169,12 +184,15 @@ const getGeneratedPaper = (id: number) => ({
   title: `Research Initiative ${id}: Environmental Analysis`,
   category: ["PLASTICS", "CLIMATE", "ENERGY", "URBAN"][id % 4],
   description: "Comprehensive scientific study focusing on long-term sustainability and environmental preservation strategies.",
-  fullContent: "This research explores the complex interactions between industrial processes and environmental health. Through multi-year monitoring and advanced statistical analysis, we aim to provide actionable data for policy makers and industry leaders to implement more sustainable practices.",
+  paragraphs: [
+    "This research explores the complex interactions between industrial processes and environmental health. Through multi-year monitoring and advanced statistical analysis, we aim to provide actionable data for policy makers and industry leaders to implement more sustainable practices.",
+    "Our multivariate regression analysis combined with longitudinal field observations has identified a key correlation between process efficiency and waste reduction. We proposed a new framework for cross-industry sustainability benchmarking and validated several low-cost mitigation strategies for emerging markets."
+  ],
   image: `/researchimages/research_${(id % 4) + 1}.jpg`,
   tags: ["Science", "Research", "Analysis"],
   date: `2023-0${(id % 9) + 1}-10`,
   author: "Lead Researcher",
-  readTime: "15 min read",
+  authorImage: "/ourteamimages/aaditya.png",
   methodology: "Multivariate regression analysis combined with longitudinal field observations.",
   keyFindings: [
     "Identified key correlation between process efficiency and waste reduction.",
@@ -191,7 +209,7 @@ export default function ResearchDetail() {
 
   const sections = [
     { id: "abstract", label: "Abstract & Overview", icon: BookOpen },
-    { id: "analysis", label: "Detailed Analysis", icon: List },
+    { id: "content", label: "Research Content", icon: List },
     { id: "methodology", label: "Methodology", icon: ExternalLink },
     { id: "findings", label: "Key Findings", icon: CheckCircle2 },
   ];
@@ -253,12 +271,15 @@ export default function ResearchDetail() {
                 {paper.date}
               </div>
               <div className="flex items-center gap-2">
-                <User size={16} className="text-blue-500" />
-                {paper.author}
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock size={16} className="text-blue-500" />
-                {paper.readTime}
+                <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-blue-500 shadow-lg shadow-blue-500/20">
+                  <Image
+                    src={(paper as any).authorImage}
+                    alt={paper.author}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <span className="text-gray-200 font-bold tracking-tight">{paper.author}</span>
               </div>
             </div>
           </motion.div>
@@ -285,22 +306,19 @@ export default function ResearchDetail() {
                   <p className="text-xl text-gray-300 leading-relaxed mb-10 border-l-4 border-blue-600 pl-8 py-2">
                     {paper.description}
                   </p>
-                  <div className="text-gray-400 text-lg leading-relaxed space-y-6 mb-16">
-                    {paper.fullContent}
-                  </div>
                 </div>
 
-                {(paper as any).detailedAnalysis && (
-                  <div id="analysis" className="scroll-mt-32">
-                    <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-                      <List className="text-blue-500" />
-                      Detailed Analysis
-                    </h2>
-                    <div className="text-gray-400 text-lg leading-relaxed space-y-6 mb-16">
-                      {(paper as any).detailedAnalysis}
-                    </div>
+                <div id="content" className="scroll-mt-32">
+                  <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
+                    <List className="text-blue-500" />
+                    Research Content
+                  </h2>
+                  <div className="text-gray-400 text-lg leading-relaxed space-y-8 mb-16">
+                    {(paper as any).paragraphs?.map((para: string, idx: number) => (
+                      <p key={idx}>{para}</p>
+                    )) || <p>{(paper as any).fullContent}</p>}
                   </div>
-                )}
+                </div>
 
                 <div id="methodology" className="scroll-mt-32">
                   <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
@@ -313,6 +331,24 @@ export default function ResearchDetail() {
                     </p>
                   </div>
                 </div>
+
+                <div id="findings" className="scroll-mt-32">
+                  <h2 className="text-3xl font-bold mb-8">Key Findings</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+                    {paper.keyFindings.map((finding, idx) => (
+                      <motion.div
+                        key={idx}
+                        whileHover={{ y: -5 }}
+                        className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all flex gap-4"
+                      >
+                        <CheckCircle2 className="text-blue-500 shrink-0 mt-1" />
+                        <p className="text-gray-300 font-medium">{finding}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
                 <div id="findings" className="scroll-mt-32">
                   <h2 className="text-3xl font-bold mb-8">Key Findings</h2>
