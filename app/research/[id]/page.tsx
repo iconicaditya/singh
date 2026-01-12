@@ -17,7 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-// This would ideally come from a central data file
+// Full dataset for research papers
 const researchPapers = [
   {
     id: 1,
@@ -72,14 +72,88 @@ const researchPapers = [
       "Real-time monitoring can identify pollution hotspots in municipal systems within hours.",
       "Seasonal variations significantly impact microplastic concentrations in storm runoff."
     ]
+  },
+  {
+    id: 4,
+    title: "Composting & Biowaste processing",
+    category: "WASTE MANAGEMENT",
+    description: "Optimizing organic waste conversion for sustainable agricultural applications.",
+    fullContent: "Investigating advanced composting technologies to maximize nutrient recovery from organic waste streams. This research focuses on industrial-scale biowaste processing and its integration into circular agricultural systems.",
+    image: "/researchimages/research_4.jpg",
+    tags: ["Circular Economy", "Agriculture"],
+    date: "2023-09-12",
+    author: "Prof. Alan Smith",
+    readTime: "14 min read",
+    methodology: "Comparative study of thermophilic vs. mesophilic composting processes in urban environments.",
+    keyFindings: [
+      "Optimized composting reduces methane emissions by 80% compared to landfilling.",
+      "High-quality compost significantly improves soil carbon sequestration.",
+      "Decentralized urban composting hubs are viable at city-scale."
+    ]
+  },
+  {
+    id: 5,
+    title: "Municipal solid waste planning",
+    category: "URBAN SYSTEMS",
+    description: "Strategic frameworks for integrated waste management in rapidly growing cities.",
+    fullContent: "Addressing the logistical and policy challenges of waste management in high-density urban areas. This paper proposes an integrated framework that combines technological infrastructure with social behavioral programs.",
+    image: "/researchimages/research_1.jpg",
+    tags: ["Urban Planning", "Public Health"],
+    date: "2023-07-28",
+    author: "Dr. James Wilson",
+    readTime: "18 min read",
+    methodology: "Systems dynamics modeling applied to five case study cities with diverse socioeconomic backgrounds.",
+    keyFindings: [
+      "Integrated planning can reduce operational costs by up to 25%.",
+      "Public participation is the single biggest predictor of recycling success.",
+      "Smart-bin technology improves collection efficiency by 30%."
+    ]
+  },
+  {
+    id: 6,
+    title: "Waste-to-energy innovations",
+    category: "RENEWABLE ENERGY",
+    description: "Exploring next-generation technologies for energy recovery from non-recyclable waste.",
+    fullContent: "A deep dive into advanced thermal and biochemical conversion technologies. We evaluate the efficiency and environmental safety of modern waste-to-energy plants compared to traditional fossil fuel power generation.",
+    image: "/researchimages/research_2.jpg",
+    tags: ["Energy", "Innovation", "Tech"],
+    date: "2023-05-15",
+    author: "Dr. Emily Brown",
+    readTime: "20 min read",
+    methodology: "Techno-economic assessment and emission profiling of plasma gasification systems.",
+    keyFindings: [
+      "Modern gasification has 50% lower air pollutants than standard incineration.",
+      "Waste-to-energy can provide up to 10% of a city's base-load power.",
+      "Carbon capture integration makes waste-to-energy carbon-negative."
+    ]
   }
 ];
+
+// Fallback for generated items (IDs 7+)
+const getGeneratedPaper = (id: number) => ({
+  id,
+  title: `Research Initiative ${id}: Environmental Analysis`,
+  category: ["PLASTICS", "CLIMATE", "ENERGY", "URBAN"][id % 4],
+  description: "Comprehensive scientific study focusing on long-term sustainability and environmental preservation strategies.",
+  fullContent: "This research explores the complex interactions between industrial processes and environmental health. Through multi-year monitoring and advanced statistical analysis, we aim to provide actionable data for policy makers and industry leaders to implement more sustainable practices.",
+  image: `/researchimages/research_${(id % 4) + 1}.jpg`,
+  tags: ["Science", "Research", "Analysis"],
+  date: `2023-0${(id % 9) + 1}-10`,
+  author: "Lead Researcher",
+  readTime: "15 min read",
+  methodology: "Multivariate regression analysis combined with longitudinal field observations.",
+  keyFindings: [
+    "Identified key correlation between process efficiency and waste reduction.",
+    "Proposed a new framework for cross-industry sustainability benchmarking.",
+    "Validated several low-cost mitigation strategies for emerging markets."
+  ]
+});
 
 export default function ResearchDetail() {
   const params = useParams();
   const id = parseInt(params.id as string);
   
-  const paper = researchPapers.find(p => p.id === id) || researchPapers[0];
+  const paper = researchPapers.find(p => p.id === id) || getGeneratedPaper(id);
 
   return (
     <div className="min-h-screen bg-[#020617] text-white selection:bg-blue-500/30">

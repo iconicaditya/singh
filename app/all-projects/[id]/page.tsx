@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+// Full dataset for all projects
 const projects = [
   {
     id: 1,
@@ -53,14 +54,88 @@ const projects = [
       "Create a digital marketplace for recyclable materials",
       "Establish sustainable funding models for local recycling hubs"
     ]
+  },
+  {
+    id: 3,
+    title: "CLIMATE DATA VISUALIZATION AI",
+    category: "TECHNOLOGY",
+    description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
+    image: "/projectimages/project_3.jpg",
+    status: "Ongoing...",
+    year: "2024",
+    location: "Global Data Centers",
+    team: "AI Research Team",
+    impact: "Increased visualization speed by 300%",
+    fullDescription: "Using deep learning architectures, we've developed a visualization engine that processes petabytes of climate data in real-time. This tool allows researchers to simulate 'what-if' scenarios for carbon emission reduction policies.",
+    objectives: [
+      "Process multi-source satellite data streams",
+      "Generate high-fidelity predictive heatmaps",
+      "Integrate with existing policy-making frameworks"
+    ]
+  },
+  {
+    id: 4,
+    title: "RENEWABLE ENERGY TRANSITION",
+    category: "TECHNOLOGY",
+    description: "Strategic plan for transitioning urban centers to 100% renewable energy sources within the next decade.",
+    image: "/projectimages/project_4.jpg",
+    status: "Ongoing...",
+    year: "2024",
+    location: "Urban Centers",
+    team: "Energy Policy Experts",
+    impact: "Infrastructure roadmap for 5 major cities",
+    fullDescription: "A comprehensive technological and policy roadmap designed to phase out fossil fuel dependency in high-density urban environments. We analyze grid stability, storage solutions, and localized production possibilities.",
+    objectives: [
+      "Audit existing urban power infrastructure",
+      "Model hybrid solar-wind distribution networks",
+      "Draft legislative recommendations for clean energy adoption"
+    ]
+  },
+  {
+    id: 5,
+    title: "URBAN GARDENING INITIATIVE",
+    category: "COMMUNITY",
+    description: "Establishing vertical gardens in high-density urban areas to improve air quality and provide local produce.",
+    image: "/projectimages/project_5.jpg",
+    status: "Completed",
+    year: "2023",
+    location: "Metropolitan Areas",
+    team: "Urban Agriculturists",
+    impact: "Created 20+ community vertical farms",
+    fullDescription: "This initiative transformed underutilized vertical spaces into productive green zones. Beyond food production, these installations serve as natural air filtration systems and community educational hubs.",
+    objectives: [
+      "Maximize yield in minimal spatial footprints",
+      "Implement automated hydroponic nutrient systems",
+      "Foster community ownership of agricultural spaces"
+    ]
   }
 ];
+
+// Fallback for generated projects (IDs 6+)
+const getGeneratedProject = (id: number) => ({
+  id,
+  title: `Sustainable Project Initiative ${id}`,
+  category: ["RESEARCH", "COMMUNITY", "TECHNOLOGY"][id % 3],
+  description: "A professional initiative focused on implementing cutting-edge sustainability solutions and environmental protection strategies.",
+  image: `/projectimages/project_${(id % 5) + 1}.jpg`,
+  status: id % 2 === 0 ? "Ongoing..." : "Completed",
+  year: (2020 + (id % 5)).toString(),
+  location: "Field Location",
+  team: "International Taskforce",
+  impact: "Significant advancement in sustainable methodology",
+  fullDescription: "This research initiative explores advanced sustainability frameworks through rigorous field testing and data analysis. Our findings contribute to a global knowledge base dedicated to environmental preservation and efficient resource management.",
+  objectives: [
+    "Develop scalable sustainability protocols",
+    "Analyze cross-sector environmental impacts",
+    "Establish long-term monitoring benchmarks"
+  ]
+});
 
 export default function ProjectDetail() {
   const params = useParams();
   const id = parseInt(params.id as string);
   
-  const project = projects.find(p => p.id === id) || projects[0];
+  const project = projects.find(p => p.id === id) || getGeneratedProject(id);
 
   return (
     <div className="min-h-screen bg-white selection:bg-blue-600/10">

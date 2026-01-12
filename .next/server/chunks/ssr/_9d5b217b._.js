@@ -27,7 +27,7 @@ const allProjects = [
         category: "RESEARCH",
         description: "Comprehensive study on the distribution and impact of microplastics in coastal waters, focusing on marine ecosystem health.",
         status: "Ongoing...",
-        image: "/projectimages/marine.png",
+        image: "/projectimages/project_1.jpg",
         year: "2024"
     },
     {
@@ -36,7 +36,7 @@ const allProjects = [
         category: "COMMUNITY",
         description: "Empowering local communities with sustainable waste management practices through interactive workshops and resource sharing.",
         status: "Completed",
-        image: "/projectimages/recycling.jpg",
+        image: "/projectimages/project_2.jpg",
         year: "2023"
     },
     {
@@ -45,7 +45,7 @@ const allProjects = [
         category: "TECHNOLOGY",
         description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
         status: "Ongoing...",
-        image: "/projectimages/climate_ai.jpg",
+        image: "/projectimages/project_3.jpg",
         year: "2024"
     },
     // Adding 16 more projects
@@ -61,12 +61,7 @@ const allProjects = [
             ][i % 3],
             description: "A professional initiative focused on implementing cutting-edge sustainability solutions and environmental protection strategies.",
             status: i % 2 === 0 ? "Ongoing..." : "Completed",
-            image: `/attached_assets/stock_images/professional_researc_${[
-                "2d676eab",
-                "b03bfae3",
-                "b446b59e",
-                "f172db13"
-            ][i % 4]}.jpg`,
+            image: `/projectimages/project_${i % 5 + 1}.jpg`,
             year: (2020 + i % 5).toString()
         }))
 ];
@@ -219,16 +214,16 @@ function AllProjects() {
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                    href: "#",
+                                                    href: `/all-projects/${project.id}`,
                                                     className: "flex items-center gap-1 text-[10px] font-black text-gray-400 hover:text-blue-600 transition-colors",
                                                     children: [
-                                                        "LEARN MORE ",
+                                                        "VIEW PROJECT ",
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
                                                             size: 12
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/all-projects/page.tsx",
                                                             lineNumber: 111,
-                                                            columnNumber: 32
+                                                            columnNumber: 34
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
