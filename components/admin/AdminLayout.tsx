@@ -92,7 +92,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-72 min-h-screen flex flex-col">
+      <main className="flex-1 ml-72 flex flex-col">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-md h-24 flex items-center justify-between px-10 border-b border-slate-100 sticky top-0 z-10">
           <div>

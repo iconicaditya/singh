@@ -29,7 +29,7 @@ const allActivities = [
         title: "International Symposium on Sustainable Waste Management",
         date: "2024-05-15",
         description: "The Singh Lab hosted a global symposium featuring experts from 12 countries to discuss microplastic mitigation strategies. The event focused on lifecycle analysis and policy frameworks.",
-        image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+        image: "/researchimages/research_1.jpg",
         category: "NEWS"
     },
     {
@@ -37,7 +37,7 @@ const allActivities = [
         title: "New Research Grant: Coastal Ecosystem Restoration",
         date: "2024-04-10",
         description: "We are thrilled to announce a new major grant focusing on restoring mangrove forests in Southeast Asia. This three-year project will study carbon sequestration.",
-        image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+        image: "/researchimages/research_2.jpg",
         category: "UPDATE"
     },
     ...Array.from({
@@ -47,12 +47,7 @@ const allActivities = [
             title: "Lab Announcement ".concat(i + 3, ": Strategic Environmental Initiative"),
             date: "2024-0".concat(i % 5 + 1, "-01"),
             description: "Comprehensive updates on our ongoing research efforts, community outreach programs, and technological innovations aimed at fostering global environmental sustainability.",
-            image: "/attached_assets/stock_images/professional_researc_".concat([
-                "2d676eab",
-                "b03bfae3",
-                "b446b59e",
-                "f172db13"
-            ][i % 4], ".jpg"),
+            image: "/researchimages/research_".concat(i % 5 + 1, ".jpg"),
             category: i % 2 === 0 ? "UPDATE" : "NEWS"
         }))
 ];

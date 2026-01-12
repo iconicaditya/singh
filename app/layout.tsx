@@ -5,7 +5,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,19 +21,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isAdminPage = pathname?.startsWith("/login/dashboard");
-
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {!isAdminPage && <Header />}
-        <main className={isAdminPage ? "" : "min-h-screen"}>
+        <Header />
+        <main className="min-h-screen">
           {children}
         </main>
-        {!isAdminPage && <Footer />}
+        <Footer />
       </body>
     </html>
   );
