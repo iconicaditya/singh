@@ -221,20 +221,20 @@ function ResearchDetail() {
                                 priority: true
                             }, void 0, false, {
                                 fileName: "[project]/app/research/[id]/page.tsx",
-                                lineNumber: 168,
+                                lineNumber: 167,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "absolute inset-0 bg-gradient-to-b from-[#020617]/20 via-[#020617]/60 to-[#020617]"
                             }, void 0, false, {
                                 fileName: "[project]/app/research/[id]/page.tsx",
-                                lineNumber: 175,
+                                lineNumber: 174,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/research/[id]/page.tsx",
-                        lineNumber: 162,
+                        lineNumber: 161,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -262,14 +262,14 @@ function ResearchDetail() {
                                             className: "transition-transform group-hover:-translate-x-1"
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 188,
+                                            lineNumber: 187,
                                             columnNumber: 15
                                         }, this),
                                         "BACK TO RESEARCH"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 183,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -280,7 +280,7 @@ function ResearchDetail() {
                                             children: paper.category
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 193,
+                                            lineNumber: 192,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -293,18 +293,18 @@ function ResearchDetail() {
                                                     ]
                                                 }, tag, true, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 198,
+                                                    lineNumber: 197,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 196,
+                                            lineNumber: 195,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 192,
+                                    lineNumber: 191,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -312,7 +312,7 @@ function ResearchDetail() {
                                     children: paper.title
                                 }, void 0, false, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 205,
+                                    lineNumber: 204,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -326,14 +326,14 @@ function ResearchDetail() {
                                                     className: "text-blue-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 211,
+                                                    lineNumber: 210,
                                                     columnNumber: 17
                                                 }, this),
                                                 paper.date
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 210,
+                                            lineNumber: 209,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -344,14 +344,14 @@ function ResearchDetail() {
                                                     className: "text-blue-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 215,
+                                                    lineNumber: 214,
                                                     columnNumber: 17
                                                 }, this),
                                                 paper.author
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 214,
+                                            lineNumber: 213,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -362,37 +362,37 @@ function ResearchDetail() {
                                                     className: "text-blue-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 219,
+                                                    lineNumber: 218,
                                                     columnNumber: 17
                                                 }, this),
                                                 paper.readTime
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 218,
+                                            lineNumber: 217,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 209,
+                                    lineNumber: 208,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/research/[id]/page.tsx",
-                            lineNumber: 179,
+                            lineNumber: 178,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/research/[id]/page.tsx",
-                        lineNumber: 178,
+                        lineNumber: 177,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/research/[id]/page.tsx",
-                lineNumber: 161,
+                lineNumber: 160,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -425,14 +425,14 @@ function ResearchDetail() {
                                                     className: "text-blue-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 239,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Abstract & Overview"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 239,
+                                            lineNumber: 238,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -440,7 +440,7 @@ function ResearchDetail() {
                                             children: paper.description
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 243,
+                                            lineNumber: 242,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -448,7 +448,7 @@ function ResearchDetail() {
                                             children: paper.fullContent
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 245,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -458,14 +458,14 @@ function ResearchDetail() {
                                                     className: "text-blue-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 251,
+                                                    lineNumber: 250,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Methodology"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 250,
+                                            lineNumber: 249,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -479,12 +479,12 @@ function ResearchDetail() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/research/[id]/page.tsx",
-                                                lineNumber: 255,
+                                                lineNumber: 254,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 254,
+                                            lineNumber: 253,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -492,7 +492,7 @@ function ResearchDetail() {
                                             children: "Key Findings"
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 260,
+                                            lineNumber: 259,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -507,7 +507,7 @@ function ResearchDetail() {
                                                             className: "text-blue-500 shrink-0 mt-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 268,
+                                                            lineNumber: 267,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -515,29 +515,29 @@ function ResearchDetail() {
                                                             children: finding
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 269,
+                                                            lineNumber: 268,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 262,
                                                     columnNumber: 21
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 261,
+                                            lineNumber: 260,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 238,
+                                    lineNumber: 237,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/research/[id]/page.tsx",
-                                lineNumber: 232,
+                                lineNumber: 231,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
@@ -564,7 +564,7 @@ function ResearchDetail() {
                                                     children: "Resources"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 286,
+                                                    lineNumber: 285,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -577,14 +577,14 @@ function ResearchDetail() {
                                                                     size: 20
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                                    lineNumber: 289,
+                                                                    lineNumber: 288,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "DOWNLOAD PDF"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 288,
+                                                            lineNumber: 287,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -594,26 +594,26 @@ function ResearchDetail() {
                                                                     size: 20
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                                    lineNumber: 293,
+                                                                    lineNumber: 292,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "SHARE RESEARCH"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 292,
+                                                            lineNumber: 291,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 287,
+                                                    lineNumber: 286,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 279,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -624,7 +624,7 @@ function ResearchDetail() {
                                                     children: "Stay Informed"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 301,
+                                                    lineNumber: 300,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -632,7 +632,7 @@ function ResearchDetail() {
                                                     children: "Get the latest research findings and sustainability insights delivered to your inbox."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 302,
+                                                    lineNumber: 301,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -644,7 +644,7 @@ function ResearchDetail() {
                                                             className: "w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 306,
+                                                            lineNumber: 305,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -652,52 +652,52 @@ function ResearchDetail() {
                                                             children: "SUBSCRIBE"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                                            lineNumber: 311,
+                                                            lineNumber: 310,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                                    lineNumber: 305,
+                                                    lineNumber: 304,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/research/[id]/page.tsx",
-                                            lineNumber: 300,
+                                            lineNumber: 299,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/research/[id]/page.tsx",
-                                    lineNumber: 278,
+                                    lineNumber: 277,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/research/[id]/page.tsx",
-                                lineNumber: 277,
+                                lineNumber: 276,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/research/[id]/page.tsx",
-                        lineNumber: 230,
+                        lineNumber: 229,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/research/[id]/page.tsx",
-                    lineNumber: 229,
+                    lineNumber: 228,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/research/[id]/page.tsx",
-                lineNumber: 228,
+                lineNumber: 227,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/research/[id]/page.tsx",
-        lineNumber: 159,
+        lineNumber: 158,
         columnNumber: 5
     }, this);
 }
