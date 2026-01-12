@@ -13,7 +13,7 @@ const allProjects = [
     category: "RESEARCH",
     description: "Comprehensive study on the distribution and impact of microplastics in coastal waters, focusing on marine ecosystem health.",
     status: "Ongoing...",
-    image: "/projectimages/marine.png",
+    image: "/projectimages/project_1.jpg",
     year: "2024"
   },
   {
@@ -22,7 +22,7 @@ const allProjects = [
     category: "COMMUNITY",
     description: "Empowering local communities with sustainable waste management practices through interactive workshops and resource sharing.",
     status: "Completed",
-    image: "/projectimages/recycling.jpg",
+    image: "/projectimages/project_2.jpg",
     year: "2023"
   },
   {
@@ -31,7 +31,7 @@ const allProjects = [
     category: "TECHNOLOGY",
     description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
     status: "Ongoing...",
-    image: "/projectimages/climate_ai.jpg",
+    image: "/projectimages/project_3.jpg",
     year: "2024"
   },
   // Adding 16 more projects
@@ -41,7 +41,7 @@ const allProjects = [
     category: ["RESEARCH", "COMMUNITY", "TECHNOLOGY"][i % 3],
     description: "A professional initiative focused on implementing cutting-edge sustainability solutions and environmental protection strategies.",
     status: i % 2 === 0 ? "Ongoing..." : "Completed",
-    image: `/attached_assets/stock_images/professional_researc_${["2d676eab", "b03bfae3", "b446b59e", "f172db13"][i % 4]}.jpg`,
+    image: `/projectimages/project_${(i % 5) + 1}.jpg`,
     year: (2020 + (i % 5)).toString()
   }))
 ];
@@ -107,8 +107,8 @@ export default function AllProjects() {
                   <span className={`text-[10px] font-bold ${project.status === 'Completed' ? 'text-green-500' : 'text-blue-500'}`}>
                     {project.status}
                   </span>
-                  <Link href="#" className="flex items-center gap-1 text-[10px] font-black text-gray-400 hover:text-blue-600 transition-colors">
-                    LEARN MORE <ArrowRight size={12} />
+                  <Link href={`/all-projects/${project.id}`} className="flex items-center gap-1 text-[10px] font-black text-gray-400 hover:text-blue-600 transition-colors">
+                    VIEW PROJECT <ArrowRight size={12} />
                   </Link>
                 </div>
               </div>

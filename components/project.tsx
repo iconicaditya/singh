@@ -13,7 +13,7 @@ const projects = [
     category: "RESEARCH",
     description: "Comprehensive study on the distribution and impact of microplastics in coastal waters, focusing on marine ecosystem health.",
     status: "Ongoing...",
-    image: "/projectimages/marine.png",
+    image: "/projectimages/project_1.jpg",
     year: "2024"
   },
   {
@@ -22,7 +22,7 @@ const projects = [
     category: "COMMUNITY",
     description: "Empowering local communities with sustainable waste management practices through interactive workshops and resource sharing.",
     status: "Completed",
-    image: "/projectimages/recycling.jpg",
+    image: "/projectimages/project_2.jpg",
     year: "2023"
   },
   {
@@ -31,7 +31,7 @@ const projects = [
     category: "TECHNOLOGY",
     description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
     status: "Ongoing...",
-    image: "/projectimages/climate_ai.jpg",
+    image: "/projectimages/project_3.jpg",
     year: "2024"
   },
   {
@@ -40,7 +40,7 @@ const projects = [
     category: "TECHNOLOGY",
     description: "Strategic plan for transitioning urban centers to 100% renewable energy sources within the next decade.",
     status: "Ongoing...",
-    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    image: "/projectimages/project_4.jpg",
     year: "2024"
   },
   {
@@ -49,7 +49,7 @@ const projects = [
     category: "COMMUNITY",
     description: "Establishing vertical gardens in high-density urban areas to improve air quality and provide local produce.",
     status: "Completed",
-    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    image: "/projectimages/project_5.jpg",
     year: "2023"
   },
   {
@@ -58,7 +58,7 @@ const projects = [
     category: "RESEARCH",
     description: "Developing low-cost, high-efficiency water filtration systems for rural communities using local materials.",
     status: "Ongoing...",
-    image: "/attached_assets/stock_images/professional_researc_b446b59e.jpg",
+    image: "/projectimages/project_1.jpg",
     year: "2024"
   },
   {
@@ -67,7 +67,7 @@ const projects = [
     category: "RESEARCH",
     description: "Restoring critical wildlife corridors through reforestation and community-led conservation efforts.",
     status: "Completed",
-    image: "/attached_assets/stock_images/professional_researc_f172db13.jpg",
+    image: "/projectimages/project_2.jpg",
     year: "2023"
   },
   {
@@ -76,7 +76,7 @@ const projects = [
     category: "TECHNOLOGY",
     description: "Researching and developing biodegradable alternatives to single-use plastics in the manufacturing sector.",
     status: "Ongoing...",
-    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    image: "/projectimages/project_3.jpg",
     year: "2024"
   },
   {
@@ -85,7 +85,7 @@ const projects = [
     category: "COMMUNITY",
     description: "Promoting carbon-neutral transit options through infrastructure development and public awareness campaigns.",
     status: "Completed",
-    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    image: "/projectimages/project_4.jpg",
     year: "2023"
   }
 ];
@@ -209,10 +209,10 @@ export default function Projects() {
                     {project.status}
                   </span>
                   <Link 
-                    href="#" 
+                    href={`/all-projects/${project.id}`} 
                     className="flex items-center gap-2 text-xs font-black text-gray-400 group-hover:text-blue-600 transition-colors"
                   >
-                    LEARN MORE <ArrowRight size={14} />
+                    VIEW PROJECT <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>

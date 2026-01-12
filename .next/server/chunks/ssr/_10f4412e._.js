@@ -29,7 +29,7 @@ const researchPapers = [
         title: "Plastic lifecycle impacts",
         category: "WASTE MANAGEMENT",
         description: "Evaluating the environmental footprint of plastic products from production to disposal.",
-        image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+        image: "/researchimages/research_1.jpg",
         tags: [
             "LCA",
             "Sustainability",
@@ -42,7 +42,7 @@ const researchPapers = [
         title: "Plastic-climate connections",
         category: "CLIMATE CHANGE",
         description: "Studying the intersection of plastic pollution and greenhouse gas emissions.",
-        image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+        image: "/researchimages/research_2.jpg",
         tags: [
             "Carbon",
             "Policy",
@@ -55,7 +55,7 @@ const researchPapers = [
         title: "Microplastics monitoring",
         category: "PLASTICS",
         description: "Advanced techniques for detecting and tracking microplastics in urban water systems.",
-        image: "/attached_assets/stock_images/professional_researc_b446b59e.jpg",
+        image: "/researchimages/research_3.jpg",
         tags: [
             "Technology",
             "Monitoring",
@@ -68,7 +68,7 @@ const researchPapers = [
         title: "Composting & Biowaste processing",
         category: "WASTE MANAGEMENT",
         description: "Optimizing organic waste conversion for sustainable agricultural applications.",
-        image: "/attached_assets/stock_images/professional_researc_f172db13.jpg",
+        image: "/researchimages/research_4.jpg",
         tags: [
             "Circular Economy",
             "Agriculture"
@@ -80,7 +80,7 @@ const researchPapers = [
         title: "Municipal solid waste planning",
         category: "URBAN SYSTEMS",
         description: "Strategic frameworks for integrated waste management in rapidly growing cities.",
-        image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+        image: "/researchimages/research_1.jpg",
         tags: [
             "Urban Planning",
             "Public Health"
@@ -92,7 +92,7 @@ const researchPapers = [
         title: "Waste-to-energy innovations",
         category: "RENEWABLE ENERGY",
         description: "Exploring next-generation technologies for energy recovery from non-recyclable waste.",
-        image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+        image: "/researchimages/research_2.jpg",
         tags: [
             "Energy",
             "Innovation",
@@ -112,12 +112,7 @@ const researchPapers = [
                 "URBAN"
             ][i % 4],
             description: "Comprehensive scientific study focusing on long-term sustainability and environmental preservation strategies.",
-            image: `/attached_assets/stock_images/professional_researc_${[
-                "2d676eab",
-                "b03bfae3",
-                "b446b59e",
-                "f172db13"
-            ][i % 4]}.jpg`,
+            image: `/researchimages/research_${i % 4 + 1}.jpg`,
             tags: [
                 "Science",
                 "Research",
@@ -559,7 +554,7 @@ function ResearchPage() {
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                                                            href: "#",
+                                                            href: `/research/${paper.id}`,
                                                             className: "flex items-center gap-2 text-xs font-black text-blue-500 hover:text-white transition-all",
                                                             children: [
                                                                 "EXPLORE ",
