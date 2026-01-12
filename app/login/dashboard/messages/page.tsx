@@ -1,13 +1,42 @@
 "use client";
+
 import AdminLayout from "@/components/admin/AdminLayout";
+import DashboardTable from "@/components/admin/DashboardTable";
+import { Mail } from "lucide-react";
+
+const messages = [
+  { id: 1, sender: "John Doe", subject: "Collaboration Inquiry", date: "2024-01-12", status: "New" },
+  { id: 2, sender: "Sarah Smith", subject: "Lab Visit Request", date: "2024-01-11", status: "Replied" },
+];
 
 export default function MessagesPage() {
+  const columns = [
+    { header: "Sender", accessor: "sender" },
+    { header: "Subject", accessor: "subject" },
+    { header: "Received Date", accessor: "date" },
+    { 
+      header: "Status", 
+      accessor: "status",
+      render: (val: string) => (
+        <span className={`px-3 py-1 rounded-lg text-[10px] font-black tracking-widest uppercase ${
+          val === 'New' ? 'bg-blue-50 text-blue-600' : 'bg-slate-50 text-slate-400'
+        }`}>
+          {val}
+        </span>
+      )
+    },
+  ];
+
   return (
     <AdminLayout>
-      <div className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm text-center">
-        <h2 className="text-2xl font-bold text-slate-800 mb-2">Communications Center</h2>
-        <p className="text-slate-400">Review and respond to messages from the contact form.</p>
-      </div>
+      <DashboardTable
+        title="Messages"
+        description="Review and manage inquiries from the contact center"
+        icon={Mail}
+        data={messages}
+        columns={columns}
+        onDelete={(item) => console.log("Delete msg", item)}
+      />
     </AdminLayout>
   );
 }

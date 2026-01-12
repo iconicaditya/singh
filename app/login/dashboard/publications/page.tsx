@@ -1,13 +1,41 @@
 "use client";
+
 import AdminLayout from "@/components/admin/AdminLayout";
+import DashboardTable from "@/components/admin/DashboardTable";
+import { BookOpen } from "lucide-react";
+
+const publications = [
+  { id: 1, title: "Plastic impacts in 2024", journal: "Nature Environ", type: "Journal", year: "2024" },
+  { id: 2, title: "Urban Waste Study", journal: "Science Direct", type: "Conference", year: "2023" },
+];
 
 export default function PublicationsPage() {
+  const columns = [
+    { header: "Title", accessor: "title" },
+    { header: "Journal/Publisher", accessor: "journal" },
+    { 
+      header: "Type", 
+      accessor: "type",
+      render: (val: string) => (
+        <span className="px-3 py-1 rounded-lg bg-indigo-50 text-[10px] font-black text-indigo-600 tracking-widest uppercase">
+          {val}
+        </span>
+      )
+    },
+    { header: "Year", accessor: "year" },
+  ];
+
   return (
     <AdminLayout>
-      <div className="bg-white p-10 rounded-[2.5rem] border border-slate-50 shadow-sm text-center">
-        <h2 className="text-2xl font-bold text-slate-800 mb-2">Publications</h2>
-        <p className="text-slate-400">Add and edit journal articles, conference papers, and books.</p>
-      </div>
+      <DashboardTable
+        title="Publications"
+        description="Manage research papers and academic contributions"
+        icon={BookOpen}
+        data={publications}
+        columns={columns}
+        categories={["Journal", "Conference", "Book Chapter"]}
+        onAdd={() => console.log("Add pub")}
+      />
     </AdminLayout>
   );
 }
