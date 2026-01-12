@@ -73,9 +73,9 @@ export default function ResearchFocus() {
                   <h3 className="text-lg font-bold text-[#1e293b] mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
+                      <Link href="/research/1" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:gap-4 transition-all group">
+                        EXPLORE <ArrowRight className="w-4 h-4" />
+                      </Link>
                 </motion.div>
               ))}
             </div>

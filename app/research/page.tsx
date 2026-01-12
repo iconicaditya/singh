@@ -12,7 +12,7 @@ const researchPapers = [
     title: "Plastic lifecycle impacts",
     category: "WASTE MANAGEMENT",
     description: "Evaluating the environmental footprint of plastic products from production to disposal.",
-    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    image: "/researchimages/research_1.jpg",
     tags: ["LCA", "Sustainability", "Environment"],
     date: "2024-03-15"
   },
@@ -21,7 +21,7 @@ const researchPapers = [
     title: "Plastic-climate connections",
     category: "CLIMATE CHANGE",
     description: "Studying the intersection of plastic pollution and greenhouse gas emissions.",
-    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    image: "/researchimages/research_2.jpg",
     tags: ["Carbon", "Policy", "Climate"],
     date: "2024-01-20"
   },
@@ -30,7 +30,7 @@ const researchPapers = [
     title: "Microplastics monitoring",
     category: "PLASTICS",
     description: "Advanced techniques for detecting and tracking microplastics in urban water systems.",
-    image: "/attached_assets/stock_images/professional_researc_b446b59e.jpg",
+    image: "/researchimages/research_3.jpg",
     tags: ["Technology", "Monitoring", "Water"],
     date: "2023-11-05"
   },
@@ -39,7 +39,7 @@ const researchPapers = [
     title: "Composting & Biowaste processing",
     category: "WASTE MANAGEMENT",
     description: "Optimizing organic waste conversion for sustainable agricultural applications.",
-    image: "/attached_assets/stock_images/professional_researc_f172db13.jpg",
+    image: "/researchimages/research_4.jpg",
     tags: ["Circular Economy", "Agriculture"],
     date: "2023-09-12"
   },
@@ -48,7 +48,7 @@ const researchPapers = [
     title: "Municipal solid waste planning",
     category: "URBAN SYSTEMS",
     description: "Strategic frameworks for integrated waste management in rapidly growing cities.",
-    image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+    image: "/researchimages/research_1.jpg",
     tags: ["Urban Planning", "Public Health"],
     date: "2023-07-28"
   },
@@ -57,7 +57,7 @@ const researchPapers = [
     title: "Waste-to-energy innovations",
     category: "RENEWABLE ENERGY",
     description: "Exploring next-generation technologies for energy recovery from non-recyclable waste.",
-    image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+    image: "/researchimages/research_2.jpg",
     tags: ["Energy", "Innovation", "Tech"],
     date: "2023-05-15"
   },
@@ -66,7 +66,7 @@ const researchPapers = [
     title: `Research Initiative ${i + 7}: Environmental Analysis`,
     category: ["PLASTICS", "CLIMATE", "ENERGY", "URBAN"][i % 4],
     description: "Comprehensive scientific study focusing on long-term sustainability and environmental preservation strategies.",
-    image: `/attached_assets/stock_images/professional_researc_${["2d676eab", "b03bfae3", "b446b59e", "f172db13"][i % 4]}.jpg`,
+    image: `/researchimages/research_${(i % 4) + 1}.jpg`,
     tags: ["Science", "Research", "Analysis"],
     date: `2023-0${(i % 9) + 1}-10`
   }))
@@ -242,7 +242,7 @@ export default function ResearchPage() {
                           </span>
                         ))}
                       </div>
-                      <Link href="#" className="flex items-center gap-2 text-xs font-black text-blue-500 hover:text-white transition-all">
+                      <Link href={`/research/${paper.id}`} className="flex items-center gap-2 text-xs font-black text-blue-500 hover:text-white transition-all">
                         EXPLORE <ArrowRight size={16} />
                       </Link>
                     </div>
