@@ -1,8 +1,9 @@
 "use client";
 
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Beaker, Search, Plus, Edit2, Trash2, X } from "lucide-react";
+import { Beaker, Search, Plus, Edit2, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const mockResearch = [
   {
@@ -18,8 +19,8 @@ const mockResearch = [
 ];
 
 export default function AdminResearchPage() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <AdminLayout>
@@ -47,7 +48,7 @@ export default function AdminResearchPage() {
               />
             </div>
             <button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => router.push('/login/dashboard/research/add')}
               className="flex items-center gap-2 bg-[#2563eb] hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-95"
             >
               <Plus size={20} />
