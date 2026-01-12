@@ -1173,7 +1173,7 @@ const projects = [
         category: "RESEARCH",
         description: "Comprehensive study on the distribution and impact of microplastics in coastal waters, focusing on marine ecosystem health.",
         status: "Ongoing...",
-        image: "/projectimages/marine.png",
+        image: "/projectimages/project_1.jpg",
         year: "2024"
     },
     {
@@ -1182,7 +1182,7 @@ const projects = [
         category: "COMMUNITY",
         description: "Empowering local communities with sustainable waste management practices through interactive workshops and resource sharing.",
         status: "Completed",
-        image: "/projectimages/recycling.jpg",
+        image: "/projectimages/project_2.jpg",
         year: "2023"
     },
     {
@@ -1191,7 +1191,7 @@ const projects = [
         category: "TECHNOLOGY",
         description: "Developing advanced AI models to visualize complex climate data patterns, helping policymakers make informed decisions.",
         status: "Ongoing...",
-        image: "/projectimages/climate_ai.jpg",
+        image: "/projectimages/project_3.jpg",
         year: "2024"
     },
     {
@@ -1200,7 +1200,7 @@ const projects = [
         category: "TECHNOLOGY",
         description: "Strategic plan for transitioning urban centers to 100% renewable energy sources within the next decade.",
         status: "Ongoing...",
-        image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+        image: "/projectimages/project_4.jpg",
         year: "2024"
     },
     {
@@ -1209,7 +1209,7 @@ const projects = [
         category: "COMMUNITY",
         description: "Establishing vertical gardens in high-density urban areas to improve air quality and provide local produce.",
         status: "Completed",
-        image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+        image: "/projectimages/project_5.jpg",
         year: "2023"
     },
     {
@@ -1218,7 +1218,7 @@ const projects = [
         category: "RESEARCH",
         description: "Developing low-cost, high-efficiency water filtration systems for rural communities using local materials.",
         status: "Ongoing...",
-        image: "/attached_assets/stock_images/professional_researc_b446b59e.jpg",
+        image: "/projectimages/project_1.jpg",
         year: "2024"
     },
     {
@@ -1227,7 +1227,7 @@ const projects = [
         category: "RESEARCH",
         description: "Restoring critical wildlife corridors through reforestation and community-led conservation efforts.",
         status: "Completed",
-        image: "/attached_assets/stock_images/professional_researc_f172db13.jpg",
+        image: "/projectimages/project_2.jpg",
         year: "2023"
     },
     {
@@ -1236,7 +1236,7 @@ const projects = [
         category: "TECHNOLOGY",
         description: "Researching and developing biodegradable alternatives to single-use plastics in the manufacturing sector.",
         status: "Ongoing...",
-        image: "/attached_assets/stock_images/professional_researc_2d676eab.jpg",
+        image: "/projectimages/project_3.jpg",
         year: "2024"
     },
     {
@@ -1245,7 +1245,7 @@ const projects = [
         category: "COMMUNITY",
         description: "Promoting carbon-neutral transit options through infrastructure development and public awareness campaigns.",
         status: "Completed",
-        image: "/attached_assets/stock_images/professional_researc_b03bfae3.jpg",
+        image: "/projectimages/project_4.jpg",
         year: "2023"
     }
 ];
@@ -1577,16 +1577,16 @@ function Projects() {
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    href: "#",
+                                                    href: "/all-projects/".concat(project.id),
                                                     className: "flex items-center gap-2 text-xs font-black text-gray-400 group-hover:text-blue-600 transition-colors",
                                                     children: [
-                                                        "LEARN MORE ",
+                                                        "VIEW PROJECT ",
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
                                                             size: 14
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/project.tsx",
                                                             lineNumber: 215,
-                                                            columnNumber: 32
+                                                            columnNumber: 34
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
