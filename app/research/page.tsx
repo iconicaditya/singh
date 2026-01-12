@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Search, Globe2, Beaker, FileText, Lightbulb, ChevronDown, Calendar } from "lucide-react";
+import { ArrowLeft, ArrowRight, Search, ChevronDown, Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";

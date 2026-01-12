@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { 
   ArrowLeft, 
   Calendar, 
-  Tag, 
   User, 
   Share2, 
   Download, 
-  ExternalLink,
-  CheckCircle2,
-  Clock,
-  BookOpen
+  ExternalLink, 
+  CheckCircle2, 
+  Clock, 
+  BookOpen 
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -253,7 +252,7 @@ export default function ResearchDetail() {
                 </h2>
                 <div className="bg-slate-900/50 rounded-3xl p-8 border border-white/5 mb-16">
                   <p className="text-gray-300 text-lg italic leading-relaxed">
-                    "{paper.methodology}"
+                    &quot;{paper.methodology}&quot;
                   </p>
                 </div>
 
