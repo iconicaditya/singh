@@ -1,0 +1,89 @@
+# Admin Dashboard - Form Input Fields Requirements
+
+This document summarizes the required input fields for each dashboard section based on existing frontend components.
+
+## 1. Research Management
+*Source: `app/research/[id]/page.tsx`*
+- **Title**: text (e.g., "Plastic lifecycle impacts")
+- **Category**: dropdown (WASTE MANAGEMENT, CLIMATE CHANGE, PLASTICS, URBAN SYSTEMS, RENEWABLE ENERGY)
+- **Description/Summary**: textarea (Short overview)
+- **Full Content**: rich text / textarea (Detailed paper content)
+- **Image**: file/url (Main research image)
+- **Tags**: text (comma separated, e.g., "LCA, Sustainability")
+- **Date**: date (Publication date)
+- **Author**: text (Lead researcher name)
+- **Read Time**: text (e.g., "12 min read")
+- **Methodology**: textarea (Description of research methods)
+- **Key Findings**: list/dynamic inputs (Bullet points of results)
+
+## 2. Projects Management
+*Source: `app/all-projects/[id]/page.tsx`, `components/project.tsx`*
+- **Title**: text
+- **Category**: dropdown (RESEARCH, COMMUNITY, TECHNOLOGY)
+- **Description**: textarea
+- **Full Description**: rich text / textarea
+- **Image**: file/url
+- **Status**: dropdown (Ongoing..., Completed)
+- **Year**: text (e.g., "2024")
+- **Location**: text (e.g., "Pacific Coastal Region")
+- **Team Size/Description**: text (e.g., "12 Research Scientists")
+- **Impact Statement**: text (e.g., "Mapped 500+ microplastic accumulation zones")
+- **Objectives**: list/dynamic inputs (Project goals)
+
+## 3. Team Members
+*Source: `components/ourteam.tsx`, `app/all-teams/page.tsx`*
+- **Name**: text (e.g., "Er. Aaditya Chaudhary")
+- **Role**: text (e.g., "RESEARCH MEMBER")
+- **Category**: dropdown (Faculty, Research, Student, Advisor)
+- **Bio**: textarea (Professional summary)
+- **Image**: file/url
+- **Social Links**:
+    - Facebook URL
+    - Twitter/X URL
+    - LinkedIn URL
+
+## 4. Publications
+*Source: `components/publication.tsx`*
+- **Title**: text
+- **Authors**: text (List of authors)
+- **Journal/Publisher**: text
+- **Year**: text
+- **DOI**: text (Digital Object Identifier)
+- **Category**: dropdown (RESEARCH PAPER, CASE STUDY, BOOK CHAPTER)
+- **Link**: URL (External publication link)
+
+## 5. Gallery
+*Source: `components/gallery.tsx`*
+- **Title**: text
+- **Category**: dropdown (PLASTIC WASTE, RECYCLING, LANDFILL MGMT, ORGANIC WASTE)
+- **Image**: file/url
+- **Description**: textarea
+
+## 6. Resources
+*Source: `app/login/dashboard/resources/page.tsx`*
+- **Name**: text
+- **Format**: dropdown (PDF, CSV, Excel, Other)
+- **File**: upload/url
+- **Description**: textarea (optional)
+
+## 7. Collaborators
+*Source: `app/login/dashboard/collaborators/page.tsx`*
+- **Partner Name**: text
+- **Type**: dropdown (Institutional, Corporate, Individual)
+- **Location**: text
+- **Status**: dropdown (Active, Inactive)
+
+## 8. Messages (View Only)
+*Source: `components/contact.tsx`*
+- **Name**: text
+- **Email**: email
+- **Subject**: text
+- **Message**: textarea
+- **Status**: dropdown (New, Read, Replied)
+
+## 9. Users
+- **Name**: text
+- **Email**: email
+- **Role**: dropdown (Super Admin, Editor, Viewer)
+- **Password**: password (for creation)
+- **Status**: dropdown (Active, Inactive)
