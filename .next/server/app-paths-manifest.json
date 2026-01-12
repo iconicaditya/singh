@@ -1,6 +1,14 @@
 {
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/login/dashboard/collaborators/page": "app/login/dashboard/collaborators/page.js",
+  "/login/dashboard/page": "app/login/dashboard/page.js",
   "/login/dashboard/projects/page": "app/login/dashboard/projects/page.js",
+  "/login/dashboard/publications/page": "app/login/dashboard/publications/page.js",
   "/login/dashboard/research/add/page": "app/login/dashboard/research/add/page.js",
-  "/page": "app/page.js"
+  "/login/dashboard/research/page": "app/login/dashboard/research/page.js",
+  "/login/dashboard/resources/page": "app/login/dashboard/resources/page.js",
+  "/login/dashboard/users/page": "app/login/dashboard/users/page.js",
+  "/page": "app/page.js",
+  "/research/[id]/page": "app/research/[id]/page.js",
+  "/research/page": "app/research/page.js"
 }
