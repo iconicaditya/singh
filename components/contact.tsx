@@ -22,10 +22,28 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 bg-[#f8fafc]">
       <div className="container mx-auto px-6 max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-16 space-y-4"
+        >
+          <h2 className="text-4xl md:text-5xl font-black text-[#1a2233] tracking-tight">
+            Let's Start a Conversation
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Have a question about our research or interested in collaboration? 
+            We're here to help you turn visionary ideas into reality.
+          </p>
+          <div className="w-20 h-1.5 bg-blue-600 mx-auto rounded-full" />
+        </motion.div>
+
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-col lg:row overflow-hidden rounded-[1rem] shadow-2xl bg-white min-h-[600px] border border-gray-100 lg:flex-row"
         >
           {/* Left Panel: Dark Theme */}
