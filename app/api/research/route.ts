@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { research } from '@/lib/db/schema';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 export async function GET() {
   try {
@@ -29,5 +29,19 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('DB Error:', error);
     return NextResponse.json({ error: 'Failed to create research' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+
+    await db.delete(research).where(eq(research.id, parseInt(id)));
+    return NextResponse.json({ message: 'Research deleted successfully' });
+  } catch (error) {
+    console.error('Delete Error:', error);
+    return NextResponse.json({ error: 'Failed to delete research' }, { status: 500 });
   }
 }
