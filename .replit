@@ -38,3 +38,11 @@ externalPort = 80
 deploymentTarget = "autoscale"
 build = ["npm", "run", "build"]
 run = ["npm", "run", "start"]
+
+[userenv]
+
+[userenv.shared]
+CLOUDINARY_API_KEY = "719483861873544"
+CLOUDINARY_CLOUD_NAME = "dbgq7ls4q"
+CLOUDINARY_URL = "cloudinary://719483861873544:JVk3dxzTN26KvLSGPeYUXtsMtZg@dbgq7ls4q"
+CLOUDINARY_API_SECRET = "JVk3dxzTN26KvLSGPeYUXtsMtZg"
