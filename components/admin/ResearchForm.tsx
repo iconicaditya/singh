@@ -52,9 +52,39 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     setContentSections(prev => prev.map(s => s.id === id ? { ...s, content: newContent } : s));
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    onClose();
+    
+    try {
+      const finalData = {
+        title: formData.title,
+        category: formData.category,
+        year: formData.year,
+        tags: formData.tags,
+        titleImage: "", 
+        authors: authors.filter(a => a.trim() !== ""),
+        contentSections: contentSections.map(s => ({
+          title: s.title,
+          content: s.content,
+          image: "" 
+        })),
+        relatedPublications: []
+      };
+
+      const response = await fetch('/api/research', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(finalData),
+      });
+
+      if (!response.ok) throw new Error('Failed to save research');
+
+      console.log("Research saved successfully!");
+      onClose();
+    } catch (error) {
+      console.error("Save Error:", error);
+      alert("Failed to save research. Check console for details.");
+    }
   };
 
   return (
