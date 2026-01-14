@@ -56,8 +56,13 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     e.preventDefault();
     
     try {
-      if (!formData.title || !formData.category || !formData.year) {
+      if (!formData.title?.trim() || !formData.category || !formData.year?.trim()) {
         alert("Please fill in all required fields (Title, Category, Year)");
+        return;
+      }
+
+      if (authors.every(a => !a.trim())) {
+        alert("Please add at least one author");
         return;
       }
 
