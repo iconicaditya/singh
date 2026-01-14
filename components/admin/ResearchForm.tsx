@@ -56,6 +56,11 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     e.preventDefault();
     
     try {
+      if (!formData.title || !formData.category || !formData.year) {
+        alert("Please fill in all required fields (Title, Category, Year)");
+        return;
+      }
+
       const finalData = {
         title: formData.title,
         category: formData.category,
@@ -77,13 +82,28 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
         body: JSON.stringify(finalData),
       });
 
-      if (!response.ok) throw new Error('Failed to save research');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to save research');
+      }
 
       console.log("Research saved successfully!");
       onClose();
     } catch (error) {
       console.error("Save Error:", error);
-      alert("Failed to save research. Check console for details.");
+      alert(error instanceof Error ? error.message : "Failed to save research");
+    }
+  };
+
+  const handleAddCategory = () => {
+    if (formData.newCategory.trim()) {
+      // In a real app, you might want to save this to a categories table
+      // For now, we'll just add it to the state and select it
+      setFormData(prev => ({
+        ...prev,
+        category: prev.newCategory.trim().toUpperCase(),
+        newCategory: ""
+      }));
     }
   };
 
@@ -133,6 +153,17 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:border-blue-500 transition-all text-sm font-bold text-black appearance-none cursor-pointer"
                   >
                     <option value="RESEARCH">RESEARCH</option>
+                    <option value="PUBLICATION">PUBLICATION</option>
+                    <option value="CASE STUDY">CASE STUDY</option>
+                    <option value="WASTE MANAGEMENT">WASTE MANAGEMENT</option>
+                    <option value="CLIMATE CHANGE">CLIMATE CHANGE</option>
+                    {formData.category !== "RESEARCH" && 
+                     formData.category !== "PUBLICATION" && 
+                     formData.category !== "CASE STUDY" && 
+                     formData.category !== "WASTE MANAGEMENT" && 
+                     formData.category !== "CLIMATE CHANGE" && (
+                      <option value={formData.category}>{formData.category}</option>
+                    )}
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
                 </div>
@@ -146,7 +177,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   />
                   <button 
                     type="button"
-                    className="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-600/20"
+                    onClick={handleAddCategory}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
                   >
                     Add
                   </button>
@@ -273,28 +305,28 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     </div>
 
                     <div className="flex items-center gap-1 pr-4 border-r border-slate-200 mr-4">
-                      <button type="button" onClick={() => execCommand('bold')} className="p-2 hover:bg-white rounded text-slate-600 font-bold">B</button>
-                      <button type="button" onClick={() => execCommand('italic')} className="p-2 hover:bg-white rounded text-slate-600 italic font-serif">I</button>
-                      <button type="button" onClick={() => execCommand('underline')} className="p-2 hover:bg-white rounded text-slate-600 underline">U</button>
+                      <button type="button" onClick={() => execCommand('bold')} className="p-2 hover:bg-white rounded text-slate-600 font-bold active:bg-slate-200">B</button>
+                      <button type="button" onClick={() => execCommand('italic')} className="p-2 hover:bg-white rounded text-slate-600 italic font-serif active:bg-slate-200">I</button>
+                      <button type="button" onClick={() => execCommand('underline')} className="p-2 hover:bg-white rounded text-slate-600 underline active:bg-slate-200">U</button>
                     </div>
 
                     <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 mr-2">
                       A <ChevronDown size={12} />
                     </div>
                     
-                    <button type="button" className="p-2 hover:bg-white rounded text-slate-400 mr-4"><RotateCcw size={14} /></button>
+                    <button type="button" onClick={() => execCommand('undo')} className="p-2 hover:bg-white rounded text-slate-400 mr-4 active:bg-slate-200"><RotateCcw size={14} /></button>
 
                     <div className="flex items-center gap-1 pr-4 border-r border-slate-200 mr-4">
-                      <button type="button" onClick={() => execCommand('insertUnorderedList')} className="p-2 hover:bg-white rounded text-slate-600"><List size={14} /></button>
-                      <button type="button" onClick={() => execCommand('insertOrderedList')} className="p-2 hover:bg-white rounded text-slate-600"><ListOrdered size={14} /></button>
-                      <button type="button" className="p-2 hover:bg-white rounded text-slate-600"><AlignLeft size={14} /></button>
+                      <button type="button" onClick={() => execCommand('insertUnorderedList')} className="p-2 hover:bg-white rounded text-slate-600 active:bg-slate-200"><List size={14} /></button>
+                      <button type="button" onClick={() => execCommand('insertOrderedList')} className="p-2 hover:bg-white rounded text-slate-600 active:bg-slate-200"><ListOrdered size={14} /></button>
+                      <button type="button" onClick={() => execCommand('justifyLeft')} className="p-2 hover:bg-white rounded text-slate-600 active:bg-slate-200"><AlignLeft size={14} /></button>
                     </div>
 
                     <div className="flex items-center gap-1">
-                      <button type="button" className="p-2 hover:bg-white rounded text-slate-400"><AlignLeft size={14} /></button>
-                      <button type="button" className="p-2 hover:bg-white rounded text-slate-400"><AlignCenter size={14} /></button>
-                      <button type="button" className="p-2 hover:bg-white rounded text-slate-400"><AlignRight size={14} /></button>
-                      <button type="button" className="p-2 hover:bg-white rounded text-slate-400"><AlignLeft size={14} className="scale-x-[-1]" /></button>
+                      <button type="button" onClick={() => execCommand('justifyLeft')} className="p-2 hover:bg-white rounded text-slate-400 active:bg-slate-200"><AlignLeft size={14} /></button>
+                      <button type="button" onClick={() => execCommand('justifyCenter')} className="p-2 hover:bg-white rounded text-slate-400 active:bg-slate-200"><AlignCenter size={14} /></button>
+                      <button type="button" onClick={() => execCommand('justifyRight')} className="p-2 hover:bg-white rounded text-slate-400 active:bg-slate-200"><AlignRight size={14} /></button>
+                      <button type="button" onClick={() => execCommand('justifyFull')} className="p-2 hover:bg-white rounded text-slate-400 active:bg-slate-200"><AlignLeft size={14} className="scale-x-[-1]" /></button>
                     </div>
 
                     <button type="button" onClick={() => {
