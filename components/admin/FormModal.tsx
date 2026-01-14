@@ -8,9 +8,10 @@ interface FormModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  hideTitle?: boolean;
 }
 
-export default function FormModal({ isOpen, onClose, title, children }: FormModalProps) {
+export default function FormModal({ isOpen, onClose, title, children, hideTitle }: FormModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -29,16 +30,18 @@ export default function FormModal({ isOpen, onClose, title, children }: FormModa
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
         >
-          <div className="p-6 md:p-10 border-b border-slate-50 flex items-center justify-between shrink-0">
-            <h2 className="text-2xl font-black text-slate-800 tracking-tight">{title}</h2>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-600"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+          {!hideTitle && (
+            <div className="p-6 md:p-10 border-b border-slate-50 flex items-center justify-between shrink-0">
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">{title}</h2>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+          )}
+          <div className={`flex-1 overflow-y-auto custom-scrollbar ${hideTitle ? '' : 'p-6 md:p-10'}`}>
             {children}
           </div>
         </motion.div>
