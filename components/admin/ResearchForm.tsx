@@ -32,26 +32,28 @@ if (Parchment && typeof window !== 'undefined') {
   const Align = Quill.import('attributors/style/align');
   Quill.register(Align, true);
 
-  // Extend the List format to support attributes
+  // Use the correct import path for ListItem
   const ListItem = Quill.import('formats/list/item');
-  class CustomListItem extends ListItem {
-    static register() {
-      Quill.register(Size, true);
-      Quill.register(Color, true);
-      Quill.register(Font, true);
-    }
-    format(name: string, value: any) {
-      if (['size', 'color', 'font'].includes(name)) {
-        if (value) {
-          this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
-        } else {
-          this.domNode.style.removeProperty(name === 'font' ? 'font-family' : name);
-        }
+  if (ListItem) {
+    class CustomListItem extends ListItem {
+      static register() {
+        Quill.register(Size, true);
+        Quill.register(Color, true);
+        Quill.register(Font, true);
       }
-      super.format(name, value);
+      format(name: string, value: any) {
+        if (['size', 'color', 'font'].includes(name)) {
+          if (value) {
+            this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
+          } else {
+            this.domNode.style.removeProperty(name === 'font' ? 'font-family' : name);
+          }
+        }
+        super.format(name, value);
+      }
     }
+    Quill.register(CustomListItem, true);
   }
-  Quill.register(CustomListItem, true);
 
   const Bold = Quill.import('formats/bold');
   Quill.register(Bold, true);
