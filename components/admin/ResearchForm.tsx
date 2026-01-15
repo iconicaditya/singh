@@ -115,21 +115,26 @@ if (Parchment && typeof window !== 'undefined') {
       optimize(context: any) {
         super.optimize(context);
         
-        // Ensure the LI itself carries the formatting of its content
-        // This is critical because the list marker (bullet/number) 
-        // inherits styles from the LI element in the DOM.
+        // FORCED INHERITANCE: Force the LI marker to match the first child's formatting
+        // This is the most reliable way to ensure markers match text content in real-time
         const firstChild = this.domNode.firstChild;
         if (firstChild) {
           if (firstChild.nodeType === 1) { // Element node
             const style = window.getComputedStyle(firstChild as HTMLElement);
+            // Explicitly force styles onto the LI to override default browser marker behavior
             this.domNode.style.fontSize = style.fontSize;
             this.domNode.style.color = style.color;
             this.domNode.style.fontFamily = style.fontFamily;
             this.domNode.style.fontWeight = style.fontWeight;
             this.domNode.style.fontStyle = style.fontStyle;
             this.domNode.style.textDecoration = style.textDecoration;
+            
+            // Force re-rendering of markers in some browsers
+            this.domNode.style.listStyleType = this.domNode.style.listStyleType;
           } else if (firstChild.nodeType === 3) { // Text node
-            // If it's a direct text node, it should already be handled by the format() override
+            // Direct text node inheritance via inline styles from format()
+            this.domNode.style.fontSize = this.domNode.style.fontSize || 'inherit';
+            this.domNode.style.color = this.domNode.style.color || 'inherit';
           }
         }
       }
