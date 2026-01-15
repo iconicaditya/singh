@@ -49,9 +49,17 @@ if (Parchment && typeof window !== 'undefined') {
         class CustomListItem extends _ListItem {
           static register() {
             try {
-              if (Quill.imports['formats/size']) Quill.register(Quill.import('formats/size'), true);
-              if (Quill.imports['formats/color']) Quill.register(Quill.import('formats/color'), true);
-              if (Quill.imports['formats/font']) Quill.register(Quill.import('formats/font'), true);
+              const Size = Quill.import('attributors/style/size');
+              const Color = Quill.import('attributors/style/color');
+              const Font = Quill.import('attributors/style/font');
+              const Align = Quill.import('attributors/style/align');
+              const ListStyleType = Quill.import('attributors/style/list-style-type');
+              
+              if (Size) Quill.register(Size, true);
+              if (Color) Quill.register(Color, true);
+              if (Font) Quill.register(Font, true);
+              if (Align) Quill.register(Align, true);
+              if (ListStyleType) Quill.register(ListStyleType, true);
             } catch (e) {
               console.warn('Sub-format registration skipped', e);
             }
@@ -59,21 +67,10 @@ if (Parchment && typeof window !== 'undefined') {
           
           format(name: string, value: any) {
             const domNode = (this as any).domNode;
-            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked', 'indent', 'list-style-color', 'list-style-size', 'foldable', 'folded'].includes(name)) {
-              if (name === 'list-style-type') {
-                domNode.style.listStyleType = value;
-                domNode.setAttribute('data-list-style', value);
-              } else if (name === 'checked') {
+            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'checked', 'indent'].includes(name)) {
+              if (name === 'checked') {
                 domNode.setAttribute('data-checked', value);
                 domNode.classList.toggle('task-list-item', true);
-              } else if (name === 'foldable') {
-                domNode.classList.toggle('foldable', !!value);
-              } else if (name === 'folded') {
-                domNode.classList.toggle('folded', !!value);
-              } else if (name === 'list-style-color') {
-                domNode.style.setProperty('--list-marker-color', value);
-              } else if (name === 'list-style-size') {
-                domNode.style.setProperty('--list-marker-size', value);
               } else if (name === 'indent') {
                 domNode.style.marginLeft = value ? (value * 2) + 'em' : '';
               } else {
@@ -222,8 +219,7 @@ const formats = [
   'list', 'indent',
   'align',
   'link', 'image', 'video',
-  'list-style-type', 'list-style-color', 'list-style-size',
-  'foldable', 'folded', 'checked'
+  'checked'
 ];
 
 interface ResearchFormProps {
