@@ -29,6 +29,7 @@ if (Parchment && typeof window !== 'undefined') {
 
 const modules = {
   toolbar: [
+    ['undo', 'redo'],
     [{ 'font': [
       'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
       'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
@@ -37,9 +38,9 @@ const modules = {
       '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
     ] }],
     ['bold', 'italic', 'underline'],
-    [{ 'color': [] }, { 'background': [] }],
+    ['color', 'background'],
+    [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'align': [] }],
     ['link'],
     ['clean']
   ],
@@ -300,20 +301,31 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
             </div>
 
             {contentSections.map((section, index) => (
-              <div key={section.id} className="space-y-4">
-                <input 
-                  type="text" 
-                  placeholder="Title eg:- Introduction"
-                  value={section.title}
-                  onChange={e => {
-                    const newS = [...contentSections];
-                    newS[index].title = e.target.value;
-                    setContentSections(newS);
-                  }}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-blue-500 focus:ring-0 text-slate-900"
-                />
+              <div key={section.id} className="space-y-4 border border-gray-100 rounded-xl p-6 relative">
+                <button 
+                  type="button" 
+                  onClick={() => setContentSections(contentSections.filter(s => s.id !== section.id))}
+                  className="absolute top-4 right-4 text-rose-500 hover:text-rose-700 p-1.5 hover:bg-rose-50 rounded-lg transition-colors"
+                >
+                  <Trash2 size={18} />
+                </button>
 
-                <div className="bg-white ql-custom-container" dir="ltr">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-tight">Section Title (e.g. Introduction)</label>
+                  <input 
+                    type="text" 
+                    placeholder="Section Title (e.g. Introduction)"
+                    value={section.title}
+                    onChange={e => {
+                      const newS = [...contentSections];
+                      newS[index].title = e.target.value;
+                      setContentSections(newS);
+                    }}
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-100 text-sm focus:border-blue-500 focus:ring-0 text-slate-900"
+                  />
+                </div>
+
+                <div className="bg-white ql-custom-container border border-gray-100 rounded-lg overflow-hidden" dir="ltr">
                   <ReactQuill
                     theme="snow"
                     value={section.content || ""}
@@ -330,16 +342,62 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       direction: ltr !important;
                       font-size: 14px;
                       line-height: 1.6;
+                      padding: 24px;
                     }
-                    .ql-custom-container .ql-container {
-                      border-bottom-left-radius: 8px;
-                      border-bottom-right-radius: 8px;
+                    .ql-custom-container .ql-container.ql-snow {
+                      border: none;
                     }
-                    .ql-custom-container .ql-toolbar {
-                      border-top-left-radius: 8px;
-                      border-top-right-radius: 8px;
-                      background: #f8fafc;
+                    .ql-custom-container .ql-toolbar.ql-snow {
+                      border: none;
+                      border-bottom: 1px solid #f1f5f9;
+                      background: #fff;
+                      padding: 8px 12px;
+                      display: flex;
+                      align-items: center;
+                      gap: 4px;
                     }
+                    .ql-toolbar.ql-snow .ql-formats {
+                      margin-right: 12px;
+                      padding-right: 12px;
+                      border-right: 1px solid #f1f5f9;
+                      display: flex;
+                      align-items: center;
+                    }
+                    .ql-toolbar.ql-snow .ql-formats:last-child {
+                      border-right: none;
+                    }
+                    
+                    /* Dropdown Styling */
+                    .ql-snow .ql-picker {
+                      height: 32px;
+                      border: 1px solid #e2e8f0;
+                      border-radius: 6px;
+                      background: #fff;
+                    }
+                    .ql-snow .ql-picker.ql-font {
+                      width: 120px;
+                    }
+                    .ql-snow .ql-picker.ql-size {
+                      width: 80px;
+                    }
+                    .ql-snow .ql-picker-label {
+                      padding-left: 12px !important;
+                      display: flex;
+                      align-items: center;
+                      font-size: 13px;
+                      color: #64748b;
+                    }
+
+                    /* Icons Styling */
+                    .ql-snow.ql-toolbar button {
+                      width: 28px;
+                      height: 28px;
+                      color: #64748b;
+                    }
+                    .ql-snow.ql-toolbar button:hover, .ql-snow.ql-toolbar button.ql-active {
+                      color: #2563eb;
+                    }
+                    
                     /* Custom Fonts */
                     .ql-font-arial { font-family: 'Arial', sans-serif; }
                     .ql-font-helvetica { font-family: 'Helvetica', sans-serif; }
@@ -359,7 +417,9 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     }
 
                     /* Font labels in dropdown */
-                    .ql-snow .ql-picker.ql-font .ql-picker-label::before,
+                    .ql-snow .ql-picker.ql-font .ql-picker-label::before {
+                      content: 'Font' !important;
+                    }
                     .ql-snow .ql-picker.ql-font .ql-picker-item::before {
                       content: attr(data-value) !important;
                     }
@@ -376,7 +436,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   ` }} />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label className="text-[11px] font-bold text-slate-700 uppercase tracking-tight">Paragraph Image (Optional)</label>
                   <div className="flex items-start gap-4">
                     <div className="w-28 h-20 border-2 border-dashed border-gray-100 rounded-lg flex items-center justify-center bg-gray-50 overflow-hidden relative">
@@ -386,8 +446,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                         <Plus size={24} className="text-slate-300" />
                       )}
                     </div>
-                    <label className="inline-flex items-center gap-2 px-6 py-2 border border-gray-200 rounded-lg text-[11px] font-bold text-slate-600 cursor-pointer hover:bg-gray-50 transition-colors">
-                      Upload Image
+                    <label className="inline-flex items-center gap-2 px-6 py-2 border border-gray-200 rounded-lg text-xs font-bold text-slate-600 cursor-pointer hover:bg-gray-50 transition-colors">
+                      <ImageIcon size={14} /> Upload Image
                       <input type="file" className="hidden" onChange={e => handleImageUpload(e, 'section', undefined, section.id)} />
                     </label>
                   </div>
@@ -395,8 +455,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
               </div>
             ))}
 
-            <button type="button" onClick={() => setContentSections([...contentSections, { id: crypto.randomUUID(), title: "", content: "", image: "" }])} className="w-full py-2.5 border border-gray-200 rounded-lg text-[11px] font-bold text-slate-600 flex items-center justify-center gap-2 hover:bg-gray-50">
-              <Plus size={14} /> Add Content Section
+            <button type="button" onClick={() => setContentSections([...contentSections, { id: crypto.randomUUID(), title: "", content: "", image: "" }])} className="w-full py-8 border-2 border-dashed border-gray-100 rounded-xl text-sm font-bold text-slate-500 flex items-center justify-center gap-2 hover:bg-gray-50 hover:border-blue-200 transition-all">
+              <Plus size={20} /> Add Content Section
             </button>
           </section>
 
