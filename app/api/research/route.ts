@@ -15,20 +15,65 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const result = await db.insert(research).values({
+    
+    // Validate required fields
+    if (!body.title || !body.category || !body.year || !body.authors) {
+      return NextResponse.json({ error: 'Missing required fields: title, category, year, and authors are required' }, { status: 400 });
+    }
+
+    const [savedItem] = await db.insert(research).values({
       title: body.title,
       category: body.category,
       year: body.year,
-      tags: body.tags,
-      titleImage: body.titleImage,
+      tags: body.tags || "",
+      titleImage: body.titleImage || "",
       authors: body.authors,
-      contentSections: body.contentSections,
-      relatedPublications: body.relatedPublications,
+      contentSections: body.contentSections || [],
+      relatedPublications: body.relatedPublications || [],
     }).returning();
-    return NextResponse.json(result[0]);
-  } catch (error) {
-    console.error('DB Error:', error);
-    return NextResponse.json({ error: 'Failed to create research' }, { status: 500 });
+    
+    // Securely serialize dates
+    const serializeDate = (d: any) => {
+      if (!d) return new Date().toISOString();
+      try {
+        const date = new Date(d);
+        if (isNaN(date.getTime())) return new Date().toISOString();
+        return date.toISOString();
+      } catch (e) {
+        return new Date().toISOString();
+      }
+    };
+
+    if (!savedItem) {
+      // Fallback: If returning() doesn't work as expected, fetch the latest inserted item
+      const latestItems = await db.select().from(research).orderBy(desc(research.id)).limit(1);
+      if (latestItems.length > 0) {
+        const item = latestItems[0];
+        return NextResponse.json({
+          ...item,
+          createdAt: serializeDate(item.createdAt),
+          updatedAt: serializeDate(item.updatedAt)
+        });
+      }
+      throw new Error("Database insertion failed - no record found after insert");
+    }
+
+    // Ensure we return a clean serializable object
+    return NextResponse.json({
+      ...savedItem,
+      createdAt: serializeDate(savedItem.createdAt),
+      updatedAt: serializeDate(savedItem.updatedAt)
+    });
+  } catch (error: any) {
+    console.error('DB Error Detail:', error);
+    // Log the actual error object to see why it might fail
+    if (error instanceof Error) {
+      console.error('Error stack:', error.stack);
+    }
+    return NextResponse.json({ 
+      error: 'Failed to create research', 
+      details: error.message || String(error)
+    }, { status: 500 });
   }
 }
 

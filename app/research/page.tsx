@@ -4,73 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Search, ChevronDown, Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
-
-const researchPapers = [
-  {
-    id: 1,
-    title: "Plastic lifecycle impacts",
-    category: "WASTE MANAGEMENT",
-    description: "Evaluating the environmental footprint of plastic products from production to disposal.",
-    image: "/researchimages/research_1.jpg",
-    tags: ["LCA", "Sustainability", "Environment"],
-    date: "2024-03-15"
-  },
-  {
-    id: 2,
-    title: "Plastic-climate connections",
-    category: "CLIMATE CHANGE",
-    description: "Studying the intersection of plastic pollution and greenhouse gas emissions.",
-    image: "/researchimages/research_2.jpg",
-    tags: ["Carbon", "Policy", "Climate"],
-    date: "2024-01-20"
-  },
-  {
-    id: 3,
-    title: "Microplastics monitoring",
-    category: "PLASTICS",
-    description: "Advanced techniques for detecting and tracking microplastics in urban water systems.",
-    image: "/researchimages/research_3.jpg",
-    tags: ["Technology", "Monitoring", "Water"],
-    date: "2023-11-05"
-  },
-  {
-    id: 4,
-    title: "Composting & Biowaste processing",
-    category: "WASTE MANAGEMENT",
-    description: "Optimizing organic waste conversion for sustainable agricultural applications.",
-    image: "/researchimages/research_4.jpg",
-    tags: ["Circular Economy", "Agriculture"],
-    date: "2023-09-12"
-  },
-  {
-    id: 5,
-    title: "Municipal solid waste planning",
-    category: "URBAN SYSTEMS",
-    description: "Strategic frameworks for integrated waste management in rapidly growing cities.",
-    image: "/researchimages/research_1.jpg",
-    tags: ["Urban Planning", "Public Health"],
-    date: "2023-07-28"
-  },
-  {
-    id: 6,
-    title: "Waste-to-energy innovations",
-    category: "RENEWABLE ENERGY",
-    description: "Exploring next-generation technologies for energy recovery from non-recyclable waste.",
-    image: "/researchimages/research_2.jpg",
-    tags: ["Energy", "Innovation", "Tech"],
-    date: "2023-05-15"
-  },
-  ...Array.from({ length: 14 }).map((_, i) => ({
-    id: i + 7,
-    title: `Research Initiative ${i + 7}: Environmental Analysis`,
-    category: ["PLASTICS", "CLIMATE", "ENERGY", "URBAN"][i % 4],
-    description: "Comprehensive scientific study focusing on long-term sustainability and environmental preservation strategies.",
-    image: `/researchimages/research_${(i % 4) + 1}.jpg`,
-    tags: ["Science", "Research", "Analysis"],
-    date: `2023-0${(i % 9) + 1}-10`
-  }))
-];
+import { useState, useMemo, useEffect } from "react";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -79,23 +13,50 @@ export default function ResearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [selectedDate, setSelectedDate] = useState("All Dates");
+  const [researchPapers, setResearchPapers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchResearch = async () => {
+      try {
+        const response = await fetch('/api/research');
+        if (response.ok) {
+          const data = await response.json();
+          // Transform database fields to match UI expectations if needed
+          const transformedData = data.map((paper: any) => ({
+            ...paper,
+            description: paper.contentSections?.[0]?.content?.replace(/<[^>]*>/g, '').slice(0, 150) + '...' || "",
+            image: paper.titleImage || "/researchimages/research_1.jpg",
+            tags: typeof paper.tags === 'string' ? paper.tags.split(',').map((t: string) => t.trim()) : (paper.tags || []),
+            date: paper.year || paper.createdAt?.split('T')[0] || "2026"
+          }));
+          setResearchPapers(transformedData);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchResearch();
+  }, []);
 
   const filteredResearch = useMemo(() => {
     return researchPapers.filter(paper => {
       const matchesSearch = paper.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                           paper.description.toLowerCase().includes(searchTerm.toLowerCase());
+                           (paper.description && paper.description.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchesCategory = selectedCategory === "All Categories" || paper.category === selectedCategory;
       const matchesDate = selectedDate === "All Dates" || paper.date.startsWith(selectedDate);
       return matchesSearch && matchesCategory && matchesDate;
     });
-  }, [searchTerm, selectedCategory, selectedDate]);
+  }, [searchTerm, selectedCategory, selectedDate, researchPapers]);
 
   const totalPages = Math.ceil(filteredResearch.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const visibleResearch = filteredResearch.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  const categories = ["All Categories", ...new Set(researchPapers.map(p => p.category))];
-  const dates = ["All Dates", "2024", "2023"];
+  const categories = useMemo(() => ["All Categories", ...new Set(researchPapers.map(p => p.category))], [researchPapers]);
+  const dates = useMemo(() => ["All Dates", ...new Set(researchPapers.map(p => p.date?.slice(0, 4)))].sort().reverse(), [researchPapers]);
 
   return (
     <div className="min-h-screen bg-[#020617] text-white">
@@ -230,13 +191,15 @@ export default function ResearchPage() {
                     <h3 className="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-blue-400 transition-colors">
                       {paper.title}
                     </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
-                      {paper.description}
-                    </p>
+                    {paper.description && (
+                      <p className="text-gray-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                        {paper.description}
+                      </p>
+                    )}
                     
                     <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
                       <div className="flex gap-2">
-                        {paper.tags.slice(0, 2).map(tag => (
+                        {Array.isArray(paper.tags) && paper.tags.slice(0, 2).map((tag: string) => (
                           <span key={tag} className="text-[10px] bg-blue-500/10 text-blue-400 px-3 py-1 rounded-lg font-bold">
                             #{tag.toUpperCase()}
                           </span>
