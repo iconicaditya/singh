@@ -22,6 +22,21 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, ...updateData } = body;
+    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    const [updatedItem] = await db.update(publications)
+      .set({ ...updateData, updatedAt: new Date() })
+      .where(eq(publications.id, parseInt(id)))
+      .returning();
+    return NextResponse.json(updatedItem);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update publication' }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
