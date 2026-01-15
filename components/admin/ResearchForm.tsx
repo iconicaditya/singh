@@ -306,7 +306,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     contentEditable 
                     onInput={e => handleContentChange(section.id, e)}
                     className="p-6 min-h-[300px] outline-none text-slate-900 text-sm leading-relaxed relative text-left"
-                    style={{ textAlign: 'left' }}
+                    style={{ textAlign: 'left', direction: 'ltr' }}
                     dangerouslySetInnerHTML={{ __html: section.content || "" }}
                   />
                   {!section.content && (
