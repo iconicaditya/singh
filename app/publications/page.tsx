@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { BookOpen, ExternalLink, FileText, Calendar, User, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PublicationsPage() {
   const [publications, setPublications] = useState<any[]>([]);
@@ -113,9 +114,11 @@ export default function PublicationsPage() {
                       </div>
                     </div>
 
-                    <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
-                      {pub.title}
-                    </h3>
+                    <Link href={`/publications/${pub.id}`}>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+                        {pub.title}
+                      </h3>
+                    </Link>
 
                     <div className="flex items-center gap-2 text-slate-600 mb-4 italic">
                       <User size={16} className="shrink-0" />
@@ -136,17 +139,13 @@ export default function PublicationsPage() {
                     )}
 
                     <div className="mt-auto flex flex-wrap gap-4">
-                      {pub.link && (
-                        <a
-                          href={pub.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group/btn flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-black/5 active:scale-95"
-                        >
-                          <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                          View Document
-                        </a>
-                      )}
+                      <Link
+                        href={`/publications/${pub.id}`}
+                        className="group/btn flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-black/5 active:scale-95"
+                      >
+                        <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                        View Details
+                      </Link>
                       {pub.pdfUrl && (
                         <a
                           href={pub.pdfUrl}
