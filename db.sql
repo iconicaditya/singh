@@ -3,6 +3,7 @@
 -- Drop existing tables
 DROP TABLE IF EXISTS research CASCADE;
 DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS publications CASCADE;
 
 -- Research Table
 CREATE TABLE research (
@@ -28,6 +29,22 @@ CREATE TABLE projects (
   image_url TEXT,
   link TEXT,
   tags TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Academic Publications Table
+CREATE TABLE publications (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  journal VARCHAR(255),
+  authors TEXT NOT NULL,
+  year VARCHAR(4) NOT NULL,
+  type VARCHAR(100), -- Journal, Conference, etc
+  doi VARCHAR(100),
+  link TEXT,
+  image_url TEXT,
+  pdf_url TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
