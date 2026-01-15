@@ -39,31 +39,35 @@ if (Parchment && typeof window !== 'undefined') {
       const QuillLib = require('react-quill-new');
       const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
       
-      // Extremely defensive resolution for ListItem
-      const formats = ['formats/list/item', 'formats/list', 'formats/indent'];
-      for (const path of formats) {
-        try {
-          const imported = Quill.import(path);
-          if (imported) {
-            ListItem = imported.item || (imported.name === 'list-item' ? imported : null);
-            if (ListItem) break;
-          }
-        } catch (e) {
-          // Continue to next fallback
-        }
+      // Use the internal registry directly to avoid throwing errors during import
+      // This is the safest way to access registered formats in Quill
+      const imports = Quill.imports || (Quill.default && Quill.default.imports) || {};
+      
+      const listFormat = imports['formats/list'];
+      if (listFormat) {
+        ListItem = listFormat.item || (listFormat.name === 'list-item' ? listFormat : null);
       }
       
-      // If we still don't have it, try to get it from the internal registry if accessible
+      if (!ListItem) {
+        const listItemFormat = imports['formats/list/item'];
+        if (listItemFormat) ListItem = listItemFormat;
+      }
+
+      // If still not found, try the standard import within a localized try-catch
       if (!ListItem) {
         try {
-          const ListModule = Quill.import('formats/list');
-          if (ListModule && typeof ListModule === 'function') {
-            ListItem = ListModule; // In some versions the module itself is the item renderer
-          }
+          ListItem = Quill.import('formats/list/item');
+        } catch (e) {}
+      }
+      
+      // Last resort: If still no ListItem, create a basic Block blot fallback
+      if (!ListItem) {
+        try {
+          ListItem = Quill.import('blots/block');
         } catch (e) {}
       }
     } catch (e) {
-      console.error('ListItem resolution failed during exhaustive fallback', e);
+      console.error('ListItem resolution failed safely', e);
     }
   }
 
