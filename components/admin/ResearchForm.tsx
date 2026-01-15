@@ -562,6 +562,42 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow.ql-toolbar .ql-align svg {
                       display: none !important;
                     }
+
+                    /* Custom color and background icons styling */
+                    .ql-snow.ql-toolbar .ql-color,
+                    .ql-snow.ql-toolbar .ql-background {
+                      width: 28px !important;
+                      height: 28px !important;
+                      display: flex !important;
+                      align-items: center;
+                      justify-content: center;
+                      border: none;
+                      border-radius: 4px;
+                      margin-right: 4px;
+                      padding: 0 !important;
+                    }
+                    .ql-snow.ql-toolbar .ql-color:hover,
+                    .ql-snow.ql-toolbar .ql-background:hover {
+                      background-color: #f1f5f9;
+                    }
+                    .ql-snow.ql-toolbar .ql-color .ql-picker-label,
+                    .ql-snow.ql-toolbar .ql-background .ql-picker-label {
+                      padding: 0 !important;
+                      border: none !important;
+                      width: 100% !important;
+                      height: 100% !important;
+                      justify-content: center;
+                    }
+                    .ql-snow.ql-toolbar .ql-color .ql-picker-label::after,
+                    .ql-snow.ql-toolbar .ql-background .ql-picker-label::after {
+                      display: none !important;
+                    }
+                    .ql-snow.ql-toolbar .ql-color::before,
+                    .ql-snow.ql-toolbar .ql-background::before {
+                      margin: 0 !important;
+                      position: absolute;
+                      z-index: 1;
+                    }
                     
                     /* Toolbar separators and styling */
                     .ql-toolbar.ql-snow .ql-formats {
