@@ -434,8 +434,14 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       border-radius: 8px;
                       padding: 4px;
                       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-                      display: flex !important;
+                      display: none !important;
                       flex-direction: column !important;
+                      background: #fff;
+                      position: absolute;
+                      z-index: 1000;
+                    }
+                    .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+                      display: flex !important;
                     }
 
                     /* Icons Styling */
