@@ -48,6 +48,42 @@ export default function ResearchDetail() {
     fetchResearch();
   }, [params.id]);
 
+  const handleDownload = () => {
+    if (paper?.pdfUrl) {
+      window.open(paper.pdfUrl, '_blank');
+    } else {
+      // Fallback: Generate a simple text file if no PDF is linked
+      const content = `Title: ${paper.title}\nCategory: ${paper.category}\nYear: ${paper.year}\nAuthors: ${paper.authors?.map((a: any) => a.name).join(', ')}`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${paper.title.replace(/\s+/g, '_')}_summary.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: paper.title,
+          text: `Check out this research: ${paper.title}`,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
@@ -186,6 +222,14 @@ export default function ResearchDetail() {
                         transition={{ delay: idx * 0.1 }}
                         className="relative group scroll-mt-32"
                       >
+                        {section.title && (
+                          <div className="flex items-center gap-4 mb-8">
+                            <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center border border-blue-100 shadow-sm">
+                              <List className="text-blue-600" size={24} />
+                            </div>
+                            <h3 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">{section.title}</h3>
+                          </div>
+                        )}
                         {section.image && (
                           <div className="relative h-[30rem] w-full rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-xl mb-12">
                             <Image 
@@ -195,14 +239,6 @@ export default function ResearchDetail() {
                               className="object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                          </div>
-                        )}
-                        {section.title && (
-                          <div className="flex items-center gap-4 mb-8">
-                            <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center border border-blue-100 shadow-sm">
-                              <List className="text-blue-600" size={24} />
-                            </div>
-                            <h3 className="text-3xl font-black text-slate-900 tracking-tight leading-tight">{section.title}</h3>
                           </div>
                         )}
                         {section.content && (
@@ -297,11 +333,17 @@ export default function ResearchDetail() {
                   <div className="relative z-10">
                     <h3 className="text-3xl font-black mb-10 text-white tracking-tight leading-none italic uppercase text-center">Resources</h3>
                     <div className="space-y-4">
-                      <button className="w-full bg-white text-blue-600 font-black py-6 rounded-[1.5rem] flex items-center justify-center gap-3 hover:bg-slate-50 transition-all active:scale-[0.98] shadow-xl shadow-black/10 text-xs tracking-widest uppercase">
+                      <button 
+                        onClick={handleDownload}
+                        className="w-full bg-white text-blue-600 font-black py-6 rounded-[1.5rem] flex items-center justify-center gap-3 hover:bg-slate-50 transition-all active:scale-[0.98] shadow-xl shadow-black/10 text-xs tracking-widest uppercase"
+                      >
                         <Download size={22} strokeWidth={2.5} />
                         Download Paper
                       </button>
-                      <button className="w-full bg-white/10 backdrop-blur-md text-white border border-white/20 font-black py-6 rounded-[1.5rem] flex items-center justify-center gap-3 hover:bg-white/20 transition-all active:scale-[0.98] text-xs tracking-widest uppercase">
+                      <button 
+                        onClick={handleShare}
+                        className="w-full bg-white/10 backdrop-blur-md text-white border border-white/20 font-black py-6 rounded-[1.5rem] flex items-center justify-center gap-3 hover:bg-white/20 transition-all active:scale-[0.98] text-xs tracking-widest uppercase"
+                      >
                         <Share2 size={22} strokeWidth={2.5} />
                         Share Research
                       </button>
