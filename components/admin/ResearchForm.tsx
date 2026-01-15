@@ -37,7 +37,13 @@ if (Parchment && typeof window !== 'undefined') {
   try {
     ListItem = Quill.import('formats/list/item');
   } catch (e) {
-    console.error('Could not import formats/list/item', e);
+    // Fallback: search for ListItem in the list module
+    try {
+      const ListModule = Quill.import('modules/list') || Quill.import('formats/list');
+      ListItem = ListModule?.item || ListModule;
+    } catch (innerE) {
+      console.error('Final fallback failed for ListItem', innerE);
+    }
   }
 
   if (ListItem) {
