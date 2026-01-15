@@ -48,9 +48,13 @@ if (Parchment && typeof window !== 'undefined') {
         const _ListItem = ListItem;
         class CustomListItem extends _ListItem {
           static register() {
-            Quill.register(Size, true);
-            Quill.register(Color, true);
-            Quill.register(Font, true);
+            try {
+              if (Quill.imports['formats/size']) Quill.register(Quill.import('formats/size'), true);
+              if (Quill.imports['formats/color']) Quill.register(Quill.import('formats/color'), true);
+              if (Quill.imports['formats/font']) Quill.register(Quill.import('formats/font'), true);
+            } catch (e) {
+              console.warn('Sub-format registration skipped', e);
+            }
           }
           
           format(name: string, value: any) {
@@ -82,15 +86,15 @@ if (Parchment && typeof window !== 'undefined') {
                 if (name === 'italic') styleValue = value ? 'italic' : 'normal';
                 if (name === 'underline') styleValue = value ? 'underline' : 'none';
                 
-                if (value) domNode.style[styleMap[name]] = styleValue;
-                else domNode.style.removeProperty(styleMap[name].replace(/[A-Z]/g, (m: string) => '-' + m.toLowerCase()));
+                if (value && styleMap[name]) domNode.style[styleMap[name]] = styleValue;
+                else if (styleMap[name]) domNode.style.removeProperty(styleMap[name].replace(/[A-Z]/g, (m: string) => '-' + m.toLowerCase()));
               }
             }
-            super.format(name, value);
+            if (super.format) super.format(name, value);
           }
 
           optimize(context: any) {
-            super.optimize(context);
+            if (super.optimize) super.optimize(context);
             const domNode = (this as any).domNode;
             
             const firstChild = domNode.firstChild;
