@@ -523,7 +523,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       background-repeat: no-repeat;
                       display: block;
                     }
-                    .ql-snow.ql-toolbar button svg { display: inline-block; }
+                    .ql-snow.ql-toolbar button svg { display: none !important; }
                     .ql-snow.ql-toolbar .ql-undo::before,
                     .ql-snow.ql-toolbar .ql-redo::before,
                     .ql-snow.ql-toolbar .ql-color::before,
@@ -542,6 +542,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: block;
                     }
 
+                    /* Ensure Bold, Italic, Underline use SVGs correctly without duplication */
                     .ql-snow.ql-toolbar .ql-bold svg,
                     .ql-snow.ql-toolbar .ql-italic svg,
                     .ql-snow.ql-toolbar .ql-underline svg,
@@ -550,6 +551,16 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: inline-block !important;
                       width: 16px;
                       height: 16px;
+                    }
+                    
+                    /* Specific fix for custom icons to prevent double rendering */
+                    .ql-snow.ql-toolbar .ql-undo svg,
+                    .ql-snow.ql-toolbar .ql-redo svg,
+                    .ql-snow.ql-toolbar .ql-color svg,
+                    .ql-snow.ql-toolbar .ql-background svg,
+                    .ql-snow.ql-toolbar .ql-list svg,
+                    .ql-snow.ql-toolbar .ql-align svg {
+                      display: none !important;
                     }
                     
                     /* Toolbar separators and styling */
