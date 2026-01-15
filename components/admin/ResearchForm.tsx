@@ -508,6 +508,26 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: block;
                     }
                     .ql-snow.ql-toolbar button svg { display: none; }
+                    
+                    /* Toolbar separators and styling */
+                    .ql-toolbar.ql-snow .ql-formats {
+                      border-right: 1px solid #e2e8f0;
+                      margin-right: 8px;
+                      padding-right: 8px;
+                    }
+                    .ql-toolbar.ql-snow .ql-formats:last-child {
+                      border-right: none;
+                    }
+                    .ql-snow .ql-picker-label::after {
+                      content: "";
+                      width: 12px;
+                      height: 12px;
+                      margin-left: 4px;
+                      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                    }
+                    .ql-snow .ql-picker-label svg { display: none !important; }
 
                     
                     /* Custom Fonts */
