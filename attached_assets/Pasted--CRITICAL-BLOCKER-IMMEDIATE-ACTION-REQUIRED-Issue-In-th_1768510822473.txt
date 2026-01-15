@@ -1,0 +1,42 @@
+🚨 CRITICAL BLOCKER — IMMEDIATE ACTION REQUIRED
+
+Issue:  
+In the admin research form text editor, numbered and bulleted lists **still fail to inherit formatting**. Bold, italic, underline, font size, font family, and color applied to list items do **not** propagate to numbers or bullets. This is a **persistent, editor-level defect**, despite all previous claimed “engine-level fixes.”  
+
+CSS-only solutions, pseudo-elements, and import-level workarounds are **not acceptable**. Partial fixes or temporary patches have failed repeatedly. This is a **production-blocking issue**.  
+
+Requirements:
+
+1. **Full Engine-Level Fix**
+   - The editor must implement list marker formatting inheritance **in real-time**, including:
+     - Font size
+     - Font family
+     - Color
+     - Bold, Italic, Underline
+   - Must work for:
+     - Nested lists
+     - Undo/Redo
+     - Copy/Paste
+     - Real-time typing
+
+2. **Editor Integration**
+   - Toolbar commands (bold, font size, color, italic) must **update both text and list markers simultaneously**.
+   - Do not rely on CSS hacks (::before, inline-block, white-space) or pseudo-elements.
+
+3. **Fallback / Replacement**
+   - If the current editor cannot support reliable marker formatting, **it must be replaced** with a proven WYSIWYG editor (e.g., CKEditor 5, TipTap) configured correctly for full marker inheritance.
+
+4. **Verification Steps**
+   - Type numbered and bulleted lists.
+   - Apply **bold, italic, underline, font size, font family, and color**.
+   - Confirm **numbers/bullets update in real-time**.
+   - Test nested lists, undo/redo, copy/paste.
+   - All other editor functionality (LTR typing, alignment, spacing, undo/redo) must remain fully operational.
+
+5. **Acceptance Criteria**
+   - Numbers and bullets **fully reflect all formatting** of the text.
+   - No CSS-only or partial fixes accepted.
+   - Editor is fully usable in production research forms.
+   - This is a **blocking defect**. Resolution must be confirmed with full manual testing before marking complete.
+
+⚠️ Replit: All previous claimed fixes have **not resolved the issue**. This defect must be addressed immediately at the **engine level**, with **complete and verified inheritance of formatting for list markers**. Partial solutions will no longer be accepted.
