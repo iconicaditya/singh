@@ -305,8 +305,13 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   <div 
                     contentEditable 
                     onInput={e => handleContentChange(section.id, e)}
+                    dir="ltr"
                     className="p-6 min-h-[300px] outline-none text-slate-900 text-sm leading-relaxed relative text-left"
-                    style={{ textAlign: 'left', direction: 'ltr' }}
+                    style={{ 
+                      textAlign: 'left', 
+                      direction: 'ltr',
+                      unicodeBidi: 'plaintext'
+                    }}
                     dangerouslySetInnerHTML={{ __html: section.content || "" }}
                   />
                   {!section.content && (
