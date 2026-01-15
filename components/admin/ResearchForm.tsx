@@ -27,6 +27,11 @@ if (Parchment && typeof window !== 'undefined') {
   (require('react-quill-new').Quill).register(Font, true);
 }
 
+const professionalColors = [
+  '#000000', '#475569', '#64748b', '#94a3b8', '#dc2626', 
+  '#2563eb', '#16a34a', '#d97706', '#7c3aed', '#db2777'
+];
+
 const modules = {
   toolbar: {
     container: [
@@ -39,7 +44,7 @@ const modules = {
         '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
       ] }],
       ['bold', 'italic', 'underline'],
-      ['color', 'background'],
+      [{ 'color': professionalColors }, { 'background': professionalColors }],
       [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       ['link'],
@@ -339,7 +344,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     onChange={(content) => handleContentChange(section.id, content)}
                     modules={modules}
                     formats={formats}
-                    placeholder="write paragraph here........"
+                    placeholder=""
                     className="min-h-[300px]"
                   />
                   <style dangerouslySetInnerHTML={{ __html: `
