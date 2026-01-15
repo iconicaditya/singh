@@ -22,6 +22,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     newCategory: "",
     year: initialData?.year || "2026",
     tags: initialData?.tags || "",
+    titleImage: initialData?.titleImage || "",
   });
 
   const [authors, setAuthors] = useState<string[]>(initialData?.authors || [""]);
@@ -112,13 +113,13 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
       const finalData = {
         title: formData.title,
         category: formData.category,
-        year: formData.year,
-        tags: formData.tags,
-        titleImage: (formData as any).titleImage || "", 
+        year: formData.year.toString().slice(0, 4),
+        tags: formData.tags || "",
+        titleImage: formData.titleImage || "", 
         authors: authors.filter(a => a.trim() !== ""),
         contentSections: contentSections.map(s => ({
-          title: s.title,
-          content: s.content,
+          title: s.title || "",
+          content: s.content || "",
           image: (s as any).image || "" 
         })),
         relatedPublications: []

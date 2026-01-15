@@ -24,10 +24,10 @@ export async function POST(req: Request) {
     const [savedItem] = await db.insert(research).values({
       title: body.title,
       category: body.category,
-      year: body.year,
+      year: body.year.toString().slice(0, 4),
       tags: body.tags || "",
       titleImage: body.titleImage || "",
-      authors: body.authors,
+      authors: body.authors || [],
       contentSections: body.contentSections || [],
       relatedPublications: body.relatedPublications || [],
     }).returning();
