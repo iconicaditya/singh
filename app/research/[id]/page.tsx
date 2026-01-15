@@ -76,13 +76,35 @@ export default function ResearchDetail() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-500/30">
-      {/* Header Info */}
-      <section className="relative pt-32 pb-16 bg-white border-b border-slate-100">
-        <div className="container mx-auto px-6 relative z-10">
+      {/* Header Image */}
+      <section className="relative h-[60vh] w-full overflow-hidden border-b border-slate-100">
+        <motion.div 
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0"
+        >
+          {paper.titleImage ? (
+            <Image
+              src={paper.titleImage}
+              alt={paper.title}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="absolute inset-0 bg-slate-50 flex items-center justify-center">
+              <BookOpen size={64} className="text-slate-200 opacity-20" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white" />
+        </motion.div>
+
+        <div className="container mx-auto px-6 relative z-10 h-full flex flex-col justify-end pb-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <Link 
               href="/research"
@@ -153,23 +175,6 @@ export default function ResearchDetail() {
             >
               <div className="max-w-none">
                 <div className="space-y-32">
-                  {/* Introduction Image - Moved Inside Content */}
-                  {paper.titleImage && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="relative h-[30rem] w-full rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-xl mb-12"
-                    >
-                      <Image
-                        src={paper.titleImage}
-                        alt={paper.title}
-                        fill
-                        className="object-cover"
-                        priority
-                      />
-                    </motion.div>
-                  )}
-                  
                   {paper.contentSections && paper.contentSections.length > 0 ? (
                     paper.contentSections.map((section: any, idx: number) => (
                       <motion.div 
