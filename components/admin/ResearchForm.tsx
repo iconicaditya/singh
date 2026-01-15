@@ -32,7 +32,23 @@ if (Parchment && typeof window !== 'undefined') {
   const Align = Quill.import('attributors/style/align');
   Quill.register(Align, true);
 
-  // Fix: Ensure bold and other inline formats are preserved in list items
+  // Extend the List format to support attributes
+  const ListItem = Quill.import('formats/list/item');
+  class CustomListItem extends ListItem {
+    static register() {
+      Quill.register(Size, true);
+      Quill.register(Color, true);
+      Quill.register(Font, true);
+    }
+    format(name: string, value: any) {
+      if (['size', 'color', 'font'].includes(name)) {
+        this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
+      }
+      super.format(name, value);
+    }
+  }
+  Quill.register(CustomListItem, true);
+
   const Bold = Quill.import('formats/bold');
   Quill.register(Bold, true);
   
