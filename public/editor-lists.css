@@ -1,8 +1,8 @@
 .ql-editor ol li::marker, 
 .ql-editor ul li::marker {
-  font-size: inherit;
+  font-size: var(--list-marker-size, inherit);
   font-family: inherit;
-  color: inherit;
+  color: var(--list-marker-color, inherit);
   font-weight: inherit;
   font-style: inherit;
   text-decoration: inherit;
@@ -19,8 +19,19 @@
   position: absolute;
   left: 0;
   cursor: pointer;
+  color: var(--list-marker-color, inherit);
+  font-size: var(--list-marker-size, inherit);
 }
 
 .ql-editor .task-list-item[data-checked="true"]::before {
   content: '☑';
 }
+
+/* Multi-style bullets support via classes */
+.ql-editor li.bullet-circle { list-style-type: circle; }
+.ql-editor li.bullet-square { list-style-type: square; }
+.ql-editor li.bullet-dash { list-style-type: "- "; }
+
+/* Foldable Lists */
+.ql-editor li.foldable { cursor: pointer; }
+.ql-editor li.folded + li { display: none; }
