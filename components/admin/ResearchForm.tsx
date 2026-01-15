@@ -471,18 +471,32 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-editor li {
                       font-size: inherit !important;
                       color: inherit !important;
+                      font-family: inherit !important;
+                      font-weight: inherit !important;
+                      font-style: inherit !important;
+                      text-decoration: inherit !important;
                     }
-                    /* This ensures that if the content inside the li has a font-size, the li (and thus its marker) matches it */
+                    /* Forcing markers to inherit from LI which is now receiving formatting from Quill's engine */
+                    .ql-editor li::marker {
+                      font-size: 1em !important;
+                      color: inherit !important;
+                      font-family: inherit !important;
+                      font-weight: inherit !important;
+                      font-style: inherit !important;
+                    }
+                    /* Support for older browsers and specific Quill structures */
                     .ql-editor li::before {
-                      display: inline-block;
-                      white-space: nowrap;
-                      text-align: right;
                       font-size: inherit !important;
                       color: inherit !important;
-                    }
-                    /* Target the actual counters and bullets specifically to force inheritance */
-                    .ql-snow .ql-editor li::before {
-                      font-size: inherit !important;
+                      font-family: inherit !important;
+                      font-weight: inherit !important;
+                      font-style: inherit !important;
+                      text-decoration: inherit !important;
+                      display: inline-block !important;
+                      width: 1.2em !important;
+                      margin-left: -1.5em !important;
+                      text-align: right !important;
+                      padding-right: 0.3em !important;
                     }
                     .ql-snow .ql-editor h1, 
                     .ql-snow .ql-editor h2, 
