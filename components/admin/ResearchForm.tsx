@@ -33,7 +33,13 @@ if (Parchment && typeof window !== 'undefined') {
   Quill.register(Align, true);
 
   // Extend the List format to support attributes at the engine level
-  const ListItem = Quill.import('formats/list/item');
+  let ListItem: any;
+  try {
+    ListItem = Quill.import('formats/list/item');
+  } catch (e) {
+    console.error('Could not import formats/list/item', e);
+  }
+
   if (ListItem) {
     class CustomListItem extends ListItem {
       static register() {
