@@ -21,8 +21,8 @@ if (Parchment && typeof window !== 'undefined') {
 
   const Font = (require('react-quill-new').Quill).import('attributors/style/font');
   Font.whitelist = [
-    'inter', 'roboto', 'opensans', 'lato', 'montserrat', 
-    'poppins', 'playfair', 'merriweather', 'oswald', 'raleway'
+    'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
+    'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
   ];
   (require('react-quill-new').Quill).register(Font, true);
 }
@@ -30,8 +30,8 @@ if (Parchment && typeof window !== 'undefined') {
 const modules = {
   toolbar: [
     [{ 'font': [
-      'inter', 'roboto', 'opensans', 'lato', 'montserrat', 
-      'poppins', 'playfair', 'merriweather', 'oswald', 'raleway'
+      'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
+      'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
     ] }, 
     { 'size': [
       '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
@@ -341,16 +341,16 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       background: #f8fafc;
                     }
                     /* Custom Fonts */
-                    .ql-font-inter { font-family: 'Inter', sans-serif; }
+                    .ql-font-arial { font-family: 'Arial', sans-serif; }
+                    .ql-font-helvetica { font-family: 'Helvetica', sans-serif; }
+                    .ql-font-times-new-roman { font-family: 'Times New Roman', serif; }
+                    .ql-font-georgia { font-family: 'Georgia', serif; }
+                    .ql-font-verdana { font-family: 'Verdana', sans-serif; }
+                    .ql-font-tahoma { font-family: 'Tahoma', sans-serif; }
+                    .ql-font-courier-new { font-family: 'Courier New', monospace; }
+                    .ql-font-trebuchet-ms { font-family: 'Trebuchet MS', sans-serif; }
+                    .ql-font-calibri { font-family: 'Calibri', sans-serif; }
                     .ql-font-roboto { font-family: 'Roboto', sans-serif; }
-                    .ql-font-opensans { font-family: 'Open Sans', sans-serif; }
-                    .ql-font-lato { font-family: 'Lato', sans-serif; }
-                    .ql-font-montserrat { font-family: 'Montserrat', sans-serif; }
-                    .ql-font-poppins { font-family: 'Poppins', sans-serif; }
-                    .ql-font-playfair { font-family: 'Playfair Display', serif; }
-                    .ql-font-merriweather { font-family: 'Merriweather', serif; }
-                    .ql-font-oswald { font-family: 'Oswald', sans-serif; }
-                    .ql-font-raleway { font-family: 'Raleway', sans-serif; }
                     
                     /* Size labels in dropdown */
                     .ql-snow .ql-picker.ql-size .ql-picker-label::before,
