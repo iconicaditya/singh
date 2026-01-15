@@ -1,0 +1,14 @@
+# Vercel Environment Variables
+# Copy these to your Vercel Project Settings
+
+# Neon Database
+DATABASE_URL=postgresql://neondb_owner:npg_1iFIdp7uMbxZ@ep-blue-unit-a12m5ltt-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=dbgq7ls4q
+CLOUDINARY_API_KEY=719483861873544
+CLOUDINARY_API_SECRET=JVk3dxzTN26KvLSGPeYUXtsMtZg
+CLOUDINARY_URL=cloudinary://719483861873544:JVk3dxzTN26KvLSGPeYUXtsMtZg@dbgq7ls4q
+
+# Auth/Security
+SESSION_SECRET=your_session_secret_here
