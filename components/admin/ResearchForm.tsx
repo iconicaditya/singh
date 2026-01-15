@@ -46,7 +46,8 @@ if (Parchment && typeof window !== 'undefined') {
       ListItem = imports['formats/list/item'] || (ListContainer && ListContainer.item);
 
       if (ListItem) {
-        class CustomListItem extends ListItem {
+        const _ListItem = ListItem; // Local reference to avoid scope issues
+        class CustomListItem extends _ListItem {
           static register() {
             Quill.register(Size, true);
             Quill.register(Color, true);
@@ -95,15 +96,15 @@ if (Parchment && typeof window !== 'undefined') {
           }
         }
         Quill.register(CustomListItem, true);
-      }
 
-      if (ListContainer) {
-        class CustomListContainer extends ListContainer {
-          static register() {
-            Quill.register(CustomListItem, true);
+        if (ListContainer) {
+          class CustomListContainer extends ListContainer {
+            static register() {
+              Quill.register(CustomListItem, true);
+            }
           }
+          Quill.register(CustomListContainer, true);
         }
-        Quill.register(CustomListContainer, true);
       }
     } catch (e) {
       console.error('ListItem re-implementation failed', e);
@@ -167,7 +168,7 @@ const modules = {
       ['bold', 'italic', 'underline'],
       [{ 'color': professionalColors }, { 'background': professionalColors }],
       [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
       ['link'],
       ['clean']
     ],
@@ -193,7 +194,7 @@ const formats = [
   'font', 'size',
   'bold', 'italic', 'underline',
   'color', 'background',
-  'list', 'bullet',
+  'list', 'bullet', 'check',
   'align',
   'link'
 ];

@@ -1,0 +1,26 @@
+.ql-editor ol li::marker, 
+.ql-editor ul li::marker {
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  text-decoration: inherit;
+}
+
+.ql-editor .task-list-item {
+  list-style-type: none !important;
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.ql-editor .task-list-item::before {
+  content: '☐';
+  position: absolute;
+  left: 0;
+  cursor: pointer;
+}
+
+.ql-editor .task-list-item[data-checked="true"]::before {
+  content: '☑';
+}
