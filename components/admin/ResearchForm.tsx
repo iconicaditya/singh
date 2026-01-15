@@ -45,16 +45,6 @@ const modules = {
       ['link'],
       ['clean']
     ],
-    handlers: {
-      'undo': function() {
-        // @ts-ignore
-        this.quill.history.undo();
-      },
-      'redo': function() {
-        // @ts-ignore
-        this.quill.history.redo();
-      }
-    }
   },
   history: {
     delay: 1000,
@@ -342,7 +332,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   />
                 </div>
 
-                <div className="bg-white ql-custom-container border border-gray-100 rounded-lg overflow-hidden" dir="ltr">
+                <div className="bg-white ql-custom-container border border-gray-200 rounded-lg overflow-hidden relative z-10" dir="ltr">
                   <ReactQuill
                     theme="snow"
                     value={section.content || ""}
@@ -413,19 +403,34 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: flex;
                       align-items: center;
                       justify-content: center;
+                      position: relative;
                     }
                     .ql-snow.ql-toolbar button:hover, .ql-snow.ql-toolbar button.ql-active {
                       color: #2563eb;
                     }
                     
-                    /* Custom icons for undo/redo if they don't show up */
-                    .ql-undo::after {
-                      content: '↩';
-                      font-size: 16px;
+                    /* Custom icons for undo/redo */
+                    .ql-snow.ql-toolbar .ql-undo, .ql-snow.ql-toolbar .ql-redo {
+                      width: 28px !important;
+                      height: 28px !important;
                     }
-                    .ql-redo::after {
-                      content: '↪';
-                      font-size: 16px;
+                    .ql-snow.ql-toolbar .ql-undo::before {
+                      content: "";
+                      width: 16px;
+                      height: 16px;
+                      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7v6h6'/%3E%3Cpath d='M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13'/%3E%3C/svg%3E");
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      display: block;
+                    }
+                    .ql-snow.ql-toolbar .ql-redo::before {
+                      content: "";
+                      width: 16px;
+                      height: 16px;
+                      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 7v6h-6'/%3E%3Cpath d='M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7'/%3E%3C/svg%3E");
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      display: block;
                     }
                     
                     /* Custom Fonts */
