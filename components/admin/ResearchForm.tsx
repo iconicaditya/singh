@@ -32,7 +32,7 @@ if (Parchment && typeof window !== 'undefined') {
   const Align = Quill.import('attributors/style/align');
   Quill.register(Align, true);
 
-  // Use the correct import path for ListItem
+  // Extend the List format to support attributes at the engine level
   const ListItem = Quill.import('formats/list/item');
   if (ListItem) {
     class CustomListItem extends ListItem {
@@ -50,6 +50,20 @@ if (Parchment && typeof window !== 'undefined') {
           }
         }
         super.format(name, value);
+      }
+      optimize(context: any) {
+        super.optimize(context);
+        // Force the list marker to respect the formatting of the first child
+        const firstChild = this.domNode.firstChild;
+        if (firstChild && firstChild.nodeType === 1) { // Element node
+          const style = window.getComputedStyle(firstChild as HTMLElement);
+          this.domNode.style.fontSize = style.fontSize;
+          this.domNode.style.color = style.color;
+          this.domNode.style.fontFamily = style.fontFamily;
+          this.domNode.style.fontWeight = style.fontWeight;
+          this.domNode.style.fontStyle = style.fontStyle;
+          this.domNode.style.textDecoration = style.textDecoration;
+        }
       }
     }
     Quill.register(CustomListItem, true);
