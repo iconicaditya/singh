@@ -44,24 +44,23 @@ if (Parchment && typeof window !== 'undefined') {
       }
       
       format(name: string, value: any) {
-        // Propagation for specific style attributes to the marker parent (the LI node)
         if (['size', 'color', 'font', 'bold', 'italic', 'underline'].includes(name)) {
+          const styleMap: Record<string, string> = {
+            'font': 'fontFamily',
+            'size': 'fontSize',
+            'color': 'color',
+            'bold': 'fontWeight',
+            'italic': 'fontStyle',
+            'underline': 'textDecoration'
+          };
+          
+          let styleValue = value;
+          if (name === 'bold') styleValue = value ? 'bold' : 'normal';
+          if (name === 'italic') styleValue = value ? 'italic' : 'normal';
+          if (name === 'underline') styleValue = value ? 'underline' : 'none';
+          
           if (value) {
-            const styleMap: Record<string, string> = {
-              'font': 'fontFamily',
-              'size': 'fontSize',
-              'color': 'color',
-              'bold': 'fontWeight',
-              'italic': 'fontStyle',
-              'underline': 'textDecoration'
-            };
-            const styleName = styleMap[name];
-            let styleValue = value;
-            if (name === 'bold') styleValue = 'bold';
-            if (name === 'italic') styleValue = 'italic';
-            if (name === 'underline') styleValue = 'underline';
-            
-            this.domNode.style[styleName] = styleValue;
+            this.domNode.style[styleMap[name]] = styleValue;
           } else {
             const propMap: Record<string, string> = {
               'font': 'font-family',
@@ -79,16 +78,23 @@ if (Parchment && typeof window !== 'undefined') {
 
       optimize(context: any) {
         super.optimize(context);
-        // Force list marker inheritance from the first inline child formatting
+        
+        // Ensure the LI itself carries the formatting of its content
+        // This is critical because the list marker (bullet/number) 
+        // inherits styles from the LI element in the DOM.
         const firstChild = this.domNode.firstChild;
-        if (firstChild && firstChild.nodeType === 1) { // Element node
-          const style = window.getComputedStyle(firstChild as HTMLElement);
-          this.domNode.style.fontSize = style.fontSize;
-          this.domNode.style.color = style.color;
-          this.domNode.style.fontFamily = style.fontFamily;
-          this.domNode.style.fontWeight = style.fontWeight;
-          this.domNode.style.fontStyle = style.fontStyle;
-          this.domNode.style.textDecoration = style.textDecoration;
+        if (firstChild) {
+          if (firstChild.nodeType === 1) { // Element node
+            const style = window.getComputedStyle(firstChild as HTMLElement);
+            this.domNode.style.fontSize = style.fontSize;
+            this.domNode.style.color = style.color;
+            this.domNode.style.fontFamily = style.fontFamily;
+            this.domNode.style.fontWeight = style.fontWeight;
+            this.domNode.style.fontStyle = style.fontStyle;
+            this.domNode.style.textDecoration = style.textDecoration;
+          } else if (firstChild.nodeType === 3) { // Text node
+            // If it's a direct text node, it should already be handled by the format() override
+          }
         }
       }
     }
