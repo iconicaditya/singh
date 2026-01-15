@@ -78,6 +78,16 @@ const modules = {
       ['link'],
       ['clean']
     ],
+    handlers: {
+      'undo': function() {
+        // @ts-ignore
+        this.quill.history.undo();
+      },
+      'redo': function() {
+        // @ts-ignore
+        this.quill.history.redo();
+      }
+    }
   },
   history: {
     delay: 1000,
@@ -384,6 +394,12 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       line-height: 1.6;
                       padding: 24px;
                       color: #000000;
+                    }
+                    .ql-editor ol, .ql-editor ul {
+                      padding-left: 1.5em;
+                    }
+                    .ql-editor li {
+                      font-size: inherit;
                     }
                     .ql-custom-container .ql-container.ql-snow {
                       border: none;
