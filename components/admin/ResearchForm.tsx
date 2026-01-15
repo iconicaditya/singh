@@ -215,12 +215,11 @@ const formats = [
   'font', 'size',
   'bold', 'italic', 'underline', 'strike',
   'color', 'background',
-  'list', 'bullet', 'check',
-  'indent',
+  'list', 'indent',
   'align',
   'link', 'image', 'video',
   'list-style-type', 'list-style-color', 'list-style-size',
-  'foldable', 'folded'
+  'foldable', 'folded', 'checked'
 ];
 
 interface ResearchFormProps {
