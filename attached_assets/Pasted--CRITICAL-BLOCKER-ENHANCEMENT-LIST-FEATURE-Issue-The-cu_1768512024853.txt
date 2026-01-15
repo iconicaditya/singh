@@ -1,0 +1,40 @@
+🚨 CRITICAL BLOCKER & ENHANCEMENT — LIST FEATURE
+
+Issue:  
+The current numbering and bulleting feature in the research form text editor **does not fully inherit formatting**. Bold, italic, underline, font size, font family, and color applied to list items **do not reflect on the numbers or bullets**. Previous fixes are insufficient.
+
+Required Fix & Enhancements:
+
+1. **Remove and Re-Implement Lists**
+   - Completely remove the existing numbering/bulleting feature.
+   - Re-add using the editor’s native API or engine-level functionality.
+   - Ensure **full inheritance of all text formatting** for list markers:
+     - Bold, Italic, Underline
+     - Font size, Font family
+     - Text color
+   - Must work for nested lists, undo/redo, copy/paste, and real-time typing.
+   - No CSS hacks; must be implemented at the editor engine level.
+
+2. **Add Advanced List Features**
+   - **Multi-style Bullets**: circle, square, dash, arrow, emoji.
+   - **Advanced Numbered Lists**: 1, 2, 3… / a, b, c… / I, II, III… with proper nested numbering.
+   - **Task Lists / Checklists**: interactive checkboxes inside list items.
+   - **Collapsible / Foldable Lists**: fold/unfold nested lists for readability.
+   - **Drag-and-Drop Reordering**: move items up/down or nest dynamically.
+   - **Highlight / Background Color for List Items**: emphasize important points.
+   - **Custom List Marker Styling**: change color, font size, or icon independently from text.
+
+3. **Verification**
+   - Type numbered and bulleted lists in the editor.
+   - Apply bold, italic, underline, font size, font family, and color; markers must update **visibly in real-time**.
+   - Test nested lists, undo/redo, copy/paste, collapsible lists, and drag-and-drop reordering.
+   - All features must work consistently and professionally.
+
+4. **Acceptance Criteria**
+   - Numbers and bullets fully inherit all formatting and appear correctly in the field.
+   - All 7 advanced list features are functional.
+   - Other editor functionality (typing, alignment, undo/redo, LTR behavior) remains intact.
+   - Partial fixes or CSS-only hacks are not acceptable.
+   - This is a **blocking production issue and enhancement request**. Resolution must be confirmed with full manual testing before marking complete.
+
+⚠️ Previous engine-level fixes failed. The numbering/bulleting feature must be **removed and re-implemented properly**, with all enhancements applied, to ensure a **fully functional, professional, and visually attractive text editor**.
