@@ -37,7 +37,27 @@ const professionalColors = [
   '#FFA500', // Orange
   '#800080', // Purple
   '#808080', // Gray
-  '#FFC0CB'  // Pink
+  '#FFC0CB', // Pink
+  '#000080', // Navy
+  '#008080', // Teal
+  '#800000', // Maroon
+  '#808000', // Olive
+  '#00FFFF', // Cyan
+  '#FF00FF', // Magenta
+  '#A52A2A', // Brown
+  '#D3D3D3', // LightGray
+  '#A9A9A9', // DarkGray
+  '#708090', // SlateGray
+  '#C0C0C0', // Silver
+  '#FFD700', // Gold
+  '#F5F5DC', // Beige
+  '#FF7F50', // Coral
+  '#40E0D0', // Turquoise
+  '#4B0082', // Indigo
+  '#EE82EE', // Violet
+  '#D2691E', // Chocolate
+  '#4682B4', // SteelBlue
+  '#4169E1'  // RoyalBlue
 ];
 
 const modules = {
@@ -607,20 +627,15 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow .ql-color .ql-picker-options,
                     .ql-snow .ql-background .ql-picker-options {
                       padding: 8px !important;
-                      width: 152px !important;
+                      width: 176px !important;
                       background: #fff !important;
-                      display: flex !important;
+                      display: none !important;
                       flex-wrap: wrap !important;
                       position: absolute !important;
                       z-index: 1000 !important;
-                    }
-                    .ql-snow .ql-picker-options .ql-picker-item {
-                      width: 20px !important;
-                      height: 20px !important;
-                      margin: 2px !important;
-                      border-radius: 4px !important;
-                      border: 1px solid #f1f5f9 !important;
-                      display: block !important;
+                      border: 1px solid #e2e8f0 !important;
+                      border-radius: 8px !important;
+                      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
                     }
                     .ql-snow .ql-picker.ql-expanded .ql-picker-options {
                       display: flex !important;
