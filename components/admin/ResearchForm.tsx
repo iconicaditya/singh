@@ -1,8 +1,34 @@
 "use client";
 
 import { X, Plus, Trash2, Bold, Italic, Underline, Link as LinkIcon, Image as ImageIcon, AlignLeft, AlignCenter, AlignRight, List, ListOrdered, Undo2, Redo2, Palette, ChevronDown, Search, User, FileText } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+
+const modules = {
+  toolbar: [
+    [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link'],
+    ['clean']
+  ],
+};
+
+const formats = [
+  'font', 'size',
+  'bold', 'italic', 'underline',
+  'color', 'background',
+  'list', 'bullet',
+  'align',
+  'link'
+];
 
 interface ResearchFormProps {
   onClose: () => void;
@@ -83,9 +109,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     document.execCommand(command, false, value);
   };
 
-  const handleContentChange = (id: string, e: React.FormEvent<HTMLDivElement>) => {
-    const newContent = e.currentTarget.innerHTML;
-    setContentSections(prev => prev.map(s => s.id === id ? { ...s, content: newContent } : s));
+  const handleContentChange = (id: string, content: string) => {
+    setContentSections(prev => prev.map(s => s.id === id ? { ...s, content } : s));
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -264,67 +289,34 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-blue-500 focus:ring-0 text-slate-900"
                 />
 
-                <div className="border border-gray-200 rounded-lg overflow-hidden">
-                  <div className="bg-white border-b border-gray-100 px-3 py-2 flex items-center gap-1">
-                    <button type="button" onClick={() => execCommand('undo')} className="p-1.5 text-slate-400 hover:text-slate-600"><Undo2 size={14} /></button>
-                    <button type="button" onClick={() => execCommand('redo')} className="p-1.5 text-slate-400 hover:text-slate-600"><Redo2 size={14} /></button>
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" className="px-3 py-1 text-[11px] font-bold text-slate-600 border border-gray-100 rounded flex items-center gap-2">Font <ChevronDown size={10} /></button>
-                    <button type="button" className="px-3 py-1 text-[11px] font-bold text-slate-600 border border-gray-100 rounded flex items-center gap-2">Size <ChevronDown size={10} /></button>
-                    
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" onClick={() => execCommand('bold')} className="p-1.5 text-slate-600 hover:text-black"><Bold size={14} /></button>
-                    <button type="button" onClick={() => execCommand('italic')} className="p-1.5 text-slate-600 hover:text-black"><Italic size={14} /></button>
-                    <button type="button" onClick={() => execCommand('underline')} className="p-1.5 text-slate-600 hover:text-black"><Underline size={14} /></button>
-                    
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" className="p-1.5 text-slate-400 hover:text-slate-600"><Palette size={14} /><ChevronDown size={8} className="inline ml-0.5" /></button>
-                    <button type="button" className="p-1.5 text-slate-400 hover:text-slate-600"><Palette size={14} className="text-rose-400" /><ChevronDown size={8} className="inline ml-0.5" /></button>
-                    
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" onClick={() => execCommand('insertUnorderedList')} className="p-1.5 text-slate-600 hover:text-black"><List size={14} /></button>
-                    <button type="button" onClick={() => execCommand('insertOrderedList')} className="p-1.5 text-slate-600 hover:text-black"><ListOrdered size={14} /></button>
-                    <button type="button" onClick={() => execCommand('justifyFull')} className="p-1.5 text-slate-600 hover:text-black"><AlignLeft size={14} /></button>
-                    
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" onClick={() => execCommand('justifyLeft')} className="p-1.5 text-slate-400 hover:text-slate-600"><AlignLeft size={14} /></button>
-                    <button type="button" onClick={() => execCommand('justifyCenter')} className="p-1.5 text-slate-400 hover:text-slate-600"><AlignCenter size={14} /></button>
-                    <button type="button" onClick={() => execCommand('justifyRight')} className="p-1.5 text-slate-400 hover:text-slate-600"><AlignRight size={14} /></button>
-                    <button type="button" onClick={() => execCommand('justifyFull')} className="p-1.5 text-slate-400 hover:text-slate-600"><AlignLeft size={14} className="scale-x-[-1]" /></button>
-                    
-                    <div className="w-px h-4 bg-gray-200 mx-1" />
-                    
-                    <button type="button" onClick={() => { const url = prompt("Link:"); if(url) execCommand('createLink', url); }} className="p-1.5 text-slate-600 hover:text-black"><LinkIcon size={14} /></button>
-                    <button type="button" className="p-1.5 text-rose-500 ml-auto"><Trash2 size={14} /></button>
-                  </div>
-                  <div 
-                    contentEditable 
-                    onInput={e => handleContentChange(section.id, e)}
-                    dir="ltr"
-                    lang="en"
-                    spellCheck="false"
-                    className="p-6 min-h-[300px] outline-none text-slate-900 text-sm leading-relaxed relative text-left"
-                    style={{ 
-                      textAlign: 'left', 
-                      direction: 'ltr',
-                      unicodeBidi: 'isolate',
-                      display: 'block',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word',
-                      WebkitUserModify: 'read-write-plaintext-only'
-                    }}
-                    dangerouslySetInnerHTML={{ __html: section.content || "" }}
+                <div className="bg-white ql-custom-container" dir="ltr">
+                  <ReactQuill
+                    theme="snow"
+                    value={section.content || ""}
+                    onChange={(content) => handleContentChange(section.id, content)}
+                    modules={modules}
+                    formats={formats}
+                    placeholder="write paragraph here........"
+                    className="min-h-[300px]"
                   />
-                  {!section.content && (
-                    <div className="absolute left-6 top-[108px] pointer-events-none text-slate-300 italic text-sm">
-                      write paragraph here........
-                    </div>
-                  )}
+                  <style jsx global>{`
+                    .ql-custom-container .ql-editor {
+                      min-height: 300px;
+                      text-align: left;
+                      direction: ltr !important;
+                      font-size: 14px;
+                      line-height: 1.6;
+                    }
+                    .ql-custom-container .ql-container {
+                      border-bottom-left-radius: 8px;
+                      border-bottom-right-radius: 8px;
+                    }
+                    .ql-custom-container .ql-toolbar {
+                      border-top-left-radius: 8px;
+                      border-top-right-radius: 8px;
+                      background: #f8fafc;
+                    }
+                  `}</style>
                 </div>
 
                 <div className="space-y-2">

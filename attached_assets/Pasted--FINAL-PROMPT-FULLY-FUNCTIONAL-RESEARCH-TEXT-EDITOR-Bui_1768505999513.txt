@@ -1,0 +1,53 @@
+🚨 FINAL PROMPT — FULLY FUNCTIONAL RESEARCH TEXT EDITOR
+
+Build a fully functional paragraph editor for the Research Form. The current editor is broken, and CSS or minor fixes are not acceptable. Implement a standards-compliant, LTR, fully featured text editor.
+
+1. CORE TYPING BEHAVIOR
+- Text must insert to the right of the cursor.
+- Cursor must move left → right naturally.
+- Words and sentences must grow from left to right.
+- No reversed insertion, no mirrored cursor, no RTL behavior.
+
+2. EDITOR ENGINE
+- Use stable editor implementation:
+  - Allowed: native contenteditable (uncontrolled), Quill, TipTap, Slate, or CKEditor.
+- Do NOT use partially controlled custom editors that manipulate content or cursor manually.
+
+3. STRICTLY FORBIDDEN
+- Manual caret handling (Selection, Range.insertNode)
+- Updating innerHTML or textContent on every keystroke
+- Controlled React/Vue state bound to editor value
+- onInput or onKeyDown rewriting content
+- RTL inheritance from parent containers
+- flex-direction: row-reverse
+
+4. INITIALIZATION REQUIREMENTS
+<div contenteditable="true" dir="ltr" lang="en" spellcheck="true"></div>
+- Initialize once; do not re-render or replace during typing.
+- Isolate editor from external RTL or locale styles.
+
+5. FEATURES — MUST ALL WORK
+- Text Input: normal typing, enter, spaces, cursor, selection
+- Formatting: bold, italic, underline, font family(10 professional), font size(10 - 60), color(top 10 color), text background(top 10 color) alignment (left, center, right and justify)
+- Lists: ordered & unordered, nested lists, indentation
+- Editing Actions: copy, paste, cut, undo, redo, select all, delete/backspace
+- Behavior: cursor never jumps, no reversed insertion, no disappearing text, formatting retained
+
+6. VERIFICATION REQUIRED
+- Manually type a full paragraph
+- Apply formatting, lists, alignment, copy/paste
+- Ensure cursor behaves correctly at all times
+Do not mark complete without this manual verification.
+
+7. ACCEPTANCE CRITERIA
+- Text inserts from left to right
+- Cursor moves correctly
+- All formatting works
+- No RTL behavior or hacks
+- Fully usable research text editor
+
+8. FALLBACK IF UNSTABLE
+If the current editor cannot be fixed:
+Replace it entirely with a proven editor (Quill / TipTap / Slate / CKEditor) in LTR mode.
+
+This is a blocking production issue. Partial fixes, CSS-only changes, or explanations will not be accepted.
