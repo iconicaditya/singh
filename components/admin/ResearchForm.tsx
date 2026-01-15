@@ -408,6 +408,13 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       font-size: 13px;
                       color: #64748b;
                     }
+                    .ql-snow .ql-picker-options {
+                      max-height: 250px;
+                      overflow-y: auto !important;
+                      border-radius: 8px;
+                      padding: 4px;
+                      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                    }
 
                     /* Icons Styling */
                     .ql-snow.ql-toolbar button {
