@@ -311,8 +311,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       direction: 'ltr',
                       unicodeBidi: 'plaintext',
                       display: 'block',
-                      width: '100%',
-                      minWidth: '100%'
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
                     }}
                     dangerouslySetInnerHTML={{ __html: section.content || "" }}
                   />
