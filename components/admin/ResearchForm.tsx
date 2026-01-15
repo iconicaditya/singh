@@ -12,26 +12,35 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 const Parchment = typeof window !== 'undefined' ? (require('react-quill-new').Quill).import('parchment') : null;
 
 if (Parchment && typeof window !== 'undefined') {
-  const fontSizeArr = [
-    '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
-  ];
-  const Size = (require('react-quill-new').Quill).import('attributors/style/size');
-  Size.whitelist = fontSizeArr;
-  (require('react-quill-new').Quill).register(Size, true);
+  const Quill = require('react-quill-new').Quill;
+  
+  // Register style-based attributors for all formatting
+  const Size = Quill.import('attributors/style/size');
+  Size.whitelist = ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'];
+  Quill.register(Size, true);
 
-  const Font = (require('react-quill-new').Quill).import('attributors/style/font');
-  Font.whitelist = [
-    'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
-    'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
-  ];
-  (require('react-quill-new').Quill).register(Font, true);
+  const Font = Quill.import('attributors/style/font');
+  Font.whitelist = ['arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'];
+  Quill.register(Font, true);
 
-  // Use Inline Blot to ensure formatting is applied inline and affects list markers
-  const Color = (require('react-quill-new').Quill).import('attributors/style/color');
-  (require('react-quill-new').Quill).register(Color, true);
+  const Color = Quill.import('attributors/style/color');
+  Quill.register(Color, true);
 
-  const Background = (require('react-quill-new').Quill).import('attributors/style/background');
-  (require('react-quill-new').Quill).register(Background, true);
+  const Background = Quill.import('attributors/style/background');
+  Quill.register(Background, true);
+
+  const Align = Quill.import('attributors/style/align');
+  Quill.register(Align, true);
+
+  // Fix: Ensure bold and other inline formats are preserved in list items
+  const Bold = Quill.import('formats/bold');
+  Quill.register(Bold, true);
+  
+  const Italic = Quill.import('formats/italic');
+  Quill.register(Italic, true);
+  
+  const Underline = Quill.import('formats/underline');
+  Quill.register(Underline, true);
 }
 
 const professionalColors = [
