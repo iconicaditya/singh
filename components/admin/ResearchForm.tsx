@@ -323,7 +323,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     placeholder="write paragraph here........"
                     className="min-h-[300px]"
                   />
-                  <style jsx global>{`
+                  <style dangerouslySetInnerHTML={{ __html: `
                     .ql-custom-container .ql-editor {
                       min-height: 300px;
                       text-align: left;
@@ -373,7 +373,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="trebuchet-ms"]::before { content: 'Trebuchet MS' !important; }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="calibri"]::before { content: 'Calibri' !important; }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before { content: 'Roboto' !important; }
-                  `}</style>
+                  ` }} />
                 </div>
 
                 <div className="space-y-2">
