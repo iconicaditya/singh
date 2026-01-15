@@ -7,9 +7,9 @@ export const research = pgTable("research", {
   year: varchar("year", { length: 4 }).notNull(),
   tags: text("tags"),
   titleImage: text("title_image"),
-  authors: jsonb("authors").notNull(), // Array of strings
+  authors: jsonb("authors").notNull(), // Array of objects {name, image}
   contentSections: jsonb("content_sections").notNull(), // Array of objects {title, content, image}
-  relatedPublications: jsonb("related_publications"),
+  relatedPublications: jsonb("related_publications"), // Array of publication objects
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

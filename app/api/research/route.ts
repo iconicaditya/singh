@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         year: body.year?.toString().slice(0, 4) || new Date().getFullYear().toString(),
         tags: body.tags || "",
         titleImage: body.titleImage || "",
-        authors: sanitizedAuthors.length > 0 ? sanitizedAuthors : ["Anonymous"],
+        authors: Array.isArray(body.authors) ? body.authors : [],
         contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
         relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
       };
