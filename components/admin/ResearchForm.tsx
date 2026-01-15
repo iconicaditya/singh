@@ -357,6 +357,22 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow .ql-picker.ql-size .ql-picker-item::before {
                       content: attr(data-value) !important;
                     }
+
+                    /* Font labels in dropdown */
+                    .ql-snow .ql-picker.ql-font .ql-picker-label::before,
+                    .ql-snow .ql-picker.ql-font .ql-picker-item::before {
+                      content: attr(data-value) !important;
+                    }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before { content: 'Arial' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="helvetica"]::before { content: 'Helvetica' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before { content: 'Times New Roman' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="georgia"]::before { content: 'Georgia' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="verdana"]::before { content: 'Verdana' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="tahoma"]::before { content: 'Tahoma' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier-new"]::before { content: 'Courier New' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="trebuchet-ms"]::before { content: 'Trebuchet MS' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="calibri"]::before { content: 'Calibri' !important; }
+                    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before { content: 'Roboto' !important; }
                   `}</style>
                 </div>
 
