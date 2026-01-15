@@ -676,18 +676,13 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-font-calibri { font-family: 'Calibri', sans-serif; }
                     .ql-font-roboto { font-family: 'Roboto', sans-serif; }
                     
-                    /* Size labels in dropdown */
-                    .ql-snow .ql-picker.ql-size .ql-picker-label::before,
-                    .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-                      content: attr(data-value) !important;
-                    }
-
                     /* Font labels in dropdown */
                     .ql-snow .ql-picker.ql-font .ql-picker-label::before {
                       content: 'Font' !important;
                     }
                     .ql-snow .ql-picker.ql-font .ql-picker-item::before {
                       content: attr(data-value) !important;
+                      text-transform: capitalize;
                     }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before { content: 'Arial' !important; }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="helvetica"]::before { content: 'Helvetica' !important; }
@@ -699,6 +694,14 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="trebuchet-ms"]::before { content: 'Trebuchet MS' !important; }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="calibri"]::before { content: 'Calibri' !important; }
                     .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before { content: 'Roboto' !important; }
+                    
+                    /* Size labels in dropdown */
+                    .ql-snow .ql-picker.ql-size .ql-picker-label::before {
+                      content: 'Size' !important;
+                    }
+                    .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+                      content: attr(data-value) !important;
+                    }
                   ` }} />
                 </div>
 
