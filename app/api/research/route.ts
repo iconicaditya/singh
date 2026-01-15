@@ -20,6 +20,13 @@ export async function POST(req: Request) {
     
     // Validate required fields
     if (!body.title || !body.category || !body.year || !body.authors || !Array.isArray(body.authors)) {
+      console.log('Validation failed:', { 
+        title: !!body.title, 
+        category: !!body.category, 
+        year: !!body.year, 
+        authors: !!body.authors, 
+        isAuthorsArray: Array.isArray(body.authors) 
+      });
       return NextResponse.json({ 
         error: 'Missing or invalid required fields: title, category, year, and authors (must be an array) are required' 
       }, { status: 400 });
