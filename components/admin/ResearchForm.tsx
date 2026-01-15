@@ -35,10 +35,12 @@ if (Parchment && typeof window !== 'undefined') {
   // Extend the List format to support attributes at the engine level
   let ListItem: any;
   try {
+    const Quill = require('react-quill-new').Quill;
     ListItem = Quill.import('formats/list/item');
   } catch (e) {
-    // Fallback: search for ListItem in the list module
+    // Final fallback
     try {
+      const Quill = require('react-quill-new').Quill;
       const ListModule = Quill.import('modules/list') || Quill.import('formats/list');
       ListItem = ListModule?.item || ListModule;
     } catch (innerE) {
