@@ -34,113 +34,70 @@ if (Parchment && typeof window !== 'undefined') {
 
   // Re-implement List and ListItem at the engine level to ensure formatting propagation
   let ListItem: any;
+  let ListContainer: any;
   if (typeof window !== 'undefined') {
     try {
       const QuillLib = require('react-quill-new');
       const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
       
-      // Use the internal registry directly to avoid throwing errors during import
-      // This is the safest way to access registered formats in Quill
       const imports = Quill.imports || (Quill.default && Quill.default.imports) || {};
-      
-      const listFormat = imports['formats/list'];
-      if (listFormat) {
-        ListItem = listFormat.item || (listFormat.name === 'list-item' ? listFormat : null);
-      }
-      
-      if (!ListItem) {
-        const listItemFormat = imports['formats/list/item'];
-        if (listItemFormat) ListItem = listItemFormat;
-      }
+      ListContainer = imports['formats/list'];
+      ListItem = imports['formats/list/item'] || (ListContainer && ListContainer.item);
 
-      // If still not found, try the standard import within a localized try-catch
-      if (!ListItem) {
-        try {
-          ListItem = Quill.import('formats/list/item');
-        } catch (e) {}
-      }
-      
-      // Last resort: If still no ListItem, create a basic Block blot fallback
-      if (!ListItem) {
-        try {
-          ListItem = Quill.import('blots/block');
-        } catch (e) {}
+      if (ListItem) {
+        class CustomListItem extends ListItem {
+          static register() {
+            Quill.register(Size, true);
+            Quill.register(Color, true);
+            Quill.register(Font, true);
+          }
+          
+          format(name: string, value: any) {
+            const domNode = (this as any).domNode;
+            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked'].includes(name)) {
+              if (name === 'list-style-type') {
+                domNode.style.listStyleType = value;
+              } else if (name === 'checked') {
+                domNode.setAttribute('data-checked', value);
+                domNode.classList.toggle('task-list-item', true);
+              } else {
+                const styleMap: Record<string, string> = {
+                  'font': 'fontFamily', 'size': 'fontSize', 'color': 'color',
+                  'bold': 'fontWeight', 'italic': 'fontStyle', 'underline': 'textDecoration'
+                };
+                let styleValue = value;
+                if (name === 'bold') styleValue = value ? 'bold' : 'normal';
+                if (name === 'italic') styleValue = value ? 'italic' : 'normal';
+                if (name === 'underline') styleValue = value ? 'underline' : 'none';
+                
+                if (value) domNode.style[styleMap[name]] = styleValue;
+                else domNode.style.removeProperty(styleMap[name].replace(/[A-Z]/g, (m: string) => '-' + m.toLowerCase()));
+              }
+            }
+            super.format(name, value);
+          }
+
+          optimize(context: any) {
+            super.optimize(context);
+            const domNode = (this as any).domNode;
+            const firstChild = domNode.firstChild;
+            if (firstChild && firstChild.nodeType === 1) {
+              const style = window.getComputedStyle(firstChild as HTMLElement);
+              const props: (keyof CSSStyleDeclaration)[] = ['fontSize', 'color', 'fontFamily', 'fontWeight', 'fontStyle', 'textDecoration'];
+              props.forEach(prop => {
+                const val = style[prop];
+                if (typeof val === 'string') {
+                  (domNode.style as any)[prop] = val;
+                }
+              });
+            }
+          }
+        }
+        Quill.register(CustomListItem, true);
       }
     } catch (e) {
-      console.error('ListItem resolution failed safely', e);
+      console.error('ListItem re-implementation failed', e);
     }
-  }
-
-  if (ListItem) {
-    class CustomListItem extends ListItem {
-      static register() {
-        Quill.register(Size, true);
-        Quill.register(Color, true);
-        Quill.register(Font, true);
-      }
-      
-      format(name: string, value: any) {
-        if (['size', 'color', 'font', 'bold', 'italic', 'underline'].includes(name)) {
-          const styleMap: Record<string, string> = {
-            'font': 'fontFamily',
-            'size': 'fontSize',
-            'color': 'color',
-            'bold': 'fontWeight',
-            'italic': 'fontStyle',
-            'underline': 'textDecoration'
-          };
-          
-          let styleValue = value;
-          if (name === 'bold') styleValue = value ? 'bold' : 'normal';
-          if (name === 'italic') styleValue = value ? 'italic' : 'normal';
-          if (name === 'underline') styleValue = value ? 'underline' : 'none';
-          
-          if (value) {
-            this.domNode.style[styleMap[name]] = styleValue;
-          } else {
-            const propMap: Record<string, string> = {
-              'font': 'font-family',
-              'size': 'font-size',
-              'color': 'color',
-              'bold': 'font-weight',
-              'italic': 'font-style',
-              'underline': 'text-decoration'
-            };
-            this.domNode.style.removeProperty(propMap[name]);
-          }
-        }
-        super.format(name, value);
-      }
-
-      optimize(context: any) {
-        super.optimize(context);
-        
-        // FORCED INHERITANCE: Force the LI marker to match the first child's formatting
-        // This is the most reliable way to ensure markers match text content in real-time
-        const firstChild = this.domNode.firstChild;
-        if (firstChild) {
-          if (firstChild.nodeType === 1) { // Element node
-            const style = window.getComputedStyle(firstChild as HTMLElement);
-            // Explicitly force styles onto the LI to override default browser marker behavior
-            this.domNode.style.fontSize = style.fontSize;
-            this.domNode.style.color = style.color;
-            this.domNode.style.fontFamily = style.fontFamily;
-            this.domNode.style.fontWeight = style.fontWeight;
-            this.domNode.style.fontStyle = style.fontStyle;
-            this.domNode.style.textDecoration = style.textDecoration;
-            
-            // Force re-rendering of markers in some browsers
-            this.domNode.style.listStyleType = this.domNode.style.listStyleType;
-          } else if (firstChild.nodeType === 3) { // Text node
-            // Direct text node inheritance via inline styles from format()
-            this.domNode.style.fontSize = this.domNode.style.fontSize || 'inherit';
-            this.domNode.style.color = this.domNode.style.color || 'inherit';
-          }
-        }
-      }
-    }
-    // Register the custom list item renderer
-    Quill.register(CustomListItem, true);
   }
 
   const Bold = Quill.import('formats/bold');
