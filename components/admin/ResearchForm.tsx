@@ -83,6 +83,13 @@ if (Parchment && typeof window !== 'undefined') {
           optimize(context: any) {
             super.optimize(context);
             const domNode = (this as any).domNode;
+            
+            // Check for list-style-type explicitly applied
+            const formats = this.formats();
+            if (formats['list-style-type']) {
+              domNode.style.listStyleType = formats['list-style-type'];
+            }
+
             const firstChild = domNode.firstChild;
             if (firstChild) {
               const style = firstChild.nodeType === 1 ? window.getComputedStyle(firstChild as HTMLElement) : null;
@@ -166,23 +173,33 @@ const modules = {
       { 'size': [
         '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
       ] }],
-      ['bold', 'italic', 'underline'],
-      [{ 'color': professionalColors }, { 'background': professionalColors }],
-      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-      ['link'],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
+      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': professionalColors }, { 'background': professionalColors }],
+      ['link', 'image', 'video'],
       ['clean']
     ],
-    handlers: {
-      'undo': function() {
-        // @ts-ignore
-        this.quill.history.undo();
-      },
-      'redo': function() {
-        // @ts-ignore
-        this.quill.history.redo();
+      handlers: {
+        'undo': function() {
+          // @ts-ignore
+          this.quill.history.undo();
+        },
+        'redo': function() {
+          // @ts-ignore
+          this.quill.history.redo();
+        },
+        'list': function(value: string) {
+          const quill = (this as any).quill;
+          const range = quill.getSelection();
+          if (range) {
+            if (value === 'ordered' || value === 'bullet' || value === 'check') {
+              quill.formatLine(range.index, range.length, 'list', value);
+            }
+          }
+        }
       }
-    }
   },
   history: {
     delay: 1000,
@@ -193,11 +210,12 @@ const modules = {
 
 const formats = [
   'font', 'size',
-  'bold', 'italic', 'underline',
+  'bold', 'italic', 'underline', 'strike',
   'color', 'background',
   'list', 'bullet', 'check',
+  'indent',
   'align',
-  'link'
+  'link', 'image', 'video'
 ];
 
 interface ResearchFormProps {
