@@ -28,6 +28,49 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
   const [contentSections, setContentSections] = useState<ContentSection[]>(
     initialData?.contentSections || [{ id: crypto.randomUUID(), title: "", content: "" }]
   );
+  const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "CASE STUDY", "WASTE MANAGEMENT", "CLIMATE CHANGE"]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, sectionId?: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+      const data = await res.json();
+      
+      if (data.secure_url) {
+        if (sectionId) {
+          setContentSections(prev => prev.map(s => s.id === sectionId ? { ...s, image: data.secure_url } : s));
+        } else {
+          setFormData(prev => ({ ...prev, titleImage: data.secure_url }));
+        }
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload image");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const deleteCategory = (catToDelete: string) => {
+    if (["RESEARCH", "PUBLICATION"].includes(catToDelete)) {
+      alert("Core categories cannot be deleted");
+      return;
+    }
+    setCategories(prev => prev.filter(c => c !== catToDelete));
+    if (formData.category === catToDelete) {
+      setFormData(prev => ({ ...prev, category: "RESEARCH" }));
+    }
+  };
 
   const addAuthor = () => setAuthors([...authors, ""]);
   const removeAuthor = (index: number) => setAuthors(authors.filter((_, i) => i !== index));
@@ -100,17 +143,6 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     }
   };
 
-  const handleAddCategory = () => {
-    if (formData.newCategory.trim()) {
-      // In a real app, you might want to save this to a categories table
-      // For now, we'll just add it to the state and select it
-      setFormData(prev => ({
-        ...prev,
-        category: prev.newCategory.trim().toUpperCase(),
-        newCategory: ""
-      }));
-    }
-  };
 
   return (
     <form onSubmit={handleSave} className="bg-white min-h-screen pb-20 rounded-[2.5rem]">
@@ -151,26 +183,25 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
             <div className="space-y-2">
               <label className="text-xs font-bold text-[#1a2233]">Category</label>
               <div className="space-y-2">
-                <div className="relative">
+                <div className="relative group">
                   <select 
                     value={formData.category}
                     onChange={e => setFormData({...formData, category: e.target.value})}
                     className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:border-blue-500 transition-all text-sm font-bold text-black appearance-none cursor-pointer"
                   >
-                    <option value="RESEARCH">RESEARCH</option>
-                    <option value="PUBLICATION">PUBLICATION</option>
-                    <option value="CASE STUDY">CASE STUDY</option>
-                    <option value="WASTE MANAGEMENT">WASTE MANAGEMENT</option>
-                    <option value="CLIMATE CHANGE">CLIMATE CHANGE</option>
-                    {formData.category !== "RESEARCH" && 
-                     formData.category !== "PUBLICATION" && 
-                     formData.category !== "CASE STUDY" && 
-                     formData.category !== "WASTE MANAGEMENT" && 
-                     formData.category !== "CLIMATE CHANGE" && (
-                      <option value={formData.category}>{formData.category}</option>
-                    )}
+                    {categories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
                   </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
+                  <ChevronDown className="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
+                  <button 
+                    type="button"
+                    onClick={() => deleteCategory(formData.category)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100"
+                    title="Delete current category"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
                 <div className="flex gap-2">
                   <input 
@@ -182,7 +213,15 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   />
                   <button 
                     type="button"
-                    onClick={handleAddCategory}
+                    onClick={() => {
+                      if (formData.newCategory.trim()) {
+                        const newCat = formData.newCategory.trim().toUpperCase();
+                        if (!categories.includes(newCat)) {
+                          setCategories([...categories, newCat]);
+                        }
+                        setFormData({...formData, category: newCat, newCategory: ""});
+                      }
+                    }}
                     className="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-blue-600/20 active:scale-95 transition-all"
                   >
                     Add
@@ -217,14 +256,26 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
           <div className="space-y-2">
             <label className="text-xs font-bold text-[#1a2233]">Title Image</label>
             <div className="flex items-start gap-6">
-              <div className="w-32 h-32 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
-                <Plus size={32} />
+              <div className="relative w-32 h-32 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden">
+                {(formData as any).titleImage ? (
+                  <img src={(formData as any).titleImage} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <Plus size={32} className="text-slate-300" />
+                )}
+                {isUploading && (
+                  <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
               </div>
               <div className="space-y-2 pt-2">
-                <button type="button" className="flex items-center gap-2 px-6 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 shadow-sm">
-                  <Plus size={14} className="rotate-45" /> Choose Image
-                </button>
-                <p className="text-[10px] text-slate-400">No file chosen</p>
+                <label className="flex items-center gap-2 px-6 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 shadow-sm cursor-pointer hover:bg-slate-50 transition-all">
+                  <ImageIcon size={14} /> Choose Image
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e)} />
+                </label>
+                <p className="text-[10px] text-slate-400">
+                  {(formData as any).titleImage ? "Image uploaded" : "No file chosen"}
+                </p>
               </div>
             </div>
           </div>
@@ -352,13 +403,23 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                 <div className="space-y-4">
                   <label className="text-xs font-bold text-[#1a2233]">Paragraph Image (Optional)</label>
                   <div className="flex items-start gap-6">
-                    <div className="w-24 h-24 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
-                      <Plus size={24} />
+                    <div className="relative w-24 h-24 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden">
+                      {(section as any).image ? (
+                        <img src={(section as any).image} alt="Preview" className="w-full h-full object-cover" />
+                      ) : (
+                        <Plus size={24} className="text-slate-300" />
+                      )}
+                      {isUploading && (
+                        <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
+                          <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        </div>
+                      )}
                     </div>
                     <div className="pt-2">
-                      <button type="button" className="px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 shadow-sm">
+                      <label className="px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 shadow-sm cursor-pointer hover:bg-slate-50 transition-all inline-block">
                         Upload Image
-                      </button>
+                        <input type="file" className="hidden" accept="image/*" onChange={(e) => handleImageUpload(e, section.id)} />
+                      </label>
                     </div>
                   </div>
                 </div>
