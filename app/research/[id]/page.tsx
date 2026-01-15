@@ -295,7 +295,7 @@ export default function ResearchDetail() {
                   className="bg-blue-600 rounded-[3rem] p-12 shadow-2xl shadow-blue-600/40 relative overflow-hidden group"
                 >
                   <div className="relative z-10">
-                    <h3 className="text-3xl font-black mb-10 text-white tracking-tight leading-none italic uppercase">Collaborate<br/>With Us</h3>
+                    <h3 className="text-3xl font-black mb-10 text-white tracking-tight leading-none italic uppercase text-center">Resources</h3>
                     <div className="space-y-4">
                       <button className="w-full bg-white text-blue-600 font-black py-6 rounded-[1.5rem] flex items-center justify-center gap-3 hover:bg-slate-50 transition-all active:scale-[0.98] shadow-xl shadow-black/10 text-xs tracking-widest uppercase">
                         <Download size={22} strokeWidth={2.5} />
@@ -309,15 +309,6 @@ export default function ResearchDetail() {
                   </div>
                   <div className="absolute -right-10 -top-10 w-56 h-56 bg-white/10 rounded-full blur-[100px] group-hover:scale-125 transition-transform duration-[1.5s]" />
                 </motion.div>
-
-                {/* Back to feed */}
-                <Link 
-                  href="/research"
-                  className="flex items-center justify-center gap-4 w-full py-8 rounded-[2.5rem] border-2 border-slate-200 text-slate-400 font-black hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all group text-sm tracking-widest uppercase"
-                >
-                  <ArrowLeft size={20} className="group-hover:-translate-x-2 transition-transform" />
-                  Return to Archive
-                </Link>
               </div>
             </aside>
           </div>
