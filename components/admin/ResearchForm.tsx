@@ -507,7 +507,34 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       background-repeat: no-repeat;
                       display: block;
                     }
-                    .ql-snow.ql-toolbar button svg { display: none; }
+                    .ql-snow.ql-toolbar button svg { display: inline-block; }
+                    .ql-snow.ql-toolbar .ql-undo::before,
+                    .ql-snow.ql-toolbar .ql-redo::before,
+                    .ql-snow.ql-toolbar .ql-color::before,
+                    .ql-snow.ql-toolbar .ql-background::before,
+                    .ql-snow.ql-toolbar .ql-list[value="ordered"]::before,
+                    .ql-snow.ql-toolbar .ql-list[value="bullet"]::before,
+                    .ql-snow.ql-toolbar .ql-align[value="center"]::before,
+                    .ql-snow.ql-toolbar .ql-align[value="right"]::before,
+                    .ql-snow.ql-toolbar .ql-align[value="justify"]::before,
+                    .ql-snow.ql-toolbar .ql-align:not([value])::before {
+                      content: "";
+                      width: 18px;
+                      height: 18px;
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      display: block;
+                    }
+
+                    .ql-snow.ql-toolbar .ql-bold svg,
+                    .ql-snow.ql-toolbar .ql-italic svg,
+                    .ql-snow.ql-toolbar .ql-underline svg,
+                    .ql-snow.ql-toolbar .ql-link svg,
+                    .ql-snow.ql-toolbar .ql-clean svg {
+                      display: inline-block !important;
+                      width: 16px;
+                      height: 16px;
+                    }
                     
                     /* Toolbar separators and styling */
                     .ql-toolbar.ql-snow .ql-formats {
