@@ -50,142 +50,43 @@ export default function ResearchDetail() {
   }, [params.id]);
 
   const handleDownload = async () => {
-    if (paper?.pdfUrl) {
-      window.open(paper.pdfUrl, "_blank");
-      return;
-    }
+    const element = document.getElementById('research-content');
+    if (!element) return;
 
-    // Professional PDF Generation using jsPDF
-    const doc = jsPDF({
-      orientation: "p",
-      unit: "mm",
-      format: "a4",
-    });
+    try {
+      const { default: html2canvas } = await import('html2canvas');
+      const { default: jsPDF } = await import('jspdf');
 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const margin = 20;
-    const contentWidth = pageWidth - margin * 2;
-    let currentY = 20;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff"
+      });
 
-    // Helper to add text with wrapping
-    const addWrappedText = (text: string, fontSize: number, style: "normal" | "bold" | "italic" = "normal", spacing = 7) => {
-      doc.setFont("helvetica", style);
-      doc.setFontSize(fontSize);
-      const lines = doc.splitTextToSize(text, contentWidth);
-      doc.text(lines, margin, currentY);
-      currentY += (lines.length * spacing);
-    };
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
 
-    // Header - Lab Name
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text("SINGHLAB RESEARCH REPOSITORY", margin, currentY);
-    currentY += 10;
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
 
-    // Line separator
-    doc.setDrawColor(200);
-    doc.line(margin, currentY, pageWidth - margin, currentY);
-    currentY += 15;
-
-    // Title
-    doc.setTextColor(0);
-    addWrappedText(paper.title, 22, "bold", 10);
-    currentY += 5;
-
-    // Metadata
-    doc.setFontSize(10);
-    doc.setTextColor(80);
-    doc.text(`Category: ${paper.category.toUpperCase()}`, margin, currentY);
-    doc.text(`Year: ${paper.year}`, pageWidth - margin - 30, currentY);
-    currentY += 10;
-
-    // Authors
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0);
-    doc.text("AUTHORS:", margin, currentY);
-    currentY += 6;
-    doc.setFont("helvetica", "normal");
-    const authorList = paper.authors?.map((a: any) => a.name).join(", ") || "N/A";
-    addWrappedText(authorList, 11, "normal", 6);
-    currentY += 10;
-
-    // Tags
-    if (paper.tags) {
-      doc.setFont("helvetica", "bold");
-      doc.text("KEYWORDS:", margin, currentY);
-      currentY += 6;
-      addWrappedText(paper.tags, 10, "italic", 5);
-      currentY += 15;
-    }
-
-    // Content Sections
-    for (const section of paper.contentSections || []) {
-      // Check for page overflow
-      if (currentY > 230) {
-        doc.addPage();
-        currentY = 20;
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
       }
 
-      if (section.title) {
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(14);
-        doc.setTextColor(37, 99, 235); // Blue-600
-        doc.text(section.title.toUpperCase(), margin, currentY);
-        currentY += 8;
-      }
-
-      // Add Section Image if exists
-      if (section.image) {
-        try {
-          const img = new window.Image();
-          img.crossOrigin = "Anonymous";
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-            img.src = section.image;
-          });
-
-          const imgWidth = contentWidth;
-          const imgHeight = (img.height * imgWidth) / img.width;
-
-          // Check if image fits on current page
-          if (currentY + imgHeight > 270) {
-            doc.addPage();
-            currentY = 20;
-          }
-
-          doc.addImage(img, "JPEG", margin, currentY, imgWidth, imgHeight);
-          currentY += imgHeight + 10;
-        } catch (err) {
-          console.error("Could not add section image to PDF:", err);
-        }
-      }
-
-      if (section.content) {
-        doc.setTextColor(50);
-        // Strip HTML tags for PDF
-        const cleanContent = section.content.replace(/<[^>]*>?/gm, "");
-        addWrappedText(cleanContent, 11, "normal", 6);
-        currentY += 10;
-      }
+      pdf.save(`${paper.title.replace(/\s+/g, '_')}.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
     }
-
-    // Footer
-    const totalPages = (doc as any).internal.getNumberOfPages();
-    for (let i = 1; i <= totalPages; i++) {
-      doc.setPage(i);
-      doc.setFontSize(8);
-      doc.setTextColor(150);
-      doc.text(
-        `Generated on ${new Date().toLocaleDateString()} - SinghLab Digital Archive - Page ${i} of ${totalPages}`,
-        pageWidth / 2,
-        doc.internal.pageSize.getHeight() - 10,
-        { align: "center" }
-      );
-    }
-
-    doc.save(`${paper.title.replace(/\s+/g, "_")}.pdf`);
   };
 
   const handleShare = async () => {
@@ -234,8 +135,9 @@ export default function ResearchDetail() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-500/30">
-      {/* Header Image */}
-      <section className="relative h-[60vh] w-full overflow-hidden border-b border-slate-100">
+      <div id="research-content" className="bg-white">
+        {/* Header Image */}
+        <section className="relative h-[60vh] w-full overflow-hidden border-b border-slate-100">
         <motion.div 
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
@@ -477,7 +379,7 @@ export default function ResearchDetail() {
             </aside>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
