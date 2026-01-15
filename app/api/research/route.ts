@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     try {
       // Ensure we have at least one author and they are non-empty
-      const sanitizedAuthors = Array.isArray(body.authors) ? body.authors.filter(a => typeof a === 'string' && a.trim() !== "") : [];
+      const sanitizedAuthors = Array.isArray(body.authors) ? body.authors.filter((a: any) => typeof a === 'string' && a.trim() !== "") : [];
       if (sanitizedAuthors.length === 0) {
         return NextResponse.json({ error: 'At least one valid author name is required' }, { status: 400 });
       }
