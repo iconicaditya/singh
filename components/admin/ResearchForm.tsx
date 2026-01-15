@@ -399,12 +399,18 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       padding-left: 1.5em;
                     }
                     .ql-editor li {
-                      font-size: inherit;
-                      color: inherit;
+                      font-size: inherit !important;
+                      color: inherit !important;
                     }
                     .ql-editor li::before {
-                      font-size: inherit;
-                      color: inherit;
+                      font-size: inherit !important;
+                      color: inherit !important;
+                    }
+                    .ql-snow .ql-editor li[data-list="bullet"]::before {
+                      color: inherit !important;
+                    }
+                    .ql-snow .ql-editor li[data-list="ordered"]::before {
+                      color: inherit !important;
                     }
                     .ql-custom-container .ql-container.ql-snow {
                       border: none;
