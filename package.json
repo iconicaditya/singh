@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack -H 0.0.0.0 -p 5000",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 5000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",

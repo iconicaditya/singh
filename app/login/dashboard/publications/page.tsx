@@ -3,13 +3,41 @@
 import AdminLayout from "@/components/admin/AdminLayout";
 import DashboardTable from "@/components/admin/DashboardTable";
 import { BookOpen } from "lucide-react";
-
-const publications = [
-  { id: 1, title: "Plastic impacts in 2024", journal: "Nature Environ", type: "Journal", year: "2024" },
-  { id: 2, title: "Urban Waste Study", journal: "Science Direct", type: "Conference", year: "2023" },
-];
+import { useState, useEffect } from "react";
+import PublicationForm from "@/components/publications/PublicationForm";
 
 export default function PublicationsPage() {
+  const [publications, setPublications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+
+  const fetchPublications = async () => {
+    try {
+      const res = await fetch("/api/publications");
+      const data = await res.json();
+      setPublications(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPublications();
+  }, []);
+
+  const handleDelete = async (item: any) => {
+    if (!confirm("Are you sure you want to delete this publication?")) return;
+    try {
+      await fetch(`/api/publications?id=${item.id}`, { method: "DELETE" });
+      fetchPublications();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const columns = [
     { header: "Title", accessor: "title" },
     { header: "Journal/Publisher", accessor: "journal" },
@@ -34,7 +62,22 @@ export default function PublicationsPage() {
         data={publications}
         columns={columns}
         categories={["Journal", "Conference", "Book Chapter"]}
-        onAdd={() => console.log("Add pub")}
+        onAdd={() => {
+          setEditingItem(null);
+          setIsFormOpen(true);
+        }}
+        onEdit={(item) => {
+          setEditingItem(item);
+          setIsFormOpen(true);
+        }}
+        onDelete={handleDelete}
+      />
+
+      <PublicationForm 
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSuccess={fetchPublications}
+        initialData={editingItem}
       />
     </AdminLayout>
   );
