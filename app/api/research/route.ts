@@ -28,23 +28,20 @@ export async function POST(req: Request) {
     try {
       // Ensure we have at least one author and they are non-empty
       const sanitizedAuthors = Array.isArray(body.authors) ? body.authors.filter((a: any) => typeof a === 'string' && a.trim() !== "") : [];
-      if (sanitizedAuthors.length === 0) {
-        return NextResponse.json({ error: 'At least one valid author name is required' }, { status: 400 });
-      }
-
+      
       // Ensure JSON fields are properly formatted for Drizzle
-      const insertData = {
-        title: body.title,
-        category: body.category,
+      const insertData: any = {
+        title: body.title || "Untitled Research",
+        category: body.category || "RESEARCH",
         year: body.year?.toString().slice(0, 4) || new Date().getFullYear().toString(),
         tags: body.tags || "",
         titleImage: body.titleImage || "",
-        authors: sanitizedAuthors, // Drizzle handles JSON array
+        authors: sanitizedAuthors.length > 0 ? sanitizedAuthors : ["Anonymous"],
         contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
         relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
       };
 
-      console.log('Attempting DB Insert with:', JSON.stringify(insertData, null, 2));
+      console.log('Attempting DB Insert with sanitized data');
 
       const [savedItem] = await db.insert(research).values(insertData).returning();
       
