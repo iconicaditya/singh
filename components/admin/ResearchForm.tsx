@@ -41,6 +41,7 @@ if (Parchment && typeof window !== 'undefined') {
       const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
       
       const imports = Quill.imports || (Quill.default && Quill.default.imports) || {};
+      
       ListContainer = imports['formats/list'];
       ListItem = imports['formats/list/item'] || (ListContainer && ListContainer.item);
 
@@ -81,12 +82,12 @@ if (Parchment && typeof window !== 'undefined') {
             super.optimize(context);
             const domNode = (this as any).domNode;
             const firstChild = domNode.firstChild;
-            if (firstChild && firstChild.nodeType === 1) {
-              const style = window.getComputedStyle(firstChild as HTMLElement);
+            if (firstChild) {
+              const style = firstChild.nodeType === 1 ? window.getComputedStyle(firstChild as HTMLElement) : null;
               const props: (keyof CSSStyleDeclaration)[] = ['fontSize', 'color', 'fontFamily', 'fontWeight', 'fontStyle', 'textDecoration'];
               props.forEach(prop => {
-                const val = style[prop];
-                if (typeof val === 'string') {
+                const val = style ? style[prop] : (domNode.style as any)[prop];
+                if (typeof val === 'string' && val !== '') {
                   (domNode.style as any)[prop] = val;
                 }
               });
@@ -94,6 +95,15 @@ if (Parchment && typeof window !== 'undefined') {
           }
         }
         Quill.register(CustomListItem, true);
+      }
+
+      if (ListContainer) {
+        class CustomListContainer extends ListContainer {
+          static register() {
+            Quill.register(CustomListItem, true);
+          }
+        }
+        Quill.register(CustomListContainer, true);
       }
     } catch (e) {
       console.error('ListItem re-implementation failed', e);
