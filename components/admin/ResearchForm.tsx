@@ -418,15 +418,24 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       font-size: inherit !important;
                       color: inherit !important;
                     }
+                    /* This ensures that if the content inside the li has a font-size, the li (and thus its marker) matches it */
                     .ql-editor li::before {
+                      display: inline-block;
+                      white-space: nowrap;
+                      text-align: right;
                       font-size: inherit !important;
                       color: inherit !important;
                     }
-                    .ql-snow .ql-editor li[data-list="bullet"]::before {
-                      color: inherit !important;
+                    /* Target the actual counters and bullets specifically to force inheritance */
+                    .ql-snow .ql-editor li::before {
+                      font-size: inherit !important;
                     }
-                    .ql-snow .ql-editor li[data-list="ordered"]::before {
-                      color: inherit !important;
+                    .ql-snow .ql-editor h1, 
+                    .ql-snow .ql-editor h2, 
+                    .ql-snow .ql-editor h3, 
+                    .ql-snow .ql-editor p, 
+                    .ql-snow .ql-editor li {
+                       /* default color/size if not specified, but usually Quill adds it */
                     }
                     .ql-custom-container .ql-container.ql-snow {
                       border: none;
