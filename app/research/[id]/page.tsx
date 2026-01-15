@@ -22,6 +22,7 @@ import { useParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
 export default function ResearchDetail() {
+  const [isMounted, setIsMounted] = useState(false);
   const params = useParams();
   const [paper, setPaper] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -32,8 +33,6 @@ export default function ResearchDetail() {
     target: isMounted ? containerRef : undefined,
     offset: ["start start", "end end"],
   });
-
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
