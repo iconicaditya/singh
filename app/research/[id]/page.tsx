@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import jsPDF from "jspdf";
 
 export default function ResearchDetail() {
   const params = useParams();
@@ -48,22 +49,116 @@ export default function ResearchDetail() {
     fetchResearch();
   }, [params.id]);
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (paper?.pdfUrl) {
-      window.open(paper.pdfUrl, '_blank');
-    } else {
-      // Fallback: Generate a simple text file if no PDF is linked
-      const content = `Title: ${paper.title}\nCategory: ${paper.category}\nYear: ${paper.year}\nAuthors: ${paper.authors?.map((a: any) => a.name).join(', ')}`;
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${paper.title.replace(/\s+/g, '_')}_summary.txt`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      window.open(paper.pdfUrl, "_blank");
+      return;
     }
+
+    // Professional PDF Generation using jsPDF
+    const doc = jsPDF({
+      orientation: "p",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 20;
+    const contentWidth = pageWidth - margin * 2;
+    let currentY = 20;
+
+    // Helper to add text with wrapping
+    const addWrappedText = (text: string, fontSize: number, style: "normal" | "bold" | "italic" = "normal", spacing = 7) => {
+      doc.setFont("helvetica", style);
+      doc.setFontSize(fontSize);
+      const lines = doc.splitTextToSize(text, contentWidth);
+      doc.text(lines, margin, currentY);
+      currentY += (lines.length * spacing);
+    };
+
+    // Header - Lab Name
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text("SINGHLAB RESEARCH REPOSITORY", margin, currentY);
+    currentY += 10;
+
+    // Line separator
+    doc.setDrawColor(200);
+    doc.line(margin, currentY, pageWidth - margin, currentY);
+    currentY += 15;
+
+    // Title
+    doc.setTextColor(0);
+    addWrappedText(paper.title, 22, "bold", 10);
+    currentY += 5;
+
+    // Metadata
+    doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text(`Category: ${paper.category.toUpperCase()}`, margin, currentY);
+    doc.text(`Year: ${paper.year}`, pageWidth - margin - 30, currentY);
+    currentY += 10;
+
+    // Authors
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(0);
+    doc.text("AUTHORS:", margin, currentY);
+    currentY += 6;
+    doc.setFont("helvetica", "normal");
+    const authorList = paper.authors?.map((a: any) => a.name).join(", ") || "N/A";
+    addWrappedText(authorList, 11, "normal", 6);
+    currentY += 10;
+
+    // Tags
+    if (paper.tags) {
+      doc.setFont("helvetica", "bold");
+      doc.text("KEYWORDS:", margin, currentY);
+      currentY += 6;
+      addWrappedText(paper.tags, 10, "italic", 5);
+      currentY += 15;
+    }
+
+    // Content Sections
+    paper.contentSections?.forEach((section: any) => {
+      // Check for page overflow
+      if (currentY > 250) {
+        doc.addPage();
+        currentY = 20;
+      }
+
+      if (section.title) {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.setTextColor(37, 99, 235); // Blue-600
+        doc.text(section.title.toUpperCase(), margin, currentY);
+        currentY += 8;
+      }
+
+      if (section.content) {
+        doc.setTextColor(50);
+        // Strip HTML tags for PDF
+        const cleanContent = section.content.replace(/<[^>]*>?/gm, "");
+        addWrappedText(cleanContent, 11, "normal", 6);
+        currentY += 10;
+      }
+    });
+
+    // Footer
+    const totalPages = (doc as any).internal.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text(
+        `Generated on ${new Date().toLocaleDateString()} - SinghLab Digital Archive - Page ${i} of ${totalPages}`,
+        pageWidth / 2,
+        doc.internal.pageSize.getHeight() - 10,
+        { align: "center" }
+      );
+    }
+
+    doc.save(`${paper.title.replace(/\s+/g, "_")}.pdf`);
   };
 
   const handleShare = async () => {
