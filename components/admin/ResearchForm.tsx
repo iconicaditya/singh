@@ -12,7 +12,7 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 const Parchment = typeof window !== 'undefined' ? (require('react-quill-new').Quill).import('parchment') : null;
 
 if (Parchment && typeof window !== 'undefined') {
-  const Quill = require('react-quill-new').Quill;
+  const Quill = (require('react-quill-new')).Quill;
   
   // Register style-based attributors for all formatting
   const Size = Quill.import('attributors/style/size');
@@ -32,23 +32,8 @@ if (Parchment && typeof window !== 'undefined') {
   const Align = Quill.import('attributors/style/align');
   Quill.register(Align, true);
 
-  // Extend the List format to support attributes at the engine level
-  let ListItem: any;
-  if (typeof window !== 'undefined') {
-    const Quill = (require('react-quill-new')).Quill;
-    try {
-      // Use direct registration if import fails or try a safer import path
-      ListItem = Quill.import('formats/list/item') || (Quill.import('formats/list') ? Quill.import('formats/list').item : null);
-    } catch (e) {
-      // Fallback to searching modules
-      try {
-        const ListModule = Quill.import('modules/list');
-        ListItem = ListModule?.item || Quill.import('formats/list')?.item;
-      } catch (innerE) {
-        console.error('ListItem resolution failed', innerE);
-      }
-    }
-  }
+  // Re-implement List and ListItem at the engine level to ensure formatting propagation
+  const ListItem = Quill.import('formats/list/item');
 
   if (ListItem) {
     class CustomListItem extends ListItem {
@@ -57,27 +42,46 @@ if (Parchment && typeof window !== 'undefined') {
         Quill.register(Color, true);
         Quill.register(Font, true);
       }
+      
       format(name: string, value: any) {
+        // Propagation for specific style attributes to the marker parent (the LI node)
         if (['size', 'color', 'font', 'bold', 'italic', 'underline'].includes(name)) {
           if (value) {
-            if (name === 'font') this.domNode.style.fontFamily = value;
-            else if (name === 'size') this.domNode.style.fontSize = value;
-            else if (name === 'color') this.domNode.style.color = value;
-            else if (name === 'bold') this.domNode.style.fontWeight = value ? 'bold' : 'normal';
-            else if (name === 'italic') this.domNode.style.fontStyle = value ? 'italic' : 'normal';
-            else if (name === 'underline') this.domNode.style.textDecoration = value ? 'underline' : 'none';
+            const styleMap: Record<string, string> = {
+              'font': 'fontFamily',
+              'size': 'fontSize',
+              'color': 'color',
+              'bold': 'fontWeight',
+              'italic': 'fontStyle',
+              'underline': 'textDecoration'
+            };
+            const styleName = styleMap[name];
+            let styleValue = value;
+            if (name === 'bold') styleValue = 'bold';
+            if (name === 'italic') styleValue = 'italic';
+            if (name === 'underline') styleValue = 'underline';
+            
+            this.domNode.style[styleName] = styleValue;
           } else {
-            const prop = name === 'font' ? 'font-family' : (name === 'size' ? 'font-size' : (name === 'bold' ? 'font-weight' : (name === 'italic' ? 'font-style' : (name === 'underline' ? 'text-decoration' : name))));
-            this.domNode.style.removeProperty(prop);
+            const propMap: Record<string, string> = {
+              'font': 'font-family',
+              'size': 'font-size',
+              'color': 'color',
+              'bold': 'font-weight',
+              'italic': 'font-style',
+              'underline': 'text-decoration'
+            };
+            this.domNode.style.removeProperty(propMap[name]);
           }
         }
         super.format(name, value);
       }
+
       optimize(context: any) {
         super.optimize(context);
-        // Sync formatting from the first child to the list item (the marker)
+        // Force list marker inheritance from the first inline child formatting
         const firstChild = this.domNode.firstChild;
-        if (firstChild && firstChild.nodeType === 1) {
+        if (firstChild && firstChild.nodeType === 1) { // Element node
           const style = window.getComputedStyle(firstChild as HTMLElement);
           this.domNode.style.fontSize = style.fontSize;
           this.domNode.style.color = style.color;
@@ -88,6 +92,7 @@ if (Parchment && typeof window !== 'undefined') {
         }
       }
     }
+    // Register the custom list item renderer
     Quill.register(CustomListItem, true);
   }
 
