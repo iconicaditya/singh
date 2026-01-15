@@ -30,12 +30,16 @@ export default function ResearchDetail() {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
+    layoutEffect: false
   });
 
   const progressBar = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
+    // Force a re-render after mount to ensure ref is hydrated for motion
+    setLoading(prev => prev);
+    
     const fetchResearch = async () => {
       try {
         const response = await fetch('/api/research');
