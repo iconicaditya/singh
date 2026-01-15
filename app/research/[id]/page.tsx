@@ -136,7 +136,7 @@ export default function ResearchDetail() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/40 to-white" />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10 h-full flex flex-col justify-end pb-16">
+        <div className="container mx-auto px-6 relative z-10 h-full flex flex-col justify-end pb-16 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
