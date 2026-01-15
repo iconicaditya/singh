@@ -41,12 +41,11 @@ if (Parchment && typeof window !== 'undefined') {
       const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
       
       const imports = Quill.imports || (Quill.default && Quill.default.imports) || {};
-      
       ListContainer = imports['formats/list'];
       ListItem = imports['formats/list/item'] || (ListContainer && ListContainer.item);
 
       if (ListItem) {
-        const _ListItem = ListItem; // Local reference to avoid scope issues
+        const _ListItem = ListItem;
         class CustomListItem extends _ListItem {
           static register() {
             Quill.register(Size, true);
@@ -56,12 +55,14 @@ if (Parchment && typeof window !== 'undefined') {
           
           format(name: string, value: any) {
             const domNode = (this as any).domNode;
-            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked'].includes(name)) {
+            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked', 'indent'].includes(name)) {
               if (name === 'list-style-type') {
                 domNode.style.listStyleType = value;
               } else if (name === 'checked') {
                 domNode.setAttribute('data-checked', value);
                 domNode.classList.toggle('task-list-item', true);
+              } else if (name === 'indent') {
+                domNode.style.marginLeft = value ? (value * 2) + 'em' : '';
               } else {
                 const styleMap: Record<string, string> = {
                   'font': 'fontFamily', 'size': 'fontSize', 'color': 'color',
