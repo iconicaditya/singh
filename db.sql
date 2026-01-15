@@ -39,6 +39,7 @@ CREATE TABLE publications (
   title VARCHAR(255) NOT NULL,
   journal VARCHAR(255),
   authors TEXT NOT NULL,
+  description TEXT,
   year VARCHAR(4) NOT NULL,
   type VARCHAR(100), -- Journal, Conference, etc
   doi VARCHAR(100),

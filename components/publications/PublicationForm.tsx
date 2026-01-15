@@ -16,6 +16,7 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
     title: "",
     journal: "",
     authors: "",
+    description: "",
     year: new Date().getFullYear().toString(),
     type: "Journal",
     doi: "",
@@ -124,6 +125,16 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
                 onChange={e => setFormData({ ...formData, authors: e.target.value })}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
                 placeholder="Author 1, Author 2..."
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-bold text-slate-700 mb-2">Description</label>
+              <textarea
+                value={formData.description}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all min-h-[100px]"
+                placeholder="Brief description of the publication..."
               />
             </div>
 

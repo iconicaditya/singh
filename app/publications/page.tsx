@@ -123,9 +123,15 @@ export default function PublicationsPage() {
                     </div>
 
                     {pub.journal && (
-                      <p className="text-slate-500 text-sm font-semibold mb-6 flex items-center gap-2">
+                      <p className="text-slate-500 text-sm font-semibold mb-3 flex items-center gap-2">
                         <BookOpen size={16} />
                         {pub.journal}
+                      </p>
+                    )}
+
+                    {pub.description && (
+                      <p className="text-slate-600 text-sm mb-6 line-clamp-2 font-medium">
+                        {pub.description}
                       </p>
                     )}
 
@@ -135,10 +141,10 @@ export default function PublicationsPage() {
                           href={pub.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors"
+                          className="group/btn flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-black/5 active:scale-95"
                         >
-                          <ExternalLink size={16} />
-                          DOI / Publisher Link
+                          <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                          View Document
                         </a>
                       )}
                       {pub.pdfUrl && (
@@ -146,10 +152,10 @@ export default function PublicationsPage() {
                           href={pub.pdfUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                          className="group/btn flex items-center gap-2 px-6 py-3 bg-blue-50 text-blue-600 border border-blue-100 rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm active:scale-95"
                         >
-                          <FileText size={16} />
-                          Read Full Paper
+                          <FileText size={14} className="group-hover/btn:scale-110 transition-transform" />
+                          Read PDF
                         </a>
                       )}
                     </div>

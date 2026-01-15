@@ -31,6 +31,7 @@ export const publications = pgTable("publications", {
   title: varchar("title", { length: 255 }).notNull(),
   journal: varchar("journal", { length: 255 }),
   authors: text("authors").notNull(),
+  description: text("description"),
   year: varchar("year", { length: 4 }).notNull(),
   type: varchar("type", { length: 100 }), // Journal, Conference, etc
   doi: varchar("doi", { length: 100 }),
