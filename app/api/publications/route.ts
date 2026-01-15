@@ -6,9 +6,10 @@ import { desc, eq } from 'drizzle-orm';
 export async function GET() {
   try {
     const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
-    return NextResponse.json(data);
+    return NextResponse.json(data || []);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch publications' }, { status: 500 });
+    console.error('Fetch error:', error);
+    return NextResponse.json({ error: 'Failed to fetch publications', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function PublicationsPage() {
-  const [publications, setPublications] = useState([]);
+  const [publications, setPublications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -15,9 +15,15 @@ export default function PublicationsPage() {
       try {
         const res = await fetch("/api/publications");
         const data = await res.json();
-        setPublications(data);
+        if (Array.isArray(data)) {
+          setPublications(data);
+        } else {
+          setPublications([]);
+          console.error("Publications data is not an array:", data);
+        }
       } catch (err) {
         console.error(err);
+        setPublications([]);
       } finally {
         setLoading(false);
       }
