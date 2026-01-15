@@ -444,7 +444,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: flex !important;
                     }
 
-                    /* Icons Styling */
+                    /* Icons Styling and Clickability Fix */
                     .ql-snow.ql-toolbar button {
                       width: 28px;
                       height: 28px;
@@ -453,9 +453,31 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       align-items: center;
                       justify-content: center;
                       position: relative;
+                      cursor: pointer !important;
                     }
                     .ql-snow.ql-toolbar button:hover, .ql-snow.ql-toolbar button.ql-active {
                       color: #2563eb;
+                    }
+
+                    .ql-snow.ql-toolbar .ql-bold svg,
+                    .ql-snow.ql-toolbar .ql-italic svg,
+                    .ql-snow.ql-toolbar .ql-underline svg,
+                    .ql-snow.ql-toolbar .ql-link svg,
+                    .ql-snow.ql-toolbar .ql-clean svg,
+                    .ql-snow.ql-toolbar .ql-list svg {
+                      display: inline-block !important;
+                      width: 16px;
+                      height: 16px;
+                      pointer-events: none;
+                    }
+                    
+                    /* Specific fix for custom icons to prevent double rendering */
+                    .ql-snow.ql-toolbar .ql-undo svg,
+                    .ql-snow.ql-toolbar .ql-redo svg,
+                    .ql-snow.ql-toolbar .ql-color svg,
+                    .ql-snow.ql-toolbar .ql-background svg,
+                    .ql-snow.ql-toolbar .ql-align svg {
+                      display: none !important;
                     }
                     
                     /* Custom icons for toolbar to match screenshot */
