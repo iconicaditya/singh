@@ -32,16 +32,21 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'At least one valid author name is required' }, { status: 400 });
       }
 
-      const [savedItem] = await db.insert(research).values({
+      // Ensure JSON fields are properly formatted for Drizzle
+      const insertData = {
         title: body.title,
         category: body.category,
-        year: body.year.toString().slice(0, 4),
+        year: body.year?.toString().slice(0, 4) || new Date().getFullYear().toString(),
         tags: body.tags || "",
         titleImage: body.titleImage || "",
-        authors: sanitizedAuthors,
+        authors: sanitizedAuthors, // Drizzle handles JSON array
         contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
         relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
-      }).returning();
+      };
+
+      console.log('Attempting DB Insert with:', JSON.stringify(insertData, null, 2));
+
+      const [savedItem] = await db.insert(research).values(insertData).returning();
       
       if (!savedItem) {
         throw new Error("Database insertion failed - no record returned");

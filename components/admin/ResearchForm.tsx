@@ -133,7 +133,10 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save research');
+        const errorMessage = errorData.details 
+          ? `${errorData.error}: ${errorData.details}${errorData.code ? ` (Code: ${errorData.code})` : ''}`
+          : (errorData.error || 'Failed to save research');
+        throw new Error(errorMessage);
       }
 
       console.log("Research saved successfully!");
