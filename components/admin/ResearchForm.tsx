@@ -35,14 +35,15 @@ if (Parchment && typeof window !== 'undefined') {
   // Re-implement List and ListItem at the engine level to ensure formatting propagation
   let ListItem: any;
   if (typeof window !== 'undefined') {
-    const Quill = require('react-quill-new').Quill;
+    const QuillLib = require('react-quill-new');
+    const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
+    
     try {
       ListItem = Quill.import('formats/list/item');
     } catch (e) {
-      // Fallback if the standard path fails
       try {
-        const ListModule = Quill.import('formats/list');
-        ListItem = ListModule?.item || ListModule;
+        const formats = Quill.import('formats/list') || {};
+        ListItem = formats.item || formats;
       } catch (innerE) {
         console.error('ListItem resolution failed', innerE);
       }
