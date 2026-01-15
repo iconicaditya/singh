@@ -29,16 +29,16 @@ export default function ResearchDetail() {
   const containerRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: isMounted ? containerRef : undefined,
     offset: ["start start", "end end"],
-    layoutEffect: false
   });
 
-  const progressBar = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Force a re-render after mount to ensure ref is hydrated for motion
-    setLoading(prev => prev);
+    setIsMounted(true);
+    // Only fetch if params.id is available
+    if (!params?.id) return;
     
     const fetchResearch = async () => {
       try {
@@ -104,7 +104,7 @@ export default function ResearchDetail() {
       {/* Reading Progress Bar */}
       <motion.div 
         className="fixed top-0 left-0 right-0 h-1.5 bg-blue-600 z-50 origin-left shadow-[0_0_15px_rgba(37,99,235,0.5)]"
-        style={{ scaleX: progressBar }}
+        style={{ scaleX: scrollYProgress }}
       />
 
       {/* Hero Section */}
