@@ -25,6 +25,13 @@ if (Parchment && typeof window !== 'undefined') {
     'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
   ];
   (require('react-quill-new').Quill).register(Font, true);
+
+  // Use Inline Blot to ensure formatting is applied inline and affects list markers
+  const Color = (require('react-quill-new').Quill).import('attributors/style/color');
+  (require('react-quill-new').Quill).register(Color, true);
+
+  const Background = (require('react-quill-new').Quill).import('attributors/style/background');
+  (require('react-quill-new').Quill).register(Background, true);
 }
 
 const professionalColors = [
