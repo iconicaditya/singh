@@ -363,6 +363,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       font-size: 14px;
                       line-height: 1.6;
                       padding: 24px;
+                      color: #000000;
                     }
                     .ql-custom-container .ql-container.ql-snow {
                       border: none;
