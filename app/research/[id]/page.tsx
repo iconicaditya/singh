@@ -120,9 +120,9 @@ export default function ResearchDetail() {
     }
 
     // Content Sections
-    paper.contentSections?.forEach((section: any) => {
+    for (const section of paper.contentSections || []) {
       // Check for page overflow
-      if (currentY > 250) {
+      if (currentY > 230) {
         doc.addPage();
         currentY = 20;
       }
@@ -135,6 +135,33 @@ export default function ResearchDetail() {
         currentY += 8;
       }
 
+      // Add Section Image if exists
+      if (section.image) {
+        try {
+          const img = new window.Image();
+          img.crossOrigin = "Anonymous";
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = section.image;
+          });
+
+          const imgWidth = contentWidth;
+          const imgHeight = (img.height * imgWidth) / img.width;
+
+          // Check if image fits on current page
+          if (currentY + imgHeight > 270) {
+            doc.addPage();
+            currentY = 20;
+          }
+
+          doc.addImage(img, "JPEG", margin, currentY, imgWidth, imgHeight);
+          currentY += imgHeight + 10;
+        } catch (err) {
+          console.error("Could not add section image to PDF:", err);
+        }
+      }
+
       if (section.content) {
         doc.setTextColor(50);
         // Strip HTML tags for PDF
@@ -142,7 +169,7 @@ export default function ResearchDetail() {
         addWrappedText(cleanContent, 11, "normal", 6);
         currentY += 10;
       }
-    });
+    }
 
     // Footer
     const totalPages = (doc as any).internal.getNumberOfPages();
