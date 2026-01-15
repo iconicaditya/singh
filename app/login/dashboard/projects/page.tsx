@@ -3,29 +3,49 @@
 import AdminLayout from "@/components/admin/AdminLayout";
 import DashboardTable from "@/components/admin/DashboardTable";
 import FormModal from "@/components/admin/FormModal";
-import { Briefcase } from "lucide-react";
-import { useState } from "react";
-
-const initialProjects = [
-  { id: 1, title: "Marine Plastic Analysis", category: "RESEARCH", status: "Ongoing", year: "2024", location: "Pacific Coastal Region", teamSize: "12 Scientists", impact: "Mapped 500+ zones", description: "Short summary", fullDescription: "Detailed content" },
-];
+import ProjectForm from "@/components/admin/ProjectForm";
+import { Briefcase, Trash2, Edit2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function ProjectsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [projectsList, setProjectsList] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch('/api/projects');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setProjectsList(data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this project?')) return;
+    try {
+      await fetch(`/api/projects?id=${id}`, { method: 'DELETE' });
+      fetchProjects();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const columns = [
     { 
       header: "Project Title", 
       accessor: "title",
       render: (val: string) => <p className="text-sm font-bold text-slate-800">{val}</p>
-    },
-    { 
-      header: "Category", 
-      accessor: "category",
-      render: (val: string) => (
-        <span className="px-3 py-1 rounded-full bg-blue-50 text-[10px] font-black text-blue-600 tracking-widest uppercase">{val}</span>
-      )
     },
     { 
       header: "Status", 
@@ -36,7 +56,20 @@ export default function ProjectsPage() {
         }`}>{val}</span>
       )
     },
-    { header: "Year", accessor: "year" },
+    {
+      header: "Actions",
+      accessor: "id",
+      render: (val: any, row: any) => (
+        <div className="flex items-center gap-2">
+          <button onClick={() => { setEditingItem(row); setIsModalOpen(true); }} className="p-2 hover:bg-slate-50 rounded-lg text-slate-400 hover:text-blue-600 transition-all">
+            <Edit2 size={16} />
+          </button>
+          <button onClick={() => handleDelete(row.id)} className="p-2 hover:bg-slate-50 rounded-lg text-slate-400 hover:text-rose-600 transition-all">
+            <Trash2 size={16} />
+          </button>
+        </div>
+      )
+    }
   ];
 
   return (
@@ -45,7 +78,7 @@ export default function ProjectsPage() {
         title="Project Management"
         description="Oversee ongoing and completed research initiatives"
         icon={Briefcase}
-        data={initialProjects}
+        data={projectsList}
         columns={columns}
         categories={["RESEARCH", "COMMUNITY", "TECHNOLOGY"]}
         onAdd={() => { setEditingItem(null); setIsModalOpen(true); }}
@@ -54,60 +87,13 @@ export default function ProjectsPage() {
 
       <FormModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={() => { setIsModalOpen(false); fetchProjects(); }} 
         title={editingItem ? "Edit Project" : "Add New Project"}
       >
-        <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Project Title</label>
-              <input type="text" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold text-black" placeholder="Enter title" defaultValue={editingItem?.title} />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Category</label>
-              <select className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-bold text-black" defaultValue={editingItem?.category}>
-                <option value="RESEARCH">RESEARCH</option>
-                <option value="COMMUNITY">COMMUNITY</option>
-                <option value="TECHNOLOGY">TECHNOLOGY</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Status</label>
-              <select className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-bold text-black" defaultValue={editingItem?.status}>
-                <option value="Ongoing">Ongoing</option>
-                <option value="Completed">Completed</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Year</label>
-              <input type="text" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold text-black" placeholder="e.g. 2024" defaultValue={editingItem?.year} />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Location</label>
-              <input type="text" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold text-black" placeholder="e.g. Pacific Coast" defaultValue={editingItem?.location} />
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Team Size/Description</label>
-              <input type="text" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold text-black" placeholder="e.g. 12 Scientists" defaultValue={editingItem?.teamSize} />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Impact Statement</label>
-            <input type="text" className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold text-black" placeholder="Enter impact summary" defaultValue={editingItem?.impact} />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Short Description</label>
-            <textarea rows={3} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold resize-none text-black" placeholder="Brief overview" defaultValue={editingItem?.description}></textarea>
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Full Project Content</label>
-            <textarea rows={6} className="w-full px-5 py-3 rounded-xl bg-slate-50 border border-slate-100 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm font-semibold resize-none text-black" placeholder="Detailed project information" defaultValue={editingItem?.fullDescription}></textarea>
-          </div>
-          <div className="flex justify-end gap-4 pt-4 border-t border-slate-50">
-            <button type="button" onClick={() => setIsModalOpen(false)} className="px-8 py-3 rounded-xl text-sm font-bold text-slate-400 hover:bg-slate-50 transition-all">Cancel</button>
-            <button type="submit" className="px-10 py-3 rounded-xl text-sm font-black bg-blue-600 text-white shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all">Save Project</button>
-          </div>
-        </form>
+        <ProjectForm 
+          onClose={() => { setIsModalOpen(false); fetchProjects(); }} 
+          initialData={editingItem}
+        />
       </FormModal>
     </AdminLayout>
   );

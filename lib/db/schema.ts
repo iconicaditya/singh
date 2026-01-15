@@ -13,3 +13,15 @@ export const research = pgTable("research", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const projects = pgTable("projects", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  status: varchar("status", { length: 50 }).notNull(), // ongoing, completed, etc
+  imageUrl: text("image_url"),
+  link: text("link"),
+  tags: text("tags"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
