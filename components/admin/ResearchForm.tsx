@@ -42,20 +42,26 @@ if (Parchment && typeof window !== 'undefined') {
         Quill.register(Font, true);
       }
       format(name: string, value: any) {
-        if (['size', 'color', 'font'].includes(name)) {
+        if (['size', 'color', 'font', 'bold', 'italic', 'underline'].includes(name)) {
           if (value) {
-            this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
+            if (name === 'font') this.domNode.style.fontFamily = value;
+            else if (name === 'size') this.domNode.style.fontSize = value;
+            else if (name === 'color') this.domNode.style.color = value;
+            else if (name === 'bold') this.domNode.style.fontWeight = value ? 'bold' : 'normal';
+            else if (name === 'italic') this.domNode.style.fontStyle = value ? 'italic' : 'normal';
+            else if (name === 'underline') this.domNode.style.textDecoration = value ? 'underline' : 'none';
           } else {
-            this.domNode.style.removeProperty(name === 'font' ? 'font-family' : name);
+            const prop = name === 'font' ? 'font-family' : (name === 'size' ? 'font-size' : (name === 'bold' ? 'font-weight' : (name === 'italic' ? 'font-style' : (name === 'underline' ? 'text-decoration' : name))));
+            this.domNode.style.removeProperty(prop);
           }
         }
         super.format(name, value);
       }
       optimize(context: any) {
         super.optimize(context);
-        // Force the list marker to respect the formatting of the first child
+        // Sync formatting from the first child to the list item (the marker)
         const firstChild = this.domNode.firstChild;
-        if (firstChild && firstChild.nodeType === 1) { // Element node
+        if (firstChild && firstChild.nodeType === 1) {
           const style = window.getComputedStyle(firstChild as HTMLElement);
           this.domNode.style.fontSize = style.fontSize;
           this.domNode.style.color = style.color;
