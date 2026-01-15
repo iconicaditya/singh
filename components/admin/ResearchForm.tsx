@@ -568,13 +568,12 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow.ql-toolbar .ql-background {
                       width: 28px !important;
                       height: 28px !important;
-                      display: flex !important;
-                      align-items: center;
-                      justify-content: center;
+                      display: inline-block !important;
+                      vertical-align: middle;
                       border: none;
                       border-radius: 4px;
                       margin-right: 4px;
-                      padding: 0 !important;
+                      position: relative;
                     }
                     .ql-snow.ql-toolbar .ql-color:hover,
                     .ql-snow.ql-toolbar .ql-background:hover {
@@ -586,6 +585,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       border: none !important;
                       width: 100% !important;
                       height: 100% !important;
+                      display: flex !important;
+                      align-items: center;
                       justify-content: center;
                     }
                     .ql-snow.ql-toolbar .ql-color .ql-picker-label::after,
@@ -596,7 +597,33 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     .ql-snow.ql-toolbar .ql-background::before {
                       margin: 0 !important;
                       position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
                       z-index: 1;
+                      pointer-events: none;
+                    }
+                    /* Ensure color options are visible and properly styled */
+                    .ql-snow .ql-color .ql-picker-options,
+                    .ql-snow .ql-background .ql-picker-options {
+                      padding: 8px !important;
+                      width: 152px !important;
+                      background: #fff !important;
+                      display: flex !important;
+                      flex-wrap: wrap !important;
+                      position: absolute !important;
+                      z-index: 1000 !important;
+                    }
+                    .ql-snow .ql-picker-options .ql-picker-item {
+                      width: 20px !important;
+                      height: 20px !important;
+                      margin: 2px !important;
+                      border-radius: 4px !important;
+                      border: 1px solid #f1f5f9 !important;
+                      display: block !important;
+                    }
+                    .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+                      display: flex !important;
                     }
                     
                     /* Toolbar separators and styling */
