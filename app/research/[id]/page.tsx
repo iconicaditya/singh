@@ -207,7 +207,7 @@ export default function ResearchDetail() {
                         )}
                         {section.content && (
                           <div 
-                            className="text-slate-600 text-lg leading-relaxed font-medium editor-content prose prose-slate max-w-none" 
+                            className="text-slate-600 text-lg leading-relaxed font-medium editor-content prose prose-slate max-w-none break-words overflow-hidden" 
                             dangerouslySetInnerHTML={{ __html: section.content }} 
                           />
                         )}
