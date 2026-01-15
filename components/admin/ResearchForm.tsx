@@ -9,9 +9,33 @@ import 'react-quill-new/dist/quill.snow.css';
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
+const Parchment = typeof window !== 'undefined' ? (require('react-quill-new').Quill).import('parchment') : null;
+
+if (Parchment && typeof window !== 'undefined') {
+  const fontSizeArr = [
+    '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
+  ];
+  const Size = (require('react-quill-new').Quill).import('attributors/style/size');
+  Size.whitelist = fontSizeArr;
+  (require('react-quill-new').Quill).register(Size, true);
+
+  const Font = (require('react-quill-new').Quill).import('attributors/style/font');
+  Font.whitelist = [
+    'inter', 'roboto', 'opensans', 'lato', 'montserrat', 
+    'poppins', 'playfair', 'merriweather', 'oswald', 'raleway'
+  ];
+  (require('react-quill-new').Quill).register(Font, true);
+}
+
 const modules = {
   toolbar: [
-    [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+    [{ 'font': [
+      'inter', 'roboto', 'opensans', 'lato', 'montserrat', 
+      'poppins', 'playfair', 'merriweather', 'oswald', 'raleway'
+    ] }, 
+    { 'size': [
+      '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
+    ] }],
     ['bold', 'italic', 'underline'],
     [{ 'color': [] }, { 'background': [] }],
     [{ 'list': 'ordered'}, { 'list': 'bullet' }],
@@ -315,6 +339,23 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       border-top-left-radius: 8px;
                       border-top-right-radius: 8px;
                       background: #f8fafc;
+                    }
+                    /* Custom Fonts */
+                    .ql-font-inter { font-family: 'Inter', sans-serif; }
+                    .ql-font-roboto { font-family: 'Roboto', sans-serif; }
+                    .ql-font-opensans { font-family: 'Open Sans', sans-serif; }
+                    .ql-font-lato { font-family: 'Lato', sans-serif; }
+                    .ql-font-montserrat { font-family: 'Montserrat', sans-serif; }
+                    .ql-font-poppins { font-family: 'Poppins', sans-serif; }
+                    .ql-font-playfair { font-family: 'Playfair Display', serif; }
+                    .ql-font-merriweather { font-family: 'Merriweather', serif; }
+                    .ql-font-oswald { font-family: 'Oswald', sans-serif; }
+                    .ql-font-raleway { font-family: 'Raleway', sans-serif; }
+                    
+                    /* Size labels in dropdown */
+                    .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+                    .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+                      content: attr(data-value) !important;
                     }
                   `}</style>
                 </div>
