@@ -116,12 +116,12 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
         year: formData.year.toString().slice(0, 4),
         tags: formData.tags || "",
         titleImage: formData.titleImage || "", 
-        authors: authors.filter(a => a.trim() !== ""),
+        authors: authors.filter(a => a && a.trim() !== ""),
         contentSections: contentSections.map(s => ({
           title: s.title || "",
           content: s.content || "",
           image: (s as any).image || "" 
-        })),
+        })).filter(s => s.title || s.content),
         relatedPublications: []
       };
 
