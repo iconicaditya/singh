@@ -654,6 +654,14 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       display: none !important;
                     }
                     .ql-snow .ql-picker-label svg { display: none !important; }
+                    
+                    /* Specific fix for the remaining tiny arrows in color pickers */
+                    .ql-snow.ql-toolbar .ql-color .ql-picker-label::before,
+                    .ql-snow.ql-toolbar .ql-background .ql-picker-label::before,
+                    .ql-snow.ql-toolbar .ql-color .ql-picker-label svg,
+                    .ql-snow.ql-toolbar .ql-background .ql-picker-label svg {
+                      display: none !important;
+                    }
 
                     
                     /* Custom Fonts */
