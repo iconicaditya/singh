@@ -35,18 +35,35 @@ if (Parchment && typeof window !== 'undefined') {
   // Re-implement List and ListItem at the engine level to ensure formatting propagation
   let ListItem: any;
   if (typeof window !== 'undefined') {
-    const QuillLib = require('react-quill-new');
-    const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
-    
     try {
-      ListItem = Quill.import('formats/list/item');
-    } catch (e) {
-      try {
-        const formats = Quill.import('formats/list') || {};
-        ListItem = formats.item || formats;
-      } catch (innerE) {
-        console.error('ListItem resolution failed', innerE);
+      const QuillLib = require('react-quill-new');
+      const Quill = QuillLib.Quill || QuillLib.default?.Quill || QuillLib;
+      
+      // Extremely defensive resolution for ListItem
+      const formats = ['formats/list/item', 'formats/list', 'formats/indent'];
+      for (const path of formats) {
+        try {
+          const imported = Quill.import(path);
+          if (imported) {
+            ListItem = imported.item || (imported.name === 'list-item' ? imported : null);
+            if (ListItem) break;
+          }
+        } catch (e) {
+          // Continue to next fallback
+        }
       }
+      
+      // If we still don't have it, try to get it from the internal registry if accessible
+      if (!ListItem) {
+        try {
+          const ListModule = Quill.import('formats/list');
+          if (ListModule && typeof ListModule === 'function') {
+            ListItem = ListModule; // In some versions the module itself is the item renderer
+          }
+        } catch (e) {}
+      }
+    } catch (e) {
+      console.error('ListItem resolution failed during exhaustive fallback', e);
     }
   }
 
