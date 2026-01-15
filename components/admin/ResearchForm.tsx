@@ -28,8 +28,16 @@ if (Parchment && typeof window !== 'undefined') {
 }
 
 const professionalColors = [
-  '#000000', '#475569', '#64748b', '#94a3b8', '#dc2626', 
-  '#2563eb', '#16a34a', '#d97706', '#7c3aed', '#db2777'
+  '#000000', // Black
+  '#FFFFFF', // White
+  '#FF0000', // Red
+  '#0000FF', // Blue
+  '#008000', // Green
+  '#FFFF00', // Yellow
+  '#FFA500', // Orange
+  '#800080', // Purple
+  '#808080', // Gray
+  '#FFC0CB'  // Pink
 ];
 
 const modules = {
