@@ -434,6 +434,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       border-radius: 8px;
                       padding: 4px;
                       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                      display: flex !important;
+                      flex-direction: column !important;
                     }
 
                     /* Icons Styling */
