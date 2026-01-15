@@ -35,16 +35,17 @@ if (Parchment && typeof window !== 'undefined') {
   // Extend the List format to support attributes at the engine level
   let ListItem: any;
   if (typeof window !== 'undefined') {
-    const Quill = require('react-quill-new').Quill;
+    const Quill = (require('react-quill-new')).Quill;
     try {
-      ListItem = Quill.import('formats/list/item');
+      // Use direct registration if import fails or try a safer import path
+      ListItem = Quill.import('formats/list/item') || (Quill.import('formats/list') ? Quill.import('formats/list').item : null);
     } catch (e) {
-      // Fallback
+      // Fallback to searching modules
       try {
-        const ListModule = Quill.import('modules/list') || Quill.import('formats/list');
-        ListItem = ListModule?.item || ListModule;
+        const ListModule = Quill.import('modules/list');
+        ListItem = ListModule?.item || Quill.import('formats/list')?.item;
       } catch (innerE) {
-        console.error('Final fallback failed for ListItem', innerE);
+        console.error('ListItem resolution failed', innerE);
       }
     }
   }
