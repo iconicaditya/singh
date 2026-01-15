@@ -33,6 +33,7 @@ export async function PUT(req: Request) {
       .returning();
     return NextResponse.json(updatedItem);
   } catch (error) {
+    console.error('Update error:', error);
     return NextResponse.json({ error: 'Failed to update publication' }, { status: 500 });
   }
 }
