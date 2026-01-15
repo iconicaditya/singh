@@ -218,8 +218,7 @@ const formats = [
   'color', 'background',
   'list', 'indent',
   'align',
-  'link', 'image', 'video',
-  'checked'
+  'link', 'image', 'video'
 ];
 
 interface ResearchFormProps {
