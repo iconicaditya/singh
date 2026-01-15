@@ -1,0 +1,9 @@
+DATABASE_URL=postgresql://neondb_owner:npg_cVrx72hyYSvJ@ep-frosty-salad-ah5wkwdg-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+PGDATABASE=neondb
+PGHOST=ep-frosty-salad-ah5wkwdg-pooler.c-3.us-east-1.aws.neon.tech
+PGPORT=5432
+PGUSER=neondb_owner
+PGPASSWORD=npg_cVrx72hyYSvJ
+CLOUDINARY_API_KEY=719483861873544
+CLOUDINARY_CLOUD_NAME=dbgq7ls4q
+CLOUDINARY_API_SECRET=JVk3dxzTN26KvLSGPeYUXtsMtZg
