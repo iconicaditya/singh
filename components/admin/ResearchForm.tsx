@@ -55,12 +55,17 @@ if (Parchment && typeof window !== 'undefined') {
           
           format(name: string, value: any) {
             const domNode = (this as any).domNode;
-            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked', 'indent', 'list-style-color', 'list-style-size'].includes(name)) {
+            if (['size', 'color', 'font', 'bold', 'italic', 'underline', 'list-style-type', 'checked', 'indent', 'list-style-color', 'list-style-size', 'foldable', 'folded'].includes(name)) {
               if (name === 'list-style-type') {
                 domNode.style.listStyleType = value;
+                domNode.setAttribute('data-list-style', value);
               } else if (name === 'checked') {
                 domNode.setAttribute('data-checked', value);
                 domNode.classList.toggle('task-list-item', true);
+              } else if (name === 'foldable') {
+                domNode.classList.toggle('foldable', !!value);
+              } else if (name === 'folded') {
+                domNode.classList.toggle('folded', !!value);
               } else if (name === 'list-style-color') {
                 domNode.style.setProperty('--list-marker-color', value);
               } else if (name === 'list-style-size') {
@@ -88,12 +93,6 @@ if (Parchment && typeof window !== 'undefined') {
             super.optimize(context);
             const domNode = (this as any).domNode;
             
-            // Check for list-style-type explicitly applied
-            const formats = this.formats();
-            if (formats['list-style-type']) {
-              domNode.style.listStyleType = formats['list-style-type'];
-            }
-
             const firstChild = domNode.firstChild;
             if (firstChild) {
               const style = firstChild.nodeType === 1 ? window.getComputedStyle(firstChild as HTMLElement) : null;
@@ -177,11 +176,11 @@ const modules = {
       { 'size': [
         '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
       ] }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ 'color': professionalColors }, { 'background': professionalColors }],
+      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+      [{ 'indent': '-1' }, { 'indent': '+1' }],
       ['link', 'image', 'video'],
       ['clean']
     ],
@@ -220,7 +219,8 @@ const formats = [
   'indent',
   'align',
   'link', 'image', 'video',
-  'list-style-type', 'list-style-color', 'list-style-size'
+  'list-style-type', 'list-style-color', 'list-style-size',
+  'foldable', 'folded'
 ];
 
 interface ResearchFormProps {

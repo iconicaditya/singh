@@ -21,17 +21,33 @@
   cursor: pointer;
   color: var(--list-marker-color, inherit);
   font-size: var(--list-marker-size, inherit);
+  top: 0;
 }
 
 .ql-editor .task-list-item[data-checked="true"]::before {
   content: '☑';
 }
 
-/* Multi-style bullets support via classes */
-.ql-editor li.bullet-circle { list-style-type: circle; }
-.ql-editor li.bullet-square { list-style-type: square; }
-.ql-editor li.bullet-dash { list-style-type: "- "; }
+/* Multi-style markers via attribute mapping */
+.ql-editor li[data-list-style="circle"] { list-style-type: circle; }
+.ql-editor li[data-list-style="square"] { list-style-type: square; }
+.ql-editor li[data-list-style="dash"] { list-style-type: "- "; }
+.ql-editor li[data-list-style="lower-alpha"] { list-style-type: lower-alpha; }
+.ql-editor li[data-list-style="upper-roman"] { list-style-type: upper-roman; }
+.ql-editor li[data-list-style="arrow"]::marker { content: '➜ '; }
+.ql-editor li[data-list-style="emoji"]::marker { content: '✨ '; }
 
-/* Foldable Lists */
-.ql-editor li.foldable { cursor: pointer; }
-.ql-editor li.folded + li { display: none; }
+/* Interactive Features */
+.ql-editor li.foldable::before {
+  content: '▶';
+  display: inline-block;
+  margin-right: 5px;
+  transition: transform 0.2s;
+}
+.ql-editor li.foldable.unfolded::before {
+  transform: rotate(90deg);
+}
+.ql-editor li.folded + li { display: none !important; }
+
+/* Drag and Drop Visual Feedback */
+.ql-editor li.dragging { opacity: 0.5; border: 1px dashed #ccc; }
