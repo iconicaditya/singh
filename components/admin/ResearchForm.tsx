@@ -28,22 +28,39 @@ if (Parchment && typeof window !== 'undefined') {
 }
 
 const modules = {
-  toolbar: [
-    ['undo', 'redo'],
-    [{ 'font': [
-      'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
-      'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
-    ] }, 
-    { 'size': [
-      '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
-    ] }],
-    ['bold', 'italic', 'underline'],
-    ['color', 'background'],
-    [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    ['link'],
-    ['clean']
-  ],
+  toolbar: {
+    container: [
+      ['undo', 'redo'],
+      [{ 'font': [
+        'arial', 'helvetica', 'times-new-roman', 'georgia', 'verdana', 
+        'tahoma', 'courier-new', 'trebuchet-ms', 'calibri', 'roboto'
+      ] }, 
+      { 'size': [
+        '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px', '48px', '54px', '60px'
+      ] }],
+      ['bold', 'italic', 'underline'],
+      ['color', 'background'],
+      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link'],
+      ['clean']
+    ],
+    handlers: {
+      'undo': function() {
+        // @ts-ignore
+        this.quill.history.undo();
+      },
+      'redo': function() {
+        // @ts-ignore
+        this.quill.history.redo();
+      }
+    }
+  },
+  history: {
+    delay: 1000,
+    maxStack: 500,
+    userOnly: true
+  }
 };
 
 const formats = [
@@ -393,9 +410,22 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                       width: 28px;
                       height: 28px;
                       color: #64748b;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
                     }
                     .ql-snow.ql-toolbar button:hover, .ql-snow.ql-toolbar button.ql-active {
                       color: #2563eb;
+                    }
+                    
+                    /* Custom icons for undo/redo if they don't show up */
+                    .ql-undo::after {
+                      content: '↩';
+                      font-size: 16px;
+                    }
+                    .ql-redo::after {
+                      content: '↪';
+                      font-size: 16px;
                     }
                     
                     /* Custom Fonts */
