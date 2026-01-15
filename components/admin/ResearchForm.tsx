@@ -400,6 +400,11 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                     }
                     .ql-editor li {
                       font-size: inherit;
+                      color: inherit;
+                    }
+                    .ql-editor li::before {
+                      font-size: inherit;
+                      color: inherit;
                     }
                     .ql-custom-container .ql-container.ql-snow {
                       border: none;
