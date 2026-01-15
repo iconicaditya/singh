@@ -32,6 +32,10 @@ export async function POST(req: Request) {
       relatedPublications: body.relatedPublications || [],
     }).returning();
     
+    if (!savedItem) {
+      throw new Error("Database insertion failed - no record returned");
+    }
+
     // Securely serialize dates
     const serializeDate = (d: any) => {
       if (!d) return new Date().toISOString();
@@ -44,21 +48,6 @@ export async function POST(req: Request) {
       }
     };
 
-    if (!savedItem) {
-      // Fallback: If returning() doesn't work as expected, fetch the latest inserted item
-      const latestItems = await db.select().from(research).orderBy(desc(research.id)).limit(1);
-      if (latestItems.length > 0) {
-        const item = latestItems[0];
-        return NextResponse.json({
-          ...item,
-          createdAt: serializeDate(item.createdAt),
-          updatedAt: serializeDate(item.updatedAt)
-        });
-      }
-      throw new Error("Database insertion failed - no record found after insert");
-    }
-
-    // Ensure we return a clean serializable object
     return NextResponse.json({
       ...savedItem,
       createdAt: serializeDate(savedItem.createdAt),
