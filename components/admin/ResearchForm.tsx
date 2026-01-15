@@ -42,7 +42,11 @@ if (Parchment && typeof window !== 'undefined') {
     }
     format(name: string, value: any) {
       if (['size', 'color', 'font'].includes(name)) {
-        this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
+        if (value) {
+          this.domNode.style[name === 'font' ? 'fontFamily' : name] = value;
+        } else {
+          this.domNode.style.removeProperty(name === 'font' ? 'font-family' : name);
+        }
       }
       super.format(name, value);
     }
