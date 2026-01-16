@@ -23,7 +23,7 @@ export default function AdminPublicationsPage() {
   const fetchPublications = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/publications");
+      const res = await fetch("/api/publications", { cache: 'no-store' });
       const data = await res.json();
       setPublications(Array.isArray(data) ? data : []);
     } catch (err) {

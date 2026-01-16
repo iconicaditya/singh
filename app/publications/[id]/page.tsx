@@ -27,7 +27,7 @@ export default function PublicationDetail() {
   useEffect(() => {
     const fetchPublication = async () => {
       try {
-        const response = await fetch('/api/publications');
+        const response = await fetch('/api/publications', { cache: 'no-store' });
         if (response.ok) {
           const data = await response.json();
           const found = data.find((p: any) => p.id.toString() === params.id);
