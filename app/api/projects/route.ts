@@ -24,17 +24,17 @@ export async function POST(req: Request) {
 
     const [savedItem] = await db.insert(projects).values({
       title: body.title,
-      category: body.category || "",
+      category: body.category || "General",
       tags: body.tags || "",
       teamMembers: body.teamMembers || [],
       location: body.location || "",
-      description: body.description,
-      status: body.status,
+      description: body.description || "",
+      status: body.status || "ongoing",
       imageUrl: body.imageUrl || "",
       aboutProject: body.aboutProject || "",
-      projectObjectives: body.projectObjectives || [],
-      projectDate: body.projectDate || "",
-      attachedResearchIds: body.attachedResearchIds || [],
+      projectObjectives: Array.isArray(body.projectObjectives) ? body.projectObjectives : [],
+      projectDate: body.projectDate || new Date().toISOString().split('T')[0],
+      attachedResearchIds: Array.isArray(body.attachedResearchIds) ? body.attachedResearchIds : [],
       link: body.link || "",
     }).returning();
     
