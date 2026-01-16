@@ -2,23 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Globe, Facebook, Twitter, Linkedin, Youtube, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navLinks = [
     { name: "HOME", href: "/" },
-    { name: "ABOUT", href: "#" },
-    { name: "OUR TEAM", href: "#" },
+    { name: "ABOUT", href: "/#about" },
+    { name: "OUR TEAM", href: "/#team" },
     { name: "PROJECTS", href: "/projects" },
     { name: "PUBLICATIONS", href: "/publications" },
     { name: "RESEARCH", href: "/research" },
-    { name: "RESOURCES", href: "#" },
-    { name: "ACTIVITIES", href: "/all-activities" },
-    { name: "GALLERY", href: "/all-gallery" },
     { name: "CONTACT", href: "/#contact" },
   ];
 
@@ -119,7 +118,9 @@ export default function Header() {
               <li key={link.name}>
                 <Link 
                   href={link.href}
-                  className="inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white"
+                  className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
+                    pathname === link.href ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                  }`}
                 >
                   {link.name}
                 </Link>
