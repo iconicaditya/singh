@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Plus, Trash2, Image as ImageIcon, User, Layout, Upload, Search, CheckCircle, Save, ArrowRight, Calendar, Tag } from "lucide-react";
+import { X, Plus, Trash2, Image as ImageIcon, User, Layout, Upload, Search, CheckCircle, Save, ArrowRight, Calendar, Tag, Loader2 } from "lucide-react";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -157,7 +157,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
           </button>
         </div>
 
-        <div className="p-8 space-y-12">
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="p-8 space-y-12">
           {/* Section 1: Basic Information */}
           <div className="space-y-6">
             <h3 className="text-lg font-bold flex items-center gap-2">
@@ -438,15 +438,23 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
           <div className="flex justify-end gap-4 pt-10 border-t border-slate-100">
             <button type="button" onClick={onClose} className="px-8 py-3 text-slate-500 font-bold hover:bg-slate-50 rounded-xl transition-colors">Cancel</button>
             <button
-              type="button"
-              onClick={handleSubmit}
+              type="submit"
               disabled={loading}
-              className="px-12 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2"
+              className="px-12 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Publish Project <ArrowRight size={18} />
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin" size={18} />
+                  Publishing...
+                </>
+              ) : (
+                <>
+                  Publish Project <ArrowRight size={18} />
+                </>
+              )}
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
