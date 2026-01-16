@@ -11,12 +11,13 @@ import {
   Tag,
   ArrowRight,
   ChevronRight,
-  ExternalLink
+  Download,
+  FileText
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export default function ResearchDetail() {
   const params = useParams();
@@ -34,11 +35,11 @@ export default function ResearchDetail() {
           if (found) {
             setItem(found);
           } else {
-            setError("The research publication was not found in our database.");
+            setError("Document not found.");
           }
         }
       } catch (err) {
-        setError("Unable to establish connection to the scientific database.");
+        setError("Connection error.");
       } finally {
         setLoading(false);
       }
@@ -46,203 +47,190 @@ export default function ResearchDetail() {
     fetchResearch();
   }, [params.id]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
-        <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Fetching Publication</span>
-      </div>
-    );
-  }
+  const toc = useMemo(() => {
+    if (!item?.contentSections) return [];
+    return item.contentSections.map((section: any, index: number) => ({
+      title: section.title,
+      id: `section-${index}`
+    }));
+  }, [item]);
 
-  if (error || !item) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
-        <BookOpen size={48} className="text-slate-200 mb-6" />
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">{error || "Document Not Found"}</h2>
-        <Link href="/research" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-bold text-sm transition-all hover:bg-blue-700 shadow-lg shadow-blue-500/10">
-          <ArrowLeft size={16} />
-          Return to Archive
-        </Link>
-      </div>
-    );
-  }
+  if (loading) return (
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+    </div>
+  );
+
+  if (error || !item) return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+      <h2 className="text-xl font-bold mb-4">{error || "Not Found"}</h2>
+      <Link href="/research" className="text-blue-600 font-bold hover:underline">Back to Archive</Link>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-      {/* Navigation Header */}
-      <div className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
-        <div className="container mx-auto px-4 max-w-5xl h-16 flex items-center justify-between">
-          <Link 
-            href="/research"
-            className="flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold text-xs uppercase tracking-widest transition-colors group"
-          >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-            Back
-          </Link>
-          <div className="flex items-center gap-4">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
-              SinghLab Research
-            </span>
-            <button className="p-2 text-slate-400 hover:text-blue-600 transition-colors">
-              <Share2 size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-white">
+      {/* 1. Hero Header - Full Width Title Image */}
+      <section className="relative w-full h-[60vh] md:h-[75vh] flex items-end overflow-hidden">
+        {item.titleImage ? (
+          <Image 
+            src={item.titleImage} 
+            alt={item.title} 
+            fill 
+            className="object-cover"
+            priority
+          />
+        ) : (
+          <div className="absolute inset-0 bg-slate-900" />
+        )}
+        
+        {/* Transparency Layer */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-      <article className="pt-32 pb-24">
-        <div className="container mx-auto px-4 max-w-4xl">
-          {/* Header Metadata */}
-          <header className="mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-wrap items-center gap-3 mb-6"
-            >
-              <span className="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider rounded">
+        {/* Hero Information Over Image */}
+        <div className="container mx-auto px-6 max-w-7xl relative pb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl"
+          >
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="px-3 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-widest rounded">
                 {item.category}
               </span>
-              <div className="flex items-center text-slate-400 text-xs font-bold">
-                <Calendar size={14} className="mr-1.5" />
+              <div className="flex items-center text-white/80 text-[10px] font-bold uppercase tracking-widest">
+                <Calendar size={12} className="mr-1.5" />
                 {item.year}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.h1 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl md:text-5xl font-bold text-slate-900 mb-8 leading-[1.2] tracking-tight"
-            >
+            <h1 className="text-3xl md:text-6xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
               {item.title}
-            </motion.h1>
+            </h1>
 
-            {item.titleImage && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 }}
-                className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-2xl shadow-slate-200/50 mb-12"
-              >
-                <Image 
-                  src={item.titleImage} 
-                  alt={item.title} 
-                  fill 
-                  className="object-cover"
-                  priority
-                />
-              </motion.div>
-            )}
-
-            {/* Author Profiles */}
-            <div className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-100">
-              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Investigative Team</h3>
-              <div className="flex flex-wrap gap-8">
-                {item.authors?.map((author: any, idx: number) => (
-                  <div key={idx} className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white border border-slate-200 relative overflow-hidden flex-shrink-0">
-                      {author.image ? (
-                        <Image src={author.image} alt={author.name} fill className="object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-blue-600">
-                          <User size={20} />
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900">{author.name}</h4>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Research Associate</p>
-                    </div>
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex -space-x-3">
+                {item.authors?.map((author: any, i: number) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white/20 bg-slate-800 relative overflow-hidden group" title={author.name}>
+                    {author.image ? (
+                      <Image src={author.image} alt={author.name} fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-white/60"><User size={16} /></div>
+                    )}
                   </div>
                 ))}
               </div>
+              <div className="text-white/60 text-xs font-bold uppercase tracking-widest">
+                {item.authors?.length} Investigators
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {item.tags?.split(',').map((tag: string) => (
+                  <span key={tag} className="text-[10px] font-bold text-white/50 bg-white/10 px-2 py-0.5 rounded border border-white/5">
+                    #{tag.trim()}
+                  </span>
+                ))}
+              </div>
             </div>
-          </header>
+          </motion.div>
+        </div>
+      </section>
 
-          {/* Main Content Sections */}
-          <div className="space-y-16">
-            {item.contentSections?.map((section: any, idx: number) => (
-              <section key={idx} className="scroll-mt-24">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                  <span className="w-8 h-[2px] bg-blue-600" />
-                  {section.title}
-                </h2>
-                <div 
-                  className="prose prose-slate max-w-none 
-                    prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-lg
-                    prose-headings:text-slate-900 prose-strong:text-slate-900
-                    prose-img:rounded-2xl prose-img:border prose-img:border-slate-100"
-                  dangerouslySetInnerHTML={{ __html: section.content }}
-                />
-                {section.image && (
-                  <div className="mt-8 relative aspect-[16/9] rounded-2xl overflow-hidden border border-slate-100 shadow-lg">
-                    <Image src={section.image} alt={section.title} fill className="object-cover" />
-                  </div>
-                )}
-              </section>
-            ))}
-          </div>
-
-          {/* Footer Meta */}
-          <div className="mt-20 pt-10 border-t border-slate-100">
-            <div className="flex flex-wrap gap-2 mb-12">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2 flex items-center gap-1.5">
-                <Tag size={12} /> Keywords
-              </span>
-              {item.tags?.split(',').map((tag: string) => (
-                <span key={tag} className="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg uppercase tracking-wider">
-                  {tag.trim()}
-                </span>
+      {/* 2. Main Layout - Split Content & Sidebar */}
+      <div className="container mx-auto px-6 max-w-7xl py-16">
+        <div className="flex flex-col lg:flex-row gap-16">
+          
+          {/* Left Side: Contents */}
+          <main className="lg:w-2/3">
+            <div className="space-y-16">
+              {item.contentSections?.map((section: any, idx: number) => (
+                <section key={idx} id={`section-${idx}`} className="scroll-mt-32">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-8 flex items-center gap-4">
+                    <span className="w-8 h-[2px] bg-blue-600" />
+                    {section.title}
+                  </h2>
+                  <div 
+                    className="prose prose-slate max-w-none 
+                      prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-lg
+                      prose-strong:text-slate-900 prose-headings:text-slate-900
+                      prose-li:text-slate-600"
+                    dangerouslySetInnerHTML={{ __html: section.content }}
+                  />
+                  {section.image && (
+                    <div className="mt-8 relative aspect-[16/10] rounded-2xl overflow-hidden border border-slate-100 shadow-xl">
+                      <Image src={section.image} alt={section.title} fill className="object-cover" />
+                    </div>
+                  )}
+                </section>
               ))}
             </div>
 
-            {/* Related Publications */}
+            {/* Related Publications Footer */}
             {item.relatedPublications?.length > 0 && (
-              <div className="bg-blue-600 rounded-3xl p-8 md:p-12 text-white overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-                <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
-                  Linked Resources
-                  <ChevronRight size={24} className="text-blue-200" />
-                </h3>
+              <div className="mt-24 pt-16 border-t border-slate-100">
+                <h3 className="text-xl font-bold text-slate-900 mb-8 uppercase tracking-widest">Related Resources</h3>
                 <div className="grid grid-cols-1 gap-4">
-                  {item.relatedPublications.map((pub: any, pIdx: number) => (
-                    <Link 
-                      key={pIdx}
-                      href={`/publications/${pub.id || '#'}`}
-                      className="group flex items-center justify-between p-5 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10"
-                    >
+                  {item.relatedPublications.map((pub: any, idx: number) => (
+                    <Link key={idx} href={`/publications/${pub.id || '#'}`} className="flex items-center justify-between p-6 bg-slate-50 rounded-2xl border border-slate-200 hover:bg-white hover:border-blue-200 transition-all group">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-400 group-hover:text-blue-600 transition-colors shadow-sm">
                           <BookOpen size={20} />
                         </div>
-                        <span className="font-bold text-sm md:text-base pr-4">
-                          {pub.title || "Scholarly Publication"}
-                        </span>
+                        <span className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{pub.title || "Linked Publication"}</span>
                       </div>
-                      <ExternalLink size={18} className="text-blue-200 opacity-50 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight size={20} className="text-slate-300 group-hover:text-blue-600 transition-all group-hover:translate-x-1" />
                     </Link>
                   ))}
                 </div>
               </div>
             )}
-          </div>
-        </div>
-      </article>
+          </main>
 
-      {/* Final Call to Action */}
-      <footer className="bg-slate-50 border-t border-slate-100 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">End of Document</p>
-          <Link 
-            href="/research"
-            className="inline-flex items-center gap-2 text-slate-900 hover:text-blue-600 font-bold transition-colors"
-          >
-            <ArrowLeft size={18} />
-            Explore more Research
-          </Link>
+          {/* Right Side: Sidebar TOC & Actions */}
+          <aside className="lg:w-1/3">
+            <div className="sticky top-32 space-y-8">
+              {/* Table of Contents */}
+              <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100">
+                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                  <FileText size={14} /> On This Page
+                </h4>
+                <nav className="space-y-4">
+                  {toc.map((link: any, i: number) => (
+                    <a 
+                      key={i} 
+                      href={`#${link.id}`} 
+                      className="block text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
+                    >
+                      {link.title}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Action Cards */}
+              <div className="grid grid-cols-1 gap-4">
+                <button className="flex items-center justify-between w-full p-6 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 group">
+                  <div className="flex items-center gap-4">
+                    <Download size={20} />
+                    <span className="font-bold text-sm uppercase tracking-widest">Download PDF</span>
+                  </div>
+                  <ChevronRight size={18} className="opacity-50 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button className="flex items-center justify-between w-full p-6 bg-white border border-slate-200 text-slate-900 rounded-2xl hover:border-blue-600 hover:text-blue-600 transition-all group">
+                  <div className="flex items-center gap-4">
+                    <Share2 size={20} />
+                    <span className="font-bold text-sm uppercase tracking-widest">Share Report</span>
+                  </div>
+                  <ChevronRight size={18} className="text-slate-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                </button>
+              </div>
+
+              <Link href="/research" className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors uppercase tracking-widest">
+                <ArrowLeft size={14} /> Back to Repository
+              </Link>
+            </div>
+          </aside>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
