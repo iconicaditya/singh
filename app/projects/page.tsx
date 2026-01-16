@@ -8,7 +8,8 @@ import {
   Tag,
   Calendar,
   Filter,
-  MapPin
+  MapPin,
+  ArrowRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
