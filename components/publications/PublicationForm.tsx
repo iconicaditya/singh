@@ -55,10 +55,12 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
       if (pdfFile) pdfUrl = await uploadToCloudinary(pdfFile, "raw");
 
       const method = initialData ? "PUT" : "POST";
+      const body = initialData ? { ...formData, id: initialData.id, imageUrl, pdfUrl } : { ...formData, imageUrl, pdfUrl };
+      
       const res = await fetch("/api/publications", {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, imageUrl, pdfUrl }),
+        body: JSON.stringify(body),
       });
 
       if (res.ok) {
