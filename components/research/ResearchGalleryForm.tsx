@@ -48,7 +48,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   
   const [formData, setFormData] = useState({
     title: "",
-    category: "RESEARCH",
+    category: "",
     year: new Date().getFullYear().toString(),
     tags: "",
     titleImage: "",
@@ -189,43 +189,49 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
                     <div className="relative flex-1">
-                      <select
-                        value={formData.category}
-                        onChange={e => setFormData({ ...formData, category: e.target.value })}
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none pr-10"
-                      >
-                        {categories.map(cat => (
-                          <option key={cat} value={cat}>{cat}</option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                      <div className="relative">
+                        <select
+                          value={formData.category}
+                          onChange={e => setFormData({ ...formData, category: e.target.value })}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none pr-10"
+                        >
+                          <option value="" disabled>Select category</option>
+                          {categories.map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                      </div>
                     </div>
                     
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (categories.length <= 1) return;
-                        const catToDelete = formData.category;
-                        const updatedCategories = categories.filter(c => c !== catToDelete);
-                        setCategories(updatedCategories);
-                        setFormData({ ...formData, category: updatedCategories[0] });
-                      }}
-                      className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
-                      title="Delete current category"
-                    >
-                      <Trash2 size={20} />
-                    </button>
+                    <div className="flex gap-2">
+                      {formData.category && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const catToDelete = formData.category;
+                            const updatedCategories = categories.filter(c => c !== catToDelete);
+                            setCategories(updatedCategories);
+                            setFormData({ ...formData, category: "" });
+                          }}
+                          className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
+                          title="Delete selected category"
+                        >
+                          <Trash2 size={20} />
+                        </button>
+                      )}
 
-                    {!isAddingCategory && (
-                      <button
-                        type="button"
-                        onClick={() => setIsAddingCategory(true)}
-                        className="p-2.5 text-blue-600 hover:bg-blue-50 border border-blue-100 rounded-xl transition-colors shrink-0 shadow-sm"
-                        title="Add new category"
-                      >
-                        <Plus size={20} />
-                      </button>
-                    )}
+                      {!isAddingCategory && (
+                        <button
+                          type="button"
+                          onClick={() => setIsAddingCategory(true)}
+                          className="p-2.5 text-blue-600 hover:bg-blue-50 border border-blue-100 rounded-xl transition-colors shrink-0 shadow-sm"
+                          title="Add new category"
+                        >
+                          <Plus size={20} />
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   {isAddingCategory && (
@@ -238,8 +244,12 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                           onKeyDown={e => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
-                              handleAddCategory();
-                              setIsAddingCategory(false);
+                              if (newCategory && !categories.includes(newCategory)) {
+                                setCategories([...categories, newCategory]);
+                                setFormData({ ...formData, category: newCategory });
+                                setNewCategory("");
+                                setIsAddingCategory(false);
+                              }
                             }
                             if (e.key === 'Escape') {
                               setIsAddingCategory(false);
@@ -253,8 +263,12 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                       <button
                         type="button"
                         onClick={() => {
-                          handleAddCategory();
-                          setIsAddingCategory(false);
+                          if (newCategory && !categories.includes(newCategory)) {
+                            setCategories([...categories, newCategory]);
+                            setFormData({ ...formData, category: newCategory });
+                            setNewCategory("");
+                            setIsAddingCategory(false);
+                          }
                         }}
                         className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/10"
                       >
