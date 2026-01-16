@@ -6,9 +6,10 @@ import { desc, eq } from 'drizzle-orm';
 export async function GET() {
   try {
     const data = await db.select().from(projects).orderBy(desc(projects.createdAt));
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
+    return NextResponse.json(data || []);
+  } catch (error: any) {
+    console.error('PROJECT GET ERROR:', error);
+    return NextResponse.json({ error: 'Failed to fetch projects', details: error.message }, { status: 500 });
   }
 }
 
