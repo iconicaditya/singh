@@ -33,22 +33,26 @@ export async function POST(req: Request) {
     }
 
     try {
-      // Ensure we have at least one author and they are non-empty
-      const sanitizedAuthors = Array.isArray(body.authors) ? body.authors.filter((a: any) => typeof a === 'string' && a.trim() !== "") : [];
-      
       // Ensure JSON fields are properly formatted for Drizzle
       const insertData: any = {
-        title: body.title || "Untitled Research",
-        category: body.category || "RESEARCH",
-        year: body.year?.toString().slice(0, 4) || new Date().getFullYear().toString(),
+        title: body.title,
+        category: body.category,
+        year: body.year?.toString().slice(0, 4),
         tags: body.tags || "",
         titleImage: body.titleImage || "",
-        authors: Array.isArray(body.authors) ? body.authors : [],
-        contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
+        authors: body.authors.filter((a: any) => a.name && a.name.trim() !== ""),
+        contentSections: body.contentSections.filter((s: any) => s.title && s.title.trim() !== ""),
         relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
       };
 
-      console.log('Attempting DB Insert with sanitized data');
+      if (insertData.authors.length === 0) {
+        return NextResponse.json({ error: 'At least one author with a name is required' }, { status: 400 });
+      }
+      if (insertData.contentSections.length === 0) {
+        return NextResponse.json({ error: 'At least one content section with a title is required' }, { status: 400 });
+      }
+
+      console.log('Attempting DB Insert');
 
       const [savedItem] = await db.insert(research).values(insertData).returning();
       
@@ -78,16 +82,30 @@ export async function POST(req: Request) {
   }
 }
 
-export async function DELETE(req: Request) {
+export async function PUT(req: Request) {
   try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    const body = await req.json();
+    if (!body.id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
 
-    await db.delete(research).where(eq(research.id, parseInt(id)));
-    return NextResponse.json({ message: 'Research deleted successfully' });
-  } catch (error) {
-    console.error('Delete Error:', error);
-    return NextResponse.json({ error: 'Failed to delete research' }, { status: 500 });
+    const [updatedItem] = await db.update(research)
+      .set({
+        title: body.title,
+        category: body.category,
+        year: body.year?.toString().slice(0, 4),
+        tags: body.tags || "",
+        titleImage: body.titleImage || "",
+        authors: Array.isArray(body.authors) ? body.authors : [],
+        contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
+        relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
+        updatedAt: new Date(),
+      })
+      .where(eq(research.id, parseInt(body.id)))
+      .returning();
+
+    if (!updatedItem) return NextResponse.json({ error: 'Research not found' }, { status: 404 });
+    return NextResponse.json(updatedItem);
+  } catch (error: any) {
+    console.error('Update Error:', error);
+    return NextResponse.json({ error: 'Failed to update research', details: error.message }, { status: 500 });
   }
 }
