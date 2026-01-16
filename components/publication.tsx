@@ -1,49 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ArrowRight, ExternalLink } from "lucide-react";
+import { BookOpen, ArrowRight, ExternalLink, FileText, Calendar, Tag } from "lucide-react";
 import Link from "next/link";
-
-const publications = [
-  {
-    id: 1,
-    title: "Socio-economic impacts of plastic pollution in coastal communities",
-    authors: "Singh, A., Rokaya, N., & Chaudhary, A.",
-    journal: "Journal of Environmental Management",
-    year: "2024",
-    doi: "10.1016/j.jenvman.2024.120000",
-    category: "RESEARCH PAPER"
-  },
-  {
-    id: 2,
-    title: "Microplastic distribution patterns in urban river systems",
-    authors: "Ghatani, B., & Singh, A.",
-    journal: "Water Research",
-    year: "2023",
-    doi: "10.1016/j.watres.2023.110000",
-    category: "RESEARCH PAPER"
-  },
-  {
-    id: 3,
-    title: "Community-led waste management: A case study from Nepal",
-    authors: "Rokaya, N., & Singh, A.",
-    journal: "Sustainability Science",
-    year: "2024",
-    doi: "10.1007/s11625-024-01500-w",
-    category: "CASE STUDY"
-  }
-];
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Publication() {
+  const [publications, setPublications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        const res = await fetch("/api/publications", { cache: 'no-store' });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          // Only show the most recent 3
+          setPublications(data.slice(0, 3));
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPublications();
+  }, []);
+
   return (
     <section className="py-24 bg-white">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="text-center mb-20">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-xs font-bold mb-6"
+            className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-6 py-2 rounded-full text-xs font-black tracking-widest uppercase mb-6 border border-blue-100"
           >
             <BookOpen size={14} /> SCHOLARLY WORKS
           </motion.div>
@@ -51,43 +44,83 @@ export default function Publication() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4"
+            className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter uppercase italic"
           >
             Recent <span className="text-blue-600">Publications</span>
           </motion.h2>
+          <p className="text-slate-500 font-medium max-w-2xl mx-auto text-lg">
+            Our latest contributions to scientific research and academic literature.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {publications.map((pub, index) => (
-            <motion.div
-              key={pub.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all flex flex-col h-full group"
-            >
-              <div className="mb-6">
-                <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                  {pub.category}
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-[#1e293b] mb-4 leading-tight group-hover:text-blue-600 transition-colors">
-                {pub.title}
-              </h3>
-              <p className="text-gray-500 text-sm mb-4 font-medium italic">
-                {pub.authors}
-              </p>
-              <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between text-xs font-bold text-gray-400">
-                <span>{pub.journal} ({pub.year})</span>
-                <Link href={`https://doi.org/${pub.doi}`} target="_blank" className="text-blue-600 hover:underline flex items-center gap-1">
-                  DOI <ExternalLink size={12} />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {publications.map((pub, index) => {
+              const targetUrl = pub.pdfUrl || pub.link || "#";
+              return (
+                <motion.div
+                  key={pub.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col h-full overflow-hidden cursor-pointer"
+                  onClick={() => window.open(targetUrl, '_blank')}
+                >
+                  {/* Thumbnail if available */}
+                  <div className="relative aspect-video bg-slate-50 overflow-hidden">
+                    {pub.imageUrl ? (
+                      <Image 
+                        src={pub.imageUrl} 
+                        alt={pub.title} 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-blue-600/10">
+                        <BookOpen size={64} />
+                      </div>
+                    )}
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-lg text-[8px] font-black tracking-widest uppercase text-blue-600 shadow-lg border border-white/50">
+                        {pub.type}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-8 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 text-slate-400 font-black uppercase tracking-widest text-[9px] mb-4">
+                      <Calendar size={12} className="text-blue-500" />
+                      {pub.year}
+                    </div>
+
+                    <h3 className="text-xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight tracking-tight line-clamp-2 uppercase italic">
+                      {pub.title}
+                    </h3>
+
+                    <p className="text-slate-500 text-sm font-medium italic mb-6 line-clamp-2">
+                      {pub.authors}
+                    </p>
+
+                    <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[9px]">
+                        <Tag size={12} className="text-blue-500" />
+                        <span className="truncate max-w-[120px]">{pub.journal || "SINGHLAB"}</span>
+                      </div>
+                      <div className="text-blue-600 group-hover:translate-x-1 transition-transform">
+                        <ArrowRight size={18} />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,9 +130,9 @@ export default function Publication() {
         >
           <Link
             href="/all-publications"
-            className="inline-flex items-center gap-2 bg-[#2563eb] text-white px-10 py-4 rounded-full font-black hover:bg-[#1d4ed8] transition-all shadow-xl shadow-blue-500/25 group"
+            className="inline-flex items-center gap-3 bg-slate-900 text-white px-12 py-5 rounded-[2rem] font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-2xl shadow-black/10 group active:scale-95"
           >
-            VIEW ALL PUBLICATIONS <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            EXPLORE FULL ARCHIVE <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
       </div>
