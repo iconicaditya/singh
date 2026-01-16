@@ -16,7 +16,8 @@ import {
   Users,
   ChevronRight,
   List,
-  Grid
+  Grid,
+  FilterX
 } from "lucide-react";
 import ResearchGalleryForm from "@/components/research/ResearchGalleryForm";
 
@@ -24,6 +25,8 @@ export default function AdminResearchPage() {
   const [researchList, setResearchList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResearch, setEditingResearch] = useState<any>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
@@ -55,10 +58,22 @@ export default function AdminResearchPage() {
     }
   };
 
-  const filtered = researchList.filter(r => 
-    r.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    r.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const categories = Array.from(new Set(researchList.map(r => r.category)));
+  const years = Array.from(new Set(researchList.map(r => r.year))).sort((a, b) => b.localeCompare(a));
+
+  const filtered = researchList.filter(r => {
+    const matchesSearch = r.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         r.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === "all" || r.category === categoryFilter;
+    const matchesYear = yearFilter === "all" || r.year === yearFilter;
+    return matchesSearch && matchesCategory && matchesYear;
+  });
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setCategoryFilter("all");
+    setYearFilter("all");
+  };
 
   return (
     <div className="p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
@@ -87,33 +102,75 @@ export default function AdminResearchPage() {
       </div>
 
       {/* Controls Section */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
-          <input
-            type="text"
-            placeholder="Search by title, category or keywords..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all shadow-sm font-medium placeholder:text-slate-400"
-          />
-        </div>
-        
-        <div className="flex gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-sm">
-          <button 
-            onClick={() => setViewMode('list')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${viewMode === 'list' ? 'bg-slate-100 text-slate-900 font-bold' : 'text-slate-400 hover:text-slate-600'}`}
-          >
-            <List size={18} />
-            <span className="text-sm">List</span>
-          </button>
-          <button 
-            onClick={() => setViewMode('grid')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-slate-100 text-slate-900 font-bold' : 'text-slate-400 hover:text-slate-600'}`}
-          >
-            <Grid size={18} />
-            <span className="text-sm">Grid</span>
-          </button>
+      <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 mb-8 space-y-6">
+        <div className="flex flex-col lg:flex-row gap-4">
+          <div className="relative flex-1 group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
+            <input
+              type="text"
+              placeholder="Search by title, category or keywords..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-6 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2 min-w-[160px]">
+              <Filter size={18} className="text-slate-400" />
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-sm appearance-none cursor-pointer"
+              >
+                <option value="all">All Categories</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2 min-w-[140px]">
+              <Calendar size={18} className="text-slate-400" />
+              <select
+                value={yearFilter}
+                onChange={(e) => setYearFilter(e.target.value)}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-sm appearance-none cursor-pointer"
+              >
+                <option value="all">All Years</option>
+                {years.map(year => (
+                  <option key={year} value={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+
+            {(searchTerm || categoryFilter !== "all" || yearFilter !== "all") && (
+              <button
+                onClick={resetFilters}
+                className="flex items-center gap-2 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-bold text-sm transition-all"
+              >
+                <FilterX size={18} />
+                Clear
+              </button>
+            )}
+
+            <div className="h-10 w-px bg-slate-100 hidden lg:block" />
+
+            <div className="flex gap-2 p-1 bg-slate-50 rounded-xl border border-slate-200">
+              <button 
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                <List size={20} />
+              </button>
+              <button 
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                <Grid size={20} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -128,7 +185,7 @@ export default function AdminResearchPage() {
             <Search className="text-slate-300" size={32} />
           </div>
           <h3 className="text-2xl font-bold text-slate-900 mb-2">No matching research found</h3>
-          <p className="text-slate-500 font-medium">Try adjusting your search terms or add a new research topic.</p>
+          <p className="text-slate-500 font-medium">Try adjusting your filters or add a new research topic.</p>
         </div>
       ) : (
         <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" : "flex flex-col gap-4"}>
@@ -153,7 +210,7 @@ export default function AdminResearchPage() {
                   </div>
                 </div>
                 
-                <h3 className="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors">{res.title}</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">{res.title}</h3>
                 
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center gap-1.5 text-slate-400">
