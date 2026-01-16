@@ -9,28 +9,28 @@ CREATE TABLE IF NOT EXISTS research (
   year VARCHAR(4) NOT NULL,
   tags TEXT,
   title_image TEXT,
-  authors JSONB NOT NULL, -- Array of {name, image}
-  content_sections JSONB NOT NULL, -- Array of {title, content, image}
+  authors JSONB NOT NULL, -- Array of objects {name, image}
+  content_sections JSONB NOT NULL, -- Array of objects {title, content, image}
   related_publications JSONB, -- Array of publication objects
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- Projects Table (Updated)
+-- Projects Table
 CREATE TABLE IF NOT EXISTS projects (
   id SERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   category VARCHAR(100) NOT NULL,
   tags TEXT,
-  team_members JSONB, -- Array of {name, role}
+  team_members JSONB,           -- Array of {name, role}
   location VARCHAR(255),
   description TEXT NOT NULL,
-  status VARCHAR(50) NOT NULL, -- ongoing, completed
+  status VARCHAR(50) NOT NULL,  -- ongoing, completed
   image_url TEXT,
-  about_project TEXT, -- Rich text/HTML
-  project_objectives JSONB, -- Array of strings
-  project_date VARCHAR(100),
-  attached_research_ids JSONB, -- Array of research IDs
+  about_project TEXT,           -- Rich text/HTML
+  project_objectives JSONB DEFAULT '[]'::JSONB, -- Array of strings
+  project_date VARCHAR(100),    -- Date of project
+  attached_research_ids JSONB DEFAULT '[]'::JSONB, -- Linked Research IDs
   link TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
