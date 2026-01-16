@@ -15,6 +15,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    console.log('API POST Received:', body);
     
     if (!body.title || !body.description || !body.status) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -36,6 +37,8 @@ export async function POST(req: Request) {
       link: body.link || "",
     }).returning();
     
+    console.log('Project saved successfully:', savedItem);
+
     const serializeDate = (d: any) => {
       if (!d) return new Date().toISOString();
       const date = new Date(d);
@@ -48,7 +51,7 @@ export async function POST(req: Request) {
       updatedAt: serializeDate(savedItem.updatedAt)
     });
   } catch (error: any) {
-    console.error('Project DB Error:', error);
+    console.error('CRITICAL PROJECT POST ERROR:', error);
     return NextResponse.json({ 
       error: 'Failed to create project', 
       details: error.message || String(error)
@@ -59,6 +62,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
+    console.log('API PUT Received:', body);
     if (!body.id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
 
     const [updatedItem] = await db.update(projects)
@@ -81,9 +85,14 @@ export async function PUT(req: Request) {
       .where(eq(projects.id, body.id))
       .returning();
 
+    console.log('Project updated successfully:', updatedItem);
     return NextResponse.json(updatedItem);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
+  } catch (error: any) {
+    console.error('CRITICAL PROJECT PUT ERROR:', error);
+    return NextResponse.json({ 
+      error: 'Failed to update project',
+      details: error.message || String(error)
+    }, { status: 500 });
   }
 }
 

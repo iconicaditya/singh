@@ -125,20 +125,39 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
   };
 
   const handleSubmit = async () => {
+    if (!formData.title || !formData.description || !formData.status) {
+      alert("Please fill in all required fields (Title, Description, Status)");
+      return;
+    }
+
     setLoading(true);
     try {
       const method = initialData ? "PUT" : "POST";
+      const payload = {
+        ...formData,
+        id: initialData?.id,
+        projectObjectives: formData.projectObjectives.filter(obj => obj.trim() !== "")
+      };
+      
+      console.log("Submitting project:", payload);
+      
       const res = await fetch("/api/projects", {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(initialData ? { ...formData, id: initialData.id } : formData),
+        body: JSON.stringify(payload),
       });
+
+      const result = await res.json();
+
       if (res.ok) {
         onSuccess();
         onClose();
+      } else {
+        alert(`Error: ${result.error || "Failed to save project"}`);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Submission error:", err);
+      alert("An unexpected error occurred. Please check the console.");
     } finally {
       setLoading(false);
     }
