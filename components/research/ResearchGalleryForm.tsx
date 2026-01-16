@@ -45,6 +45,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   const [newCategory, setNewCategory] = useState("");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "PROJECT"]);
+  const [showCategoryMenu, setShowCategoryMenu] = useState(false);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -190,37 +191,70 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                   <div className="flex items-center gap-2">
                     <div className="relative flex-1">
                       <div className="relative">
-                        <select
-                          value={formData.category}
-                          onChange={e => setFormData({ ...formData, category: e.target.value })}
-                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none pr-10"
+                        <button
+                          type="button"
+                          onClick={() => setShowCategoryMenu(!showCategoryMenu)}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all flex items-center justify-between text-left"
                         >
-                          <option value="" disabled>Select category</option>
-                          {categories.map(cat => (
-                            <option key={cat} value={cat}>{cat}</option>
-                          ))}
-                        </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                          <span className={formData.category ? "text-slate-900" : "text-slate-400"}>
+                            {formData.category || "Select category"}
+                          </span>
+                          <ChevronDown className={`text-slate-400 transition-transform ${showCategoryMenu ? 'rotate-180' : ''}`} size={18} />
+                        </button>
+
+                        {showCategoryMenu && (
+                          <>
+                            <div 
+                              className="fixed inset-0 z-[60]" 
+                              onClick={() => setShowCategoryMenu(false)}
+                            />
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl z-[70] overflow-hidden py-1 animate-in fade-in zoom-in-95 duration-100">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFormData({ ...formData, category: "" });
+                                  setShowCategoryMenu(false);
+                                }}
+                                className="w-full px-4 py-2.5 text-left text-sm text-slate-400 hover:bg-slate-50 transition-colors"
+                              >
+                                Select category
+                              </button>
+                              {categories.map(cat => (
+                                <div key={cat} className="group flex items-center justify-between hover:bg-blue-50 transition-colors">
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setFormData({ ...formData, category: cat });
+                                      setShowCategoryMenu(false);
+                                    }}
+                                    className={`flex-1 px-4 py-2.5 text-left text-sm font-medium ${formData.category === cat ? 'text-blue-600' : 'text-slate-700'}`}
+                                  >
+                                    {cat}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const updatedCategories = categories.filter(c => c !== cat);
+                                      setCategories(updatedCategories);
+                                      if (formData.category === cat) {
+                                        setFormData({ ...formData, category: "" });
+                                      }
+                                    }}
+                                    className="p-1.5 mr-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                    title="Delete category"
+                                  >
+                                    <Trash2 size={14} />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                     
                     <div className="flex gap-2">
-                      {formData.category && (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const catToDelete = formData.category;
-                            const updatedCategories = categories.filter(c => c !== catToDelete);
-                            setCategories(updatedCategories);
-                            setFormData({ ...formData, category: "" });
-                          }}
-                          className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
-                          title="Delete selected category"
-                        >
-                          <Trash2 size={20} />
-                        </button>
-                      )}
-
                       {!isAddingCategory && (
                         <button
                           type="button"
