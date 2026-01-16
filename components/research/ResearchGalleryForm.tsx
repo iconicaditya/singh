@@ -81,13 +81,13 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   if (!isOpen) return null;
 
   const handleImageUpload = async (file: File, type: 'title' | 'section' | 'author', index?: number) => {
-    const formData = new FormData();
-    formData.append('file', file);
+    const uploadFormData = new FormData();
+    uploadFormData.append('file', file);
     
     try {
       const res = await fetch('/api/upload', {
         method: 'POST',
-        body: formData
+        body: uploadFormData
       });
       const data = await res.json();
       if (data.url) {
