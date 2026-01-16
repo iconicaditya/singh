@@ -186,16 +186,18 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Category</label>
                 <div className="flex gap-2">
-                  <select
-                    value={formData.category}
-                    onChange={e => setFormData({ ...formData, category: e.target.value })}
-                    className="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
-                  >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-                  <div className="flex gap-1">
+                  <div className="relative flex-1">
+                    <select
+                      value={formData.category}
+                      onChange={e => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
+                    >
+                      {categories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                    
                     {formData.category && !["RESEARCH", "PUBLICATION", "PROJECT"].includes(formData.category) && (
                       <button
                         type="button"
@@ -204,13 +206,14 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                           setCategories(updatedCategories);
                           setFormData({ ...formData, category: "RESEARCH" });
                         }}
-                        className="px-3 py-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors border border-red-100"
-                        title="Remove current category"
+                        className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Remove custom category"
                       >
                         <Trash2 size={18} />
                       </button>
                     )}
                   </div>
+
                   <div className="relative flex-1">
                     <input
                       value={newCategory}
