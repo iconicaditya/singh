@@ -7,7 +7,8 @@ import {
   Rocket,
   Calendar,
   MapPin,
-  ArrowLeft
+  ArrowLeft,
+  ChevronRight
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -96,61 +97,64 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* 2. Main Content - Single Column Full Width Style */}
-      <div className="container mx-auto px-6 max-w-5xl py-20">
-        {/* Search & Filters */}
-        <div className="mb-20 space-y-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-            <input
-              type="text"
-              placeholder="Search projects by keywords or tags..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-6 py-5 bg-slate-50 border border-slate-200 rounded-3xl focus:ring-2 focus:ring-blue-500 outline-none transition-all text-lg font-medium text-slate-700 shadow-sm"
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-6 border-b border-slate-100 pb-8">
-            <div className="flex flex-wrap gap-2">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setCategoryFilter(cat)}
-                  className={`px-4 py-2 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                    categoryFilter === cat 
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/20' 
-                    : 'bg-white text-slate-500 hover:border-slate-300 border-slate-200'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+      {/* 2. Search & Filters - Full Width */}
+      <div className="bg-slate-50 border-b border-slate-100 py-10">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="space-y-8">
+            <div className="relative">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
+              <input
+                type="text"
+                placeholder="Search projects by keywords or tags..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-16 pr-8 py-6 bg-white border border-slate-200 rounded-[2rem] focus:ring-2 focus:ring-blue-500 outline-none transition-all text-xl font-medium text-slate-700 shadow-sm"
+              />
             </div>
 
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status:</span>
-              <div className="flex gap-2">
-                {statuses.map(status => (
+            <div className="flex flex-wrap items-center justify-between gap-6">
+              <div className="flex flex-wrap gap-2">
+                {categories.map(cat => (
                   <button
-                    key={status}
-                    onClick={() => setStatusFilter(status)}
-                    className={`px-4 py-2 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
-                      statusFilter === status 
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20' 
+                    key={cat}
+                    onClick={() => setCategoryFilter(cat)}
+                    className={`px-6 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
+                      categoryFilter === cat 
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/20' 
                       : 'bg-white text-slate-500 hover:border-slate-300 border-slate-200'
                     }`}
                   >
-                    {status}
+                    {cat}
                   </button>
                 ))}
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status:</span>
+                <div className="flex gap-2">
+                  {statuses.map(status => (
+                    <button
+                      key={status}
+                      onClick={() => setStatusFilter(status)}
+                      className={`px-6 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border ${
+                        statusFilter === status 
+                        ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20' 
+                        : 'bg-white text-slate-500 hover:border-slate-300 border-slate-200'
+                      }`}
+                    >
+                      {status}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Project Items List */}
-        <div className="space-y-32">
+      {/* 3. Main Content - Single Column Full Width Style */}
+      <div className="container mx-auto px-6 max-w-5xl py-24">
+        <div className="space-y-40">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((proj: any, idx: number) => (
               <motion.section 
@@ -161,75 +165,78 @@ export default function ProjectsPage() {
                 className="scroll-mt-32"
               >
                 <div className="mb-10">
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="px-3 py-1 bg-blue-100 text-blue-600 text-[10px] font-bold uppercase tracking-[0.2em] rounded">
+                  <div className="flex items-center gap-6 mb-8">
+                    <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded">
                       {proj.category}
                     </span>
                     <div className={`flex items-center text-[10px] font-bold uppercase tracking-[0.2em] ${
                       proj.status?.toLowerCase() === 'completed' ? 'text-emerald-600' : 'text-amber-600'
                     }`}>
-                      <div className={`w-2 h-2 rounded-full mr-2 ${
+                      <div className={`w-2.5 h-2.5 rounded-full mr-3 ${
                         proj.status?.toLowerCase() === 'completed' ? 'bg-emerald-500' : 'bg-amber-500'
                       }`} />
                       {proj.status}
                     </div>
                   </div>
 
-                  <Link href={`/projects/${proj.id}`} className="group inline-block">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 flex items-center gap-4 group-hover:text-blue-600 transition-colors">
-                      <span className="w-10 h-[3px] bg-blue-600 rounded-full shrink-0" />
+                  <Link href={`/projects/${proj.id}`} className="group inline-block mb-8">
+                    <h2 className="text-4xl md:text-6xl font-bold text-slate-900 flex items-center gap-6 group-hover:text-blue-600 transition-colors leading-tight tracking-tight">
+                      <span className="w-12 h-[4px] bg-blue-600 rounded-full shrink-0" />
                       {proj.title}
                     </h2>
                   </Link>
 
-                  <div className="flex flex-wrap items-center gap-6 text-slate-400 mb-8">
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
-                      <Calendar size={14} className="text-blue-500" />
+                  <div className="flex flex-wrap items-center gap-10 text-slate-400 mb-12">
+                    <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
+                      <Calendar size={18} className="text-blue-500" />
                       {proj.projectDate || "Ongoing"}
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
-                      <MapPin size={14} className="text-blue-500" />
+                    <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
+                      <MapPin size={18} className="text-blue-500" />
                       {proj.location || "Singhabad Lab"}
                     </div>
                   </div>
 
-                  <p className="text-slate-600 text-xl leading-relaxed mb-10 font-medium whitespace-pre-wrap">
+                  <p className="text-slate-600 text-2xl leading-relaxed mb-16 font-medium whitespace-pre-wrap max-w-4xl">
                     {proj.description}
                   </p>
 
                   {proj.imageUrl && (
-                    <div className="relative aspect-[16/9] rounded-[2rem] overflow-hidden border border-slate-100 shadow-2xl mb-10 group">
+                    <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden border border-slate-100 shadow-2xl mb-16 group bg-slate-100">
                       <Image 
                         src={proj.imageUrl} 
                         alt={proj.title} 
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                        priority={idx === 0}
                       />
                     </div>
                   )}
 
-                  <Link 
-                    href={`/projects/${proj.id}`}
-                    className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl hover:bg-blue-600 transition-all font-bold text-sm uppercase tracking-widest shadow-xl shadow-slate-900/10"
-                  >
-                    View Case Study
-                    <ChevronRight size={18} />
-                  </Link>
+                  <div className="flex items-center justify-between pt-10 border-t border-slate-100">
+                    <Link 
+                      href={`/projects/${proj.id}`}
+                      className="inline-flex items-center gap-4 px-10 py-5 bg-slate-900 text-white rounded-[2rem] hover:bg-blue-600 transition-all font-bold text-sm uppercase tracking-widest shadow-xl shadow-slate-900/20 group"
+                    >
+                      View Full Project Details
+                      <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
               </motion.section>
             ))
           ) : (
-            <div className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
-              <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-                <Search size={32} className="text-slate-300" />
+            <div className="text-center py-40 bg-slate-50 rounded-[4rem] border-2 border-dashed border-slate-200">
+              <div className="w-24 h-24 bg-white rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-sm">
+                <Search size={40} className="text-slate-300" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">No Projects Match Your Search</h3>
-              <p className="text-slate-500 font-medium mb-8">Try adjusting your filters or checking back later.</p>
+              <h3 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">No Projects Match Your Query</h3>
+              <p className="text-slate-500 text-xl font-medium mb-10">Try clearing your filters or refine your search.</p>
               <button 
                 onClick={() => {setSearchTerm(""); setCategoryFilter("All"); setStatusFilter("All");}}
-                className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-blue-600 transition-all"
+                className="px-10 py-5 bg-slate-900 text-white rounded-[2rem] font-bold text-sm uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-900/10"
               >
-                Clear All Filters
+                Reset Search Filters
               </button>
             </div>
           )}
@@ -237,14 +244,14 @@ export default function ProjectsPage() {
       </div>
 
       {/* Footer Navigation */}
-      <footer className="bg-slate-50 border-t border-slate-100 py-20 mt-20">
+      <footer className="bg-slate-50 border-t border-slate-100 py-32 mt-20">
         <div className="container mx-auto px-6 text-center">
           <Link 
             href="/"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-white border border-slate-200 rounded-[2rem] text-slate-900 hover:text-blue-600 hover:border-blue-600 transition-all font-bold shadow-sm text-sm uppercase tracking-widest"
+            className="inline-flex items-center gap-4 px-12 py-6 bg-white border border-slate-200 rounded-[2.5rem] text-slate-900 hover:text-blue-600 hover:border-blue-600 transition-all font-bold shadow-sm text-sm uppercase tracking-widest"
           >
-            <ArrowLeft size={20} />
-            Back to Overview
+            <ArrowLeft size={24} />
+            Back to Laboratory Overview
           </Link>
         </div>
       </footer>
