@@ -6,7 +6,14 @@ import { desc, eq } from 'drizzle-orm';
 export async function GET() {
   try {
     const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
-    return NextResponse.json(data || []);
+    return new NextResponse(JSON.stringify(data || []), {
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, max-age=0, must-revalidate',
+        'Pragma': 'no-cache',
+        'Content-Type': 'application/json',
+      },
+    });
   } catch (error) {
     console.error('Fetch error:', error);
     return NextResponse.json({ error: 'Failed to fetch publications', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
