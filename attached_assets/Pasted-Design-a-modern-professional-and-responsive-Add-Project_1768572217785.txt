@@ -1,0 +1,98 @@
+Design a modern, professional, and responsive “Add Project” form for a research website admin panel.
+
+⚠️ Important Note:
+For now, this form and its logic should NOT impact or modify the frontend user-facing project pages.
+All changes should be limited to the admin/backend side only.
+Frontend integration and UI updates will be handled later upon instruction.
+
+🔹 Basic Information Section
+
+Project Title (required text input)
+
+Category (dropdown with option to add a new category)
+
+Another Category (optional dropdown or tag-based input)
+
+Tags (multi-select / chip-style input)
+
+Team Members (multi-select with name + role)
+
+Location (text input)
+
+Project Status (radio buttons or dropdown):
+
+Ongoing
+
+Completed
+
+🔹 Media Section
+
+Title Image Upload (image preview required)
+
+🔹 Project Details Section
+
+About Project (rich text editor)
+
+Project Objectives (multi-line textarea or bullet-style input)
+
+🔹 Conditional Logic (Critical Requirement)
+
+If Project Status = Ongoing:
+
+Display only standard project fields
+
+Do NOT show research attachment options
+
+If Project Status = Completed:
+
+Display an additional section titled “Attach Research”
+
+Include a search bar to search existing research records
+
+Allow selecting one or multiple research items
+
+Display selected research as removable chips or cards
+
+🔹 Form Actions
+
+Save as Draft
+
+Publish Project
+
+Cancel
+
+🔹 UX / UI Requirements
+
+Clean academic and professional design
+
+Responsive layout (desktop, tablet, mobile)
+
+Inline validation with clear error messages
+
+Required field indicators (*)
+
+Smooth transitions for conditional sections
+
+🔹 Technical Preferences (Optional)
+
+Framework: React / Next.js
+
+Form Handling: React Hook Form or Formik
+
+Validation: Zod or Yup
+
+Styling: Tailwind CSS
+
+🔹 Output Expectations
+
+Full form structure
+
+Clear explanation of conditional logic
+
+Component-level breakdown
+
+Sample field labels and placeholders
+
+⚠️ Reminder:
+This implementation must remain isolated from the frontend display logic.
+Frontend changes will be requested and handled in a later phase.
