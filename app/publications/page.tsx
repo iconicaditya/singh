@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ExternalLink, FileText, Calendar, User, Search } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, Calendar, User, Search, Tag, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,19 +14,13 @@ export default function PublicationsPage() {
   useEffect(() => {
     const fetchPublications = async () => {
       try {
-        console.log("Fetching from /api/publications...");
         const res = await fetch("/api/publications", { cache: 'no-store' });
         const data = await res.json();
-        console.log("Data received:", data);
         if (Array.isArray(data)) {
           setPublications(data);
-        } else {
-          setPublications([]);
-          console.error("Publications data is not an array:", data);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
-        setPublications([]);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -43,8 +37,8 @@ export default function PublicationsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative py-20 bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000')] bg-cover bg-center opacity-20" />
+      <section className="relative py-24 bg-slate-900 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2000')] bg-cover bg-center opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 to-slate-900" />
         
         <div className="relative max-w-7xl mx-auto px-6">
@@ -53,112 +47,131 @@ export default function PublicationsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Publications</h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Our research contributions to journals, conferences, and academic books.
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter italic uppercase">
+              Research <span className="text-blue-500">Publications</span>
+            </h1>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto font-medium">
+              Academic contributions and scholarly works from the SinghLab research group.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Search and Filter */}
-      <section className="py-12 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+      {/* Search Bar */}
+      <section className="py-12 border-b border-slate-100 sticky top-0 bg-white/80 backdrop-blur-xl z-20 shadow-sm">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="relative group">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={24} />
             <input
               type="text"
-              placeholder="Search by title, author, or journal..."
+              placeholder="Search by title, author, or keywords..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-black"
+              className="w-full pl-16 pr-8 py-6 bg-slate-50 border border-slate-200 rounded-[2rem] focus:ring-8 focus:ring-blue-500/5 focus:border-blue-500 outline-none transition-all text-black font-semibold text-lg shadow-inner"
             />
           </div>
         </div>
       </section>
 
-      {/* Publications List */}
-      <section className="py-20">
+      {/* Publications Grid */}
+      <section className="py-24 bg-slate-50/50">
         <div className="max-w-7xl mx-auto px-6">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+            <div className="flex flex-col items-center justify-center py-40">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4" />
+              <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Loading Database...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-8">
+            <div className="grid grid-cols-1 gap-12">
               {filteredPublications.map((pub: any, idx: number) => (
                 <motion.div
                   key={pub.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="group bg-white p-8 rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.04)] transition-all flex flex-col md:flex-row gap-8"
+                  className="group bg-white rounded-[3rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col lg:flex-row overflow-hidden"
                 >
-                  {pub.imageUrl && (
-                    <div className="relative w-full md:w-48 h-64 md:h-auto shrink-0 overflow-hidden rounded-2xl">
+                  {/* Image/Thumbnail Column */}
+                  <div className="lg:w-80 shrink-0 relative aspect-[4/3] lg:aspect-auto bg-slate-100 overflow-hidden">
+                    {pub.imageUrl ? (
                       <Image
                         src={pub.imageUrl}
                         alt={pub.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
                       />
-                    </div>
-                  )}
-                  
-                  <div className="flex-1 flex flex-col">
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-lg">
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-blue-600/5 text-blue-600/20">
+                        <BookOpen size={80} />
+                      </div>
+                    )}
+                    <div className="absolute top-6 left-6">
+                      <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-xl text-[10px] font-black tracking-widest uppercase text-blue-600 shadow-xl border border-white/50">
                         {pub.type}
                       </span>
-                      <div className="flex items-center gap-1.5 text-slate-400 text-sm font-medium">
-                        <Calendar size={14} />
+                    </div>
+                  </div>
+
+                  {/* Content Column */}
+                  <div className="flex-1 p-10 lg:p-14 flex flex-col">
+                    <div className="flex flex-wrap items-center gap-6 mb-8">
+                      <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-xs">
+                        <Calendar size={16} className="text-blue-500" />
                         {pub.year}
                       </div>
+                      {pub.journal && (
+                        <div className="flex items-center gap-2 text-slate-600 font-black uppercase tracking-widest text-xs">
+                          <Tag size={16} className="text-blue-500" />
+                          {pub.journal}
+                        </div>
+                      )}
                     </div>
 
                     <Link href={`/publications/${pub.id}`}>
-                      <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight">
+                      <h3 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6 leading-[1.1] tracking-tight group-hover:text-blue-600 transition-colors">
                         {pub.title}
                       </h3>
                     </Link>
 
-                    <div className="flex items-center gap-2 text-slate-600 mb-4 italic">
-                      <User size={16} className="shrink-0" />
-                      <p className="text-sm line-clamp-1">{pub.authors}</p>
+                    <div className="flex items-start gap-3 mb-8">
+                      <User size={20} className="text-slate-300 shrink-0 mt-1" />
+                      <p className="text-lg text-slate-500 font-medium italic leading-relaxed">
+                        {pub.authors}
+                      </p>
                     </div>
 
-                    {pub.journal && (
-                      <p className="text-slate-500 text-sm font-semibold mb-3 flex items-center gap-2">
-                        <BookOpen size={16} />
-                        {pub.journal}
-                      </p>
-                    )}
-
-                    {pub.description && (
-                      <p className="text-slate-600 text-sm mb-6 line-clamp-2 font-medium">
-                        {pub.description}
-                      </p>
-                    )}
-
                     <div className="mt-auto flex flex-wrap gap-4">
-                      <Link
-                        href={`/publications/${pub.id}`}
-                        className="group/btn flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 transition-all duration-300 shadow-lg shadow-black/5 active:scale-95"
-                      >
-                        <ExternalLink size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                        View Details
-                      </Link>
-                      {pub.pdfUrl && (
+                      {/* Intelligence Logic: PDF vs URL */}
+                      {pub.pdfUrl ? (
                         <a
                           href={pub.pdfUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group/btn flex items-center gap-2 px-6 py-3 bg-blue-50 text-blue-600 border border-blue-100 rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm active:scale-95"
+                          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
                         >
-                          <FileText size={14} className="group-hover/btn:scale-110 transition-transform" />
-                          Read PDF
+                          <FileText size={18} />
+                          View Full PDF
                         </a>
-                      )}
+                      ) : pub.link ? (
+                        <a
+                          href={pub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
+                        >
+                          <ExternalLink size={18} />
+                          Visit Publisher Site
+                        </a>
+                      ) : null}
+
+                      <Link
+                        href={`/publications/${pub.id}`}
+                        className="flex items-center gap-3 px-8 py-4 bg-slate-50 text-slate-900 border border-slate-100 rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-white hover:shadow-lg transition-all active:scale-95"
+                      >
+                        Details
+                        <ArrowRight size={18} />
+                      </Link>
                     </div>
                   </div>
                 </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ExternalLink, FileText, Calendar, User, Search, Filter, ArrowLeft } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, Calendar, User, Search, Filter, ArrowLeft, Tag, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,7 +44,7 @@ export default function AllPublicationsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation Header */}
-      <div className="bg-white border-b border-slate-100 sticky top-0 z-30">
+      <div className="bg-white border-b border-slate-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors font-bold text-sm">
             <ArrowLeft size={16} /> Back to Home
@@ -56,111 +56,135 @@ export default function AllPublicationsPage() {
       </div>
 
       {/* Hero Header */}
-      <section className="py-20 bg-slate-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-slate-200 [mask-image:linear-gradient(0deg,#fff,rgba(255,255,255,0.6))] -z-10" />
+      <section className="py-24 bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/[0.05] -z-10" />
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter leading-none italic uppercase"
+            className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter leading-none italic uppercase"
           >
-            Full <span className="text-blue-600">Publications</span>
+            Full <span className="text-blue-500">Archive</span>
           </motion.h1>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
-            Explore our comprehensive repository of scientific research and scholarly contributions.
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto font-medium">
+            A comprehensive database of every research milestone achieved by the SinghLab group.
           </p>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="py-12 border-b border-slate-100 sticky top-16 bg-white/80 backdrop-blur-xl z-20 shadow-sm">
+      {/* Control Panel */}
+      <section className="py-12 border-b border-slate-100 sticky top-16 bg-white/90 backdrop-blur-2xl z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+            <div className="flex-1 relative group">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
               <input
                 type="text"
-                placeholder="Search by title or author..."
+                placeholder="Filter by title or author name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-black font-medium shadow-inner"
+                className="w-full pl-16 pr-8 py-5 bg-slate-50 border border-slate-200 rounded-[1.5rem] focus:ring-8 focus:ring-blue-500/5 focus:border-blue-500 outline-none transition-all text-black font-semibold shadow-inner"
               />
             </div>
             <div className="flex flex-wrap gap-4">
               <select 
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 transition-all font-bold text-slate-600 text-sm cursor-pointer"
+                className="px-8 py-5 bg-slate-50 border border-slate-200 rounded-[1.5rem] outline-none focus:ring-8 focus:ring-blue-500/5 transition-all font-black text-slate-600 text-xs tracking-widest uppercase cursor-pointer appearance-none min-w-[180px]"
               >
                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
               </select>
               <select 
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="px-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-500/10 transition-all font-bold text-slate-600 text-sm cursor-pointer"
+                className="px-8 py-5 bg-slate-50 border border-slate-200 rounded-[1.5rem] outline-none focus:ring-8 focus:ring-blue-500/5 transition-all font-black text-slate-600 text-xs tracking-widest uppercase cursor-pointer appearance-none min-w-[140px]"
               >
                 {years.map(year => <option key={year} value={year}>{year}</option>)}
               </select>
-              <button className="p-4 bg-blue-50 text-blue-600 border border-blue-100 rounded-2xl hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                <Filter size={20} />
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Listing Section */}
-      <section className="py-20">
+      {/* Dynamic Results Grid */}
+      <section className="py-24 bg-slate-50/30">
         <div className="max-w-7xl mx-auto px-6">
           {loading ? (
-            <div className="flex justify-center py-20">
+            <div className="flex justify-center py-40">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
               {filteredPublications.map((pub: any, idx: number) => (
                 <motion.div
                   key={pub.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.05 }}
-                  className="group bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_30px_60px_rgb(0,0,0,0.05)] transition-all flex flex-col justify-between"
+                  className="group bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-8">
+                    {/* Thumbnail if available */}
+                    {pub.imageUrl && (
+                      <div className="relative aspect-video mb-8 rounded-[2rem] overflow-hidden">
+                        <Image src={pub.imageUrl} alt={pub.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between mb-6">
                       <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-blue-100">
                         {pub.type}
                       </span>
-                      <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest">
-                        <Calendar size={14} />
+                      <div className="flex items-center gap-2 text-slate-400 text-[10px] font-black uppercase tracking-widest">
+                        <Calendar size={14} className="text-blue-500" />
                         {pub.year}
                       </div>
                     </div>
 
                     <Link href={`/publications/${pub.id}`}>
-                      <h3 className="text-2xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight tracking-tight">
+                      <h3 className="text-xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight tracking-tight line-clamp-2">
                         {pub.title}
                       </h3>
                     </Link>
 
-                    <p className="text-slate-500 text-sm font-medium italic mb-6 line-clamp-2">
+                    {pub.journal && (
+                      <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[9px] mb-4">
+                        <Tag size={12} className="text-blue-500" />
+                        {pub.journal}
+                      </div>
+                    )}
+
+                    <p className="text-slate-500 text-sm font-medium italic mb-8 line-clamp-2">
                       {pub.authors}
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-8 border-t border-slate-50">
+                  <div className="flex items-center gap-3 pt-8 border-t border-slate-50">
+                    {pub.pdfUrl ? (
+                      <a 
+                        href={pub.pdfUrl}
+                        target="_blank"
+                        className="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 text-[10px] tracking-widest uppercase"
+                      >
+                        <FileText size={14} /> PDF
+                      </a>
+                    ) : pub.link ? (
+                      <a 
+                        href={pub.link}
+                        target="_blank"
+                        className="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 text-[10px] tracking-widest uppercase"
+                      >
+                        <ExternalLink size={14} /> Link
+                      </a>
+                    ) : null}
+                    
                     <Link 
                       href={`/publications/${pub.id}`}
-                      className="text-[10px] font-black tracking-widest uppercase text-slate-400 group-hover:text-blue-600 flex items-center gap-2 transition-colors"
+                      className="p-4 bg-slate-50 text-slate-400 hover:text-blue-600 rounded-2xl transition-all"
+                      title="View Details"
                     >
-                      DOI <ExternalLink size={12} />
-                    </Link>
-                    <Link 
-                      href={`/publications/${pub.id}`}
-                      className="px-6 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black tracking-widest uppercase hover:bg-blue-600 transition-all shadow-lg shadow-black/5 active:scale-95"
-                    >
-                      View Full Details
+                      <ArrowRight size={20} />
                     </Link>
                   </div>
                 </motion.div>
@@ -169,12 +193,12 @@ export default function AllPublicationsPage() {
           )}
 
           {!loading && filteredPublications.length === 0 && (
-            <div className="text-center py-40">
-              <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Search size={32} className="text-slate-200" />
+            <div className="text-center py-40 bg-white rounded-[3rem] border border-slate-100">
+              <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+                <Search size={40} className="text-slate-200" />
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-2">No results found</h3>
-              <p className="text-slate-500 font-medium">Try adjusting your filters or search terms.</p>
+              <h3 className="text-3xl font-black text-slate-900 mb-3 tracking-tight italic uppercase">Archive Empty</h3>
+              <p className="text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">No publications match your current filters. Try resetting the year or category.</p>
             </div>
           )}
         </div>
