@@ -49,7 +49,7 @@ export default function ResearchPage() {
   const visibleResearch = filteredResearch.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="min-h-screen bg-white font-sans text-slate-900">
       {/* Page Header */}
       <div className="bg-white border-b border-slate-200 pt-32 pb-16">
         <div className="container mx-auto px-4 max-w-7xl">
@@ -121,11 +121,10 @@ export default function ResearchPage() {
                   >
                     <Link href={`/research/${item.id}`} className="relative aspect-[16/10] block overflow-hidden bg-slate-100">
                       {item.titleImage ? (
-                        <Image 
+                        <img 
                           src={item.titleImage} 
                           alt={item.title} 
-                          fill 
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center text-slate-300">
@@ -166,7 +165,7 @@ export default function ResearchPage() {
                               title={author.name}
                             >
                               {author.image ? (
-                                <Image src={author.image} alt={author.name} fill className="object-cover" />
+                                <img src={author.image} alt={author.name} className="w-full h-full object-cover" />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600">
                                   <User size={12} />

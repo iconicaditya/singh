@@ -69,17 +69,17 @@ export default function ResearchDetail() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-slate-900">
       {/* 1. Hero Header - Full Width Title Image at the Very Top */}
       <section className="relative w-full h-[65vh] flex items-end overflow-hidden">
         {item.titleImage ? (
-          <Image 
-            src={item.titleImage} 
-            alt={item.title} 
-            fill 
-            className="object-cover"
-            priority
-          />
+          <div className="absolute inset-0 w-full h-full">
+            <img 
+              src={item.titleImage} 
+              alt={item.title} 
+              className="w-full h-full object-cover"
+            />
+          </div>
         ) : (
           <div className="absolute inset-0 bg-slate-900" />
         )}
@@ -114,7 +114,7 @@ export default function ResearchDetail() {
                 {item.authors?.map((author: any, i: number) => (
                   <div key={i} className="w-12 h-12 rounded-full border-2 border-white/30 bg-slate-800 relative overflow-hidden shadow-lg" title={author.name}>
                     {author.image ? (
-                      <Image src={author.image} alt={author.name} fill className="object-cover" />
+                      <img src={author.image} alt={author.name} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-white/50 bg-slate-700"><User size={18} /></div>
                     )}
@@ -141,24 +141,24 @@ export default function ResearchDetail() {
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* Left Side: Research Content */}
-          <main className="lg:w-2/3">
+          <main className="lg:w-2/3 overflow-hidden">
             <div className="space-y-20">
               {item.contentSections?.map((section: any, idx: number) => (
-                <section key={idx} id={`section-${idx}`} className="scroll-mt-32">
+                <section key={idx} id={`section-${idx}`} className="scroll-mt-32 overflow-hidden">
                   <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-8 flex items-center gap-4">
                     <span className="w-10 h-[3px] bg-blue-600 rounded-full" />
                     {section.title}
                   </h2>
                   <div 
-                    className="prose prose-slate max-w-none 
-                      prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-lg
+                    className="prose prose-slate max-w-none break-words whitespace-pre-wrap
+                      prose-p:text-slate-900 prose-p:leading-relaxed prose-p:text-lg
                       prose-strong:text-slate-900 prose-headings:text-slate-900
-                      prose-li:text-slate-600 prose-li:text-lg"
+                      prose-li:text-slate-900 prose-li:text-lg"
                     dangerouslySetInnerHTML={{ __html: section.content }}
                   />
                   {section.image && (
                     <div className="mt-12 relative aspect-[16/9] rounded-3xl overflow-hidden border border-slate-100 shadow-2xl">
-                      <Image src={section.image} alt={section.title} fill className="object-cover" />
+                      <img src={section.image} alt={section.title} className="w-full h-full object-cover" />
                     </div>
                   )}
                 </section>
