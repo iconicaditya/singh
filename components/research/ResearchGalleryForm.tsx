@@ -297,27 +297,29 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                           newAuthors[idx].name = e.target.value;
                           setFormData({ ...formData, authors: newAuthors });
                         }}
-                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                        className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all pr-12"
                       />
-                      {formData.authors.length > 1 && (
-                        <button 
-                          type="button" 
-                          onClick={() => removeAuthor(idx)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors"
-                        >
-                          <X size={16} />
-                        </button>
-                      )}
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                        <label className="cursor-pointer p-1.5 text-slate-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-blue-50">
+                          <ImageIcon size={16} />
+                          <input 
+                            type="file" 
+                            className="hidden" 
+                            accept="image/*"
+                            onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'author', idx)}
+                          />
+                        </label>
+                        {formData.authors.length > 1 && (
+                          <button 
+                            type="button" 
+                            onClick={() => removeAuthor(idx)}
+                            className="p-1.5 text-slate-300 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+                          >
+                            <X size={16} />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                    <label className="cursor-pointer p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-100 hover:text-slate-600 transition-all border border-slate-200">
-                      <ImageIcon size={18} />
-                      <input 
-                        type="file" 
-                        className="hidden" 
-                        accept="image/*"
-                        onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'author', idx)}
-                      />
-                    </label>
                   </div>
                 ))}
                 <button 
