@@ -195,6 +195,22 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                       <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
+                  <div className="flex gap-1">
+                    {formData.category && !["RESEARCH", "PUBLICATION", "PROJECT"].includes(formData.category) && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updatedCategories = categories.filter(c => c !== formData.category);
+                          setCategories(updatedCategories);
+                          setFormData({ ...formData, category: "RESEARCH" });
+                        }}
+                        className="px-3 py-3 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors border border-red-100"
+                        title="Remove current category"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
+                  </div>
                   <div className="relative flex-1">
                     <input
                       value={newCategory}
