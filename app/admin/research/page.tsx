@@ -3,33 +3,17 @@
 import { useState, useEffect } from "react";
 import { 
   Plus, 
-  Search, 
-  Edit2, 
-  Trash2, 
-  Layout,
-  Loader2,
   BookOpen,
-  Filter,
-  MoreVertical,
-  Calendar,
-  Tag,
-  Users,
-  ChevronRight,
-  List,
-  Grid,
-  FilterX
+  Users
 } from "lucide-react";
 import ResearchGalleryForm from "@/components/research/ResearchGalleryForm";
+import DashboardTable from "@/components/admin/DashboardTable";
 
 export default function AdminResearchPage() {
   const [researchList, setResearchList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [yearFilter, setYearFilter] = useState("all");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResearch, setEditingResearch] = useState<any>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
   const fetchResearch = async () => {
     setLoading(true);
@@ -59,21 +43,6 @@ export default function AdminResearchPage() {
   };
 
   const categories = Array.from(new Set(researchList.map(r => r.category)));
-  const years = Array.from(new Set(researchList.map(r => r.year))).sort((a, b) => b.localeCompare(a));
-
-  const filtered = researchList.filter(r => {
-    const matchesSearch = r.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         r.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || r.category === categoryFilter;
-    const matchesYear = yearFilter === "all" || r.year === yearFilter;
-    return matchesSearch && matchesCategory && matchesYear;
-  });
-
-  const resetFilters = () => {
-    setSearchTerm("");
-    setCategoryFilter("all");
-    setYearFilter("all");
-  };
 
   return (
     <div className="p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
@@ -101,211 +70,85 @@ export default function AdminResearchPage() {
         </button>
       </div>
 
-      {/* Controls Section */}
-      <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 mb-8 space-y-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
-            <input
-              type="text"
-              placeholder="Search by title, category or keywords..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-6 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-medium placeholder:text-slate-400"
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2 min-w-[160px]">
-              <Filter size={18} className="text-slate-400" />
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-sm appearance-none cursor-pointer"
-              >
-                <option value="all">All Categories</option>
-                {categories.map(cat => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center gap-2 min-w-[140px]">
-              <Calendar size={18} className="text-slate-400" />
-              <select
-                value={yearFilter}
-                onChange={(e) => setYearFilter(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all font-semibold text-sm appearance-none cursor-pointer"
-              >
-                <option value="all">All Years</option>
-                {years.map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
-
-            {(searchTerm || categoryFilter !== "all" || yearFilter !== "all") && (
-              <button
-                onClick={resetFilters}
-                className="flex items-center gap-2 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl font-bold text-sm transition-all"
-              >
-                <FilterX size={18} />
-                Clear
-              </button>
-            )}
-
-            <div className="h-10 w-px bg-slate-100 hidden lg:block" />
-
-            <div className="flex gap-2 p-1 bg-slate-50 rounded-xl border border-slate-200">
-              <button 
-                onClick={() => setViewMode('list')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-              >
-                <List size={20} />
-              </button>
-              <button 
-                onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-              >
-                <Grid size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {loading ? (
         <div className="flex flex-col items-center justify-center py-32 animate-pulse">
           <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-4"></div>
           <p className="text-slate-400 font-bold tracking-widest uppercase text-xs">Synchronizing Database...</p>
         </div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-24 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
-          <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
-            <Search className="text-slate-300" size={32} />
-          </div>
-          <h3 className="text-2xl font-bold text-slate-900 mb-2">No matching research found</h3>
-          <p className="text-slate-500 font-medium">Try adjusting your filters or add a new research topic.</p>
-        </div>
       ) : (
-        <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" : "flex flex-col gap-4"}>
-          {filtered.map((res) => (
-            viewMode === 'grid' ? (
-              <div 
-                key={res.id}
-                className="group bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
-              >
-                <div className="aspect-[16/10] bg-slate-50 rounded-[2rem] mb-6 overflow-hidden border border-slate-100 relative group-hover:shadow-inner">
-                  {res.titleImage ? (
-                    <img src={res.titleImage} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={res.title} />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-slate-200">
-                      <BookOpen size={48} />
+        <DashboardTable
+          title="Research Portfolio"
+          description="Manage and showcase your laboratory's research initiatives."
+          icon={BookOpen}
+          data={researchList}
+          categories={categories}
+          onAdd={() => { setEditingResearch(null); setIsFormOpen(true); }}
+          onEdit={(item) => { setEditingResearch(item); setIsFormOpen(true); }}
+          onDelete={(item) => handleDelete(item.id)}
+          columns={[
+            { 
+              header: "Research Topic", 
+              accessor: "title",
+              render: (value, item) => (
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 overflow-hidden shrink-0">
+                    {item.titleImage ? (
+                      <img src={item.titleImage} alt={value} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-slate-300">
+                        <BookOpen size={20} />
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-900 line-clamp-1">{value}</div>
+                    <div className="text-xs text-slate-400 font-medium">{item.category}</div>
+                  </div>
+                </div>
+              )
+            },
+            { 
+              header: "Year", 
+              accessor: "year",
+              render: (value) => (
+                <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  {value}
+                </span>
+              )
+            },
+            {
+              header: "Authors",
+              accessor: "authors",
+              render: (value) => (
+                <div className="flex -space-x-2">
+                  {value?.slice(0, 3).map((a: any, i: number) => (
+                    <div key={i} className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 overflow-hidden" title={a.name}>
+                      {a.image ? <img src={a.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[8px] font-bold text-slate-400"><Users size={10} /></div>}
+                    </div>
+                  ))}
+                  {value?.length > 3 && (
+                    <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-[8px] text-white font-bold">
+                      +{value.length - 3}
                     </div>
                   )}
-                  <div className="absolute top-4 left-4">
-                    <span className="px-4 py-1.5 bg-white/95 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-blue-600 border border-white/50 shadow-sm">
-                      {res.category}
+                </div>
+              )
+            },
+            {
+              header: "Keywords",
+              accessor: "tags",
+              render: (value) => (
+                <div className="flex flex-wrap gap-1">
+                  {value?.split(',').slice(0, 2).map((tag: string) => (
+                    <span key={tag} className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
+                      {tag.trim()}
                     </span>
-                  </div>
+                  ))}
                 </div>
-                
-                <h3 className="text-xl font-bold text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">{res.title}</h3>
-                
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center gap-1.5 text-slate-400">
-                    <Calendar size={14} />
-                    <span className="text-xs font-bold uppercase tracking-tighter">{res.year}</span>
-                  </div>
-                  {res.tags && (
-                    <div className="flex items-center gap-1.5 text-slate-400">
-                      <Tag size={14} />
-                      <span className="text-xs font-bold uppercase tracking-tighter truncate max-w-[100px]">{res.tags.split(',')[0]}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50">
-                  <div className="flex -space-x-3">
-                     {res.authors?.slice(0, 3).map((a: any, i: number) => (
-                       <div key={i} className="w-9 h-9 rounded-full border-4 border-white bg-slate-200 overflow-hidden shadow-sm hover:scale-110 transition-transform cursor-pointer relative z-10" title={a.name}>
-                         {a.image ? <img src={a.image} className="w-full h-full object-cover" alt={a.name} /> : <div className="w-full h-full flex items-center justify-center text-[10px] font-bold text-slate-400"><Users size={12} /></div>}
-                       </div>
-                     ))}
-                     {res.authors?.length > 3 && (
-                       <div className="w-9 h-9 rounded-full border-4 border-white bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold relative z-0">
-                         +{res.authors.length - 3}
-                       </div>
-                     )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => { setEditingResearch(res); setIsFormOpen(true); }}
-                      className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
-                      title="Edit Research"
-                    >
-                      <Edit2 size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(res.id)}
-                      className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                      title="Delete Research"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div 
-                key={res.id}
-                className="group bg-white p-4 pr-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex items-center gap-6"
-              >
-                <div className="w-24 h-24 bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 shrink-0">
-                  {res.titleImage ? (
-                    <img src={res.titleImage} className="w-full h-full object-cover" alt={res.title} />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-slate-200">
-                      <BookOpen size={24} />
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 px-2.5 py-0.5 bg-blue-50 rounded-lg">{res.category}</span>
-                    <span className="text-xs font-medium text-slate-400">• {res.year}</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 truncate group-hover:text-blue-600 transition-colors">{res.title}</h3>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Users size={12} className="text-slate-400" />
-                    <p className="text-xs text-slate-500 font-medium truncate">
-                      {res.authors?.map((a: any) => a.name).join(", ") || "No authors specified"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 pl-4 border-l border-slate-100">
-                  <button
-                    onClick={() => { setEditingResearch(res); setIsFormOpen(true); }}
-                    className="p-3 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
-                  >
-                    <Edit2 size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(res.id)}
-                    className="p-3 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                  <button className="p-3 text-slate-400 hover:text-slate-900 rounded-xl transition-all ml-2">
-                    <ChevronRight size={20} />
-                  </button>
-                </div>
-              </div>
-            )
-          ))}
-        </div>
+              )
+            }
+          ]}
+        />
       )}
 
       <ResearchGalleryForm
