@@ -43,6 +43,7 @@ const QUILL_MODULES = {
 export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initialData }: ResearchFormProps) {
   const [loading, setLoading] = useState(false);
   const [newCategory, setNewCategory] = useState("");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "PROJECT"]);
   
   const [formData, setFormData] = useState({
@@ -185,8 +186,8 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Category</label>
-                <div className="flex gap-2">
-                  <div className="relative flex-1 flex items-center gap-2">
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
                     <div className="relative flex-1">
                       <select
                         value={formData.category}
@@ -200,37 +201,77 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                       <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                     </div>
                     
-                    {formData.category && !["RESEARCH", "PUBLICATION", "PROJECT"].includes(formData.category) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (categories.length <= 1) return;
+                        const catToDelete = formData.category;
+                        const updatedCategories = categories.filter(c => c !== catToDelete);
+                        setCategories(updatedCategories);
+                        setFormData({ ...formData, category: updatedCategories[0] });
+                      }}
+                      className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
+                      title="Delete current category"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+
+                    {!isAddingCategory && (
                       <button
                         type="button"
-                        onClick={() => {
-                          const updatedCategories = categories.filter(c => c !== formData.category);
-                          setCategories(updatedCategories);
-                          setFormData({ ...formData, category: "RESEARCH" });
-                        }}
-                        className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
-                        title="Remove custom category"
+                        onClick={() => setIsAddingCategory(true)}
+                        className="p-2.5 text-blue-600 hover:bg-blue-50 border border-blue-100 rounded-xl transition-colors shrink-0 shadow-sm"
+                        title="Add new category"
                       >
-                        <Trash2 size={20} />
+                        <Plus size={20} />
                       </button>
                     )}
                   </div>
 
-                  <div className="relative flex-1">
-                    <input
-                      value={newCategory}
-                      onChange={e => setNewCategory(e.target.value)}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
-                      placeholder="New category name"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleAddCategory}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Add
-                    </button>
-                  </div>
+                  {isAddingCategory && (
+                    <div className="flex gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                      <div className="relative flex-1">
+                        <input
+                          autoFocus
+                          value={newCategory}
+                          onChange={e => setNewCategory(e.target.value)}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleAddCategory();
+                              setIsAddingCategory(false);
+                            }
+                            if (e.key === 'Escape') {
+                              setIsAddingCategory(false);
+                              setNewCategory("");
+                            }
+                          }}
+                          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                          placeholder="Type new category name..."
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleAddCategory();
+                          setIsAddingCategory(false);
+                        }}
+                        className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/10"
+                      >
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsAddingCategory(false);
+                          setNewCategory("");
+                        }}
+                        className="px-4 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
