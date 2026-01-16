@@ -10,7 +10,8 @@ import {
   Loader2,
   Tag,
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  ExternalLink
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,11 +34,11 @@ export default function ResearchDetail() {
           if (found) {
             setItem(found);
           } else {
-            setError("The research paper you are looking for does not exist.");
+            setError("The research publication was not found in our database.");
           }
         }
       } catch (err) {
-        setError("Unable to connect to the research database.");
+        setError("Unable to establish connection to the scientific database.");
       } finally {
         setLoading(false);
       }
@@ -48,196 +49,198 @@ export default function ResearchDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
-        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Retrieving Document</span>
+        <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
+        <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Fetching Publication</span>
       </div>
     );
   }
 
   if (error || !item) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center">
+        <BookOpen size={48} className="text-slate-200 mb-6" />
         <h2 className="text-2xl font-bold text-slate-900 mb-4">{error || "Document Not Found"}</h2>
-        <Link href="/research" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm transition-all hover:bg-blue-700 shadow-lg shadow-blue-100">
+        <Link href="/research" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-bold text-sm transition-all hover:bg-blue-700 shadow-lg shadow-blue-500/10">
           <ArrowLeft size={16} />
-          Back to Research
+          Return to Archive
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-50 selection:text-blue-900">
-      {/* Article Header */}
-      <section className="relative pt-32 pb-16 border-b border-slate-100">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+      {/* Navigation Header */}
+      <div className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
+        <div className="container mx-auto px-4 max-w-5xl h-16 flex items-center justify-between">
+          <Link 
+            href="/research"
+            className="flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold text-xs uppercase tracking-widest transition-colors group"
           >
-            <Link 
-              href="/research"
-              className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-600 font-bold text-xs mb-8 transition-colors group"
-            >
-              <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
-              Research Archive
-            </Link>
+            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+            Back
+          </Link>
+          <div className="flex items-center gap-4">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">
+              SinghLab Research
+            </span>
+            <button className="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+              <Share2 size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
 
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-blue-100">
+      <article className="pt-32 pb-24">
+        <div className="container mx-auto px-4 max-w-4xl">
+          {/* Header Metadata */}
+          <header className="mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap items-center gap-3 mb-6"
+            >
+              <span className="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider rounded">
                 {item.category}
               </span>
-              <div className="flex items-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                <Calendar size={12} className="mr-1.5" />
-                Published {item.year}
+              <div className="flex items-center text-slate-400 text-xs font-bold">
+                <Calendar size={14} className="mr-1.5" />
+                {item.year}
               </div>
-            </div>
+            </motion.div>
 
-            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.15] tracking-tight">
+            <motion.h1 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-5xl font-bold text-slate-900 mb-8 leading-[1.2] tracking-tight"
+            >
               {item.title}
-            </h1>
+            </motion.h1>
 
-            {/* Featured Image - Always rendered below title if exists */}
             {item.titleImage && (
-              <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-100 bg-slate-50 mb-10">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-2xl shadow-slate-200/50 mb-12"
+              >
                 <Image 
                   src={item.titleImage} 
                   alt={item.title} 
                   fill 
-                  className="object-cover" 
-                  priority 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  className="object-cover"
+                  priority
                 />
-              </div>
+              </motion.div>
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-6 pb-8 border-b border-slate-100">
-              <div className="flex flex-wrap gap-6">
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Lead Investigators</p>
-                  <div className="flex flex-wrap gap-4">
-                    {item.authors?.map((author: any, idx: number) => (
-                      <div key={idx} className="flex items-center gap-2.5">
-                        <div className="w-10 h-10 rounded-full bg-slate-50 overflow-hidden relative border border-slate-200">
-                          {author.image ? (
-                            <Image src={author.image} alt={author.name} fill className="object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600">
-                              <User size={16} />
-                            </div>
-                          )}
+            {/* Author Profiles */}
+            <div className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-100">
+              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Investigative Team</h3>
+              <div className="flex flex-wrap gap-8">
+                {item.authors?.map((author: any, idx: number) => (
+                  <div key={idx} className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-white border border-slate-200 relative overflow-hidden flex-shrink-0">
+                      {author.image ? (
+                        <Image src={author.image} alt={author.name} fill className="object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-blue-600">
+                          <User size={20} />
                         </div>
-                        <span className="text-sm font-bold text-slate-900">{author.name}</span>
-                      </div>
-                    ))}
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-slate-900">{author.name}</h4>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Research Associate</p>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-              <button className="flex items-center gap-2 text-slate-400 hover:text-blue-600 transition-colors">
-                <Share2 size={18} />
-                <span className="text-xs font-bold uppercase tracking-widest">Share</span>
-              </button>
             </div>
-          </motion.div>
-        </div>
-      </section>
+          </header>
 
-      {/* Article Content */}
-      <section className="pb-24">
-        <div className="container mx-auto px-6 max-w-3xl">
+          {/* Main Content Sections */}
           <div className="space-y-16">
             {item.contentSections?.map((section: any, idx: number) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <h2 className="text-xl md:text-2xl font-bold text-slate-900 mb-6 tracking-tight flex items-center gap-3">
-                  <span className="w-6 h-[2px] bg-blue-600" />
+              <section key={idx} className="scroll-mt-24">
+                <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                  <span className="w-8 h-[2px] bg-blue-600" />
                   {section.title}
                 </h2>
-                
                 <div 
                   className="prose prose-slate max-w-none 
                     prose-p:text-slate-600 prose-p:leading-relaxed prose-p:text-lg
-                    prose-strong:text-slate-900 prose-strong:font-bold
-                    prose-ul:text-slate-600 prose-li:marker:text-blue-500"
+                    prose-headings:text-slate-900 prose-strong:text-slate-900
+                    prose-img:rounded-2xl prose-img:border prose-img:border-slate-100"
                   dangerouslySetInnerHTML={{ __html: section.content }}
                 />
-
                 {section.image && (
-                  <div className="mt-10 relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg border border-slate-100 group-hover:shadow-xl transition-shadow duration-500">
+                  <div className="mt-8 relative aspect-[16/9] rounded-2xl overflow-hidden border border-slate-100 shadow-lg">
                     <Image src={section.image} alt={section.title} fill className="object-cover" />
                   </div>
                 )}
-              </motion.div>
+              </section>
             ))}
           </div>
 
-          {/* Keywords / Tags */}
-          <div className="mt-16 pt-8 border-t border-slate-100">
-            <div className="flex items-center gap-3 mb-4">
-              <Tag size={14} className="text-blue-600" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Research Focus Areas</span>
-            </div>
-            <div className="flex flex-wrap gap-2">
+          {/* Footer Meta */}
+          <div className="mt-20 pt-10 border-t border-slate-100">
+            <div className="flex flex-wrap gap-2 mb-12">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2 flex items-center gap-1.5">
+                <Tag size={12} /> Keywords
+              </span>
               {item.tags?.split(',').map((tag: string) => (
-                <span key={tag} className="px-3 py-1 bg-slate-50 text-slate-600 rounded-md text-[10px] font-bold uppercase tracking-wider border border-slate-100">
+                <span key={tag} className="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded-lg uppercase tracking-wider">
                   {tag.trim()}
                 </span>
               ))}
             </div>
-          </div>
 
-          {/* Related Content */}
-          {item.relatedPublications?.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="mt-24"
-            >
-              <h3 className="text-lg font-bold text-slate-900 mb-8 uppercase tracking-widest flex items-center gap-2">
-                Related Resources
-                <ChevronRight size={18} className="text-blue-600" />
-              </h3>
-              <div className="grid grid-cols-1 gap-4">
-                {item.relatedPublications.map((pub: any, pIdx: number) => (
-                  <Link 
-                    key={pIdx}
-                    href={`/publications/${pub.id || '#'}`}
-                    className="p-6 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-white hover:border-blue-200 hover:shadow-xl transition-all group flex items-center justify-between"
-                  >
-                    <div>
-                      <span className="text-[9px] font-bold text-blue-600 uppercase tracking-[0.2em] block mb-2">Reference Material</span>
-                      <h4 className="text-sm md:text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
-                        {pub.title || "Academic Publication Reference"}
-                      </h4>
-                    </div>
-                    <ArrowRight size={20} className="text-slate-300 group-hover:text-blue-600 transition-colors" />
-                  </Link>
-                ))}
+            {/* Related Publications */}
+            {item.relatedPublications?.length > 0 && (
+              <div className="bg-blue-600 rounded-3xl p-8 md:p-12 text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                <h3 className="text-2xl font-bold mb-8 flex items-center gap-2">
+                  Linked Resources
+                  <ChevronRight size={24} className="text-blue-200" />
+                </h3>
+                <div className="grid grid-cols-1 gap-4">
+                  {item.relatedPublications.map((pub: any, pIdx: number) => (
+                    <Link 
+                      key={pIdx}
+                      href={`/publications/${pub.id || '#'}`}
+                      className="group flex items-center justify-between p-5 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                          <BookOpen size={20} />
+                        </div>
+                        <span className="font-bold text-sm md:text-base pr-4">
+                          {pub.title || "Scholarly Publication"}
+                        </span>
+                      </div>
+                      <ExternalLink size={18} className="text-blue-200 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          )}
+            )}
+          </div>
         </div>
-      </section>
+      </article>
 
-      {/* Navigation Footer */}
-      <footer className="py-16 bg-slate-50 border-t border-slate-200">
-        <div className="container mx-auto px-6 max-w-4xl flex justify-between items-center">
+      {/* Final Call to Action */}
+      <footer className="bg-slate-50 border-t border-slate-100 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">End of Document</p>
           <Link 
             href="/research"
-            className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors"
+            className="inline-flex items-center gap-2 text-slate-900 hover:text-blue-600 font-bold transition-colors"
           >
-            <ArrowLeft size={16} />
-            Browse all research
+            <ArrowLeft size={18} />
+            Explore more Research
           </Link>
-          <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-            SINGHLAB Environment © 2026
-          </div>
         </div>
       </footer>
     </div>
