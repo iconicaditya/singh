@@ -1,22 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { 
-  Plus, 
-  Search, 
-  Edit2, 
-  Trash2, 
-  ExternalLink, 
-  FileText,
-  Loader2,
-  BookOpen
-} from "lucide-react";
+import { BookOpen, Calendar, FileText, User } from "lucide-react";
+import DashboardTable from "@/components/admin/DashboardTable";
 import PublicationForm from "@/components/publications/PublicationForm";
 
 export default function AdminPublicationsPage() {
   const [publications, setPublications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingPub, setEditingPub] = useState<any>(null);
 
@@ -37,95 +28,89 @@ export default function AdminPublicationsPage() {
     fetchPublications();
   }, []);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (item: any) => {
     if (!confirm("Are you sure you want to delete this publication?")) return;
     try {
-      const res = await fetch(`/api/publications?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/publications?id=${item.id}`, { method: "DELETE" });
       if (res.ok) fetchPublications();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const filtered = publications.filter(p => 
-    p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.authors.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const columns = [
+    {
+      header: "Publication Details",
+      accessor: "title",
+      render: (value: string, item: any) => (
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+            <BookOpen className="text-slate-300" size={24} />
+          </div>
+          <div className="min-w-0">
+            <p className="font-bold text-slate-900 truncate max-w-md">{value}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-[9px] font-black uppercase tracking-widest">
+                {item.type}
+              </span>
+              <span className="text-[11px] text-slate-400 font-bold italic">{item.journal}</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      header: "Authors",
+      accessor: "authors",
+      render: (value: string) => (
+        <div className="flex items-center gap-2 text-slate-500">
+          <User size={14} className="shrink-0" />
+          <span className="text-sm font-semibold truncate max-w-[200px]">{value}</span>
+        </div>
+      )
+    },
+    {
+      header: "Year",
+      accessor: "year",
+      render: (value: string) => (
+        <div className="flex items-center gap-2 text-slate-500 font-bold">
+          <Calendar size={14} />
+          <span>{value}</span>
+        </div>
+      )
+    },
+    {
+      header: "Link",
+      accessor: "pdfUrl",
+      render: (value: string) => value ? (
+        <a 
+          href={value} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 font-bold text-xs"
+        >
+          <FileText size={14} />
+          PDF
+        </a>
+      ) : <span className="text-slate-300">-</span>
+    }
+  ];
+
+  const categories = Array.from(new Set(publications.map(p => p.type))).filter(Boolean);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto bg-white min-h-screen text-slate-900">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight mb-2">Manage Publications</h1>
-          <p className="text-slate-500 font-medium">Add, edit, or remove research papers from the lab database.</p>
-        </div>
-        <button
-          onClick={() => { setEditingPub(null); setIsFormOpen(true); }}
-          className="flex items-center gap-2 px-6 py-4 bg-blue-600 text-white rounded-2xl font-black text-xs tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
-        >
-          <Plus size={18} /> Add Publication
-        </button>
-      </div>
-
-      <div className="relative mb-8">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-        <input
-          type="text"
-          placeholder="Search publications..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all"
-        />
-      </div>
-
-      {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="animate-spin text-blue-600" size={48} />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {filtered.map((pub) => (
-            <div 
-              key={pub.id}
-              className="group bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row items-center gap-6"
-            >
-              <div className="w-16 h-20 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0">
-                <BookOpen className="text-slate-300" size={32} />
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-bold text-slate-900 truncate mb-1">{pub.title}</h3>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
-                  <span className="font-bold text-blue-600 uppercase tracking-widest text-[10px]">{pub.type}</span>
-                  <span>{pub.year}</span>
-                  <span className="truncate max-w-[200px]">{pub.authors}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => { setEditingPub(pub); setIsFormOpen(true); }}
-                  className="p-3 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
-                >
-                  <Edit2 size={18} />
-                </button>
-                <button
-                  onClick={() => handleDelete(pub.id)}
-                  className="p-3 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                >
-                  <Trash2 size={18} />
-                </button>
-                <div className="w-px h-8 bg-slate-100 mx-2" />
-                {pub.pdfUrl && (
-                  <a href={pub.pdfUrl} target="_blank" className="p-3 text-slate-400 hover:text-slate-900 transition-all">
-                    <FileText size={18} />
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="space-y-8">
+      <DashboardTable
+        title="Publications Management"
+        description="Add, edit, or remove research papers from the lab database."
+        icon={BookOpen}
+        data={publications}
+        columns={columns}
+        categories={categories}
+        onAdd={() => { setEditingPub(null); setIsFormOpen(true); }}
+        onEdit={(item) => { setEditingPub(item); setIsFormOpen(true); }}
+        onDelete={handleDelete}
+      />
 
       <PublicationForm
         isOpen={isFormOpen}
