@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { research } from '@/lib/db/schema';
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 
 export async function GET() {
   try {
@@ -26,34 +26,37 @@ export async function POST(req: Request) {
     }
 
     try {
-      // Ensure JSON fields are properly formatted for Drizzle
+      // Ensure data is clean and valid
       const insertData: any = {
-        title: body.title,
-        category: body.category,
-        year: body.year?.toString().slice(0, 4),
-        tags: body.tags || "",
-        titleImage: body.titleImage || "",
-        authors: body.authors.filter((a: any) => a.name && a.name.trim() !== ""),
-        contentSections: body.contentSections.filter((s: any) => s.title && s.title.trim() !== ""),
+        title: String(body.title || "").trim(),
+        category: String(body.category || "").trim(),
+        year: String(body.year || "").slice(0, 4),
+        tags: String(body.tags || "").trim(),
+        titleImage: String(body.titleImage || "").trim(),
+        authors: Array.isArray(body.authors) 
+          ? body.authors.filter((a: any) => a.name && a.name.trim() !== "")
+          : [],
+        contentSections: Array.isArray(body.contentSections)
+          ? body.contentSections.filter((s: any) => s.title && s.title.trim() !== "")
+          : [],
         relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
       };
 
-      if (insertData.authors.length === 0) {
-        return NextResponse.json({ error: 'At least one author with a name is required' }, { status: 400 });
-      }
-      if (insertData.contentSections.length === 0) {
-        return NextResponse.json({ error: 'At least one content section with a title is required' }, { status: 400 });
-      }
+      if (!insertData.title) return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+      if (insertData.authors.length === 0) return NextResponse.json({ error: 'At least one author is required' }, { status: 400 });
+      if (insertData.contentSections.length === 0) return NextResponse.json({ error: 'At least one content section is required' }, { status: 400 });
 
-      console.log('Attempting DB Insert');
-
-      const [savedItem] = await db.insert(research).values(insertData).returning();
+      console.log('Attempting DB Insert with Drizzle...');
       
-      if (!savedItem) {
+      const result = await db.insert(research).values(insertData).returning();
+      
+      if (!result || result.length === 0) {
+        console.error('Insert executed but no items returned');
         throw new Error("Database insertion failed - no record returned");
       }
 
-      return NextResponse.json(savedItem);
+      console.log('Research created successfully:', result[0].id);
+      return NextResponse.json(result[0]);
     } catch (dbError: any) {
       console.error('CRITICAL DB ERROR:', dbError);
       return NextResponse.json({ 

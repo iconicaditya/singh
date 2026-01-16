@@ -6,7 +6,11 @@ import { desc, eq } from 'drizzle-orm';
 export async function GET() {
   try {
     const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
-    return new NextResponse(JSON.stringify(data || []), {
+    
+    // Safety check for null response
+    const safeData = data || [];
+    
+    return new NextResponse(JSON.stringify(safeData), {
       status: 200,
       headers: {
         'Cache-Control': 'no-store, max-age=0, must-revalidate',

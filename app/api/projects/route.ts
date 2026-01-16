@@ -6,7 +6,17 @@ import { desc, eq } from 'drizzle-orm';
 export async function GET() {
   try {
     const data = await db.select().from(projects).orderBy(desc(projects.createdAt));
-    return NextResponse.json(data || []);
+    
+    // Ensure all rows are valid objects before mapping
+    if (!data) return NextResponse.json([]);
+
+    const sanitizedData = data.map(item => ({
+      ...item,
+      teamMembers: Array.isArray(item.teamMembers) ? item.teamMembers : [],
+      projectObjectives: Array.isArray(item.projectObjectives) ? item.projectObjectives : [],
+      attachedResearchIds: Array.isArray(item.attachedResearchIds) ? item.attachedResearchIds : []
+    }));
+    return NextResponse.json(sanitizedData);
   } catch (error: any) {
     console.error('PROJECT GET ERROR:', error);
     return NextResponse.json({ error: 'Failed to fetch projects', details: error.message }, { status: 500 });
