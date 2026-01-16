@@ -22,11 +22,18 @@ export async function POST(req: Request) {
 
     const [savedItem] = await db.insert(projects).values({
       title: body.title,
+      category: body.category || "",
+      anotherCategory: body.anotherCategory || "",
+      tags: body.tags || "",
+      teamMembers: body.teamMembers || [],
+      location: body.location || "",
       description: body.description,
       status: body.status,
       imageUrl: body.imageUrl || "",
+      aboutProject: body.aboutProject || "",
+      projectObjectives: body.projectObjectives || "",
+      attachedResearchIds: body.attachedResearchIds || [],
       link: body.link || "",
-      tags: body.tags || "",
     }).returning();
     
     const serializeDate = (d: any) => {

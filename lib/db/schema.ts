@@ -17,11 +17,18 @@ export const research = pgTable("research", {
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  anotherCategory: varchar("another_category", { length: 100 }),
+  tags: text("tags"),
+  teamMembers: jsonb("team_members"), // Array of {name, role}
+  location: varchar("location", { length: 255 }),
   description: text("description").notNull(),
   status: varchar("status", { length: 50 }).notNull(), // ongoing, completed, etc
   imageUrl: text("image_url"),
+  aboutProject: text("about_project"), // Rich text
+  projectObjectives: text("project_objectives"),
+  attachedResearchIds: jsonb("attached_research_ids"), // Array of research IDs
   link: text("link"),
-  tags: text("tags"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
