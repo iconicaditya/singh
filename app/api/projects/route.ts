@@ -56,6 +56,37 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    if (!body.id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+
+    const [updatedItem] = await db.update(projects)
+      .set({
+        title: body.title,
+        category: body.category || "",
+        tags: body.tags || "",
+        teamMembers: body.teamMembers || [],
+        location: body.location || "",
+        description: body.description,
+        status: body.status,
+        imageUrl: body.imageUrl || "",
+        aboutProject: body.aboutProject || "",
+        projectObjectives: body.projectObjectives || [],
+        projectDate: body.projectDate || "",
+        attachedResearchIds: body.attachedResearchIds || [],
+        link: body.link || "",
+        updatedAt: new Date()
+      })
+      .where(eq(projects.id, body.id))
+      .returning();
+
+    return NextResponse.json(updatedItem);
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
