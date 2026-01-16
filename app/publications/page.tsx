@@ -14,8 +14,10 @@ export default function PublicationsPage() {
   useEffect(() => {
     const fetchPublications = async () => {
       try {
-        const res = await fetch("/api/publications");
+        console.log("Fetching from /api/publications...");
+        const res = await fetch("/api/publications", { cache: 'no-store' });
         const data = await res.json();
+        console.log("Data received:", data);
         if (Array.isArray(data)) {
           setPublications(data);
         } else {
@@ -23,7 +25,7 @@ export default function PublicationsPage() {
           console.error("Publications data is not an array:", data);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Fetch error:", err);
         setPublications([]);
       } finally {
         setLoading(false);
