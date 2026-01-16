@@ -19,16 +19,9 @@ export async function POST(req: Request) {
     console.log('Incoming Research Data:', body);
     
     // Validate required fields
-    if (!body.title || !body.category || !body.year || !body.authors || !Array.isArray(body.authors)) {
-      console.log('Validation failed:', { 
-        title: !!body.title, 
-        category: !!body.category, 
-        year: !!body.year, 
-        authors: !!body.authors, 
-        isAuthorsArray: Array.isArray(body.authors) 
-      });
+    if (!body.title || !body.category || !body.year || !body.authors || !Array.isArray(body.authors) || !body.contentSections || !Array.isArray(body.contentSections)) {
       return NextResponse.json({ 
-        error: 'Missing or invalid required fields: title, category, year, and authors (must be an array) are required' 
+        error: 'Missing or invalid required fields: title, category, year, authors, and contentSections are required' 
       }, { status: 400 });
     }
 
@@ -71,10 +64,6 @@ export async function POST(req: Request) {
     }
   } catch (error: any) {
     console.error('DB Error Detail:', error);
-    // Log the actual error object to see why it might fail
-    if (error instanceof Error) {
-      console.error('Error stack:', error.stack);
-    }
     return NextResponse.json({ 
       error: 'Failed to create research', 
       details: error.message || String(error)
@@ -87,18 +76,27 @@ export async function PUT(req: Request) {
     const body = await req.json();
     if (!body.id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
 
+    const updateData: any = {
+      title: body.title,
+      category: body.category,
+      year: body.year?.toString().slice(0, 4),
+      tags: body.tags || "",
+      titleImage: body.titleImage || "",
+      authors: Array.isArray(body.authors) ? body.authors.filter((a: any) => a.name && a.name.trim() !== "") : [],
+      contentSections: Array.isArray(body.contentSections) ? body.contentSections.filter((s: any) => s.title && s.title.trim() !== "") : [],
+      relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
+      updatedAt: new Date(),
+    };
+
+    if (updateData.authors.length === 0) {
+      return NextResponse.json({ error: 'At least one author with a name is required' }, { status: 400 });
+    }
+    if (updateData.contentSections.length === 0) {
+      return NextResponse.json({ error: 'At least one content section with a title is required' }, { status: 400 });
+    }
+
     const [updatedItem] = await db.update(research)
-      .set({
-        title: body.title,
-        category: body.category,
-        year: body.year?.toString().slice(0, 4),
-        tags: body.tags || "",
-        titleImage: body.titleImage || "",
-        authors: Array.isArray(body.authors) ? body.authors : [],
-        contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
-        relatedPublications: Array.isArray(body.relatedPublications) ? body.relatedPublications : [],
-        updatedAt: new Date(),
-      })
+      .set(updateData)
       .where(eq(research.id, parseInt(body.id)))
       .returning();
 
@@ -107,5 +105,19 @@ export async function PUT(req: Request) {
   } catch (error: any) {
     console.error('Update Error:', error);
     return NextResponse.json({ error: 'Failed to update research', details: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+
+    await db.delete(research).where(eq(research.id, parseInt(id)));
+    return NextResponse.json({ message: 'Research deleted successfully' });
+  } catch (error) {
+    console.error('Delete Error:', error);
+    return NextResponse.json({ error: 'Failed to delete research' }, { status: 500 });
   }
 }
