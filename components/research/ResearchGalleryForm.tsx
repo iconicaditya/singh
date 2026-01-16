@@ -186,17 +186,19 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-700">Category</label>
                 <div className="flex gap-2">
-                  <div className="relative flex-1">
-                    <select
-                      value={formData.category}
-                      onChange={e => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none"
-                    >
-                      {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                  <div className="relative flex-1 flex items-center gap-2">
+                    <div className="relative flex-1">
+                      <select
+                        value={formData.category}
+                        onChange={e => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none pr-10"
+                      >
+                        {categories.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
+                    </div>
                     
                     {formData.category && !["RESEARCH", "PUBLICATION", "PROJECT"].includes(formData.category) && (
                       <button
@@ -206,10 +208,10 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                           setCategories(updatedCategories);
                           setFormData({ ...formData, category: "RESEARCH" });
                         }}
-                        className="absolute -right-10 top-1/2 -translate-y-1/2 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2.5 text-red-500 hover:bg-red-50 border border-red-100 rounded-xl transition-colors shrink-0 shadow-sm"
                         title="Remove custom category"
                       >
-                        <Trash2 size={18} />
+                        <Trash2 size={20} />
                       </button>
                     )}
                   </div>
