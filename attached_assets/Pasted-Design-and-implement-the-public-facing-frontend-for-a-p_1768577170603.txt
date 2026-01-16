@@ -1,0 +1,197 @@
+Design and implement the public-facing frontend for a  project management system using data created from an already implemented admin project form.
+
+⚠️ Important Constraints
+
+The project form and backend API are finalized
+
+Do NOT modify admin logic, database schema, or APIs
+
+Frontend should only consume and display existing data
+
+Any missing data should be handled gracefully in the UI
+
+🔹 Complete Project Data Structure (Source of Truth)
+
+Each project contains the following fields:
+
+1️⃣ Basic Information
+
+Project Title (string, required)
+
+Category (dynamic, required)
+
+Project Date (date, required)
+
+Tags (comma-separated string)
+
+Location (string)
+
+Status (enum: Ongoing | Completed)
+
+Team Members (array):
+
+Name
+
+Role
+
+2️⃣ Media
+
+Title Image (URL)
+
+3️⃣ Project Details
+
+About Project (rich text / HTML content)
+
+Objectives (array of text values)
+
+Short Description (string, required; 2–3 lines)
+
+4️⃣ Linked Content
+
+Attached Research (array of research IDs or objects)
+
+Available only when Status = Completed
+
+🔹 Frontend Pages & Components
+1️⃣ Projects Listing Page
+
+Purpose: Showcase all published projects.
+
+Requirements:
+
+Fetch data from /api/projects
+
+Display projects as responsive cards
+
+Each card must include:
+
+Title Image
+
+Project Title
+
+Category badge
+
+Project Date
+
+Short Description
+
+Status indicator (Ongoing / Completed)
+
+Clicking a card navigates to the Project Details page
+
+Optional Enhancements:
+
+Filter by Category
+
+Filter by Status
+
+Search by Project Title or Tags
+
+Component Reference:
+
+Extend components/project.tsx
+
+2️⃣ Project Details Page
+
+Purpose: Display full project information in a structured, academic layout.
+
+🔹 Header Section
+
+Project Title
+
+Category
+
+Status badge
+
+Project Date
+
+Location
+
+Title Image (hero/banner style)
+
+🔹 About Project
+
+Render rich text content safely
+
+🔹 Objectives
+
+Display objectives as a numbered or bullet list
+
+🔹 Team Members
+
+Grid or list layout showing:
+
+Member Name
+
+Role
+
+🔹 Tags
+
+Display tags as small chips/badges
+
+🔹 Conditional Section: Linked Research
+
+Show only if Status = Completed
+
+Display attached research as:
+
+Research title
+
+Short summary (if available)
+
+Link to research detail page
+
+🔹 Navigation Integration
+
+Ensure components/header.tsx provides clear navigation to:
+
+Projects
+
+Research
+
+Add active link styling for better UX
+
+🔹 API Usage
+
+Use existing endpoints only:
+
+GET /api/projects → project list
+
+GET /api/projects/[id] → project details
+
+No API changes allowed.
+
+🔹 UX / UI Guidelines
+
+Clean academic and professional design
+
+Fully responsive (desktop, tablet, mobile)
+
+Clear visual hierarchy
+
+Proper spacing and readable typography
+
+Loading states, empty states, and fallback UI
+
+🔹 Technical Stack
+
+Framework: Next.js (App Router)
+
+Styling: Tailwind CSS
+
+Data Fetching: Fetch API / React Query
+
+Rich text rendering: safe HTML rendering
+
+🔹 Output Expectations
+
+Frontend page structure
+
+Component hierarchy
+
+Clear mapping between form fields and UI
+
+Conditional rendering logic for Completed projects
+
+⚠️ Reminder
+The frontend must accurately reflect all data entered via the updated admin form, including project date, objectives list, and linked research visibility.
