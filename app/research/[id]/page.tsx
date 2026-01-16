@@ -93,9 +93,23 @@ export default function ResearchDetail() {
               </div>
             </div>
 
-            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-10 leading-[1.15] tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.15] tracking-tight">
               {item.title}
             </h1>
+
+            {/* Featured Image - Always rendered below title if exists */}
+            {item.titleImage && (
+              <div className="relative aspect-[21/9] w-full rounded-2xl overflow-hidden shadow-xl border border-slate-100 bg-slate-50 mb-10">
+                <Image 
+                  src={item.titleImage} 
+                  alt={item.title} 
+                  fill 
+                  className="object-cover" 
+                  priority 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                />
+              </div>
+            )}
 
             <div className="flex flex-wrap items-center justify-between gap-6 pb-8 border-b border-slate-100">
               <div className="flex flex-wrap gap-6">
@@ -127,21 +141,6 @@ export default function ResearchDetail() {
           </motion.div>
         </div>
       </section>
-
-      {/* Featured Image */}
-      {item.titleImage && (
-        <section className="container mx-auto px-6 max-w-5xl -mt-8 mb-16">
-          <div className="relative aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-slate-50">
-            <Image 
-              src={item.titleImage} 
-              alt={item.title} 
-              fill 
-              className="object-cover" 
-              priority 
-            />
-          </div>
-        </section>
-      )}
 
       {/* Article Content */}
       <section className="pb-24">
