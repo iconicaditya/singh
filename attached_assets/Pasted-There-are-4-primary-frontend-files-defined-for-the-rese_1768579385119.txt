@@ -1,0 +1,44 @@
+There are 4 primary frontend files defined for the research section:
+
+Listing Page: app/research/page.tsx — Displays all research cards to the public.
+Detail Page: app/research/[id]/page.tsx — Showcases the full content of a specific research paper.
+Admin Dashboard: app/admin/research/page.tsx — The management interface for researchers to view/edit their work.
+Editor Form: components/research/ResearchGalleryForm.tsx — The complex input form used by the admin to create or update research data.
+
+
+Here is the comprehensive definition of all fields and buttons for the Add/Edit Research Form:
+
+1. Basic Information Section
+Field Name	Type	Definition & Purpose
+Title	Text	The formal name of the research paper or activity. Required for database entry.
+Category	Select	A classification system (e.g., RESEARCH, PROJECT). Includes an "Add" button to create new custom categories on the fly.
+Year	Input (Number)	The 4-digit year associated with the research. Displays a calendar icon for context.
+Tags	Text	Comma-separated keywords (e.g., "Sustainability, AI") used for searching and filtering in the public gallery.
+Title Image	Upload	The primary thumbnail. Features a "Choose Image" button that handles direct Cloudinary uploads and provides a live preview.
+2. Paper Details Section
+Field Name	Type	Definition & Purpose
+Authors	Dynamic List	A repeating list of contributors.
+Author Name	Text	The name of the researcher.
+Author Image	Icon Button	(New Feature) Located inside the name field. Clicking the Image Icon opens the uploader to attach a profile photo to that specific author.
+Remove (X)	Button	Deletes an author entry from the list. Only appears if there is more than one author.
+Add Author	Text Button	Appends a new blank author slot to the form.
+3. Research Contents Section
+Field Name	Type	Definition & Purpose
+Section Title	Text	Sub-headings for the paper (e.g., "Introduction", "Results").
+Rich Text	Editor	A full formatting suite (Quill) for bolding, italics, lists, and links. Used for the actual research body.
+Section Image	Upload	An optional visual asset (chart, graph, or photo) specific to that content section.
+Remove Section	Button	Deletes the entire content block. Visible on hover.
+Add Section	Large Button	Adds a new rich-text block for additional chapters or paragraphs.
+4. Related Publications Section
+Field Name	Type	Definition & Purpose
+Add Publication	Button	An optional field to link this research to existing publication entries in the system.
+5. Global Form Actions
+Save Research (Submit): Validates all required fields, uploads any pending data, and persists the entry to the PostgreSQL database.
+Cancel: Discards all current inputs and closes the modal without saving.
+Close (X)
+: Standard exit button at the top-right of the form.
+
+
+
+
+>> on the basis of following infoormations, please write strong prompt for save data admin to database for now. not make any changes anything in frontend file now, after completion of this task i will gave another task to integrate with frontend. for now only admin to database, database to admin prompt

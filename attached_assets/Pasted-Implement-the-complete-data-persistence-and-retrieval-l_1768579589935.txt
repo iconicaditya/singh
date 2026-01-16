@@ -1,0 +1,165 @@
+Implement the complete data persistence and retrieval logic for the Research Management System, ensuring that all information entered through the Admin Research Form is fully stored, updated, and loaded from the database.
+
+⚠️ Strict Scope
+
+Do NOT modify any frontend UI files
+
+Do NOT implement or reference public-facing logic
+
+Do NOT mention or rely on API layers
+
+Focus strictly on admin-side data handling and database operations
+
+Frontend integration will be handled in a later phase
+
+🔹 Existing Admin Context (Read-Only)
+
+The following files already exist and must remain unchanged:
+
+app/admin/research/page.tsx
+
+components/research/ResearchGalleryForm.tsx
+
+All database logic must fully support the data produced and consumed by these files.
+
+🔹 Complete Research Form Data (All Fields Must Be Functional)
+1️⃣ Basic Information
+
+Title (required, text)
+
+Category (required, dynamic selection with add-new capability)
+
+Year (required, 4-digit number)
+
+Tags (comma-separated keywords, saved as structured data)
+
+Title Image (image URL, already uploaded externally)
+
+2️⃣ Authors (Dynamic & Fully Functional)
+
+Add Author button must:
+
+Append a new author record
+
+Remove (X) button must:
+
+Remove only the selected author
+
+Each Author contains:
+
+Author Name (required)
+
+Author Image (optional image URL)
+
+3️⃣ Research Content Sections (Dynamic & Ordered)
+
+Add Section button must:
+
+Append a new content block
+
+Remove Section button must:
+
+Delete the selected section only
+
+Each Section contains:
+
+Section Title (required)
+
+Rich Text Content (required, formatted HTML)
+
+Section Image (optional image URL)
+
+Section order must be preserved exactly as entered
+
+4️⃣ Related Publications
+
+Add Publication button must:
+
+Link one or more existing publication records
+
+Publications are optional but must be stored correctly when provided
+
+🔹 Global Form Actions (All Must Be Fully Actionable)
+
+Save Research
+
+Validates all required fields
+
+Persists all structured and nested data
+
+Handles both create and update scenarios
+
+Cancel
+
+Discards all unsaved changes
+
+Restores last persisted state if editing
+
+Close (X)
+
+Exits the form safely without saving
+
+All buttons must perform real, functional operations tied to data persistence or state restoration.
+
+🔹 Database Responsibilities
+
+Implement a database structure that:
+
+Accurately stores:
+
+Dynamic categories
+
+Nested authors with optional images
+
+Ordered rich-text content sections
+
+Tags as searchable data
+
+Optional linked publications
+
+Supports:
+
+Creating new research records
+
+Editing existing research records
+
+Loading saved research back into the admin form
+
+Deleting research entries safely
+
+🔹 Validation & Data Integrity
+
+Enforce the following rules:
+
+Title, Category, Year are mandatory
+
+At least one Author must exist
+
+At least one Content Section must exist
+
+Year must be a valid 4-digit number
+
+Empty authors or sections must not be saved
+
+🔹 Data Flow Scope
+
+✔ Admin Form → Database
+✔ Database → Admin Dashboard / Form
+
+❌ No public rendering
+❌ No frontend UI changes
+❌ No API references
+
+🔹 Output Expectations
+
+Database schema or models
+
+Data persistence logic
+
+Data loading logic for edit mode
+
+Clear mapping between each form field/button and stored data
+
+⚠️ Final Reminder
+This task is strictly about making every field and every button in the admin research form fully functional and persistent at the database level.
+Public frontend integration will be handled in a separate task.
