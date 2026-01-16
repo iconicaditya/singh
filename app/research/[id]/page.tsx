@@ -67,109 +67,100 @@ export default function ResearchDetail() {
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-500/30">
       {/* Header Section */}
-      <section className="relative pt-40 pb-24 overflow-hidden bg-slate-50">
-        <div className="absolute inset-0 bg-grid-slate-200 [mask-image:linear-gradient(0deg,#fff,rgba(255,255,255,0.6))] -z-10" />
+      <section className="relative pt-40 pb-24 overflow-hidden bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col lg:flex-row gap-20 items-center"
+            className="max-w-4xl"
           >
-            {/* Title Image */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="w-full lg:w-1/2 shrink-0"
+            <Link 
+              href="/research"
+              className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-600 font-bold text-[10px] tracking-widest uppercase mb-12 transition-all group"
             >
-              <div className="relative aspect-[16/10] rounded-[3.5rem] overflow-hidden shadow-2xl border-8 border-white group">
-                {item.titleImage ? (
-                  <Image src={item.titleImage} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-                ) : (
-                  <div className="absolute inset-0 bg-blue-600 flex items-center justify-center">
-                    <BookOpen size={80} className="text-white/20" />
-                  </div>
-                )}
-              </div>
-            </motion.div>
+              <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+              Back to Publications
+            </Link>
 
-            {/* Title Info */}
-            <div className="flex-1">
-              <Link 
-                href="/research"
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-black text-[10px] tracking-widest uppercase mb-10 transition-all group"
-              >
-                <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-                Back to Gallery
-              </Link>
+            <div className="flex flex-wrap items-center gap-3 mb-8">
+              <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-black tracking-[0.2em] uppercase border border-blue-100">
+                {item.category}
+              </span>
+              <span className="w-1 h-1 rounded-full bg-slate-200" />
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                Volume {item.year}
+              </span>
+            </div>
 
-              <div className="flex flex-wrap gap-4 mb-8">
-                <span className="px-6 py-2 bg-blue-600 rounded-full text-[10px] font-black tracking-widest uppercase text-white shadow-xl shadow-blue-600/20">
-                  {item.category}
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-10 leading-tight tracking-tight">
+              {item.title}
+            </h1>
+
+            <div className="flex flex-wrap gap-2 mb-12">
+              {item.tags?.split(',').map((tag: string) => (
+                <span key={tag} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                  #{tag.trim()}
                 </span>
-                <span className="px-6 py-2 bg-white border border-slate-200 rounded-full text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                  Active in {item.year}
-                </span>
-              </div>
+              ))}
+            </div>
 
-              <h1 className="text-5xl lg:text-7xl font-black text-slate-900 mb-10 leading-none tracking-tighter uppercase italic">
-                {item.title}
-              </h1>
-
-              <div className="flex flex-wrap gap-8">
-                 <div className="space-y-4">
-                   <p className="text-[10px] font-black uppercase tracking-widest text-slate-300">Principal Investigators</p>
-                   <div className="flex -space-x-3">
-                     {item.authors?.map((author: any, idx: number) => (
-                       <div key={idx} className="w-14 h-14 rounded-full border-4 border-white bg-slate-100 overflow-hidden relative shadow-lg" title={author.name}>
-                         {author.image ? (
-                           <Image src={author.image} alt={author.name} fill className="object-cover" />
-                         ) : (
-                           <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600">
-                             <User size={20} />
-                           </div>
-                         )}
-                       </div>
-                     ))}
-                   </div>
-                 </div>
+            <div className="flex items-center gap-8 py-8 border-y border-slate-100">
+              <div className="space-y-4">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Authors</p>
+                <div className="flex flex-wrap gap-6">
+                  {item.authors?.map((author: any, idx: number) => (
+                    <div key={idx} className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-slate-100 overflow-hidden relative border border-slate-200 shadow-sm">
+                        {author.image ? (
+                          <Image src={author.image} alt={author.name} fill className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600">
+                            <User size={20} />
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-sm font-bold text-slate-900">{author.name}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
+      {/* Hero Image */}
+      {item.titleImage && (
+        <section className="container mx-auto px-6 max-w-7xl -mt-12">
+          <div className="relative aspect-[21/9] rounded-[2rem] overflow-hidden shadow-2xl border border-slate-100 bg-slate-50">
+            <Image src={item.titleImage} alt={item.title} fill className="object-cover" priority />
+          </div>
+        </section>
+      )}
+
       {/* Main Content Sections */}
-      <section className="py-32 bg-white">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="space-y-32">
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <div className="space-y-24">
             {item.contentSections?.map((section: any, idx: number) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className={`flex flex-col gap-12 ${idx % 2 === 0 ? '' : 'lg:flex-row-reverse'}`}
+                className="space-y-8"
               >
-                <div className="flex-1 space-y-8">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-[1.5rem] bg-blue-50 flex items-center justify-center border border-blue-100 shrink-0">
-                      <Layout className="text-blue-600" size={24} />
-                    </div>
-                    <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase italic">{section.title}</h2>
-                  </div>
-                  <div className="text-slate-600 text-xl leading-relaxed font-medium space-y-6">
-                    {section.content?.split('\n').map((para: string, pIdx: number) => (
-                      <p key={pIdx}>{para}</p>
-                    ))}
-                  </div>
+                <div className="space-y-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">{section.title}</h2>
+                  <div 
+                    className="prose prose-lg prose-slate max-w-none font-medium text-slate-600 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: section.content }}
+                  />
                 </div>
 
                 {section.image && (
-                  <div className="lg:w-1/3 shrink-0">
-                    <div className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white">
-                      <Image src={section.image} alt={section.title} fill className="object-cover" />
-                    </div>
+                  <div className="relative aspect-video rounded-3xl overflow-hidden shadow-xl border border-slate-100">
+                    <Image src={section.image} alt={section.title} fill className="object-cover" />
                   </div>
                 )}
               </motion.div>

@@ -166,33 +166,41 @@ export default function ResearchPage() {
                     </div>
                   </div>
 
-                  <div className="p-10 flex flex-col flex-grow">
-                    <h3 className="text-2xl font-black text-slate-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors uppercase italic tracking-tighter">
+                  <div className="p-8 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600/60">{item.category}</span>
+                      <span className="w-1 h-1 rounded-full bg-slate-200" />
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{item.year}</span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-slate-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors">
                       {item.title}
                     </h3>
                     
-                    {item.contentSections?.[0]?.content && (
-                      <p className="text-slate-500 text-sm leading-relaxed mb-8 line-clamp-3 font-medium">
-                        {item.contentSections[0].content.replace(/<[^>]*>/g, '')}
-                      </p>
-                    )}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {item.tags?.split(',').slice(0, 3).map((tag: string) => (
+                        <span key={tag} className="px-2 py-0.5 bg-slate-50 text-[9px] font-bold text-slate-400 uppercase tracking-wider rounded-md border border-slate-100">
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
                     
-                    <div className="mt-auto pt-8 border-t border-slate-50 flex items-center justify-between">
+                    <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
                       <div className="flex -space-x-2">
                          {item.authors?.slice(0, 3).map((a: any, i: number) => (
-                           <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 overflow-hidden relative shadow-sm" title={a.name}>
+                           <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 overflow-hidden relative shadow-sm" title={a.name}>
                              {a.image ? (
                                <Image src={a.image} alt={a.name} fill className="object-cover" />
                              ) : (
                                <div className="w-full h-full flex items-center justify-center bg-blue-50 text-blue-600">
-                                 <User size={14} />
+                                 <User size={12} />
                                </div>
                              )}
                            </div>
                          ))}
                       </div>
                       <Link href={`/research/${item.id}`} className="flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-400 group-hover:text-blue-600 transition-all uppercase">
-                        View Focus <ArrowRight size={14} />
+                        Read More <ArrowRight size={14} />
                       </Link>
                     </div>
                   </div>

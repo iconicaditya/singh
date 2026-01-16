@@ -1,0 +1,246 @@
+Design a professional, academic-style frontend interface for a Research & Project Management Platform that renders data exactly as stored in the database, which is populated via finalized admin forms.
+
+⚠️ Strict Constraints
+
+Database schema and admin forms are finalized
+
+Frontend must only consume and display stored data
+
+Do NOT alter field names, structure, or logic
+
+Do NOT introduce new data requirements
+
+Focus exclusively on design, layout, UX, and data mapping
+
+🔹 Database-Driven Content (Source of Truth)
+Research Records Contain:
+
+Title
+
+Category
+
+Year
+
+Tags
+
+Title Image
+
+Authors (name, optional image)
+
+Content Sections (ordered):
+
+Section Title
+
+Rich Text Content
+
+Optional Section Image
+
+Related Publications
+
+Project Records Contain:
+
+Project Title
+
+Category
+
+Project Date
+
+Tags
+
+Location
+
+Status (Ongoing / Completed)
+
+Team Members (name, role)
+
+Title Image
+
+About Project (rich text)
+
+Objectives (list)
+
+Short Description
+
+Linked Research (only when Completed)
+
+🔹 Frontend Pages & Design Requirements
+1️⃣ Research Listing Page
+
+Design Objectives:
+
+Display all research records in a clean grid or list
+
+Academic, journal-style presentation
+
+Each Research Card Displays:
+
+Title Image
+
+Research Title
+
+Category badge
+
+Year
+
+Tag preview (limited count)
+
+Interactions:
+
+Clicking a card opens the Research Detail page
+
+Optional filters based on existing database fields:
+
+Category
+
+Year
+
+Tags
+
+2️⃣ Research Detail Page
+
+Layout Must Reflect Database Order & Structure
+
+Header Section
+
+Title
+
+Category
+
+Year
+
+Tags
+
+Title Image (hero/banner)
+
+Authors Section
+
+Display authors in the same order as stored
+
+Show author image if available
+
+Content Sections
+
+Render each section sequentially:
+
+Section Title
+
+Rich text content (formatted)
+
+Section image if present
+
+Maintain academic readability
+
+Related Publications
+
+Display only if data exists
+
+Simple list or cards with navigation links
+
+🔹 Projects Frontend Design
+3️⃣ Projects Listing Page
+
+Design Objectives:
+
+Consistent visual language with Research pages
+
+Clear differentiation between Ongoing and Completed projects
+
+Each Project Card Displays:
+
+Title Image
+
+Project Title
+
+Category
+
+Project Date
+
+Status badge
+
+Short Description (2–3 lines)
+
+4️⃣ Project Detail Page
+Header Section
+
+Project Title
+
+Category
+
+Project Date
+
+Location
+
+Status badge
+
+Title Image
+
+About Project
+
+Render rich text safely
+
+Objectives
+
+Display objectives as a structured list
+
+Team Members
+
+Show member name and role clearly
+
+Tags
+
+Render as compact badges
+
+Linked Research (Conditional)
+
+Display only if project status = Completed
+
+Show linked research titles with navigation links
+
+🔹 Global Navigation & UX
+
+Clear navigation between:
+
+Research
+
+Projects
+
+Active page highlighting
+
+Consistent spacing, fonts, and colors
+
+🔹 Visual Design Guidelines
+
+Professional academic tone
+
+Minimal, distraction-free UI
+
+Strong typographic hierarchy
+
+Neutral color palette
+
+Responsive across all devices
+
+Accessible contrast and font sizing
+
+🔹 Technical Design Expectations
+
+Component-based architecture
+
+Reusable card components
+
+Safe rendering of rich text content
+
+Conditional rendering strictly based on database values
+
+🔹 Output Expectations
+
+Frontend layout and component structure
+
+Clear mapping of database fields → UI sections
+
+No assumptions beyond stored data
+
+Production-ready, professional design
+
+⚠️ Final Reminder
+The frontend must act as a pure presentation layer, faithfully reflecting the data stored via admin forms and the database—without altering or extending the data model.

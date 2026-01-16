@@ -132,63 +132,63 @@ export default function ProjectsPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.05 }}
-                  className="group bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all overflow-hidden flex flex-col"
+                  className="group bg-white rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col"
                 >
-                  <Link href={`/projects/${proj.id}`} className="relative h-60 overflow-hidden block">
+                  <Link href={`/projects/${proj.id}`} className="relative h-64 overflow-hidden block">
                     {proj.imageUrl ? (
                       <Image
                         src={proj.imageUrl}
                         alt={proj.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-slate-100 flex items-center justify-center">
-                        <Rocket size={40} className="text-slate-300" />
+                      <div className="absolute inset-0 bg-slate-50 flex items-center justify-center">
+                        <Rocket size={40} className="text-slate-200" />
                       </div>
                     )}
-                    <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-blue-700 text-[10px] font-black tracking-widest uppercase rounded-lg shadow-sm border border-blue-100">
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1.5 bg-white/90 backdrop-blur-md text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-lg shadow-sm border border-slate-100">
                         {proj.category}
                       </span>
                     </div>
-                    <div className="absolute bottom-4 right-4">
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase shadow-lg ${
-                        proj.status.toLowerCase() === 'completed' 
-                        ? 'bg-emerald-500 text-white' 
-                        : 'bg-amber-500 text-white'
+                    <div className="absolute top-4 right-4">
+                      <span className={`px-3 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase shadow-lg border ${
+                        proj.status?.toLowerCase() === 'completed' 
+                        ? 'bg-emerald-500 text-white border-emerald-400' 
+                        : 'bg-amber-500 text-white border-amber-400'
                       }`}>
                         {proj.status}
                       </span>
                     </div>
                   </Link>
                   
-                  <div className="p-6 flex-1 flex flex-col">
-                    <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
-                      <Calendar size={12} />
-                      {proj.projectDate || new Date(proj.createdAt).toLocaleDateString()}
+                  <div className="p-8 flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                      <Calendar size={12} className="text-blue-500" />
+                      {proj.projectDate || "Ongoing Project"}
                     </div>
 
                     <Link href={`/projects/${proj.id}`}>
-                      <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-blue-600 transition-colors leading-tight line-clamp-2">
+                      <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight">
                         {proj.title}
                       </h3>
                     </Link>
                     
-                    <p className="text-slate-500 text-sm mb-6 line-clamp-3 font-medium leading-relaxed">
+                    <p className="text-slate-500 text-sm mb-8 line-clamp-3 font-medium leading-relaxed">
                       {proj.description}
                     </p>
 
-                    <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
+                    <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-slate-400">
-                        <MapPin size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">{proj.location || "Global"}</span>
+                        <MapPin size={14} className="text-blue-500/50" />
+                        <span className="text-[10px] font-black uppercase tracking-widest">{proj.location || "Singhabad Lab"}</span>
                       </div>
                       <Link
                         href={`/projects/${proj.id}`}
-                        className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:text-blue-800 transition-colors flex items-center gap-1"
+                        className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:text-blue-800 transition-colors flex items-center gap-1 group/btn"
                       >
-                        View Project →
+                        Details <ArrowRight size={14} className="transition-transform group-hover/btn:translate-x-1" />
                       </Link>
                     </div>
                   </div>

@@ -88,160 +88,121 @@ export default function ProjectDetail() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-500/30">
-      {/* Hero Header */}
-      <section className="relative h-[70vh] min-h-[600px] w-full overflow-hidden bg-slate-900">
-        <motion.div 
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0"
-        >
-          {project.imageUrl ? (
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover opacity-60"
-              priority
-            />
-          ) : (
-            <div className="absolute inset-0 bg-slate-800 flex items-center justify-center">
-              <Rocket size={80} className="text-slate-700" />
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent" />
-        </motion.div>
-
-        <div className="container mx-auto px-6 relative z-10 h-full flex flex-col justify-end pb-20 max-w-7xl">
+      {/* Page Header */}
+      <section className="relative pt-40 pb-20 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            className="max-w-4xl"
           >
             <Link 
               href="/projects"
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white font-black text-[10px] tracking-widest mb-10 transition-colors group"
+              className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-600 font-bold text-[10px] tracking-widest uppercase mb-12 transition-all group"
             >
               <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-              BACK TO EXPLORE
+              Return to Research Projects
             </Link>
 
-            <div className="flex flex-wrap gap-3 mb-8">
-              <span className="bg-blue-600 px-4 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase text-white shadow-xl shadow-blue-600/20">
+            <div className="flex flex-wrap items-center gap-3 mb-8">
+              <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[10px] font-black tracking-[0.2em] uppercase border border-blue-100">
                 {project.category}
               </span>
-              <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase border ${
-                project.status.toLowerCase() === 'completed' 
-                ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' 
-                : 'bg-amber-500/20 border-amber-500/50 text-amber-400'
+              <span className="w-1 h-1 rounded-full bg-slate-200" />
+              <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black tracking-[0.2em] uppercase border ${
+                project.status?.toLowerCase() === 'completed' 
+                ? 'bg-emerald-50 text-emerald-600 border-emerald-100' 
+                : 'bg-amber-50 text-amber-600 border-amber-100'
               }`}>
                 {project.status}
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-10 leading-[0.95] tracking-tighter max-w-5xl uppercase italic">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-10 leading-tight tracking-tight">
               {project.title}
             </h1>
 
-            <div className="flex flex-wrap gap-6 items-center">
-              <div className="flex items-center gap-3 text-white/60">
-                <Calendar size={18} className="text-blue-500" />
-                <span className="text-xs font-black tracking-widest uppercase">{project.projectDate || "Ongoing"}</span>
+            <div className="flex flex-wrap gap-10 py-10 border-y border-slate-100 mb-12">
+              <div className="space-y-2">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Timeline</p>
+                <p className="text-sm font-bold text-slate-900">{project.projectDate || "Ongoing"}</p>
               </div>
-              <div className="flex items-center gap-3 text-white/60">
-                <MapPin size={18} className="text-blue-500" />
-                <span className="text-xs font-black tracking-widest uppercase">{project.location || "Singhabad Lab"}</span>
+              <div className="space-y-2">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Location</p>
+                <p className="text-sm font-bold text-slate-900">{project.location || "Global Research Network"}</p>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Main Content Grid */}
-      <section className="py-24 bg-white relative">
+      {/* Hero Banner */}
+      {project.imageUrl && (
+        <section className="container mx-auto px-6 max-w-7xl -mt-12 mb-24">
+          <div className="relative h-[60vh] rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-100 bg-slate-50">
+            <Image src={project.imageUrl} alt={project.title} fill className="object-cover" priority />
+          </div>
+        </section>
+      )}
+
+      {/* Content Section */}
+      <section className="pb-32 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
             
-            {/* Left Column: Details */}
+            {/* Left: Main Content */}
             <div className="lg:col-span-8 space-y-24">
-              
-              {/* About Section */}
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-center gap-4 mb-10">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20 text-white">
-                    <FileText size={22} />
-                  </div>
-                  <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase italic">About Project</h2>
-                </div>
+                <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mb-8">Executive Summary</h3>
                 <div 
-                  className="prose prose-xl prose-slate max-w-none font-medium text-slate-600 leading-relaxed"
+                  className="prose prose-lg prose-slate max-w-none font-medium text-slate-600 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
                 />
               </motion.div>
 
-              {/* Objectives Section */}
               {project.projectObjectives && project.projectObjectives.length > 0 && (
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center shadow-lg text-white">
-                      <Target size={22} />
-                    </div>
-                    <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase italic">Key Objectives</h2>
-                  </div>
-                  <ul className="grid grid-cols-1 gap-4">
+                  <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mb-10">Strategic Objectives</h3>
+                  <div className="grid grid-cols-1 gap-6">
                     {project.projectObjectives.map((obj: string, i: number) => (
-                      <li key={i} className="flex gap-4 p-6 bg-slate-50 rounded-2xl border border-slate-100 items-start group hover:border-blue-200 transition-colors">
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-black">
-                          {i + 1}
+                      <div key={i} className="flex gap-6 p-8 bg-slate-50 rounded-3xl border border-slate-100 items-start group hover:bg-white hover:border-blue-200 hover:shadow-xl transition-all">
+                        <span className="flex-shrink-0 w-10 h-10 rounded-2xl bg-white text-blue-600 flex items-center justify-center text-sm font-black shadow-sm border border-slate-100 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-500 transition-colors">
+                          {String(i + 1).padStart(2, '0')}
                         </span>
-                        <p className="text-slate-700 font-bold leading-snug">{obj}</p>
-                      </li>
+                        <p className="text-slate-800 text-lg font-bold leading-snug">{obj}</p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </motion.div>
               )}
 
-              {/* Linked Research Section */}
-              {project.status.toLowerCase() === 'completed' && attachedResearch.length > 0 && (
+              {project.status?.toLowerCase() === 'completed' && attachedResearch.length > 0 && (
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <div className="flex items-center gap-4 mb-10">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-600/20 text-white">
-                      <CheckCircle2 size={22} />
-                    </div>
-                    <h2 className="text-3xl font-black text-slate-900 tracking-tight uppercase italic">Linked Research</h2>
-                  </div>
-                  <div className="grid grid-cols-1 gap-6">
+                  <h3 className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em] mb-10">Scientific Output</h3>
+                  <div className="space-y-4">
                     {attachedResearch.map((res) => (
                       <Link 
                         key={res.id}
                         href={`/research/${res.id}`}
-                        className="p-8 bg-white border border-slate-200 rounded-3xl hover:border-emerald-500 hover:shadow-xl transition-all group"
+                        className="flex items-center justify-between p-8 bg-white border border-slate-200 rounded-3xl hover:border-emerald-500 hover:shadow-xl transition-all group"
                       >
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                          <div>
-                            <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase mb-2 block">
-                              {res.category} • {res.year}
-                            </span>
-                            <h3 className="text-xl font-black text-slate-900 group-hover:text-emerald-600 transition-colors">
-                              {res.title}
-                            </h3>
-                          </div>
-                          <div className="flex-shrink-0 text-slate-400 group-hover:text-emerald-500 transition-all group-hover:translate-x-1">
-                            <ExternalLink size={24} />
-                          </div>
+                        <div className="space-y-2">
+                          <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">{res.category} • {res.year}</p>
+                          <h4 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">{res.title}</h4>
                         </div>
+                        <ArrowRight size={20} className="text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
                       </Link>
                     ))}
                   </div>
@@ -249,83 +210,65 @@ export default function ProjectDetail() {
               )}
             </div>
 
-            {/* Right Column: Sidebar */}
-            <aside className="lg:col-span-4 space-y-12">
-              
-              {/* Team Section */}
+            {/* Right: Meta Info */}
+            <aside className="lg:col-span-4 space-y-16">
               <motion.div 
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="bg-slate-50 rounded-[2.5rem] p-10 border border-slate-100"
+                className="space-y-8"
               >
-                <div className="flex items-center gap-4 mb-8">
-                  <Users className="text-blue-600" size={24} />
-                  <h3 className="text-xl font-black uppercase tracking-tight italic">Project Team</h3>
-                </div>
-                <div className="space-y-6">
-                  {project.teamMembers && project.teamMembers.length > 0 ? project.teamMembers.map((member: any, i: number) => (
-                    <div key={i} className="flex items-center gap-4 pb-6 border-b border-slate-200 last:border-0 last:pb-0">
-                      <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-black text-slate-500">
-                        {member.name.charAt(0)}
+                <div className="space-y-4">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Research Team</h3>
+                  <div className="space-y-4">
+                    {project.teamMembers && project.teamMembers.length > 0 ? project.teamMembers.map((member: any, i: number) => (
+                      <div key={i} className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-black text-slate-400 text-xs border border-slate-200 shadow-sm">
+                          {member.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-slate-900 leading-none mb-1">{member.name}</p>
+                          <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest opacity-60">{member.role}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-black text-slate-900 leading-none mb-1">{member.name}</p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{member.role}</p>
-                      </div>
-                    </div>
-                  )) : (
-                    <p className="text-slate-400 text-sm font-bold">Research Team Members TBA</p>
-                  )}
+                    )) : (
+                      <p className="text-xs font-bold text-slate-400 uppercase italic tracking-wider">Team roster under review</p>
+                    )}
+                  </div>
                 </div>
-              </motion.div>
 
-              {/* Tags */}
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl"
-              >
-                <div className="flex items-center gap-4 mb-8">
-                  <Tag className="text-blue-500" size={24} />
-                  <h3 className="text-xl font-black uppercase tracking-tight italic">Keywords</h3>
+                <div className="space-y-4 pt-8 border-t border-slate-100">
+                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Focus Areas</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags?.split(',').map((tag: string) => (
+                      <span key={tag} className="px-3 py-1 bg-slate-50 border border-slate-100 rounded-lg text-[9px] font-black text-slate-500 uppercase tracking-[0.1em]">
+                        {tag.trim()}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags ? project.tags.split(',').map((tag: string) => (
-                    <span key={tag} className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10 hover:bg-white/20 transition-colors cursor-default">
-                      #{tag.trim()}
-                    </span>
-                  )) : (
-                    <span className="text-white/40 text-xs italic">No tags assigned</span>
-                  )}
-                </div>
-              </motion.div>
 
-              {/* Share/External Link */}
-              <div className="space-y-4 pt-6">
-                {project.link && (
-                  <a 
-                    href={project.link}
-                    target="_blank"
-                    className="w-full bg-blue-600 text-white font-black py-6 rounded-3xl flex items-center justify-center gap-3 hover:bg-blue-700 transition-all active:scale-[0.98] shadow-xl shadow-blue-600/30 text-xs tracking-widest uppercase"
+                <div className="pt-8 space-y-4">
+                  {project.link && (
+                    <a 
+                      href={project.link}
+                      target="_blank"
+                      className="w-full h-16 bg-slate-900 text-white font-black rounded-2xl flex items-center justify-center gap-3 hover:bg-blue-600 transition-all active:scale-[0.98] shadow-xl text-[10px] tracking-widest uppercase"
+                    >
+                      Scientific Portal <ExternalLink size={16} />
+                    </a>
+                  )}
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      alert("Project reference copied!");
+                    }}
+                    className="w-full h-16 bg-white text-slate-900 border-2 border-slate-900 font-black rounded-2xl flex items-center justify-center gap-3 hover:bg-slate-900 hover:text-white transition-all active:scale-[0.98] text-[10px] tracking-widest uppercase"
                   >
-                    <Globe size={20} />
-                    Project Portal
-                  </a>
-                )}
-                <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                    alert("Project link copied!");
-                  }}
-                  className="w-full bg-white text-slate-900 border-2 border-slate-900 font-black py-6 rounded-3xl flex items-center justify-center gap-3 hover:bg-slate-900 hover:text-white transition-all active:scale-[0.98] text-xs tracking-widest uppercase"
-                >
-                  <Share2 size={20} />
-                  Share Research
-                </button>
-              </div>
-
+                    Cite Project <Share2 size={16} />
+                  </button>
+                </div>
+              </motion.div>
             </aside>
           </div>
         </div>
