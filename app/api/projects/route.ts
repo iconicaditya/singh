@@ -23,7 +23,6 @@ export async function POST(req: Request) {
     const [savedItem] = await db.insert(projects).values({
       title: body.title,
       category: body.category || "",
-      anotherCategory: body.anotherCategory || "",
       tags: body.tags || "",
       teamMembers: body.teamMembers || [],
       location: body.location || "",
@@ -31,7 +30,8 @@ export async function POST(req: Request) {
       status: body.status,
       imageUrl: body.imageUrl || "",
       aboutProject: body.aboutProject || "",
-      projectObjectives: body.projectObjectives || "",
+      projectObjectives: body.projectObjectives || [],
+      projectDate: body.projectDate || "",
       attachedResearchIds: body.attachedResearchIds || [],
       link: body.link || "",
     }).returning();

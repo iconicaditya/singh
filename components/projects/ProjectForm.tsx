@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Plus, Trash2, Image as ImageIcon, User, Layout, Upload, Search, CheckCircle, Save, ArrowRight } from "lucide-react";
+import { X, Plus, Trash2, Image as ImageIcon, User, Layout, Upload, Search, CheckCircle, Save, ArrowRight, Calendar, Tag } from "lucide-react";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
 
@@ -28,21 +28,22 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
   const [researchRecords, setResearchRecords] = useState<any[]>([]);
   const [researchSearch, setResearchSearch] = useState("");
   const [categories, setCategories] = useState<string[]>(["ENVIRONMENT", "SUSTAINABILITY", "WASTE MANAGEMENT"]);
-  const [newCategory, setNewCategory] = useState("");
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
     category: "ENVIRONMENT",
-    anotherCategory: "",
     tags: "",
     teamMembers: [{ name: "", role: "" }],
     location: "",
+    projectDate: "",
     status: "ongoing",
     imageUrl: "",
     aboutProject: "",
-    projectObjectives: "",
+    projectObjectives: [""],
     attachedResearchIds: [] as number[],
-    description: "", // Short description for list
+    description: "",
   });
 
   useEffect(() => {
@@ -50,7 +51,9 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
       setFormData({
         ...initialData,
         teamMembers: initialData.teamMembers || [{ name: "", role: "" }],
+        projectObjectives: Array.isArray(initialData.projectObjectives) ? initialData.projectObjectives : [""],
         attachedResearchIds: initialData.attachedResearchIds || [],
+        projectDate: initialData.projectDate || "",
       });
     }
   }, [initialData]);
@@ -85,6 +88,33 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
   const addTeamMember = () => setFormData(prev => ({ ...prev, teamMembers: [...prev.teamMembers, { name: "", role: "" }] }));
   const removeTeamMember = (idx: number) => setFormData(prev => ({ ...prev, teamMembers: prev.teamMembers.filter((_, i) => i !== idx) }));
 
+  const addObjective = () => setFormData(prev => ({ ...prev, projectObjectives: [...prev.projectObjectives, ""] }));
+  const removeObjective = (idx: number) => setFormData(prev => ({ ...prev, projectObjectives: prev.projectObjectives.filter((_, i) => i !== idx) }));
+  const updateObjective = (idx: number, val: string) => {
+    const newObjs = [...formData.projectObjectives];
+    newObjs[idx] = val;
+    setFormData(prev => ({ ...prev, projectObjectives: newObjs }));
+  };
+
+  const addCategory = () => {
+    if (newCategoryName && !categories.includes(newCategoryName)) {
+      setCategories([...categories, newCategoryName]);
+      setFormData(prev => ({ ...prev, category: newCategoryName }));
+      setNewCategoryName("");
+      setIsAddingCategory(false);
+    }
+  };
+
+  const deleteCategory = (cat: string) => {
+    if (categories.length > 1) {
+      const newCats = categories.filter(c => c !== cat);
+      setCategories(newCats);
+      if (formData.category === cat) {
+        setFormData(prev => ({ ...prev, category: newCats[0] }));
+      }
+    }
+  };
+
   const toggleResearch = (id: number) => {
     setFormData(prev => ({
       ...prev,
@@ -94,7 +124,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     }));
   };
 
-  const handleSubmit = async (publish: boolean) => {
+  const handleSubmit = async () => {
     setLoading(true);
     try {
       const method = initialData ? "PUT" : "POST";
@@ -148,24 +178,59 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-semibold">Category *</label>
-                <select
-                  value={formData.category}
-                  onChange={e => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
-                >
-                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
+                <label className="text-sm font-semibold flex justify-between">
+                  Category *
+                  <button 
+                    type="button" 
+                    onClick={() => setIsAddingCategory(!isAddingCategory)}
+                    className="text-blue-600 text-[10px] uppercase font-bold hover:underline"
+                  >
+                    {isAddingCategory ? "Cancel" : "+ Add Category"}
+                  </button>
+                </label>
+                {isAddingCategory ? (
+                  <div className="flex gap-2">
+                    <input
+                      value={newCategoryName}
+                      onChange={e => setNewCategoryName(e.target.value)}
+                      className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                      placeholder="New category..."
+                    />
+                    <button onClick={addCategory} className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold">Add</button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <select
+                      value={formData.category}
+                      onChange={e => setFormData({ ...formData, category: e.target.value })}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                    >
+                      {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map(c => (
+                        <span key={c} className="flex items-center gap-1 px-3 py-1 bg-slate-100 text-[10px] font-bold rounded-full text-slate-600">
+                          {c}
+                          <button onClick={() => deleteCategory(c)} className="hover:text-red-500"><X size={10} /></button>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-semibold">Another Category (Optional)</label>
-                <input
-                  value={formData.anotherCategory}
-                  onChange={e => setFormData({ ...formData, anotherCategory: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
-                  placeholder="Secondary category"
-                />
+                <label className="text-sm font-semibold">Project Date *</label>
+                <div className="relative">
+                  <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                  <input
+                    type="date"
+                    required
+                    value={formData.projectDate}
+                    onChange={e => setFormData({ ...formData, projectDate: e.target.value })}
+                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -291,14 +356,26 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-4">
               <label className="text-sm font-semibold">Project Objectives</label>
-              <textarea
-                value={formData.projectObjectives}
-                onChange={e => setFormData({ ...formData, projectObjectives: e.target.value })}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none min-h-[120px]"
-                placeholder="Bullet points or key objectives..."
-              />
+              <div className="space-y-3">
+                {formData.projectObjectives.map((obj, idx) => (
+                  <div key={idx} className="flex gap-3">
+                    <textarea
+                      value={obj}
+                      onChange={e => updateObjective(idx, e.target.value)}
+                      className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none min-h-[80px]"
+                      placeholder={`Objective ${idx + 1}`}
+                    />
+                    <button type="button" onClick={() => removeObjective(idx)} className="p-2 text-slate-400 hover:text-red-500 mt-2">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+                <button type="button" onClick={addObjective} className="text-blue-600 text-sm font-bold flex items-center gap-1 hover:underline">
+                  <Plus size={16} /> Add Objective
+                </button>
+              </div>
             </div>
             
             <div className="space-y-2">
@@ -362,17 +439,9 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
             <button type="button" onClick={onClose} className="px-8 py-3 text-slate-500 font-bold hover:bg-slate-50 rounded-xl transition-colors">Cancel</button>
             <button
               type="button"
-              onClick={() => handleSubmit(false)}
+              onClick={handleSubmit}
               disabled={loading}
-              className="px-8 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors flex items-center gap-2"
-            >
-              <Save size={18} /> Save as Draft
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSubmit(true)}
-              disabled={loading}
-              className="px-10 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2"
+              className="px-12 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2"
             >
               Publish Project <ArrowRight size={18} />
             </button>
