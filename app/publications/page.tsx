@@ -83,99 +83,91 @@ export default function PublicationsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-12">
-              {filteredPublications.map((pub: any, idx: number) => (
-                <motion.div
-                  key={pub.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="group bg-white rounded-[3rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col lg:flex-row overflow-hidden"
-                >
-                  {/* Image/Thumbnail Column */}
-                  <div className="lg:w-80 shrink-0 relative aspect-[4/3] lg:aspect-auto bg-slate-100 overflow-hidden">
-                    {pub.imageUrl ? (
-                      <Image
-                        src={pub.imageUrl}
-                        alt={pub.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-blue-600/5 text-blue-600/20">
-                        <BookOpen size={80} />
-                      </div>
-                    )}
-                    <div className="absolute top-6 left-6">
-                      <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-xl text-[10px] font-black tracking-widest uppercase text-blue-600 shadow-xl border border-white/50">
-                        {pub.type}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content Column */}
-                  <div className="flex-1 p-10 lg:p-14 flex flex-col">
-                    <div className="flex flex-wrap items-center gap-6 mb-8">
-                      <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-xs">
-                        <Calendar size={16} className="text-blue-500" />
-                        {pub.year}
-                      </div>
-                      {pub.journal && (
-                        <div className="flex items-center gap-2 text-slate-600 font-black uppercase tracking-widest text-xs">
-                          <Tag size={16} className="text-blue-500" />
-                          {pub.journal}
+              {filteredPublications.map((pub: any, idx: number) => {
+                const targetUrl = pub.pdfUrl || pub.link || "#";
+                return (
+                  <motion.div
+                    key={pub.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="group bg-white rounded-[3rem] border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.08)] transition-all duration-500 flex flex-col lg:flex-row overflow-hidden"
+                  >
+                    {/* Image/Thumbnail Column */}
+                    <a 
+                      href={targetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="lg:w-80 shrink-0 relative aspect-[4/3] lg:aspect-auto bg-slate-100 overflow-hidden cursor-pointer block"
+                    >
+                      {pub.imageUrl ? (
+                        <Image
+                          src={pub.imageUrl}
+                          alt={pub.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-blue-600/5 text-blue-600/20">
+                          <BookOpen size={80} />
                         </div>
                       )}
-                    </div>
+                      <div className="absolute top-6 left-6">
+                        <span className="px-4 py-2 bg-white/90 backdrop-blur-md rounded-xl text-[10px] font-black tracking-widest uppercase text-blue-600 shadow-xl border border-white/50">
+                          {pub.type}
+                        </span>
+                      </div>
+                    </a>
 
-                    <Link href={`/publications/${pub.id}`}>
-                      <h3 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6 leading-[1.1] tracking-tight group-hover:text-blue-600 transition-colors">
-                        {pub.title}
-                      </h3>
-                    </Link>
+                    {/* Content Column */}
+                    <div className="flex-1 p-10 lg:p-14 flex flex-col">
+                      <div className="flex flex-wrap items-center gap-6 mb-8">
+                        <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-xs">
+                          <Calendar size={16} className="text-blue-500" />
+                          {pub.year}
+                        </div>
+                        {pub.journal && (
+                          <div className="flex items-center gap-2 text-slate-600 font-black uppercase tracking-widest text-xs">
+                            <Tag size={16} className="text-blue-500" />
+                            {pub.journal}
+                          </div>
+                        )}
+                      </div>
 
-                    <div className="flex items-start gap-3 mb-8">
-                      <User size={20} className="text-slate-300 shrink-0 mt-1" />
-                      <p className="text-lg text-slate-500 font-medium italic leading-relaxed">
-                        {pub.authors}
-                      </p>
-                    </div>
-
-                    <div className="mt-auto flex flex-wrap gap-4">
-                      {/* Intelligence Logic: PDF vs URL */}
-                      {pub.pdfUrl ? (
-                        <a
-                          href={pub.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
-                        >
-                          <FileText size={18} />
-                          View Full PDF
-                        </a>
-                      ) : pub.link ? (
-                        <a
-                          href={pub.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
-                        >
-                          <ExternalLink size={18} />
-                          Visit Publisher Site
-                        </a>
-                      ) : null}
-
-                      <Link
-                        href={`/publications/${pub.id}`}
-                        className="flex items-center gap-3 px-8 py-4 bg-slate-50 text-slate-900 border border-slate-100 rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-white hover:shadow-lg transition-all active:scale-95"
+                      <a 
+                        href={targetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cursor-pointer"
                       >
-                        Details
-                        <ArrowRight size={18} />
-                      </Link>
+                        <h3 className="text-3xl lg:text-4xl font-black text-slate-900 mb-6 leading-[1.1] tracking-tight group-hover:text-blue-600 transition-colors">
+                          {pub.title}
+                        </h3>
+                      </a>
+
+                      <div className="flex items-start gap-3 mb-8">
+                        <User size={20} className="text-slate-300 shrink-0 mt-1" />
+                        <p className="text-lg text-slate-500 font-medium italic leading-relaxed">
+                          {pub.authors}
+                        </p>
+                      </div>
+
+                      <div className="mt-auto flex flex-wrap gap-4">
+                        <a
+                          href={targetUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-3 px-8 py-4 bg-blue-600 text-white rounded-[1.5rem] text-xs font-black tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
+                        >
+                          {pub.pdfUrl ? <FileText size={18} /> : <ExternalLink size={18} />}
+                          {pub.pdfUrl ? "View Full PDF" : "Visit Publisher Site"}
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
           )}
         </div>

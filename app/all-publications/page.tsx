@@ -115,80 +115,61 @@ export default function AllPublicationsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filteredPublications.map((pub: any, idx: number) => (
-                <motion.div
-                  key={pub.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="group bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Thumbnail if available */}
-                    {pub.imageUrl && (
-                      <div className="relative aspect-video mb-8 rounded-[2rem] overflow-hidden">
-                        <Image src={pub.imageUrl} alt={pub.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                      </div>
-                    )}
+              {filteredPublications.map((pub: any, idx: number) => {
+                const targetUrl = pub.pdfUrl || pub.link || "#";
+                return (
+                  <motion.div
+                    key={pub.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="group bg-white p-10 rounded-[3rem] border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] transition-all flex flex-col justify-between cursor-pointer"
+                    onClick={() => window.open(targetUrl, '_blank')}
+                  >
+                    <div>
+                      {/* Thumbnail if available */}
+                      {pub.imageUrl && (
+                        <div className="relative aspect-video mb-8 rounded-[2rem] overflow-hidden">
+                          <Image src={pub.imageUrl} alt={pub.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                      )}
 
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-blue-100">
-                        {pub.type}
-                      </span>
-                      <div className="flex items-center gap-2 text-slate-400 text-[10px] font-black uppercase tracking-widest">
-                        <Calendar size={14} className="text-blue-500" />
-                        {pub.year}
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-blue-100">
+                          {pub.type}
+                        </span>
+                        <div className="flex items-center gap-2 text-slate-400 text-[10px] font-black uppercase tracking-widest">
+                          <Calendar size={14} className="text-blue-500" />
+                          {pub.year}
+                        </div>
                       </div>
-                    </div>
 
-                    <Link href={`/publications/${pub.id}`}>
                       <h3 className="text-xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors leading-tight tracking-tight line-clamp-2">
                         {pub.title}
                       </h3>
-                    </Link>
 
-                    {pub.journal && (
-                      <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[9px] mb-4">
-                        <Tag size={12} className="text-blue-500" />
-                        {pub.journal}
+                      {pub.journal && (
+                        <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[9px] mb-4">
+                          <Tag size={12} className="text-blue-500" />
+                          {pub.journal}
+                        </div>
+                      )}
+
+                      <p className="text-slate-500 text-sm font-medium italic mb-8 line-clamp-2">
+                        {pub.authors}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-3 pt-8 border-t border-slate-50">
+                      <div className="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 text-[10px] tracking-widest uppercase">
+                        {pub.pdfUrl ? <FileText size={14} /> : <ExternalLink size={14} />}
+                        {pub.pdfUrl ? "PDF" : "Link"}
                       </div>
-                    )}
-
-                    <p className="text-slate-500 text-sm font-medium italic mb-8 line-clamp-2">
-                      {pub.authors}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 pt-8 border-t border-slate-50">
-                    {pub.pdfUrl ? (
-                      <a 
-                        href={pub.pdfUrl}
-                        target="_blank"
-                        className="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 text-[10px] tracking-widest uppercase"
-                      >
-                        <FileText size={14} /> PDF
-                      </a>
-                    ) : pub.link ? (
-                      <a 
-                        href={pub.link}
-                        target="_blank"
-                        className="flex-1 bg-slate-900 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-blue-600 transition-all active:scale-95 text-[10px] tracking-widest uppercase"
-                      >
-                        <ExternalLink size={14} /> Link
-                      </a>
-                    ) : null}
-                    
-                    <Link 
-                      href={`/publications/${pub.id}`}
-                      className="p-4 bg-slate-50 text-slate-400 hover:text-blue-600 rounded-2xl transition-all"
-                      title="View Details"
-                    >
-                      <ArrowRight size={20} />
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           )}
 
