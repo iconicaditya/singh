@@ -124,6 +124,13 @@ export default function ResearchDetail() {
                 <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Researcher</span>
               </div>
             </div>
+            <div className="flex flex-wrap gap-2 mt-8">
+              {item.tags?.split(',').map((tag: string) => (
+                <span key={tag} className="text-[9px] font-bold text-white/60 bg-white/5 px-3 py-1 rounded-full border border-white/10 uppercase tracking-widest">
+                  #{tag.trim()}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
