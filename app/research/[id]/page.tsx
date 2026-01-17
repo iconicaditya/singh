@@ -217,7 +217,12 @@ export default function ResearchDetail() {
           <aside className="lg:w-[35%] no-print">
             <div className="sticky top-24 space-y-8">
               {/* TOC */}
-              <div className="bg-slate-50/50 rounded-3xl p-8 border border-slate-100">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-slate-50/50 rounded-3xl p-8 border border-slate-100"
+              >
                 <div className="flex items-center gap-3 mb-6">
                   <List size={16} className="text-blue-600" />
                   <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-900">table of contents</h4>
@@ -229,10 +234,15 @@ export default function ResearchDetail() {
                     </a>
                   ))}
                 </nav>
-              </div>
+              </motion.div>
 
               {/* Tools */}
-              <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-lg shadow-slate-100 space-y-4">
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-white rounded-3xl p-8 border border-slate-200 shadow-lg shadow-slate-100 space-y-4"
+              >
                 <h4 className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center mb-6">RESEARCHER TOOLS</h4>
                   <button 
                   onClick={async () => {
@@ -280,7 +290,7 @@ export default function ResearchDetail() {
                         }
                       });
                       
-                      const imgData = canvas.toDataURL('image/jpeg', 0.85); // Use JPEG with quality control
+                      const imgData = canvas.toDataURL('image/jpeg', 0.85);
                       const pdf = new jsPDF('p', 'mm', 'a4');
                       const pdfWidth = pdf.internal.pageSize.getWidth();
                       const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -335,7 +345,7 @@ export default function ResearchDetail() {
                   </div>
                   <ChevronRight size={16} className="text-slate-300 group-hover:text-blue-600" />
                 </button>
-              </div>
+              </motion.div>
             </div>
           </aside>
         </div>
