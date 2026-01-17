@@ -75,7 +75,17 @@ export default function ResearchDetail() {
   );
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 font-sans">
+    <div id="research-content" className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 font-sans">
+      {/* Back Button */}
+      <div className="absolute top-8 left-8 z-50">
+        <Link 
+          href="/research" 
+          className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl group"
+        >
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+        </Link>
+      </div>
+
       {/* 1. Hero Header */}
       <section className="relative w-full h-[60vh] flex items-end overflow-hidden">
         {item.titleImage ? (
@@ -224,14 +234,33 @@ export default function ResearchDetail() {
               {/* Tools */}
               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-lg shadow-slate-100 space-y-4">
                 <h4 className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center mb-6">RESEARCHER TOOLS</h4>
-                <a 
-                  href={item.pdfUrl ? (item.pdfUrl.includes('cloudinary.com') && !item.pdfUrl.includes('/raw/upload/') ? item.pdfUrl.replace('/image/upload/', '/raw/upload/') : item.pdfUrl) : "#"} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={async () => {
+                    const { default: html2canvas } = await import('html2canvas');
+                    const { default: jsPDF } = await import('jspdf');
+                    
+                    const element = document.getElementById('research-content');
+                    if (!element) return;
+                    
+                    const canvas = await html2canvas(element, {
+                      scale: 2,
+                      useCORS: true,
+                      logging: false,
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                    
+                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save(`${item.title.replace(/\s+/g, '_')}_Research.pdf`);
+                  }}
                   className="flex items-center justify-center w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-2xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
                 >
                   Download
-                </a>
+                </button>
                 <button 
                   onClick={() => {
                     if (navigator.share) {
@@ -252,12 +281,6 @@ export default function ResearchDetail() {
                   </div>
                   <ChevronRight size={16} className="text-slate-300 group-hover:text-blue-600" />
                 </button>
-              </div>
-
-              <div className="text-center">
-                <Link href="/research" className="text-[10px] font-bold text-slate-400 hover:text-slate-900 transition-all uppercase tracking-widest">
-                  ← Repository Archive
-                </Link>
               </div>
             </div>
           </aside>
