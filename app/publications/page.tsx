@@ -139,7 +139,7 @@ export default function PublicationsPage() {
                       </div>
 
                       <a
-                        href={pub.pdfUrl ? pub.pdfUrl.replace("/fl_attachment", "") : "#"}
+                        href={pub.pdfUrl ? (pub.pdfUrl.includes("cloudinary.com") ? pub.pdfUrl.replace("/image/upload/", "/raw/upload/").replace("/fl_attachment", "") : pub.pdfUrl) : "#"}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-3 w-full py-5 bg-slate-900 text-white rounded-[1.5rem] font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-xl active:scale-[0.98]"
