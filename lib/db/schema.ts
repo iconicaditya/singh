@@ -9,7 +9,6 @@ export const research = pgTable("research", {
   titleImage: text("title_image"),
   authors: jsonb("authors").notNull(), // Array of objects {name, image}
   contentSections: jsonb("content_sections").notNull(), // Array of objects {title, content, image}
-  relatedPublications: jsonb("related_publications"), // Array of publication objects
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -29,22 +28,6 @@ export const projects = pgTable("projects", {
   projectDate: varchar("project_date", { length: 100 }), // Added date field
   attachedResearchIds: jsonb("attached_research_ids"), // Array of research IDs
   link: text("link"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-export const publications = pgTable("publications", {
-  id: serial("id").primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
-  journal: varchar("journal", { length: 255 }),
-  authors: text("authors").notNull(),
-  description: text("description"),
-  year: varchar("year", { length: 4 }).notNull(),
-  type: varchar("type", { length: 100 }), // Journal, Conference, etc
-  doi: varchar("doi", { length: 100 }),
-  link: text("link"),
-  imageUrl: text("image_url"),
-  pdfUrl: text("pdf_url"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

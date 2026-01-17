@@ -34,7 +34,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Messages", icon: Mail, path: "/login/dashboard/messages" },
     { name: "Collaborators", icon: UserPlus, path: "/login/dashboard/collaborators" },
     { name: "Research", icon: FlaskConical, path: "/login/dashboard/research" },
-    { name: "Publications", icon: BookOpen, path: "/login/dashboard/publications" },
     { name: "Resources", icon: Layers, path: "/login/dashboard/resources" },
     { name: "Gallery", icon: ImageIcon, path: "/login/dashboard/gallery" },
     { name: "Team Members", icon: Users2, path: "/login/dashboard/team" },

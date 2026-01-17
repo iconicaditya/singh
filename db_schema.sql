@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS research (
     title_image TEXT,
     authors JSONB NOT NULL,            -- Array of objects: { "name": string, "image": string }
     content_sections JSONB NOT NULL,   -- Array of objects: { "title": string, "content": string, "image": string }
-    related_publications JSONB,        -- Array of related research reference objects
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -29,23 +28,6 @@ CREATE TABLE IF NOT EXISTS projects (
     project_date VARCHAR(100),
     attached_research_ids JSONB,
     link TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- Publications Table Schema
-CREATE TABLE IF NOT EXISTS publications (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    journal VARCHAR(255),
-    authors TEXT NOT NULL,
-    description TEXT,
-    year VARCHAR(4) NOT NULL,
-    type VARCHAR(100),
-    doi VARCHAR(100),
-    link TEXT,
-    image_url TEXT,
-    pdf_url TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

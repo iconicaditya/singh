@@ -5,7 +5,6 @@ import About from "@/components/about";
 import ResearchThemes from "@/components/researchtheme";
 import ResearchFocus from "@/components/researchfocus";
 import Projects from "@/components/project";
-import Publication from "@/components/publication";
 import OurTeam from "@/components/ourteam";
 import Activities from "@/components/activities";
 import Gallery from "@/components/gallery";
@@ -19,7 +18,6 @@ export default function Home() {
       <ResearchThemes />
       <ResearchFocus />
       <Projects />
-      <Publication />
       <OurTeam />
       <Gallery />
       <Activities />
