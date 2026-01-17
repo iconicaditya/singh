@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row font-sans relative">
       {/* Mobile Header */}
-      <div className="md:hidden bg-[#1e293b] text-white p-4 flex items-center justify-between sticky top-0 z-30 shadow-md h-16">
+      <div className="md:hidden bg-[#1e293b] text-white p-4 flex items-center justify-between sticky top-0 z-[10] shadow-md h-16">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
             <FlaskConical className="text-white" size={18} />
@@ -68,14 +68,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[15] md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside className={`
-        w-72 bg-[#1e293b] text-white flex flex-col h-screen shadow-2xl z-50 overflow-hidden transition-all duration-300
+        w-72 bg-[#1e293b] text-white flex flex-col h-screen shadow-2xl z-[5] overflow-hidden transition-all duration-300
         fixed md:sticky md:top-0 md:translate-x-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
