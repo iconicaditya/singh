@@ -65,7 +65,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
       const res = await fetch('/api/publications');
       if (res.ok) {
         const data = await res.json();
-        setAvailablePublications(data);
+        // Ensure data is an array
+        setAvailablePublications(Array.isArray(data) ? data : []);
       }
     } catch (err) {
       console.error("Failed to fetch publications", err);
@@ -169,15 +170,17 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
               <button 
                 type="button" 
                 onClick={(e) => { 
-                  console.log("Add Publication clicked");
                   e.preventDefault();
                   e.stopPropagation();
+                  fetchPubs();
                   setShowPubSearch(true); 
-                  fetchPubs(); 
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors cursor-pointer relative z-50"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer shadow-sm active:scale-95"
               >
-                <Plus size={14} /> Add Publication
+                <div className="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center">
+                  <Plus size={12} />
+                </div>
+                Add Publication
               </button>
             </div>
 
