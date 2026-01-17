@@ -139,8 +139,9 @@ export default function PublicationsPage() {
                       </div>
 
                       <a
-                        href={pub.pdfUrl}
+                        href={pub.pdfUrl.replace("/upload/", "/upload/fl_attachment/")}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="flex items-center justify-center gap-3 w-full py-5 bg-slate-900 text-white rounded-[1.5rem] font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-xl active:scale-[0.98]"
                       >
                         VIEW PDF <FileText size={18} />

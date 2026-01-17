@@ -89,7 +89,12 @@ export default function AdminPublicationsPage() {
                 header: "Resources",
                 accessor: "pdfUrl",
                 render: (value) => (
-                  <a href={value} target="_blank" className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap">
+                  <a 
+                    href={value.replace("/upload/", "/upload/fl_attachment/")} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap"
+                  >
                     <FileText size={14} /> PDF Link
                   </a>
                 )
