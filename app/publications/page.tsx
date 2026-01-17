@@ -26,9 +26,9 @@ export default function PublicationsPage() {
     fetchPublications();
   }, []);
 
-  const categories = ["ALL", ...Array.from(new Set(publications.map(pub => pub.category)))];
+  const categories = ["ALL", ...Array.from(new Set((Array.isArray(publications) ? publications : []).map(pub => pub.category)))];
 
-  const filteredPublications = publications.filter(pub => {
+  const filteredPublications = (Array.isArray(publications) ? publications : []).filter(pub => {
     const matchesSearch = pub.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           pub.authors.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = activeCategory === "ALL" || pub.category === activeCategory;
