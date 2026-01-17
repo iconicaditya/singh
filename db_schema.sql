@@ -1,3 +1,7 @@
+-- singh_lab_schema.sql
+-- This file documents the current database structure for the Singh Lab project.
+-- It is managed via Drizzle ORM in lib/db/schema.ts
+
 -- Research Table Schema
 CREATE TABLE IF NOT EXISTS research (
     id SERIAL PRIMARY KEY,
