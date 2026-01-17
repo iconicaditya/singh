@@ -152,7 +152,7 @@ export default function ResearchDetail() {
 
       {/* 2. Main Content */}
       <div className="container mx-auto px-6 max-w-7xl py-16">
-        <div className="flex flex-col lg:row-layout gap-12">
+        <div className="flex flex-col lg:flex-row gap-12">
           
           {/* Main Column */}
           <main className="w-full lg:w-[65%] print-full-width space-y-16 overflow-hidden">
