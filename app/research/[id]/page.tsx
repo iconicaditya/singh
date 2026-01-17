@@ -304,7 +304,7 @@ export default function ResearchDetail() {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap');
         
         .rich-text-content {
@@ -325,7 +325,7 @@ export default function ResearchDetail() {
         }
         .rich-text-content ol { list-style-type: decimal; margin-left: 2.5rem; margin-bottom: 2rem; }
         .rich-text-content a { color: #2563eb; font-weight: 900; text-decoration: underline; text-underline-offset: 4px; }
-      `}</style>
+      ` }} />
     </div>
   );
 }
