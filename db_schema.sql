@@ -1,4 +1,4 @@
--- Finalized Research Table Schema
+-- Research Table Schema
 CREATE TABLE IF NOT EXISTS research (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
