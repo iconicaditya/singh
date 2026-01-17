@@ -55,52 +55,54 @@ export default function AdminPublicationsPage() {
           <p className="text-slate-400 font-bold tracking-widest uppercase text-xs">Synchronizing Database...</p>
         </div>
       ) : (
-        <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
-          <DashboardTable
-            title="Scholarly Works"
-            description="Manage academic contributions."
-            icon={BookOpen}
-            data={publications}
-            categories={categories}
-            onAdd={() => { setEditingItem(null); setIsFormOpen(true); }}
-            onEdit={(item) => { setEditingItem(item); setIsFormOpen(true); }}
-            onDelete={(item) => handleDelete(item.id)}
-            columns={[
-              { 
-                header: "Title", 
-                accessor: "title",
-                render: (value, item) => (
-                  <div className="min-w-[200px] md:max-w-md">
-                    <div className="font-bold text-slate-900 line-clamp-2 md:line-clamp-1">{value}</div>
-                    <div className="text-[10px] md:text-xs text-slate-400 font-medium line-clamp-1">{item.authors}</div>
-                  </div>
-                )
-              },
-              {
-                header: "Category",
-                accessor: "category",
-                render: (value) => (
-                  <span className="px-2 md:px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
-                    {value}
-                  </span>
-                )
-              },
-              {
-                header: "Resources",
-                accessor: "pdfUrl",
-                render: (value) => (
-                  <a 
-                    href={value.replace("/upload/", "/upload/fl_attachment/")} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap"
-                  >
-                    <FileText size={14} /> PDF Link
-                  </a>
-                )
-              }
-            ]}
-          />
+        <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+          <div className="min-w-[600px] md:min-w-full">
+            <DashboardTable
+              title="Scholarly Works"
+              description="Manage academic contributions."
+              icon={BookOpen}
+              data={publications}
+              categories={categories}
+              onAdd={() => { setEditingItem(null); setIsFormOpen(true); }}
+              onEdit={(item) => { setEditingItem(item); setIsFormOpen(true); }}
+              onDelete={(item) => handleDelete(item.id)}
+              columns={[
+                { 
+                  header: "Title", 
+                  accessor: "title",
+                  render: (value, item) => (
+                    <div className="min-w-[200px] md:max-w-md">
+                      <div className="font-bold text-slate-900 line-clamp-2 md:line-clamp-1 text-sm md:text-base">{value}</div>
+                      <div className="text-[10px] md:text-xs text-slate-400 font-medium line-clamp-1">{item.authors}</div>
+                    </div>
+                  )
+                },
+                {
+                  header: "Category",
+                  accessor: "category",
+                  render: (value) => (
+                    <span className="px-2 md:px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+                      {value}
+                    </span>
+                  )
+                },
+                {
+                  header: "Resources",
+                  accessor: "pdfUrl",
+                  render: (value) => (
+                    <a 
+                      href={value ? value.replace("/upload/", "/upload/fl_attachment/") : "#"} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap"
+                    >
+                      <FileText size={14} /> PDF Link
+                    </a>
+                  )
+                }
+              ]}
+            />
+          </div>
         </div>
       )}
 

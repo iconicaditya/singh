@@ -156,7 +156,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        <div className="p-4 md:p-10 flex-1 w-full max-w-full overflow-hidden">
+        <div className="p-4 md:p-10 flex-1 w-full max-w-full overflow-x-hidden">
           {children}
         </div>
       </main>
