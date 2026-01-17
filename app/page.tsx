@@ -4,7 +4,7 @@ import Hero from "@/components/hero";
 import About from "@/components/about";
 import ResearchThemes from "@/components/researchtheme";
 import ResearchFocus from "@/components/researchfocus";
-import Projects from "@/components/project";
+import ProjectsPreview from "@/components/projects/ProjectsPreview";
 import PublicationsSection from "@/components/publications/PublicationsSection";
 import OurTeam from "@/components/ourteam";
 import Activities from "@/components/activities";
@@ -18,7 +18,7 @@ export default function Home() {
       <About />
       <ResearchThemes />
       <ResearchFocus />
-      <Projects />
+      <ProjectsPreview />
       <PublicationsSection />
       <OurTeam />
       <Gallery />
