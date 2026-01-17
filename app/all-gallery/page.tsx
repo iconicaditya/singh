@@ -58,6 +58,7 @@ export default function AllGalleryPage() {
               <ArrowLeft size={20} /> Back to Home
             </Link>
             <h1 className="text-4xl md:text-5xl font-black text-[#1e293b]">Research <span className="text-blue-600">Gallery</span></h1>
+            <p className="text-slate-500 font-bold mt-2">Total Images: {galleryItems.length}</p>
           </div>
           
           <div className="flex flex-wrap gap-2">
