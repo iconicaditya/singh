@@ -77,7 +77,7 @@ export default function ResearchDetail() {
   return (
     <div id="research-content" className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 font-sans">
       {/* Back Button */}
-      <div className="absolute top-8 left-8 z-50">
+      <div className="absolute top-8 left-8 z-50 no-print">
         <Link 
           href="/research" 
           className="w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl group"
@@ -87,7 +87,7 @@ export default function ResearchDetail() {
       </div>
 
       {/* 1. Hero Header */}
-      <section className="relative w-full h-[60vh] flex items-end overflow-hidden">
+      <section className="relative w-full h-[60vh] flex items-end overflow-hidden print-section">
         {item.titleImage ? (
           <div className="absolute inset-0 w-full h-full">
             <img 
@@ -152,12 +152,12 @@ export default function ResearchDetail() {
 
       {/* 2. Main Content */}
       <div className="container mx-auto px-6 max-w-7xl py-16">
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:row-layout gap-12">
           
-          {/* Left Column */}
-          <main className="lg:w-[65%] space-y-16 overflow-hidden">
+          {/* Main Column */}
+          <main className="w-full lg:w-[65%] print-full-width space-y-16 overflow-hidden">
             {item.contentSections?.map((section: any, idx: number) => (
-              <section key={idx} id={`section-${idx}`} className="scroll-mt-32">
+              <section key={idx} id={`section-${idx}`} className="scroll-mt-32 print-section px-4">
                 <div className="flex items-center gap-4 mb-8">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                     <FileText size={20} />
@@ -166,13 +166,13 @@ export default function ResearchDetail() {
                 </div>
 
                 {section.image && (
-                  <div className="mb-8 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+                  <div className="mb-8 rounded-2xl overflow-hidden shadow-xl border border-slate-200 w-full">
                     <img src={section.image} alt={section.title} className="w-full h-auto object-cover" loading="lazy" />
                   </div>
                 )}
 
                 <div 
-                  className="prose prose-slate max-w-none text-slate-700 leading-relaxed break-words overflow-hidden prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl"
+                  className="prose prose-slate max-w-none text-slate-700 leading-relaxed break-words overflow-hidden prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl w-full"
                   dangerouslySetInnerHTML={{ __html: section.content }}
                 />
               </section>
@@ -180,7 +180,7 @@ export default function ResearchDetail() {
 
             {/* Related Publications */}
             {item.relatedPublications?.length > 0 && (
-              <div className="pt-16 border-t border-slate-100">
+              <div className="pt-16 border-t border-slate-100 print-section px-4">
                 <div className="flex items-center gap-4 mb-10">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                     <FileText size={20} />
@@ -203,7 +203,7 @@ export default function ResearchDetail() {
                         <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{pub.authors}</span>
                       </div>
 
-                      <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-[9px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors">
+                      <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-[9px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors no-print">
                         VIEW PDF <FileText size={12} />
                       </button>
                     </div>
@@ -213,8 +213,8 @@ export default function ResearchDetail() {
             )}
           </main>
 
-          {/* Right Column */}
-          <aside className="lg:w-[35%]">
+          {/* Sidebar - Hidden on Print */}
+          <aside className="lg:w-[35%] no-print">
             <div className="sticky top-24 space-y-8">
               {/* TOC */}
               <div className="bg-slate-50/50 rounded-3xl p-8 border border-slate-100">
@@ -241,21 +241,75 @@ export default function ResearchDetail() {
                     
                     const element = document.getElementById('research-content');
                     if (!element) return;
+
+                    // Apply print-friendly styles
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                      .no-print { display: none !important; }
+                      .print-full-width { width: 100% !important; max-width: 100% !important; }
+                      .print-section { page-break-inside: avoid; margin-bottom: 2rem !important; }
+                      .lg\\:row-layout { flex-direction: column !important; }
+                    `;
+                    document.head.appendChild(style);
                     
-                    const canvas = await html2canvas(element, {
-                      scale: 2,
-                      useCORS: true,
-                      logging: false,
-                    });
-                    
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const imgProps = pdf.getImageProperties(imgData);
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                    
-                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                    pdf.save(`${item.title.replace(/\s+/g, '_')}_Research.pdf`);
+                    try {
+                      const canvas = await html2canvas(element, {
+                        scale: 1.5,
+                        useCORS: true,
+                        logging: false,
+                        windowWidth: 1024,
+                        onclone: (clonedDoc) => {
+                          const sidebar = clonedDoc.querySelector('aside');
+                          const backBtn = clonedDoc.querySelector('.no-print');
+                          if (sidebar) sidebar.style.display = 'none';
+                          if (backBtn) backBtn.style.display = 'none';
+                          
+                          const main = clonedDoc.querySelector('main');
+                          if (main) {
+                            main.style.width = '100%';
+                            main.style.maxWidth = '100%';
+                            main.style.padding = '0 40px';
+                          }
+                          
+                          const sections = clonedDoc.querySelectorAll('.print-section');
+                          sections.forEach((s: any) => {
+                            s.style.width = '100%';
+                            s.style.padding = '0 40px';
+                            s.style.marginBottom = '40px';
+                          });
+                        }
+                      });
+                      
+                      const imgData = canvas.toDataURL('image/jpeg', 0.85); // Use JPEG with quality control
+                      const pdf = new jsPDF('p', 'mm', 'a4');
+                      const pdfWidth = pdf.internal.pageSize.getWidth();
+                      const pdfHeight = pdf.internal.pageSize.getHeight();
+                      
+                      const imgWidth = canvas.width;
+                      const imgHeight = canvas.height;
+                      const ratio = imgWidth / pdfWidth;
+                      
+                      const totalPDFPages = Math.ceil(imgHeight / (pdfHeight * ratio));
+                      
+                      for (let i = 0; i < totalPDFPages; i++) {
+                        if (i > 0) pdf.addPage();
+                        
+                        pdf.addImage(
+                          imgData, 
+                          'JPEG', 
+                          0, 
+                          -(i * pdfHeight), 
+                          pdfWidth, 
+                          imgHeight / ratio,
+                          undefined,
+                          'FAST'
+                        );
+                      }
+                      
+                      pdf.save(\`\${item.title.replace(/\\s+/g, '_')}_Research.pdf\`);
+                    } finally {
+                      document.head.removeChild(style);
+                    }
                   }}
                   className="flex items-center justify-center w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-2xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
                 >
