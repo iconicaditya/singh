@@ -214,13 +214,18 @@ export default function ResearchDetail() {
               {/* Action Buttons Card */}
               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl shadow-slate-200/20 space-y-4">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 text-center">Researcher Tools</h4>
-                <button className="flex items-center justify-between w-full p-6 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 group">
+                <a 
+                  href={item.pdfUrl || "#"} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between w-full p-6 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 group"
+                >
                   <div className="flex items-center gap-4">
-                    <Download size={20} />
-                    <span className="font-bold text-sm uppercase tracking-widest">Download Full PDF</span>
+                    <FileText size={20} />
+                    <span className="font-bold text-sm uppercase tracking-widest">View Full Paper</span>
                   </div>
                   <ChevronRight size={18} className="opacity-50 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
                 <button className="flex items-center justify-between w-full p-6 bg-white border border-slate-200 text-slate-900 rounded-2xl hover:border-blue-600 hover:text-blue-600 transition-all group">
                   <div className="flex items-center gap-4">
                     <Share2 size={20} />
