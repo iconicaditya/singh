@@ -168,8 +168,14 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
               </div>
               <button 
                 type="button" 
-                onClick={() => { setShowPubSearch(true); fetchPubs(); }}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors"
+                onClick={(e) => { 
+                  console.log("Add Publication clicked");
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowPubSearch(true); 
+                  fetchPubs(); 
+                }}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors cursor-pointer relative z-50"
               >
                 <Plus size={14} /> Add Publication
               </button>
