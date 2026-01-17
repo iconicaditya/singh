@@ -111,18 +111,22 @@ export default function ResearchDetail() {
               {item.title}
             </h1>
 
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full border-2 border-white/30 overflow-hidden shadow-lg">
-                {item.authors?.[0]?.image ? (
-                  <img src={item.authors[0].image} alt={item.authors[0].name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-slate-800 text-white/50"><User size={20} /></div>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">BY {item.authors?.map((a: any) => a.name).join(", ").toUpperCase()}</span>
-                <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Researcher</span>
-              </div>
+            <div className="flex flex-wrap items-center gap-6 mt-6">
+              {item.authors?.map((author: any, idx: number) => (
+                <div key={idx} className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full border-2 border-white/30 overflow-hidden shadow-lg">
+                    {author.image ? (
+                      <img src={author.image} alt={author.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-slate-800 text-white/50"><User size={20} /></div>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-white/70 uppercase tracking-widest">BY {author.name.toUpperCase()}</span>
+                    <span className="text-[9px] font-bold text-white/40 uppercase tracking-widest">Researcher</span>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="flex flex-wrap gap-2 mt-8">
               {item.tags?.split(',').map((tag: string) => (
@@ -164,36 +168,38 @@ export default function ResearchDetail() {
             ))}
 
             {/* Related Publications */}
-            <div className="pt-16 border-t border-slate-100">
-              <div className="flex items-center gap-4 mb-10">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                  <FileText size={20} />
-                </div>
-                <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Related Publications</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {(item.relatedPublications?.length > 0 ? item.relatedPublications : [1,2,3]).map((pub: any, idx: number) => (
-                  <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-bold uppercase tracking-widest rounded border border-blue-100">RESEARCH</span>
-                      <div className="text-slate-200"><FileText size={16} /></div>
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-1 uppercase leading-tight">{pub.title || "TGREREER"}</h3>
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-4">{pub.subtitle || "gdsrgvde"}</p>
-                    
-                    <div className="flex items-center gap-2 mb-6 pt-4 border-t border-slate-50 mt-auto">
-                      <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center"><User size={12} /></div>
-                      <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">A. GRGRGGRF</span>
-                    </div>
-
-                    <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-[9px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors">
-                      VIEW PDF <FileText size={12} />
-                    </button>
+            {item.relatedPublications?.length > 0 && (
+              <div className="pt-16 border-t border-slate-100">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                    <FileText size={20} />
                   </div>
-                ))}
+                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Related Publications</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {item.relatedPublications.map((pub: any, idx: number) => (
+                    <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-bold uppercase tracking-widest rounded border border-blue-100">RESEARCH</span>
+                        <div className="text-slate-200"><FileText size={16} /></div>
+                      </div>
+                      <h3 className="text-lg font-bold text-slate-900 mb-1 uppercase leading-tight">{pub.title}</h3>
+                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-4">{pub.subtitle}</p>
+                      
+                      <div className="flex items-center gap-2 mb-6 pt-4 border-t border-slate-50 mt-auto">
+                        <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center"><User size={12} /></div>
+                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{pub.authors}</span>
+                      </div>
+
+                      <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-[9px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors">
+                        VIEW PDF <FileText size={12} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </main>
 
           {/* Right Column */}
