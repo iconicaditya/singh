@@ -215,7 +215,7 @@ export default function ResearchDetail() {
               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl shadow-slate-200/20 space-y-4">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 text-center">Researcher Tools</h4>
                 <a 
-                  href={item.pdfUrl || "#"} 
+                  href={item.pdfUrl ? (item.pdfUrl.includes('cloudinary.com') && !item.pdfUrl.includes('/raw/upload/') ? item.pdfUrl.replace('/image/upload/', '/raw/upload/') : item.pdfUrl) : "#"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center justify-between w-full p-6 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 group"

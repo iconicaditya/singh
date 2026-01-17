@@ -76,7 +76,7 @@ export default function PublicationsSection() {
                   <span className="truncate max-w-[120px]">{pub.authors}</span>
                 </div>
                 <a 
-                  href={pub.pdfUrl ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : "#"} 
+                  href={pub.pdfUrl ? (pub.pdfUrl.includes('cloudinary.com') && !pub.pdfUrl.includes('/raw/upload/') ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : pub.pdfUrl) : "#"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:translate-x-1 transition-transform"

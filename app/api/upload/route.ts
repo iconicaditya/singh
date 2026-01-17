@@ -21,8 +21,9 @@ export async function POST(req: Request) {
         { 
           resource_type: isPdf ? 'raw' : 'auto', 
           folder: 'research',
-          access_mode: 'public'
-          // Removed attachment flag to allow browser-native viewing
+          access_mode: 'public',
+          // Explicitly set content_type for browser viewing
+          content_type: isPdf ? 'application/pdf' : undefined
         },
         (error, result) => {
           if (error) {
