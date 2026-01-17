@@ -37,7 +37,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Publications", icon: BookOpen, path: "/login/dashboard/publications" },
     { name: "Resources", icon: Layers, path: "/login/dashboard/resources" },
     { name: "Gallery", icon: ImageIcon, path: "/login/dashboard/gallery" },
-    { name: "Private Gallery", icon: Lock, path: "/login/dashboard/private-gallery" },
     { name: "Team Members", icon: Users2, path: "/login/dashboard/team" },
     { name: "Settings", icon: Settings, path: "/login/dashboard/settings" },
   ];
