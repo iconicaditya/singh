@@ -48,7 +48,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </span>
           </div>
           
-          <h3 className="text-2xl font-black text-white mb-2 uppercase italic leading-tight group-hover:text-blue-400 transition-colors">
+          <h3 className="text-2xl font-black text-white mb-2 uppercase leading-tight group-hover:text-blue-400 transition-colors">
             {project.title}
           </h3>
           
@@ -61,7 +61,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
           {/* Hover Details */}
           <div className="max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500 ease-in-out">
-            <p className="text-slate-300 text-sm font-medium mb-6 line-clamp-3 italic">
+            <p className="text-slate-300 text-sm font-medium mb-6 line-clamp-3">
               {project.description}
             </p>
             

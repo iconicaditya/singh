@@ -46,7 +46,7 @@ export default function PublicationsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter italic uppercase">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
               Scholarly <span className="text-blue-500">Works</span>
             </h1>
             <p className="text-xl text-slate-400 font-medium leading-relaxed mb-8">
@@ -116,11 +116,11 @@ export default function PublicationsPage() {
                       <BookOpen size={20} className="text-slate-200" />
                     </div>
 
-                    <h3 className="text-xl font-black text-slate-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 italic uppercase">
+                    <h3 className="text-xl font-black text-slate-900 mb-4 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2 uppercase">
                       {pub.title}
                     </h3>
 
-                    <p className="text-slate-500 text-sm font-medium mb-6 line-clamp-3 leading-relaxed italic">
+                    <p className="text-slate-500 text-sm font-medium mb-6 line-clamp-3 leading-relaxed">
                       {pub.description}
                     </p>
 
@@ -156,7 +156,7 @@ export default function PublicationsPage() {
           {!loading && filteredPublications.length === 0 && (
             <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100">
               <BookOpen size={48} className="mx-auto text-slate-200 mb-6" />
-              <h3 className="text-2xl font-black text-slate-900 mb-2 italic uppercase">No Publications Found</h3>
+              <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase">No Publications Found</h3>
               <p className="text-slate-500 font-medium">Try adjusting your search or filters.</p>
             </div>
           )}

@@ -43,7 +43,7 @@ export default function PublicationsSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter uppercase italic"
+            className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter uppercase"
           >
             Latest <span className="text-blue-600">Publications</span>
           </motion.h2>
@@ -64,10 +64,10 @@ export default function PublicationsSection() {
                   {pub.category}
                 </span>
               </div>
-              <h3 className="text-xl font-black text-slate-900 mb-4 line-clamp-2 uppercase italic leading-tight group-hover:text-blue-600 transition-colors">
+              <h3 className="text-xl font-black text-slate-900 mb-4 line-clamp-2 uppercase leading-tight group-hover:text-blue-600 transition-colors">
                 {pub.title}
               </h3>
-              <p className="text-slate-500 text-sm font-medium mb-6 line-clamp-2 italic">
+              <p className="text-slate-500 text-sm font-medium mb-6 line-clamp-2">
                 {pub.description}
               </p>
               <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">

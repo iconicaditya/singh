@@ -25,7 +25,7 @@ Add Author	Text Button	Appends a new blank author slot to the form.
 3. Research Contents Section
 Field Name	Type	Definition & Purpose
 Section Title	Text	Sub-headings for the paper (e.g., "Introduction", "Results").
-Rich Text	Editor	A full formatting suite (Quill) for bolding, italics, lists, and links. Used for the actual research body.
+Rich Text	Editor	A full formatting suite (Quill) for bolding,s, lists, and links. Used for the actual research body.
 Section Image	Upload	An optional visual asset (chart, graph, or photo) specific to that content section.
 Remove Section	Button	Deletes the entire content block. Visible on hover.
 Add Section	Large Button	Adds a new rich-text block for additional chapters or paragraphs.

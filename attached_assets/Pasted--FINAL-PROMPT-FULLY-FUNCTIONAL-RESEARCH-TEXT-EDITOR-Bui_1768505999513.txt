@@ -28,7 +28,7 @@ Build a fully functional paragraph editor for the Research Form. The current edi
 
 5. FEATURES — MUST ALL WORK
 - Text Input: normal typing, enter, spaces, cursor, selection
-- Formatting: bold, italic, underline, font family(10 professional), font size(10 - 60), color(top 10 color), text background(top 10 color) alignment (left, center, right and justify)
+- Formatting: bold,, underline, font family(10 professional), font size(10 - 60), color(top 10 color), text background(top 10 color) alignment (left, center, right and justify)
 - Lists: ordered & unordered, nested lists, indentation
 - Editing Actions: copy, paste, cut, undo, redo, select all, delete/backspace
 - Behavior: cursor never jumps, no reversed insertion, no disappearing text, formatting retained

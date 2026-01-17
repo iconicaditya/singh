@@ -49,7 +49,7 @@ export default function ProjectsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter italic uppercase">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
               Our <span className="text-blue-500">Projects</span>
             </h1>
             <p className="text-xl text-slate-400 font-medium leading-relaxed">
@@ -131,7 +131,7 @@ export default function ProjectsPage() {
 
               {!loading && paginatedProjects.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100">
-                  <h3 className="text-2xl font-black text-slate-900 mb-2 italic uppercase">No Projects Found</h3>
+                  <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase">No Projects Found</h3>
                   <p className="text-slate-500 font-medium">Try adjusting your search criteria.</p>
                 </div>
               )}

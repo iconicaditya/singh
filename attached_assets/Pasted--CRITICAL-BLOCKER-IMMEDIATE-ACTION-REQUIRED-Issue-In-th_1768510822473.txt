@@ -1,7 +1,7 @@
 🚨 CRITICAL BLOCKER — IMMEDIATE ACTION REQUIRED
 
 Issue:  
-In the admin research form text editor, numbered and bulleted lists **still fail to inherit formatting**. Bold, italic, underline, font size, font family, and color applied to list items do **not** propagate to numbers or bullets. This is a **persistent, editor-level defect**, despite all previous claimed “engine-level fixes.”  
+In the admin research form text editor, numbered and bulleted lists **still fail to inherit formatting**. Bold,, underline, font size, font family, and color applied to list items do **not** propagate to numbers or bullets. This is a **persistent, editor-level defect**, despite all previous claimed “engine-level fixes.”  
 
 CSS-only solutions, pseudo-elements, and import-level workarounds are **not acceptable**. Partial fixes or temporary patches have failed repeatedly. This is a **production-blocking issue**.  
 
@@ -20,7 +20,7 @@ Requirements:
      - Real-time typing
 
 2. **Editor Integration**
-   - Toolbar commands (bold, font size, color, italic) must **update both text and list markers simultaneously**.
+   - Toolbar commands (bold, font size, color,) must **update both text and list markers simultaneously**.
    - Do not rely on CSS hacks (::before, inline-block, white-space) or pseudo-elements.
 
 3. **Fallback / Replacement**
@@ -28,7 +28,7 @@ Requirements:
 
 4. **Verification Steps**
    - Type numbered and bulleted lists.
-   - Apply **bold, italic, underline, font size, font family, and color**.
+   - Apply **bold,, underline, font size, font family, and color**.
    - Confirm **numbers/bullets update in real-time**.
    - Test nested lists, undo/redo, copy/paste.
    - All other editor functionality (LTR typing, alignment, spacing, undo/redo) must remain fully operational.

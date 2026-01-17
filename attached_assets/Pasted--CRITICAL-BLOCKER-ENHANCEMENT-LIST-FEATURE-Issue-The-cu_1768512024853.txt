@@ -1,7 +1,7 @@
 🚨 CRITICAL BLOCKER & ENHANCEMENT — LIST FEATURE
 
 Issue:  
-The current numbering and bulleting feature in the research form text editor **does not fully inherit formatting**. Bold, italic, underline, font size, font family, and color applied to list items **do not reflect on the numbers or bullets**. Previous fixes are insufficient.
+The current numbering and bulleting feature in the research form text editor **does not fully inherit formatting**. Bold,, underline, font size, font family, and color applied to list items **do not reflect on the numbers or bullets**. Previous fixes are insufficient.
 
 Required Fix & Enhancements:
 
@@ -26,7 +26,7 @@ Required Fix & Enhancements:
 
 3. **Verification**
    - Type numbered and bulleted lists in the editor.
-   - Apply bold, italic, underline, font size, font family, and color; markers must update **visibly in real-time**.
+   - Apply bold,, underline, font size, font family, and color; markers must update **visibly in real-time**.
    - Test nested lists, undo/redo, copy/paste, collapsible lists, and drag-and-drop reordering.
    - All features must work consistently and professionally.
 

@@ -251,7 +251,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                   {isLoadingPubs ? (
                     <div className="flex justify-center py-10"><Loader2 className="animate-spin text-blue-600" size={32} /></div>
                   ) : filteredPubs.length === 0 ? (
-                    <p className="text-center py-10 text-slate-400 font-medium italic">No available publications found.</p>
+                    <p className="text-center py-10 text-slate-400 font-medium">No available publications found.</p>
                   ) : (
                     filteredPubs.map(pub => (
                       <button key={pub.id} onClick={() => { setRelatedPublications([...relatedPublications, pub]); setShowPubSearch(false); }} className="w-full text-left p-5 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 border border-transparent rounded-2xl transition-all group flex items-center justify-between">

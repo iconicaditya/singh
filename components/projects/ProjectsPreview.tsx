@@ -49,7 +49,7 @@ export default function ProjectsPreview() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter uppercase italic"
+            className="text-5xl md:text-6xl font-black text-slate-900 mb-6 tracking-tighter uppercase"
           >
             Our Featured <span className="text-blue-600">Projects</span>
           </motion.h2>

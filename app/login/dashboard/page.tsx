@@ -45,7 +45,7 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
         <div className="bg-white p-6 md:p-8 rounded-3xl md:rounded-[2.5rem] border border-slate-100 shadow-sm">
-          <h2 className="text-lg md:text-xl font-black text-slate-900 mb-4 md:mb-6 uppercase italic">Quick Actions</h2>
+          <h2 className="text-lg md:text-xl font-black text-slate-900 mb-4 md:mb-6 uppercase">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             <Link href="/login/dashboard/research" className="p-5 md:p-6 bg-slate-50 rounded-2xl md:rounded-3xl hover:bg-blue-50 transition-colors group">
               <FlaskConical className="text-slate-400 group-hover:text-blue-600 mb-2 md:mb-3" size={24} />

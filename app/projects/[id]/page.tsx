@@ -69,7 +69,7 @@ export default function ProjectDetail() {
       <div className="w-24 h-24 bg-white rounded-[2rem] shadow-xl flex items-center justify-center mb-8 text-slate-200">
         <Info size={40} />
       </div>
-      <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase italic">Project Not Found</h2>
+      <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Project Not Found</h2>
       <p className="text-slate-500 mb-8 max-w-md font-medium">The research project you are looking for might have been moved or archived.</p>
       <Link href="/projects" className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-xl active:scale-95 flex items-center gap-3">
         <ArrowLeft size={16} /> Back to Repository
@@ -125,7 +125,7 @@ export default function ProjectDetail() {
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-8xl font-black text-white mb-10 tracking-tighter uppercase italic leading-[0.9] drop-shadow-2xl">
+            <h1 className="text-5xl md:text-8xl font-black text-white mb-10 tracking-tighter uppercase leading-[0.9] drop-shadow-2xl">
               {project.title}
             </h1>
 
@@ -156,7 +156,7 @@ export default function ProjectDetail() {
                 <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-100">
                   <Info size={24} />
                 </div>
-                <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tight">Project Overview</h2>
+                <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Project Overview</h2>
               </div>
               
               <div className="prose prose-slate max-w-none">
@@ -174,7 +174,7 @@ export default function ProjectDetail() {
                   <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-100">
                     <Target size={24} />
                   </div>
-                  <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tight">Key Objectives</h2>
+                  <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Key Objectives</h2>
                 </div>
                 
                 <div className="grid grid-cols-1 gap-4">
@@ -189,7 +189,7 @@ export default function ProjectDetail() {
                       </div>
                       <div>
                         <p className="text-xs font-black text-emerald-600 uppercase tracking-[0.2em] mb-2 opacity-50">Objective {idx + 1}</p>
-                        <p className="text-lg font-bold text-slate-800 leading-tight italic">{obj.title || obj}</p>
+                        <p className="text-lg font-bold text-slate-800 leading-tight">{obj.title || obj}</p>
                       </div>
                     </motion.div>
                   ))}
@@ -204,7 +204,7 @@ export default function ProjectDetail() {
                   <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-xl">
                     <FileText size={24} />
                   </div>
-                  <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tight">Scientific Context</h2>
+                  <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">Scientific Context</h2>
                 </div>
                 
                 <div className="space-y-4">
@@ -222,7 +222,7 @@ export default function ProjectDetail() {
                         </div>
                         <div>
                           <p className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] mb-2">Technical Paper</p>
-                          <h3 className="font-black text-slate-900 text-xl group-hover:text-blue-600 transition-colors uppercase italic leading-tight max-w-md">{res.title}</h3>
+                          <h3 className="font-black text-slate-900 text-xl group-hover:text-blue-600 transition-colors uppercase leading-tight max-w-md">{res.title}</h3>
                         </div>
                       </div>
                       
@@ -270,7 +270,7 @@ export default function ProjectDetail() {
                       </div>
                       <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">Category</span>
                     </div>
-                    <span className="text-white text-xs font-black tracking-widest uppercase italic">{project.category}</span>
+                    <span className="text-white text-xs font-black tracking-widest uppercase">{project.category}</span>
                   </div>
 
                   {project.tags && (
@@ -309,7 +309,7 @@ export default function ProjectDetail() {
                           {member.name?.[0] || "T"}
                         </div>
                         <div>
-                          <p className="text-sm font-black text-slate-900 uppercase italic group-hover:text-blue-600 transition-colors">{member.name}</p>
+                          <p className="text-sm font-black text-slate-900 uppercase group-hover:text-blue-600 transition-colors">{member.name}</p>
                           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">{member.role}</p>
                         </div>
                       </div>

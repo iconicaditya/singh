@@ -66,7 +66,7 @@ export default function ResearchDetail() {
       <div className="w-24 h-24 bg-white rounded-[2rem] shadow-xl flex items-center justify-center mb-8 text-slate-200">
         <Info size={40} />
       </div>
-      <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase italic">Research Not Found</h2>
+      <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Research Not Found</h2>
       <p className="text-slate-500 mb-8 max-w-md font-medium">The scholarly work you are looking for might have been moved or archived.</p>
       <Link href="/research" className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-xl active:scale-95 flex items-center gap-3">
         <ArrowLeft size={16} /> Back to Repository
@@ -172,7 +172,7 @@ export default function ResearchDetail() {
                       <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-bold uppercase tracking-widest rounded border border-blue-100">RESEARCH</span>
                       <div className="text-slate-200"><FileText size={16} /></div>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-1 uppercase italic leading-tight">{pub.title || "TGREREER"}</h3>
+                    <h3 className="text-lg font-bold text-slate-900 mb-1 uppercase leading-tight">{pub.title || "TGREREER"}</h3>
                     <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-4">{pub.subtitle || "gdsrgvde"}</p>
                     
                     <div className="flex items-center gap-2 mb-6 pt-4 border-t border-slate-50 mt-auto">

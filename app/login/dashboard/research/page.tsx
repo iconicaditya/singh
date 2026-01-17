@@ -55,7 +55,7 @@ export default function AdminResearchPage() {
     <div className="p-4 md:p-8 max-w-7xl mx-auto bg-white min-h-screen text-black">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 md:mb-12">
         <div>
-          <h1 className="text-2xl md:text-4xl font-black tracking-tight mb-2 italic uppercase">Research <span className="text-blue-600">Gallery</span></h1>
+          <h1 className="text-2xl md:text-4xl font-black tracking-tight mb-2 uppercase">Research <span className="text-blue-600">Gallery</span></h1>
           <p className="text-sm md:text-base text-slate-500 font-medium">Manage research topics and detailed focus areas.</p>
         </div>
         <button
@@ -103,7 +103,7 @@ export default function AdminResearchPage() {
                 </div>
               </div>
               
-              <h3 className="text-xl font-black text-slate-900 mb-2 truncate italic uppercase">{res.title}</h3>
+              <h3 className="text-xl font-black text-slate-900 mb-2 truncate uppercase">{res.title}</h3>
               <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-6">{res.year}</p>
 
               <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50">
