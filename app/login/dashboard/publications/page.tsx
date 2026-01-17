@@ -91,7 +91,7 @@ export default function AdminPublicationsPage() {
                   accessor: "pdfUrl",
                   render: (value) => (
                     <a 
-                      href={value ? value.replace("/upload/", "/upload/fl_attachment/") : "#"} 
+                      href={value || "#"} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap"
