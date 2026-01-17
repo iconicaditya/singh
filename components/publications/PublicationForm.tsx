@@ -102,13 +102,15 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
     data.category = selectedCategory;
 
     try {
-      const url = initialData ? `/api/publications?id=${initialData.id}` : "/api/publications";
+      const url = initialData ? "/api/publications" : "/api/publications";
       const method = initialData ? "PUT" : "POST";
+      
+      const payload = initialData ? { ...data, id: initialData.id } : data;
       
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (res.ok) {
