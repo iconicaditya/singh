@@ -9,7 +9,7 @@ export async function GET() {
       orderBy: [desc(projects.createdAt)],
     });
     
-    const safeData = data || [];
+    const safeData = Array.isArray(data) ? data : [];
 
     const sanitizedData = safeData.map(item => ({
       ...item,

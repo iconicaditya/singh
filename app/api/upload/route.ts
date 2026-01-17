@@ -19,10 +19,14 @@ export async function POST(req: Request) {
           resource_type: 'auto', 
           folder: 'research',
           access_mode: 'public',
+          // Explicitly set flags to ensure public access and browser viewing
           flags: 'attachment:false'
         },
         (error, result) => {
-          if (error) reject(error);
+          if (error) {
+            console.error('Cloudinary Stream Error:', error);
+            reject(error);
+          }
           else resolve(result);
         }
       ).end(buffer);

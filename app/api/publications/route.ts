@@ -8,7 +8,9 @@ export async function GET() {
     const data = await db.query.publications.findMany({
       orderBy: [desc(publications.createdAt)],
     });
-    return NextResponse.json(data || []);
+    
+    const safeData = Array.isArray(data) ? data : [];
+    return NextResponse.json(safeData);
   } catch (error) {
     console.error('Fetch error:', error);
     return NextResponse.json({ error: 'Failed to fetch publications' }, { status: 500 });
