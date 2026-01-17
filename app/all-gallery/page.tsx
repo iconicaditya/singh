@@ -31,9 +31,9 @@ export default function AllGalleryPage() {
     fetchGallery();
   }, []);
 
-  const categories = ["ALL", ...Array.from(new Set(galleryItems.map(item => item.category)))];
+  const categories = ["ALL", ...Array.from(new Set((Array.isArray(galleryItems) ? galleryItems : []).map(item => item.category)))];
 
-  const filteredItems = galleryItems.filter(
+  const filteredItems = (Array.isArray(galleryItems) ? galleryItems : []).filter(
     (item) => activeCategory === "ALL" || item.category === activeCategory
   );
 

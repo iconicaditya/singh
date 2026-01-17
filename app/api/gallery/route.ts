@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 export async function GET() {
   try {
     const data = await db.select().from(gallery).orderBy(desc(gallery.createdAt));
-    return NextResponse.json(data || []);
+    return NextResponse.json(Array.isArray(data) ? data : []);
   } catch (error) {
     console.error("GALLERY GET ERROR:", error);
     return NextResponse.json({ error: "Failed to fetch gallery" }, { status: 500 });
