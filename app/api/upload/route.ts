@@ -18,7 +18,8 @@ export async function POST(req: Request) {
         { 
           resource_type: 'auto', 
           folder: 'research',
-          access_mode: 'public'
+          access_mode: 'public',
+          flags: 'attachment:false'
         },
         (error, result) => {
           if (error) reject(error);
