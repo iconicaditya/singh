@@ -106,10 +106,17 @@ export default function ProjectDetail() {
           <main className="lg:w-2/3">
             <div className="prose prose-slate max-w-none mb-20">
               <h2 className="text-2xl font-black text-slate-900 mb-6 uppercase italic">About Project</h2>
-              <p className="text-lg text-slate-600 leading-relaxed italic whitespace-pre-wrap">
-                {project.aboutProject || project.description}
-              </p>
+              <div 
+                className="text-lg text-slate-600 leading-relaxed italic rich-text-content"
+                dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
+              />
             </div>
+
+            <style jsx global>{`
+              .rich-text-content p { margin-bottom: 1.5rem; }
+              .rich-text-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+              .rich-text-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+            `}</style>
 
             {project.projectObjectives && Array.isArray(project.projectObjectives) && project.projectObjectives.length > 0 && (
               <div className="mb-20">
