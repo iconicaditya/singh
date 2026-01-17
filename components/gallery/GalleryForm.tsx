@@ -1,7 +1,6 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { Upload, X, Image as ImageIcon } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
 
 interface GalleryFormProps {
   isOpen: boolean;
@@ -11,12 +10,43 @@ interface GalleryFormProps {
 }
 
 export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }: GalleryFormProps) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   if (!isOpen) return null;
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        setImageUrl(data.secure_url);
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
+    
+    // Ensure we use the uploaded image URL
+    data.imageUrl = imageUrl;
 
     try {
       const url = initialData ? `/api/gallery?id=${initialData.id}` : "/api/gallery";
@@ -84,16 +114,47 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-slate-400">Image URL</label>
-            <div className="relative">
-              <input
-                name="imageUrl"
-                defaultValue={initialData?.imageUrl}
-                required
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium pl-12"
-                placeholder="https://..."
-              />
-              <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+            <label className="text-xs font-black uppercase tracking-widest text-slate-400">Image Upload</label>
+            <div className="flex gap-4 items-start">
+              <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="flex-1 border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all group"
+              >
+                {imageUrl ? (
+                  <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-sm">
+                    <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Upload className="text-white" size={24} />
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                      {isUploading ? <Loader2 className="animate-spin" size={24} /> : <Upload size={24} />}
+                    </div>
+                    <p className="text-sm font-bold text-slate-600">Click to upload image</p>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">JPG, PNG or WEBP</p>
+                  </>
+                )}
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileUpload} 
+                  className="hidden" 
+                  accept="image/*"
+                />
+              </div>
+              
+              <div className="w-48 space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Direct URL (Optional)</label>
+                <input
+                  name="imageUrl"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-xs"
+                  placeholder="https://..."
+                />
+              </div>
             </div>
           </div>
 
@@ -118,9 +179,11 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
             </button>
             <button
               type="submit"
-              className="flex-[2] px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2"
+              disabled={isUploading}
+              className="flex-[2] px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Upload size={18} /> {initialData ? "Update Item" : "Create Item"}
+              {isUploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />} 
+              {initialData ? "Update Item" : "Create Item"}
             </button>
           </div>
         </form>
@@ -128,3 +191,4 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
     </div>
   );
 }
+
