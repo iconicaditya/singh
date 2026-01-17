@@ -16,11 +16,13 @@ export async function POST(req: Request) {
     const uploadResponse = await new Promise((resolve, reject) => {
       // Determine resource type based on file extension
       const isPdf = file.name.toLowerCase().endsWith('.pdf');
+      const { searchParams } = new URL(req.url);
+      const folder = searchParams.get('folder') || 'research';
       
       cloudinary.uploader.upload_stream(
         { 
           resource_type: isPdf ? 'raw' : 'auto', 
-          folder: 'research',
+          folder: folder,
           access_mode: 'public',
           // Explicitly set content_type for browser viewing
           content_type: isPdf ? 'application/pdf' : undefined

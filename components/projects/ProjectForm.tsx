@@ -80,7 +80,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     uploadFormData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('/api/upload?folder=projects', {
         method: 'POST',
         body: uploadFormData,
       });
