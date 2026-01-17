@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
-import Header from "@/components/header";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -50,7 +49,6 @@ export default function AllGalleryPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      <Header />
       <div className="container mx-auto px-6 py-12 max-w-7xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
