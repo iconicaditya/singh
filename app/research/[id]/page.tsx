@@ -19,7 +19,8 @@ import {
   CheckCircle2,
   Share2,
   Download,
-  BookOpen
+  BookOpen,
+  List
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
