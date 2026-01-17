@@ -234,7 +234,7 @@ export default function ResearchDetail() {
               {/* Tools */}
               <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-lg shadow-slate-100 space-y-4">
                 <h4 className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center mb-6">RESEARCHER TOOLS</h4>
-                <button 
+                  <button 
                   onClick={async () => {
                     const { default: html2canvas } = await import('html2canvas');
                     const { default: jsPDF } = await import('jspdf');
@@ -262,7 +262,7 @@ export default function ResearchDetail() {
                           const sidebar = clonedDoc.querySelector('aside');
                           const backBtn = clonedDoc.querySelector('.no-print');
                           if (sidebar) sidebar.style.display = 'none';
-                          if (backBtn) backBtn.style.display = 'none';
+                          if (backBtn) (backBtn as HTMLElement).style.display = 'none';
                           
                           const main = clonedDoc.querySelector('main');
                           if (main) {
@@ -306,7 +306,7 @@ export default function ResearchDetail() {
                         );
                       }
                       
-                      pdf.save(\`\${item.title.replace(/\\s+/g, '_')}_Research.pdf\`);
+                      pdf.save(`${item.title.replace(/\s+/g, '_')}_Research.pdf`);
                     } finally {
                       document.head.removeChild(style);
                     }
