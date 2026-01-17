@@ -161,7 +161,7 @@ export default function ResearchDetail() {
                 )}
 
                 <div 
-                  className="prose prose-slate max-w-none text-slate-700 leading-relaxed break-words overflow-hidden"
+                  className="prose prose-slate max-w-none text-slate-700 leading-relaxed break-words overflow-hidden prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl"
                   dangerouslySetInnerHTML={{ __html: section.content }}
                 />
               </section>

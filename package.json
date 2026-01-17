@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@tailwindcss/typography": "^0.5.19",
     "cloudinary": "^2.9.0",
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.8",
