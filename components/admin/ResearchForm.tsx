@@ -51,29 +51,8 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
   const [contentSections, setContentSections] = useState<any[]>(
     initialData?.contentSections || [{ id: crypto.randomUUID(), title: "", content: "", image: "" }]
   );
-  const [relatedPublications, setRelatedPublications] = useState<any[]>(initialData?.relatedPublications || []);
-  const [publicationSearch, setPublicationSearch] = useState("");
-  const [showPubSearch, setShowPubSearch] = useState(false);
-  const [availablePublications, setAvailablePublications] = useState<any[]>([]);
-  const [isLoadingPubs, setIsLoadingPubs] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [categories] = useState<string[]>(["RESEARCH", "PUBLICATION", "CASE STUDY", "WASTE MANAGEMENT", "CLIMATE CHANGE"]);
-
-  const fetchPubs = async () => {
-    setIsLoadingPubs(true);
-    try {
-      const res = await fetch('/api/publications');
-      if (res.ok) {
-        const data = await res.json();
-        // Ensure data is an array
-        setAvailablePublications(Array.isArray(data) ? data : []);
-      }
-    } catch (err) {
-      console.error("Failed to fetch publications", err);
-    } finally {
-      setIsLoadingPubs(false);
-    }
-  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'title' | 'author' | 'section', index?: number, sectionId?: string) => {
     const file = e.target.files?.[0];
@@ -108,7 +87,6 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
         ...formData,
         authors: authors.filter(a => a.name.trim()),
         contentSections: contentSections.filter(s => s.title || s.content || s.image),
-        relatedPublications
       };
       const response = await fetch('/api/research', {
         method: initialData?.id ? 'PUT' : 'POST',
@@ -120,11 +98,6 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
       console.error("Save error:", error);
     }
   };
-
-  const filteredPubs = availablePublications.filter(pub => 
-    pub.title.toLowerCase().includes(publicationSearch.toLowerCase()) &&
-    !relatedPublications.some(rp => rp.id === pub.id)
-  );
 
   return (
     <div className="bg-white min-h-screen font-sans overflow-y-auto">
@@ -160,55 +133,6 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
             </div>
           </section>
 
-          {/* Related Publications */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">2</div>
-                <h2 className="text-lg font-bold text-slate-900">Related Publications</h2>
-              </div>
-              <button 
-                type="button" 
-                onClick={(e) => { 
-                  e.preventDefault();
-                  e.stopPropagation();
-                  fetchPubs();
-                  setShowPubSearch(true); 
-                }}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-bold hover:bg-slate-50 transition-all cursor-pointer shadow-sm active:scale-95"
-              >
-                <div className="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center">
-                  <Plus size={12} />
-                </div>
-                Add Publication
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3">
-              {relatedPublications.map(pub => (
-                <div key={pub.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 group">
-                  <div className="flex items-center gap-3">
-                    <FileText size={20} className="text-blue-500" />
-                    <div>
-                      <h4 className="text-sm font-bold text-slate-900 line-clamp-1">{pub.title}</h4>
-                      <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">{pub.category}</p>
-                    </div>
-                  </div>
-                  <button 
-                    type="button" 
-                    onClick={() => setRelatedPublications(prev => prev.filter(p => p.id !== pub.id))}
-                    className="p-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-              {relatedPublications.length === 0 && (
-                <p className="text-center py-6 text-sm text-slate-400 font-medium bg-slate-50/50 rounded-xl border-2 border-dashed border-slate-100">No publications added yet.</p>
-              )}
-            </div>
-          </section>
-
           {/* Research Content Sections */}
           <section className="space-y-6">
             <div className="flex items-center gap-3">
@@ -241,46 +165,6 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
           </div>
         </form>
       </div>
-
-      {/* Publication Search Modal */}
-      <AnimatePresence>
-        {showPubSearch && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col shadow-2xl">
-              <div className="p-8 border-b border-slate-50 flex justify-between items-center">
-                <h3 className="text-xl font-black text-slate-900">Add <span className="text-blue-600">Publication</span></h3>
-                <button onClick={() => setShowPubSearch(false)} className="p-2 hover:bg-slate-50 rounded-full text-slate-400"><X size={24} /></button>
-              </div>
-              <div className="p-8 flex-1 overflow-y-auto space-y-6">
-                <div className="relative">
-                  <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="text" placeholder="Search publications..." value={publicationSearch} onChange={e => setPublicationSearch(e.target.value)} className="w-full pl-12 pr-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none font-bold" />
-                </div>
-                <div className="space-y-3">
-                  {isLoadingPubs ? (
-                    <div className="flex justify-center py-10"><Loader2 className="animate-spin text-blue-600" size={32} /></div>
-                  ) : filteredPubs.length === 0 ? (
-                    <p className="text-center py-10 text-slate-400 font-medium">No available publications found.</p>
-                  ) : (
-                    filteredPubs.map(pub => (
-                      <button key={pub.id} onClick={() => { setRelatedPublications([...relatedPublications, pub]); setShowPubSearch(false); }} className="w-full text-left p-5 bg-slate-50 hover:bg-blue-50 hover:border-blue-200 border border-transparent rounded-2xl transition-all group flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-slate-300 group-hover:text-blue-600 shadow-sm transition-all"><FileText size={24} /></div>
-                          <div>
-                            <h4 className="font-bold text-slate-900 line-clamp-1">{pub.title}</h4>
-                            <p className="text-[10px] text-slate-400 uppercase tracking-widest font-black">{pub.category} • {pub.year || '2026'}</p>
-                          </div>
-                        </div>
-                        <Plus size={20} className="text-slate-200 group-hover:text-blue-600 transition-all" />
-                      </button>
-                    ))
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
