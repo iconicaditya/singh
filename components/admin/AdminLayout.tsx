@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row font-sans relative">
       {/* Mobile Header */}
-      <div className="md:hidden bg-[#1e293b] text-white p-4 flex items-center justify-between sticky top-0 z-30 shadow-md">
+      <div className="md:hidden bg-[#1e293b] text-white p-4 flex items-center justify-between sticky top-0 z-30 shadow-md h-16">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
             <FlaskConical className="text-white" size={18} />
@@ -68,15 +68,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-20 md:hidden"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
       <aside className={`
-        w-72 bg-[#1e293b] text-white flex flex-col sticky top-0 h-screen shadow-2xl z-20 overflow-hidden transition-all duration-300
-        fixed md:sticky md:translate-x-0
+        w-72 bg-[#1e293b] text-white flex flex-col h-screen shadow-2xl z-50 overflow-hidden transition-all duration-300
+        fixed md:sticky md:top-0 md:translate-x-0
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         <div className="p-8 mb-4 hidden md:block">
@@ -124,9 +124,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen flex flex-col overflow-hidden">
+      <main className="flex-1 min-h-[calc(100vh-4rem)] md:min-h-screen flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md h-20 md:h-24 flex items-center justify-between px-6 md:px-10 border-b border-slate-100 sticky top-0 z-10">
+        <header className="bg-white/80 backdrop-blur-md h-20 md:h-24 flex items-center justify-between px-6 md:px-10 border-b border-slate-100 md:sticky md:top-0 z-10">
           <div>
             <h1 className="text-xl md:text-2xl font-bold text-slate-800">{activeItem.name}</h1>
             <p className="text-xs md:text-sm text-slate-400 font-medium hidden sm:block">Welcome back, Administrator</p>

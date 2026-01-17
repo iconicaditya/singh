@@ -90,7 +90,7 @@ export default function DashboardProjectsPage() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 md:py-24 bg-white rounded-2xl md:rounded-[3rem] border-2 border-dashed border-slate-200">
           <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-50 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4 md:mb-6">
-            <Layout className="text-slate-300" size={28} className="md:w-8 md:h-8" />
+            <Layout className="text-slate-300 md:w-8 md:h-8" size={28} />
           </div>
           <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">No projects found</h3>
           <p className="text-sm md:text-base text-slate-500 font-medium px-4">Get started by creating your first research project.</p>
