@@ -32,6 +32,19 @@ export const projects = pgTable("projects", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+export const publications = pgTable("publications", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  authors: text("authors").notNull(),
+  description: text("description"),
+  tags: text("tags"),
+  pdfUrl: text("pdf_url").notNull(),
+  imageUrl: text("image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const gallery = pgTable("gallery", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),

@@ -32,6 +32,20 @@ CREATE TABLE IF NOT EXISTS projects (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Publications Table Schema
+CREATE TABLE IF NOT EXISTS publications (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    authors TEXT NOT NULL,
+    description TEXT,
+    tags TEXT,
+    pdf_url TEXT NOT NULL,
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Gallery Table Schema
 CREATE TABLE IF NOT EXISTS gallery (
     id SERIAL PRIMARY KEY,
