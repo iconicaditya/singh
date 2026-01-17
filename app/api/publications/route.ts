@@ -5,7 +5,9 @@ import { desc, eq } from 'drizzle-orm';
 
 export async function GET() {
   try {
-    const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
+    const data = await db.query.publications.findMany({
+      orderBy: [desc(publications.createdAt)],
+    });
     
     const safeData = data || [];
     
