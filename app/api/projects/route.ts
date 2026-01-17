@@ -7,10 +7,9 @@ export async function GET() {
   try {
     const data = await db.select().from(projects).orderBy(desc(projects.createdAt));
     
-    // Ensure all rows are valid objects before mapping
-    if (!data) return NextResponse.json([]);
+    const safeData = data || [];
 
-    const sanitizedData = data.map(item => ({
+    const sanitizedData = safeData.map(item => ({
       ...item,
       teamMembers: Array.isArray(item.teamMembers) ? item.teamMembers : [],
       projectObjectives: Array.isArray(item.projectObjectives) ? item.projectObjectives : [],

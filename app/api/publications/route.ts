@@ -7,7 +7,6 @@ export async function GET() {
   try {
     const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
     
-    // Safety check for null response
     const safeData = data || [];
     
     return new NextResponse(JSON.stringify(safeData), {
