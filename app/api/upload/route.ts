@@ -18,7 +18,6 @@ export async function POST(req: Request) {
         { 
           resource_type: 'auto', 
           folder: 'research',
-          flags: 'attachment',
           access_mode: 'public'
         },
         (error, result) => {

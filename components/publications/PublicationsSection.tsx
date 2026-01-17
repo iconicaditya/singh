@@ -76,7 +76,7 @@ export default function PublicationsSection() {
                   <span className="truncate max-w-[120px]">{pub.authors}</span>
                 </div>
                 <a 
-                  href={pub.pdfUrl} 
+                  href={pub.pdfUrl ? pub.pdfUrl.replace("/fl_attachment", "") : "#"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:translate-x-1 transition-transform"
