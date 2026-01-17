@@ -36,6 +36,29 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     description: "" // Short description used in cards
   });
 
+  const [categories, setCategories] = useState(CATEGORIES);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim().toUpperCase())) {
+      const cat = newCategory.trim().toUpperCase();
+      setCategories(prev => [...prev, cat]);
+      setFormData(prev => ({ ...prev, category: cat }));
+      setNewCategory("");
+      setIsAddingCategory(false);
+    }
+  };
+
+  const handleDeleteCategory = (e: React.MouseEvent, catToDelete: string) => {
+    e.stopPropagation();
+    setCategories(prev => prev.filter(c => c !== catToDelete));
+    if (formData.category === catToDelete) {
+      setFormData(prev => ({ ...prev, category: categories[0] || "" }));
+    }
+  };
+
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -215,35 +238,97 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <div className="flex justify-between items-center ml-1">
-                      <label className="text-xs font-bold text-slate-700">Category *</label>
-                      <button type="button" className="text-[10px] font-black text-blue-600 uppercase tracking-wider hover:underline">+ ADD CATEGORY</button>
-                    </div>
-                    <div className="relative">
-                      <select
-                        value={formData.category}
-                        onChange={e => setFormData({ ...formData, category: e.target.value })}
-                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-900 appearance-none transition-all"
-                      >
-                        {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                      </select>
-                      <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={20} />
-                    </div>
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {CATEGORIES.slice(0, 3).map(cat => (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() => setFormData(p => ({ ...p, category: cat }))}
-                          className={`px-3 py-1.5 rounded-lg text-[10px] font-black tracking-widest uppercase transition-all border ${
-                            formData.category === cat 
-                              ? "bg-blue-600 border-blue-600 text-white" 
-                              : "bg-white border-slate-200 text-slate-400 hover:border-blue-200"
-                          }`}
+                    <label className="text-xs font-bold text-slate-700 ml-1">Category *</label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <div 
+                          onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                          className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-900 flex justify-between items-center cursor-pointer transition-all"
                         >
-                          {cat}
+                          <span>{formData.category}</span>
+                          <ChevronDown className={`text-slate-400 transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} size={20} />
+                        </div>
+                        
+                        <AnimatePresence>
+                          {isCategoryOpen && (
+                            <motion.div 
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className="absolute z-50 w-full mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden"
+                            >
+                              <div className="p-2 border-b border-slate-50">
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-3 py-2">Select category</p>
+                              </div>
+                              <div className="max-h-60 overflow-y-auto">
+                                {categories.map(cat => (
+                                  <div 
+                                    key={cat}
+                                    onClick={() => {
+                                      setFormData({ ...formData, category: cat });
+                                      setIsCategoryOpen(false);
+                                    }}
+                                    className={`px-5 py-3 flex justify-between items-center cursor-pointer transition-all hover:bg-blue-50/50 group ${formData.category === cat ? 'bg-blue-50' : ''}`}
+                                  >
+                                    <span className={`text-sm font-bold ${formData.category === cat ? 'text-blue-600' : 'text-slate-600'}`}>{cat}</span>
+                                    <button 
+                                      onClick={(e) => handleDeleteCategory(e, cat)}
+                                      className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                                    >
+                                      <Trash2 size={14} />
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                      <div className="relative">
+                        <button 
+                          type="button"
+                          onClick={() => setIsAddingCategory(!isAddingCategory)}
+                          className="h-full px-5 bg-white border border-slate-200 rounded-2xl text-blue-600 hover:bg-blue-50 transition-all flex items-center justify-center shadow-sm"
+                        >
+                          <Plus size={24} />
                         </button>
-                      ))}
+                        <AnimatePresence>
+                          {isAddingCategory && (
+                            <motion.div 
+                              initial={{ opacity: 0, scale: 0.9, x: 10 }}
+                              animate={{ opacity: 1, scale: 1, x: 0 }}
+                              exit={{ opacity: 0, scale: 0.9, x: 10 }}
+                              className="absolute right-0 top-full mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 z-50"
+                            >
+                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Add New Category</p>
+                              <input 
+                                autoFocus
+                                value={newCategory}
+                                onChange={e => setNewCategory(e.target.value)}
+                                onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), handleAddCategory())}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none font-bold text-sm mb-3"
+                                placeholder="Category name..."
+                              />
+                              <div className="flex gap-2">
+                                <button 
+                                  type="button"
+                                  onClick={() => setIsAddingCategory(false)}
+                                  className="flex-1 py-2 bg-slate-100 text-slate-500 rounded-xl font-black text-[9px] uppercase tracking-widest"
+                                >
+                                  Cancel
+                                </button>
+                                <button 
+                                  type="button"
+                                  onClick={handleAddCategory}
+                                  className="flex-1 py-2 bg-blue-600 text-white rounded-xl font-black text-[9px] uppercase tracking-widest shadow-lg shadow-blue-200"
+                                >
+                                  Add
+                                </button>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </div>
                   </div>
 
