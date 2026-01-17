@@ -108,7 +108,7 @@ export default function ResearchDetail() {
               </div>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight uppercase leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight uppercase leading-[1.1] font-[family-name:var(--font-playfair)]">
               {item.title}
             </h1>
 
@@ -152,7 +152,7 @@ export default function ResearchDetail() {
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
                     <FileText size={20} />
                   </div>
-                  <h2 className="text-3xl font-bold text-slate-900 lowercase tracking-tight">{section.title}</h2>
+                  <h2 className="text-3xl font-[family-name:var(--font-playfair)] font-bold text-slate-900 lowercase tracking-tight">{section.title}</h2>
                 </div>
 
                 {section.image && (
