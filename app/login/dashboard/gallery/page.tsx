@@ -47,12 +47,6 @@ export default function AdminGalleryPage() {
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Gallery <span className="text-blue-600">Management</span></h1>
           <p className="mt-2 text-slate-500 font-medium text-sm md:text-base">Manage research gallery images and documentation.</p>
         </div>
-        <button
-          onClick={() => { setEditingItem(null); setIsFormOpen(true); }}
-          className="w-full md:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all shadow-xl active:scale-95"
-        >
-          <Plus size={20} /> Add New Item
-        </button>
       </div>
 
       {loading ? (
