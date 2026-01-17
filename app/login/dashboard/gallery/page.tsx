@@ -41,15 +41,15 @@ export default function AdminGalleryPage() {
   const categories = Array.from(new Set(galleryList.map(item => item.category)));
 
   return (
-    <div className="p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
-      <div className="flex justify-between items-center mb-10">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight">Gallery <span className="text-blue-600">Management</span></h1>
-          <p className="mt-2 text-slate-500 font-medium">Manage research gallery images and documentation.</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Gallery <span className="text-blue-600">Management</span></h1>
+          <p className="mt-2 text-slate-500 font-medium text-sm md:text-base">Manage research gallery images and documentation.</p>
         </div>
         <button
           onClick={() => { setEditingItem(null); setIsFormOpen(true); }}
-          className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all shadow-xl active:scale-95"
+          className="w-full md:w-auto flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-blue-600 transition-all shadow-xl active:scale-95"
         >
           <Plus size={20} /> Add New Item
         </button>

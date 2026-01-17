@@ -68,42 +68,42 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-2 md:p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden"
+        className="bg-white rounded-2xl md:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] overflow-hidden flex flex-col"
       >
-        <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+        <div className="p-4 md:p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 shrink-0">
           <div>
-            <h2 className="text-2xl font-black text-slate-900">
+            <h2 className="text-xl md:text-2xl font-black text-slate-900">
               {initialData ? "Edit" : "Add"} <span className="text-blue-600">Gallery Item</span>
             </h2>
-            <p className="text-slate-500 text-sm font-medium mt-1">Manage visual research documentation.</p>
+            <p className="text-slate-500 text-xs md:text-sm font-medium mt-1">Manage visual research documentation.</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors shadow-sm border border-slate-200">
             <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="p-4 md:p-8 space-y-4 md:space-y-6 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-slate-400">Title</label>
+              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Title</label>
               <input
                 name="title"
                 defaultValue={initialData?.title}
                 required
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium"
+                className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium"
                 placeholder="Item title..."
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-black uppercase tracking-widest text-slate-400">Category</label>
+              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Category</label>
               <select
                 name="category"
                 defaultValue={initialData?.category || "PLASTIC WASTE"}
-                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium appearance-none"
+                className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium appearance-none"
               >
                 <option value="PLASTIC WASTE">PLASTIC WASTE</option>
                 <option value="RECYCLING">RECYCLING</option>
@@ -114,14 +114,14 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-slate-400">Image Upload</label>
-            <div className="flex gap-4 items-start">
+            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Image Upload</label>
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-start">
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="flex-1 border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all group"
+                className="flex-1 border-2 border-dashed border-slate-200 rounded-xl md:rounded-2xl p-4 md:p-8 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all group"
               >
                 {imageUrl ? (
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-sm">
+                  <div className="relative w-full aspect-video rounded-lg md:rounded-xl overflow-hidden shadow-sm">
                     <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <Upload className="text-white" size={24} />
@@ -129,11 +129,11 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
                   </div>
                 ) : (
                   <>
-                    <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                    <div className="w-10 h-10 md:w-12 md:h-12 bg-slate-100 rounded-lg md:rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
                       {isUploading ? <Loader2 className="animate-spin" size={24} /> : <Upload size={24} />}
                     </div>
-                    <p className="text-sm font-bold text-slate-600">Click to upload image</p>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">JPG, PNG or WEBP</p>
+                    <p className="text-xs md:text-sm font-bold text-slate-600">Click to upload image</p>
+                    <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase tracking-widest">JPG, PNG or WEBP</p>
                   </>
                 )}
                 <input 
@@ -145,13 +145,13 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
                 />
               </div>
               
-              <div className="w-48 space-y-2">
+              <div className="w-full sm:w-48 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Direct URL (Optional)</label>
                 <input
                   name="imageUrl"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-xs"
+                  className="w-full px-4 py-2 md:py-3 bg-slate-50 border border-slate-100 rounded-lg md:rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-[11px] md:text-xs"
                   placeholder="https://..."
                 />
               </div>
@@ -159,28 +159,28 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-widest text-slate-400">Description</label>
+            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Description</label>
             <textarea
               name="description"
               defaultValue={initialData?.description}
-              rows={4}
-              className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium resize-none"
+              rows={3}
+              className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium resize-none"
               placeholder="Detailed description..."
             />
           </div>
 
-          <div className="pt-4 flex gap-4">
+          <div className="pt-2 md:pt-4 flex flex-col sm:flex-row gap-3 md:gap-4 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-8 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all"
+              className="order-2 sm:order-1 flex-1 px-6 md:px-8 py-3 md:py-4 bg-slate-100 text-slate-600 rounded-xl md:rounded-2xl font-bold text-sm hover:bg-slate-200 transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isUploading}
-              className="flex-[2] px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="order-1 sm:order-2 flex-[2] px-6 md:px-8 py-3 md:py-4 bg-blue-600 text-white rounded-xl md:rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isUploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />} 
               {initialData ? "Update Item" : "Create Item"}
