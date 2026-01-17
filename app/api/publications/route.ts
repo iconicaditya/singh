@@ -10,7 +10,11 @@ export async function GET() {
     });
     
     const safeData = Array.isArray(data) ? data : [];
-    return NextResponse.json(safeData);
+    const sanitizedData = safeData.map(item => ({
+      ...item,
+      authors: typeof item.authors === 'string' ? item.authors : String(item.authors || '')
+    }));
+    return NextResponse.json(sanitizedData);
   } catch (error) {
     console.error('Fetch error:', error);
     return NextResponse.json({ error: 'Failed to fetch publications' }, { status: 500 });

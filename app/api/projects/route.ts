@@ -13,9 +13,9 @@ export async function GET() {
 
     const sanitizedData = safeData.map(item => ({
       ...item,
-      teamMembers: Array.isArray(item.teamMembers) ? item.teamMembers : [],
-      projectObjectives: Array.isArray(item.projectObjectives) ? item.projectObjectives : [],
-      attachedResearchIds: Array.isArray(item.attachedResearchIds) ? item.attachedResearchIds : []
+      teamMembers: item && Array.isArray(item.teamMembers) ? item.teamMembers : [],
+      projectObjectives: item && Array.isArray(item.projectObjectives) ? item.projectObjectives : [],
+      attachedResearchIds: item && Array.isArray(item.attachedResearchIds) ? item.attachedResearchIds : []
     }));
     return NextResponse.json(sanitizedData);
   } catch (error: any) {
