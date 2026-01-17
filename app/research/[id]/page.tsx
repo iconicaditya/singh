@@ -84,8 +84,9 @@ export default function ResearchDetail() {
               src={item.titleImage} 
               alt={item.title} 
               className="w-full h-full object-cover"
+              loading="eager"
             />
-            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-0 bg-black/50" />
           </div>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-950" />
@@ -107,7 +108,7 @@ export default function ResearchDetail() {
               </div>
             </div>
 
-            <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter uppercase leading-[0.9]">
+            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight uppercase leading-[1.1]">
               {item.title}
             </h1>
 
@@ -155,8 +156,8 @@ export default function ResearchDetail() {
                 </div>
 
                 {section.image && (
-                  <div className="mb-8 rounded-2xl overflow-hidden shadow-lg border border-slate-100">
-                    <img src={section.image} alt={section.title} className="w-full h-auto object-cover" />
+                  <div className="mb-8 rounded-2xl overflow-hidden shadow-xl border border-slate-200">
+                    <img src={section.image} alt={section.title} className="w-full h-auto object-cover" loading="lazy" />
                   </div>
                 )}
 
