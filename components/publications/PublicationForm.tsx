@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Upload, X, FileText, Loader2, Link as LinkIcon, User, Tag, Type } from "lucide-react";
-import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Upload, X, FileText, Loader2, Plus, Trash2, ChevronDown } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
 interface PublicationFormProps {
   isOpen: boolean;
@@ -14,9 +14,60 @@ interface PublicationFormProps {
 export default function PublicationForm({ isOpen, onClose, onSuccess, initialData }: PublicationFormProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(initialData?.pdfUrl || "");
+  const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "PROJECT"]);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(initialData?.category || "RESEARCH");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/publications");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const existingCategories = Array.from(new Set(data.map((item: any) => item.category))) as string[];
+          setCategories(prev => Array.from(new Set([...prev, ...existingCategories])));
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsCategoryDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (!isOpen) return null;
+
+  const handleAddCategory = () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim().toUpperCase())) {
+      const cat = newCategory.trim().toUpperCase();
+      setCategories([...categories, cat]);
+      setSelectedCategory(cat);
+      setNewCategory("");
+      setShowAddCategory(false);
+      setIsCategoryDropdownOpen(false);
+    }
+  };
+
+  const handleDeleteCategory = (e: React.MouseEvent, catToDelete: string) => {
+    e.stopPropagation();
+    setCategories(categories.filter(cat => cat !== catToDelete));
+    if (selectedCategory === catToDelete) {
+      setSelectedCategory(categories[0] || "");
+    }
+  };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,6 +99,7 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
     const data = Object.fromEntries(formData.entries());
     
     data.pdfUrl = pdfUrl;
+    data.category = selectedCategory;
 
     try {
       const url = initialData ? `/api/publications?id=${initialData.id}` : "/api/publications";
@@ -82,7 +134,7 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
             </h2>
             <p className="text-slate-500 text-xs md:text-sm font-medium mt-1">Manage scholarly works and research papers.</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-white rounded-xl transition-colors shadow-sm border border-slate-200">
+          <button onClick={onClose} type="button" className="p-2 hover:bg-white rounded-xl transition-colors shadow-sm border border-slate-200">
             <X size={20} />
           </button>
         </div>
@@ -100,15 +152,89 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            <div className="space-y-2">
+            <div className="space-y-2 relative" ref={dropdownRef}>
               <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Category</label>
-              <input
-                name="category"
-                defaultValue={initialData?.category}
-                required
-                className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium"
-                placeholder="e.g. Journal Article"
-              />
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                    className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium flex items-center justify-between text-left"
+                  >
+                    <span className="truncate">{selectedCategory || "Select category"}</span>
+                    <ChevronDown size={18} className={`transition-transform ${isCategoryDropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isCategoryDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute z-50 bottom-full mb-2 w-full bg-white rounded-xl border border-slate-100 shadow-xl overflow-hidden py-2"
+                      >
+                        <div className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-50 mb-1">
+                          Select category
+                        </div>
+                        {categories.map((cat) => (
+                          <div
+                            key={cat}
+                            onClick={() => {
+                              setSelectedCategory(cat);
+                              setIsCategoryDropdownOpen(false);
+                            }}
+                            className={`px-4 py-3 text-sm font-bold cursor-pointer transition-colors flex items-center justify-between group ${
+                              selectedCategory === cat ? "bg-blue-50 text-blue-600" : "text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            <span className="truncate">{cat}</span>
+                            <button
+                              type="button"
+                              onClick={(e) => handleDeleteCategory(e, cat)}
+                              className="opacity-0 group-hover:opacity-100 p-1.5 hover:bg-rose-50 hover:text-rose-500 rounded-lg transition-all"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAddCategory(!showAddCategory)}
+                  className="p-3 md:p-4 bg-white border border-slate-100 rounded-xl md:rounded-2xl text-slate-400 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm flex items-center justify-center shrink-0"
+                >
+                  <Plus size={20} />
+                </button>
+              </div>
+
+              <AnimatePresence>
+                {showAddCategory && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mt-2 flex gap-2"
+                  >
+                    <input
+                      type="text"
+                      value={newCategory}
+                      onChange={(e) => setNewCategory(e.target.value)}
+                      placeholder="New category..."
+                      className="flex-1 px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-blue-500 text-sm font-bold"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCategory}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
+                    >
+                      Add
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <div className="space-y-2">
               <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Authors</label>
