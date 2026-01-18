@@ -5,9 +5,7 @@ import { desc, eq } from 'drizzle-orm';
 
 export async function GET() {
   try {
-    const data = await db.query.projects.findMany({
-      orderBy: [desc(projects.createdAt)],
-    });
+    const data = await db.select().from(projects).orderBy(desc(projects.createdAt));
     
     const safeData = Array.isArray(data) ? data : [];
 
