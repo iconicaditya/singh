@@ -96,7 +96,7 @@ export default function ProjectDetail() {
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[50vh] md:h-[60vh] flex items-center overflow-hidden py-12 md:py-0">
+      <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end overflow-hidden pb-12 md:pb-16">
         {project.imageUrl ? (
           <div className="absolute inset-0">
             <img 
@@ -104,61 +104,66 @@ export default function ProjectDetail() {
               alt={project.title} 
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black/60" />
+            {/* Dark transparency layer as per image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
           </div>
         ) : (
           <div className="absolute inset-0 bg-slate-950" />
         )}
         
-        <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
-          <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-6">
-            <span className="px-3 md:px-4 py-1.5 bg-blue-600 text-white text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-md whitespace-nowrap">
-              {project.category}
-            </span>
-            <span className="px-3 md:px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/20 text-white text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-md whitespace-nowrap">
-              {project.status}
-            </span>
-            <span className="px-3 md:px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/20 text-white text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-md flex items-center gap-2 whitespace-nowrap">
-              <Calendar size={12} className="shrink-0" />
-              {project.projectDate}
-            </span>
-          </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+          <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
+            <div className="flex-1 w-full lg:max-w-4xl">
+              {/* Category, Status, Date Pills */}
+              <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-6">
+                <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md">
+                  {project.category}
+                </span>
+                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md">
+                  {project.status}
+                </span>
+                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md flex items-center gap-2">
+                  <Calendar size={12} className="shrink-0" />
+                  {project.projectDate}
+                </span>
+              </div>
 
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 md:gap-8">
-            <div className="flex-1 max-w-4xl">
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight mb-4 leading-[1.1] break-words">
+              <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black text-white uppercase tracking-tighter mb-6 leading-[0.85] break-words">
                 {project.title}
               </h1>
-              {project.location && (
-                <div className="flex items-center gap-2 text-white/80 text-xs md:text-sm font-bold uppercase tracking-widest">
-                  <MapPin size={16} className="text-blue-400 shrink-0" />
-                  <span className="truncate">{project.location}</span>
-                </div>
-              )}
-              {project.tags && (
-                <div className="flex flex-wrap gap-2 md:gap-3 mt-6">
-                  {project.tags.split(',').map((tag: string, i: number) => (
-                    <span key={i} className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">
-                      #{tag.trim()}
-                    </span>
-                  ))}
-                </div>
-              )}
+
+              <div className="space-y-4">
+                {project.location && (
+                  <div className="flex items-center gap-2 text-white/80 text-sm md:text-base font-bold uppercase tracking-[0.2em]">
+                    <MapPin size={18} className="text-blue-500 shrink-0" />
+                    <span>{project.location}</span>
+                  </div>
+                )}
+                {project.tags && (
+                  <div className="flex flex-wrap gap-4">
+                    {project.tags.split(',').map((tag: string, i: number) => (
+                      <span key={i} className="text-white text-xs md:text-sm font-black uppercase tracking-widest opacity-90">
+                        #{tag.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {isCompleted && (
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 w-full lg:w-auto mt-4 lg:mt-0">
+              <div className="flex flex-col gap-3 shrink-0 w-full lg:w-72 mb-2">
                 <button 
                   onClick={handleViewResearch}
-                  className="w-full lg:w-64 px-6 md:px-8 py-3 md:py-4 bg-blue-600 text-white rounded-xl font-bold text-xs md:text-sm tracking-wide hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 active:scale-[0.98]"
+                  className="w-full px-8 py-4 bg-blue-600 text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-900/40 active:scale-[0.98]"
                 >
                   View Research
                 </button>
                 <button 
                   onClick={handleShare}
-                  className="w-full lg:w-64 px-6 md:px-8 py-3 md:py-4 bg-white text-slate-900 rounded-xl font-bold text-xs md:text-sm tracking-wide hover:bg-slate-50 transition-all flex items-center justify-center gap-2 border border-slate-200 active:scale-[0.98]"
+                  className="w-full px-8 py-4 bg-white text-slate-900 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-2 border border-transparent shadow-xl active:scale-[0.98]"
                 >
-                  <Share2 size={18} className="shrink-0" /> Share
+                  <Share2 size={20} className="shrink-0" /> Share
                 </button>
               </div>
             )}
@@ -167,23 +172,24 @@ export default function ProjectDetail() {
       </section>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 sm:px-6 max-w-5xl py-12 md:py-20">
-        <div className="space-y-12 md:space-y-20">
-          {/* Overview */}
-          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex items-center gap-3 mb-6 md:mb-8">
-              <div className="p-2 md:p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
-                <FileText size={20} className="md:w-6 md:h-6" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-16 md:py-24">
+        <div className="max-w-5xl">
+          <div className="space-y-16 md:space-y-24">
+            {/* Overview */}
+            <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
+                  <FileText size={28} />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">Project Overview</h2>
               </div>
-              <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight">Project Overview</h2>
-            </div>
-            <div className="prose prose-slate max-w-none">
-              <div 
-                className="text-base md:text-lg text-slate-600 leading-relaxed md:leading-loose rich-text-content overflow-hidden break-words"
-                dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
-              />
-            </div>
-          </section>
+              <div className="prose prose-slate max-w-none">
+                <div 
+                  className="text-lg md:text-xl text-slate-600 leading-relaxed md:leading-loose rich-text-content overflow-hidden break-words"
+                  dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
+                />
+              </div>
+            </section>
 
           {/* Key Objectives */}
           {project.projectObjectives && Array.isArray(project.projectObjectives) && project.projectObjectives.length > 0 && (
