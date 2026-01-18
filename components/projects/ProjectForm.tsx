@@ -33,8 +33,46 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     imageUrl: "",
     aboutProject: "",
     projectObjectives: [] as string[],
-    description: "" // Short description used in cards
+    description: "", // Short description used in cards
+    attachedResearchIds: [] as number[]
   });
+
+  const [availableResearch, setAvailableResearch] = useState<any[]>([]);
+  const [researchSearch, setResearchSearch] = useState("");
+  const [isResearchLoading, setIsResearchLoading] = useState(false);
+
+  useEffect(() => {
+    if (formData.status === 'completed' && availableResearch.length === 0) {
+      const fetchResearch = async () => {
+        setIsResearchLoading(true);
+        try {
+          const res = await fetch("/api/research");
+          const data = await res.json();
+          setAvailableResearch(Array.isArray(data) ? data : []);
+        } catch (err) {
+          console.error("Failed to fetch research:", err);
+        } finally {
+          setIsResearchLoading(false);
+        }
+      };
+      fetchResearch();
+    }
+  }, [formData.status]);
+
+  const toggleResearchSelection = (id: number) => {
+    setFormData(prev => {
+      const currentIds = prev.attachedResearchIds || [];
+      const newIds = currentIds.includes(id)
+        ? currentIds.filter(i => i !== id)
+        : [...currentIds, id];
+      return { ...prev, attachedResearchIds: newIds };
+    });
+  };
+
+  const filteredResearch = availableResearch.filter(r => 
+    r.title.toLowerCase().includes(researchSearch.toLowerCase()) ||
+    r.category.toLowerCase().includes(researchSearch.toLowerCase())
+  );
 
   const [categories, setCategories] = useState(CATEGORIES);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
@@ -75,7 +113,8 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         imageUrl: initialData.imageUrl || "",
         aboutProject: initialData.aboutProject || "",
         projectObjectives: Array.isArray(initialData.projectObjectives) ? initialData.projectObjectives : [],
-        description: initialData.description || ""
+        description: initialData.description || "",
+        attachedResearchIds: Array.isArray(initialData.attachedResearchIds) ? initialData.attachedResearchIds : []
       });
     } else {
       setFormData({
@@ -89,7 +128,8 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         imageUrl: "",
         aboutProject: "",
         projectObjectives: [],
-        description: ""
+        description: "",
+        attachedResearchIds: []
       });
     }
   }, [initialData, isOpen]);
@@ -406,6 +446,69 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                     </label>
                   </div>
                 </div>
+
+                {/* Research Selection for Completed Projects */}
+                <AnimatePresence>
+                  {formData.status === 'completed' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="space-y-4 overflow-hidden"
+                    >
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-700 ml-1">Link Related Research</label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={researchSearch}
+                            onChange={(e) => setResearchSearch(e.target.value)}
+                            className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
+                            placeholder="Search research by title or category..."
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-2 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-200">
+                        {isResearchLoading ? (
+                          <div className="flex items-center justify-center py-4">
+                            <Loader2 className="animate-spin text-blue-600" size={20} />
+                          </div>
+                        ) : filteredResearch.length > 0 ? (
+                          filteredResearch.map((res) => (
+                            <div
+                              key={res.id}
+                              onClick={() => toggleResearchSelection(res.id)}
+                              className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
+                                (formData.attachedResearchIds || []).includes(res.id)
+                                  ? 'bg-blue-50 border-blue-200'
+                                  : 'bg-white border-slate-100 hover:border-slate-200'
+                              }`}
+                            >
+                              <div>
+                                <div className="text-sm font-bold text-slate-900">{res.title}</div>
+                                <div className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">{res.category}</div>
+                              </div>
+                              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                                (formData.attachedResearchIds || []).includes(res.id)
+                                  ? 'bg-blue-600 border-blue-600'
+                                  : 'border-slate-200'
+                              }`}>
+                                {(formData.attachedResearchIds || []).includes(res.id) && (
+                                  <div className="w-2 h-2 bg-white rounded-full" />
+                                )}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-4 text-slate-400 text-sm font-medium">
+                            No research found matching your search.
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </section>
 
