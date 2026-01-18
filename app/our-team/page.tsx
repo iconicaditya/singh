@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { team } from "@/lib/db/schema";
 import { Linkedin, Twitter, Globe, User } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 interface TeamMember {
   id: number;
   name: string;
@@ -17,7 +19,12 @@ interface TeamMember {
 }
 
 export default async function TeamPage() {
-  const teamMembers = await db.select().from(team).orderBy(team.createdAt) as TeamMember[];
+  let teamMembers: TeamMember[] = [];
+  try {
+    teamMembers = await db.select().from(team).orderBy(team.createdAt) as TeamMember[];
+  } catch (error) {
+    console.error("Error fetching team members during build/render:", error);
+  }
 
   return (
     <main className="min-h-screen bg-white">
