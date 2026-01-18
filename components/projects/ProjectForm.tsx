@@ -225,10 +225,15 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
       const url = '/api/projects';
       const method = initialData?.id ? 'PUT' : 'POST';
       
-      // Auto-generate short description if empty
+      // Validate mandatory fields
+      if (!formData.title || !formData.description || !formData.aboutProject) {
+        alert("Please fill in all mandatory fields: Title, Card Summary, and Detailed Description");
+        setIsSubmitting(false);
+        return;
+      }
+
       const submissionData = {
         ...formData,
-        description: formData.description || (formData.aboutProject.replace(/<[^>]*>/g, '').substring(0, 150) + '...'),
         id: initialData?.id
       };
 
@@ -626,7 +631,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
             <section className="space-y-8">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
-                <h3 className="text-lg font-black text-slate-900">Detailed Description</h3>
+                <h3 className="text-lg font-black text-slate-900">Detailed Description *</h3>
               </div>
 
               <div className="rounded-2xl border border-slate-200 overflow-hidden">
@@ -680,10 +685,11 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
             {/* Short Description (Admin Internal) */}
             <section className="space-y-4">
-              <label className="text-xs font-bold text-slate-700 ml-1">Card Summary (Auto-generated if empty)</label>
+              <label className="text-xs font-bold text-slate-700 ml-1">Card Summary *</label>
               <textarea
                 value={formData.description}
                 onChange={e => setFormData({ ...formData, description: e.target.value })}
+                required
                 className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400 h-24"
                 placeholder="Short summary for project cards..."
               />
