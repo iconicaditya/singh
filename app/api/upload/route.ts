@@ -19,6 +19,8 @@ export async function POST(req: Request) {
       const { searchParams } = new URL(req.url);
       const folder = searchParams.get('folder') || 'research';
       
+      console.log('Uploading to Cloudinary:', { folder, isPdf, fileName: file.name });
+
       cloudinary.uploader.upload_stream(
         { 
           resource_type: isPdf ? 'raw' : 'auto', 
@@ -32,7 +34,10 @@ export async function POST(req: Request) {
             console.error('Cloudinary Stream Error:', error);
             reject(error);
           }
-          else resolve(result);
+          else {
+            console.log('Cloudinary Upload Success:', result?.secure_url);
+            resolve(result);
+          }
         }
       ).end(buffer);
     });

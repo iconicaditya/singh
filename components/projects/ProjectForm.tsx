@@ -586,21 +586,33 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
               </div>
 
               <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="w-full md:w-48 h-32 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center relative overflow-hidden group">
+                <div 
+                  onClick={() => {
+                    const input = document.getElementById('project-image-upload');
+                    if (input) (input as HTMLInputElement).click();
+                  }}
+                  className="w-full md:w-48 h-32 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all"
+                >
                   {formData.imageUrl ? (
                     <>
                       <img src={formData.imageUrl} className="w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                         <label className="cursor-pointer text-white text-[10px] font-black uppercase tracking-widest p-2">Change
-                           <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" />
-                         </label>
+                         <p className="text-white text-[10px] font-black uppercase tracking-widest p-2">Change Image</p>
                       </div>
                     </>
                   ) : (
                     <div className="text-slate-300 flex flex-col items-center gap-2">
                       <Upload size={24} />
+                      <p className="text-[10px] font-black uppercase tracking-widest">Upload Image</p>
                     </div>
                   )}
+                  <input 
+                    id="project-image-upload"
+                    type="file" 
+                    className="hidden" 
+                    onChange={handleImageUpload} 
+                    accept="image/*" 
+                  />
                   {isUploading && (
                     <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
                       <Loader2 className="animate-spin text-blue-600" size={24} />
