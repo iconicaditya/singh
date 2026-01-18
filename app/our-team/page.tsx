@@ -54,7 +54,7 @@ export default async function TeamPage() {
       
       <div className="pt-32 pb-24">
         <div className="container mx-auto px-6">
-          <div className="max-w-2xl mb-16">
+          <div className="max-w-2xl mx-auto mb-16 text-center">
             <h1 className="text-5xl font-black text-slate-900 tracking-tighter mb-4">
               Our <span className="text-blue-600">Expert Team</span>
             </h1>
