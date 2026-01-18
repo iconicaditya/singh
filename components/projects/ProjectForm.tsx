@@ -12,6 +12,26 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
 });
 import 'react-quill-new/dist/quill.snow.css';
 
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'align': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ['link', 'clean']
+  ],
+};
+
+const formats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike',
+  'color', 'background',
+  'align',
+  'list', 'bullet',
+  'link'
+];
+
 interface ProjectFormProps {
   isOpen: boolean;
   onClose: () => void;
@@ -587,55 +607,50 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                     </div>
                   )}
                 </div>
-                
-                <label className="cursor-pointer bg-white border border-slate-200 px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest uppercase hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm flex items-center gap-3">
-                  <Upload size={16} className="text-slate-400" />
-                  {isUploading ? "Uploading..." : "Upload Title Image"}
-                  <input type="file" className="hidden" onChange={handleImageUpload} accept="image/*" />
-                </label>
               </div>
             </section>
 
-            {/* About Project */}
-            <section className="space-y-6">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">About Project</h3>
+            {/* 3. Detailed Description */}
+            <section className="space-y-8">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
+                <h3 className="text-lg font-black text-slate-900">Detailed Description</h3>
+              </div>
+
               <div className="rounded-2xl border border-slate-200 overflow-hidden">
                 <ReactQuill
                   theme="snow"
                   value={formData.aboutProject}
-                  onChange={(val) => setFormData({ ...formData, aboutProject: val })}
-                  placeholder="Detailed description of the project..."
-                  className="h-64"
+                  onChange={value => setFormData({ ...formData, aboutProject: value })}
+                  modules={modules}
+                  formats={formats}
+                  className="h-64 mb-12"
                 />
               </div>
-              <style jsx global>{`
-                .quill { display: flex; flex-direction: column; }
-                .ql-toolbar.ql-snow { border: none; border-bottom: 1px solid #f1f5f9; padding: 12px; background: #fafafa; }
-                .ql-container.ql-snow { border: none; flex: 1; font-family: inherit; font-size: 14px; }
-                .ql-editor { min-height: 200px; padding: 20px; color: #1e293b; }
-                .ql-editor.ql-blank::before { color: #94a3b8; font-style: normal; font-weight: 500; }
-              `}</style>
             </section>
 
-            {/* Project Objectives */}
+            {/* 4. Project Objectives */}
             <section className="space-y-6">
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Project Objectives</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">4</div>
+                <h3 className="text-lg font-black text-slate-900">Project Objectives</h3>
+              </div>
+
               <div className="space-y-4">
                 {formData.projectObjectives.map((objective, index) => (
-                  <div key={index} className="flex gap-4 items-center">
-                    <div className="flex-1">
-                      <textarea
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="flex-1 space-y-2">
+                      <input
                         value={objective}
                         onChange={e => updateObjective(index, e.target.value)}
-                        className="w-full px-5 py-3.5 bg-slate-50 border border-slate-100 rounded-xl focus:border-blue-500 outline-none font-semibold text-sm transition-all resize-none"
+                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-blue-500 outline-none font-semibold text-sm transition-all"
                         placeholder={`Objective ${index + 1}`}
-                        rows={1}
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => removeObjective(index)}
-                      className="p-2 text-slate-300 hover:text-red-500 transition-colors"
+                      className="p-3 text-slate-300 hover:text-red-500 transition-colors"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -651,26 +666,33 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
               </div>
             </section>
 
-            {/* Footer Buttons */}
-            <div className="flex gap-4 pt-10 sticky bottom-0 bg-white/80 backdrop-blur-md pb-4 z-10 border-t border-slate-50">
+            {/* Short Description (Admin Internal) */}
+            <section className="space-y-4">
+              <label className="text-xs font-bold text-slate-700 ml-1">Card Summary (Auto-generated if empty)</label>
+              <textarea
+                value={formData.description}
+                onChange={e => setFormData({ ...formData, description: e.target.value })}
+                className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400 h-24"
+                placeholder="Short summary for project cards..."
+              />
+            </section>
+
+            {/* Footer Actions */}
+            <div className="pt-8 border-t border-slate-100 flex justify-end gap-4 sticky bottom-0 bg-white/80 backdrop-blur-md pb-4">
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 py-5 bg-slate-100 text-slate-500 rounded-2xl font-black text-[10px] tracking-widest uppercase hover:bg-slate-200 transition-all active:scale-[0.98]"
+                className="px-8 py-4 text-slate-400 font-black text-xs uppercase tracking-widest hover:text-slate-900 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                disabled={isUploading || isSubmitting}
-                className="flex-[2] py-5 bg-blue-600 text-white rounded-2xl font-black text-[10px] tracking-widest uppercase hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 disabled:opacity-50 flex items-center justify-center gap-3 active:scale-[0.98]"
+                disabled={isSubmitting}
+                className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-blue-600 transition-all shadow-xl shadow-slate-200 disabled:opacity-50"
               >
-                {isSubmitting ? (
-                  <Loader2 className="animate-spin" size={18} />
-                ) : (
-                  <Save size={18} />
-                )}
-                {initialData ? "Update Project" : "Create Project"}
+                {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
+                {initialData?.id ? "Update Project" : "Publish Project"}
               </button>
             </div>
           </form>

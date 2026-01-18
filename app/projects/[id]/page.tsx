@@ -224,6 +224,9 @@ export default function ProjectDetail() {
         .rich-text-content p { margin-bottom: 1.25rem; }
         .rich-text-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 1.25rem; }
         .rich-text-content ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 1.25rem; }
+        .rich-text-content .ql-align-center { text-align: center; }
+        .rich-text-content .ql-align-right { text-align: right; }
+        .rich-text-content .ql-align-justify { text-align: justify; }
         @media (min-width: 768px) {
           .rich-text-content p { margin-bottom: 1.5rem; }
           .rich-text-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
