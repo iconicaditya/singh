@@ -154,7 +154,7 @@ export default function ProjectDetail() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black text-white uppercase tracking-tighter mb-6 leading-[0.85] break-words drop-shadow-2xl"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter mb-6 leading-[1.1] break-words drop-shadow-2xl"
               >
                 {project.title}
               </motion.h1>
@@ -253,7 +253,7 @@ export default function ProjectDetail() {
                     <div className="shrink-0 text-emerald-600 mt-0.5">
                       <CheckCircle2 size={20} className="md:w-6 md:h-6" />
                     </div>
-                    <p className="text-slate-800 font-bold uppercase tracking-tight text-xs md:text-sm leading-snug">
+                    <p className="text-slate-800 font-bold uppercase tracking-tight text-xs md:text-sm leading-snug break-all sm:break-words whitespace-normal overflow-hidden">
                       {obj.title || obj}
                     </p>
                   </motion.div>
