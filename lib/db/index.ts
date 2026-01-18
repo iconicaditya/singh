@@ -1,6 +1,11 @@
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import * as schema from './schema';
+
+// Disable fetch cache for Neon to prevent potential issues in some environments
+if (typeof globalThis.fetch === 'function') {
+  neonConfig.fetchConnectionCache = true;
+}
 
 if (!process.env.DATABASE_URL) {
   throw new Error(

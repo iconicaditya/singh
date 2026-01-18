@@ -21,8 +21,13 @@ interface TeamMember {
 export default async function TeamPage() {
   let teamMembers: TeamMember[] = [];
   try {
-    const data = await db.select().from(team).orderBy(team.createdAt);
-    teamMembers = (data || []) as TeamMember[];
+    // Using a more robust fetch approach or checking the db connection
+    const result = await db.select().from(team).orderBy(team.createdAt);
+    if (result && Array.isArray(result)) {
+      teamMembers = result as TeamMember[];
+    } else {
+      console.warn("Team query returned non-array result:", result);
+    }
   } catch (error) {
     console.error("Error fetching team members during build/render:", error);
   }
