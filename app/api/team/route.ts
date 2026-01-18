@@ -6,8 +6,9 @@ import { eq } from "drizzle-orm";
 export async function GET() {
   try {
     const data = await db.select().from(team).orderBy(team.createdAt);
-    return NextResponse.json(data);
+    return NextResponse.json(data || []);
   } catch (error) {
+    console.error("Fetch team error:", error);
     return NextResponse.json({ error: "Failed to fetch team" }, { status: 500 });
   }
 }
