@@ -54,3 +54,14 @@ export const gallery = pgTable("gallery", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const team = pgTable("team", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  role: varchar("role", { length: 255 }).notNull(),
+  description: text("description").notNull(),
+  imageUrl: text("image_url").notNull(),
+  socialLinks: jsonb("social_links").notNull(), // {linkedin, twitter, website, etc}
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
