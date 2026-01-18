@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import { db } from "@/lib/db";
 import { team } from "@/lib/db/schema";
-import { Linkedin, Twitter, Globe, User } from "lucide-react";
+import { Linkedin, Twitter, User } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
@@ -14,14 +14,22 @@ interface TeamMember {
   socialLinks: {
     linkedin?: string;
     twitter?: string;
-    website?: string;
+    facebook?: string;
+    instagram?: string;
   };
 }
+
+const FacebookIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+);
+
+const InstagramIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+);
 
 export default async function TeamPage() {
   let teamMembers: TeamMember[] = [];
   try {
-    // Using the relational API for potentially better stability
     const result = await db.query.team.findMany({
       orderBy: (team, { asc }) => [asc(team.createdAt)],
     });
@@ -31,7 +39,6 @@ export default async function TeamPage() {
     }
   } catch (error) {
     console.error("Error fetching team members during build/render:", error);
-    // Fallback to direct select if relational query fails
     try {
       const fallbackResult = await db.select().from(team).orderBy(team.createdAt);
       if (fallbackResult && Array.isArray(fallbackResult)) {
@@ -89,9 +96,14 @@ export default async function TeamPage() {
                           <Twitter size={20} strokeWidth={2.5} />
                         </a>
                       )}
-                      {member.socialLinks?.website && (
-                        <a href={member.socialLinks.website} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-emerald-500 transition-colors">
-                          <Globe size={20} strokeWidth={2.5} />
+                      {member.socialLinks?.facebook && (
+                        <a href={member.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-700 transition-colors">
+                          <FacebookIcon size={20} />
+                        </a>
+                      )}
+                      {member.socialLinks?.instagram && (
+                        <a href={member.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-pink-600 transition-colors">
+                          <InstagramIcon size={20} />
                         </a>
                       )}
                     </div>
