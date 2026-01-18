@@ -172,11 +172,17 @@ export default function ProjectDetail() {
       </section>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl py-16 md:py-24">
-        <div className="max-w-5xl">
+      <div className="container mx-auto px-6 sm:px-10 lg:px-16 max-w-7xl py-16 md:py-24">
+        <div className="max-w-5xl mx-auto">
           <div className="space-y-16 md:space-y-24">
             {/* Overview */}
-            <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <motion.section 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="animate-in fade-in slide-in-from-bottom-4 duration-700"
+            >
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
                   <FileText size={28} />
@@ -189,11 +195,17 @@ export default function ProjectDetail() {
                   dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
                 />
               </div>
-            </section>
+            </motion.section>
 
           {/* Key Objectives */}
           {project.projectObjectives && Array.isArray(project.projectObjectives) && project.projectObjectives.length > 0 && (
-            <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+            <motion.section 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150"
+            >
               <div className="flex items-center gap-3 mb-6 md:mb-8">
                 <div className="p-2 md:p-3 bg-emerald-50 text-emerald-600 rounded-xl shrink-0">
                   <Target size={20} className="md:w-6 md:h-6" />
@@ -202,9 +214,14 @@ export default function ProjectDetail() {
               </div>
               <div className="grid grid-cols-1 gap-3 md:gap-4">
                 {project.projectObjectives.map((obj: any, idx: number) => (
-                  <div 
+                  <motion.div 
                     key={idx}
-                    className="flex items-start gap-4 p-4 md:p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 hover:border-emerald-200 transition-all"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    whileHover={{ scale: 1.01 }}
+                    className="flex items-start gap-4 p-4 md:p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 hover:border-emerald-200 transition-all shadow-sm hover:shadow-md"
                   >
                     <div className="shrink-0 text-emerald-600 mt-0.5">
                       <CheckCircle2 size={20} className="md:w-6 md:h-6" />
@@ -212,10 +229,10 @@ export default function ProjectDetail() {
                     <p className="text-slate-800 font-bold uppercase tracking-tight text-xs md:text-sm leading-snug">
                       {obj.title || obj}
                     </p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </section>
+            </motion.section>
           )}
         </div>
       </div>
