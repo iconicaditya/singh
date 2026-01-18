@@ -21,7 +21,8 @@ interface TeamMember {
 export default async function TeamPage() {
   let teamMembers: TeamMember[] = [];
   try {
-    teamMembers = await db.select().from(team).orderBy(team.createdAt) as TeamMember[];
+    const data = await db.select().from(team).orderBy(team.createdAt);
+    teamMembers = (data || []) as TeamMember[];
   } catch (error) {
     console.error("Error fetching team members during build/render:", error);
   }

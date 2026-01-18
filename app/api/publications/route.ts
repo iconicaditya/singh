@@ -7,8 +7,12 @@ export async function GET() {
   try {
     const data = await db.select().from(publications).orderBy(desc(publications.createdAt));
     
-    const safeData = Array.isArray(data) ? data : [];
-    const sanitizedData = safeData.map(item => ({
+    if (!data) {
+      console.warn('Publications query returned null');
+      return NextResponse.json([]);
+    }
+    
+    const sanitizedData = data.map(item => ({
       ...item,
       authors: typeof item.authors === 'string' ? item.authors : String(item.authors || '')
     }));

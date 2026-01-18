@@ -7,9 +7,12 @@ export async function GET() {
   try {
     const data = await db.select().from(projects).orderBy(desc(projects.createdAt));
     
-    const safeData = Array.isArray(data) ? data : [];
+    if (!data) {
+      console.warn('Projects query returned null');
+      return NextResponse.json([]);
+    }
 
-    const sanitizedData = safeData.map(item => ({
+    const sanitizedData = data.map(item => ({
       ...item,
       teamMembers: item && Array.isArray(item.teamMembers) ? item.teamMembers : [],
       projectObjectives: item && Array.isArray(item.projectObjectives) ? item.projectObjectives : [],
