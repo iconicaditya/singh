@@ -96,41 +96,68 @@ export default function ProjectDetail() {
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end overflow-hidden pb-12 md:pb-16">
+      <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end overflow-hidden pb-12 md:pb-16 bg-slate-950">
         {project.imageUrl ? (
-          <div className="absolute inset-0">
+          <motion.div 
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute inset-0"
+          >
             <img 
               src={project.imageUrl} 
               alt={project.title} 
               className="w-full h-full object-cover"
             />
             {/* Dark transparency layer as per image */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-          </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+          </motion.div>
         ) : (
           <div className="absolute inset-0 bg-slate-950" />
         )}
         
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+        <div className="container mx-auto px-6 sm:px-10 lg:px-16 max-w-7xl relative z-10">
           <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
             <div className="flex-1 w-full lg:max-w-4xl">
               {/* Category, Status, Date Pills */}
-              <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-6">
-                <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, staggerChildren: 0.1 }}
+                className="flex flex-wrap items-center gap-2 md:gap-3 mb-6"
+              >
+                <motion.span 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="px-4 py-1.5 bg-blue-600 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md shadow-lg shadow-blue-600/20"
+                >
                   {project.category}
-                </span>
-                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md">
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md"
+                >
                   {project.status}
-                </span>
-                <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md flex items-center gap-2">
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md flex items-center gap-2"
+                >
                   <Calendar size={12} className="shrink-0" />
                   {project.projectDate}
-                </span>
-              </div>
+                </motion.span>
+              </motion.div>
 
-              <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black text-white uppercase tracking-tighter mb-6 leading-[0.85] break-words">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-5xl sm:text-6xl md:text-8xl lg:text-[100px] font-black text-white uppercase tracking-tighter mb-6 leading-[0.85] break-words drop-shadow-2xl"
+              >
                 {project.title}
-              </h1>
+              </motion.h1>
 
               <div className="space-y-4">
                 {project.location && (
