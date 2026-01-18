@@ -118,17 +118,17 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
           exit={{ opacity: 0, y: 20, scale: 0.98 }}
           className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl my-8 relative flex flex-col max-h-[90vh]"
         >
-          <div className="p-8 border-b border-slate-100 flex justify-between items-start sticky top-0 bg-white/80 backdrop-blur-md z-10 rounded-t-3xl">
+          <div className="p-4 md:p-8 border-b border-slate-100 flex justify-between items-start sticky top-0 bg-white/80 backdrop-blur-md z-10 rounded-t-3xl">
             <div>
-              <h2 className="text-2xl font-black text-slate-900 tracking-tight">{initialData ? 'Edit' : 'Add'} Team Member</h2>
-              <p className="text-slate-500 text-sm mt-1 font-medium">Manage the research lab's team profiles.</p>
+              <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">{initialData ? 'Edit' : 'Add'} Team Member</h2>
+              <p className="text-slate-500 text-xs md:text-sm mt-1 font-medium">Manage the research lab's team profiles.</p>
             </div>
             <button onClick={onClose} className="p-2 hover:bg-slate-50 rounded-full transition-all text-slate-400">
               <X size={24} />
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 space-y-8">
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 md:y-8">
             <div className="flex flex-col items-center gap-4">
               <div 
                 onClick={() => document.getElementById('team-image-upload')?.click()}
@@ -194,7 +194,7 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
                   <input
                     value={formData.socialLinks.linkedin}
                     onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, linkedin: e.target.value } })}
-                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold"
+                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold text-slate-900"
                     placeholder="LinkedIn Profile URL"
                   />
                 </div>
@@ -203,7 +203,7 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
                   <input
                     value={formData.socialLinks.twitter}
                     onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, twitter: e.target.value } })}
-                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold"
+                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold text-slate-900"
                     placeholder="Twitter Profile URL"
                   />
                 </div>
@@ -214,7 +214,7 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
                   <input
                     value={formData.socialLinks.facebook}
                     onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, facebook: e.target.value } })}
-                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold"
+                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold text-slate-900"
                     placeholder="Facebook Profile URL"
                   />
                 </div>
@@ -225,19 +225,19 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
                   <input
                     value={formData.socialLinks.instagram}
                     onChange={e => setFormData({ ...formData, socialLinks: { ...formData.socialLinks, instagram: e.target.value } })}
-                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold"
+                    className="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 outline-none text-sm font-semibold text-slate-900"
                     placeholder="Instagram Profile URL"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-100 flex justify-end gap-4 sticky bottom-0 bg-white pb-4">
-              <button type="button" onClick={onClose} className="px-8 py-4 text-slate-400 font-black text-xs uppercase tracking-widest hover:text-slate-900 transition-colors">Cancel</button>
+            <div className="pt-6 border-t border-slate-100 flex flex-col md:flex-row justify-end gap-3 md:gap-4 sticky bottom-0 bg-white pb-4">
+              <button type="button" onClick={onClose} className="w-full md:w-auto px-8 py-4 text-slate-400 font-black text-xs uppercase tracking-widest hover:text-slate-900 transition-colors order-2 md:order-1">Cancel</button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 hover:bg-blue-600 transition-all shadow-xl disabled:opacity-50"
+                className="w-full md:w-auto px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-blue-600 transition-all shadow-xl disabled:opacity-50 order-1 md:order-2"
               >
                 {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
                 {initialData?.id ? "Update Member" : "Add Member"}
