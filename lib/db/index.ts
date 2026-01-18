@@ -1,11 +1,6 @@
-import { neon, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
+import { Pool } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-serverless';
 import * as schema from './schema';
-
-// Disable fetch cache for Neon to prevent potential issues in some environments
-if (typeof globalThis.fetch === 'function') {
-  neonConfig.fetchConnectionCache = true;
-}
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
@@ -13,6 +8,5 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// Ensure the URL is properly formatted for Neon serverless
-const sql = neon(process.env.DATABASE_URL);
-export const db = drizzle(sql, { schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+export const db = drizzle(pool, { schema });

@@ -21,15 +21,25 @@ interface TeamMember {
 export default async function TeamPage() {
   let teamMembers: TeamMember[] = [];
   try {
-    // Using a more robust fetch approach or checking the db connection
-    const result = await db.select().from(team).orderBy(team.createdAt);
+    // Using the relational API for potentially better stability
+    const result = await db.query.team.findMany({
+      orderBy: (team, { asc }) => [asc(team.createdAt)],
+    });
+    
     if (result && Array.isArray(result)) {
-      teamMembers = result as TeamMember[];
-    } else {
-      console.warn("Team query returned non-array result:", result);
+      teamMembers = result as unknown as TeamMember[];
     }
   } catch (error) {
     console.error("Error fetching team members during build/render:", error);
+    // Fallback to direct select if relational query fails
+    try {
+      const fallbackResult = await db.select().from(team).orderBy(team.createdAt);
+      if (fallbackResult && Array.isArray(fallbackResult)) {
+        teamMembers = fallbackResult as unknown as TeamMember[];
+      }
+    } catch (fallbackError) {
+      console.error("Fallback query also failed:", fallbackError);
+    }
   }
 
   return (
