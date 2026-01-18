@@ -83,8 +83,8 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     setFormData(prev => {
       const currentIds = prev.attachedResearchIds || [];
       const newIds = currentIds.includes(id)
-        ? currentIds.filter(i => i !== id)
-        : [...currentIds, id];
+        ? []
+        : [id];
       return { ...prev, attachedResearchIds: newIds };
     });
   };
@@ -226,8 +226,8 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
       const method = initialData?.id ? 'PUT' : 'POST';
       
       // Validate mandatory fields
-      if (!formData.title || !formData.description || !formData.aboutProject) {
-        alert("Please fill in all mandatory fields: Title, Card Summary, and Detailed Description");
+      if (!formData.title || !formData.description || !formData.aboutProject || !formData.imageUrl || !formData.location || !formData.tags || formData.teamMembers.length === 0 || formData.projectObjectives.length === 0) {
+        alert("Please fill in all mandatory fields, including Image, Tags, Location, Team Members, and Objectives.");
         setIsSubmitting(false);
         return;
       }
@@ -414,11 +414,12 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Tags (Comma Separated)</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Tags (Comma Separated) *</label>
                     <div className="relative">
                       <input
                         value={formData.tags}
                         onChange={e => setFormData({ ...formData, tags: e.target.value })}
+                        required
                         className="w-full px-5 py-4 pl-12 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
                         placeholder="e.g. LCA, Waste Management"
                       />
@@ -427,11 +428,12 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Location</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Location *</label>
                     <div className="relative">
                       <input
                         value={formData.location}
                         onChange={e => setFormData({ ...formData, location: e.target.value })}
+                        required
                         className="w-full px-5 py-4 pl-12 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
                         placeholder="Project site or city"
                       />
@@ -482,7 +484,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                       className="space-y-4 overflow-hidden"
                     >
                       <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-700 ml-1">Link Related Research</label>
+                        <label className="text-xs font-bold text-slate-700 ml-1">Link Related Research (Select Only One)</label>
                         <div className="relative">
                           <input
                             type="text"
@@ -540,7 +542,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
             {/* Team Members */}
             <section className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Team Members</h3>
+                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Team Members *</h3>
               </div>
 
               <div className="space-y-4">
@@ -587,7 +589,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
             <section className="space-y-8">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">2</div>
-                <h3 className="text-lg font-black text-slate-900">Media Section</h3>
+                <h3 className="text-lg font-black text-slate-900">Media Section *</h3>
               </div>
 
               <div className="flex flex-col md:flex-row items-center gap-8">
@@ -650,7 +652,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
             <section className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">4</div>
-                <h3 className="text-lg font-black text-slate-900">Project Objectives</h3>
+                <h3 className="text-lg font-black text-slate-900">Project Objectives *</h3>
               </div>
 
               <div className="space-y-4">
