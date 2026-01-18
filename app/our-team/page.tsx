@@ -51,7 +51,6 @@ export default async function TeamPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      <Header />
       
       <div className="pt-32 pb-24">
         <div className="container mx-auto px-6">
