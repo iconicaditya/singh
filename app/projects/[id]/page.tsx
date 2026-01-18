@@ -219,8 +219,9 @@ export default function ProjectDetail() {
           )}
         </div>
       </div>
+    </div>
 
-      <style jsx global>{`
+    <style jsx global>{`
         .rich-text-content p { margin-bottom: 1.25rem; }
         .rich-text-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 1.25rem; }
         .rich-text-content ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 1.25rem; }
