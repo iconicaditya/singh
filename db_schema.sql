@@ -16,6 +16,15 @@ CREATE TABLE IF NOT EXISTS research (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Messages Table Schema
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Projects Table Schema
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
@@ -36,6 +45,15 @@ CREATE TABLE IF NOT EXISTS projects (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Messages Table Schema
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Publications Table Schema
 CREATE TABLE IF NOT EXISTS publications (
     id SERIAL PRIMARY KEY,
@@ -50,6 +68,15 @@ CREATE TABLE IF NOT EXISTS publications (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Messages Table Schema
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Gallery Table Schema
 CREATE TABLE IF NOT EXISTS gallery (
     id SERIAL PRIMARY KEY,
@@ -59,4 +86,13 @@ CREATE TABLE IF NOT EXISTS gallery (
     description TEXT,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Messages Table Schema
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
