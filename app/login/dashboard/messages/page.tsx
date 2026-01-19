@@ -248,53 +248,70 @@ export default function MessagesPage() {
       {/* Message Modal */}
       <AnimatePresence>
         {selectedMessage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-8 bg-slate-900/60 backdrop-blur-md">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.9, y: 40 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden"
+              exit={{ opacity: 0, scale: 0.9, y: 40 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="bg-white w-full max-w-3xl max-h-[90vh] rounded-[2rem] shadow-2xl overflow-hidden flex flex-col relative"
             >
-              <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-black">
+              {/* Header */}
+              <div className="p-5 sm:p-7 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-lg shadow-blue-500/20 text-lg">
                     {selectedMessage.name[0].toUpperCase()}
                   </div>
                   <div>
-                    <h3 className="font-black text-slate-900 leading-tight">{selectedMessage.name}</h3>
-                    <p className="text-xs text-slate-500">{selectedMessage.email}</p>
+                    <h3 className="font-black text-slate-900 leading-tight text-lg">{selectedMessage.name}</h3>
+                    <p className="text-sm text-slate-500 font-medium">{selectedMessage.email}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="hidden sm:block text-[10px] font-black text-slate-400 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full uppercase tracking-wider">
                     {formatFullDate(selectedMessage.createdAt)}
-                  </span>
+                  </div>
                   <button 
                     onClick={() => setSelectedMessage(null)}
-                    className="p-2 hover:bg-slate-200 rounded-full transition-colors text-slate-400"
+                    className="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-400 hover:text-slate-900 group"
                   >
-                    <X size={20} />
+                    <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
                   </button>
                 </div>
               </div>
               
-              <div className="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
-                <div>
-                  <h2 className="text-xl font-black text-slate-900 mb-2">{selectedMessage.subject}</h2>
-                  <div className="w-12 h-1 bg-blue-500 rounded-full" />
+              {/* Content Area */}
+              <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 custom-scrollbar">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-full">Subject</span>
+                    <div className="flex-1 h-px bg-slate-100"></div>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                    {selectedMessage.subject || "No Subject"}
+                  </h2>
                 </div>
                 
-                <div className="text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50 p-6 rounded-2xl border border-slate-100 italic">
-                  "{selectedMessage.message}"
+                <div className="relative group">
+                  <div className="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full opacity-50"></div>
+                  <div className="text-slate-700 text-base sm:text-lg leading-relaxed whitespace-pre-wrap pl-2">
+                    {selectedMessage.message}
+                  </div>
+                </div>
+
+                <div className="sm:hidden pt-4 border-t border-slate-50">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Received On</p>
+                  <p className="text-sm text-slate-600 font-medium">{formatFullDate(selectedMessage.createdAt)}</p>
                 </div>
               </div>
 
-              <div className="p-6 border-t border-slate-100 bg-slate-50/50 flex justify-end">
+              {/* Footer */}
+              <div className="p-5 sm:p-7 border-t border-slate-100 bg-slate-50/50 flex justify-end items-center gap-4">
                 <button
                   onClick={() => setSelectedMessage(null)}
-                  className="px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10"
+                  className="px-8 py-3.5 rounded-2xl bg-slate-900 text-white font-black text-sm hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-95 flex items-center gap-2"
                 >
-                  Close Message
+                  Dismiss
                 </button>
               </div>
             </motion.div>
