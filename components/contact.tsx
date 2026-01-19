@@ -51,6 +51,17 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 bg-[#f8fafc]">
       <div className="container mx-auto px-6 max-w-7xl">
+        {submitStatus === "success" && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-8 p-6 bg-green-50 border border-green-100 rounded-2xl text-center"
+          >
+            <p className="text-green-800 font-bold">
+              Your message has been sent successfully. We will get back to you soon.
+            </p>
+          </motion.div>
+        )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

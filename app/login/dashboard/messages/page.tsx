@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Mail, User, Calendar, MessageSquare, Trash2 } from "lucide-react";
+import { Mail, User, Calendar, MessageSquare, Trash2, Search, Filter } from "lucide-react";
 
 interface Message {
   id: number;
@@ -16,6 +16,8 @@ interface Message {
 export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
 
   useEffect(() => {
     fetchMessages();
@@ -34,6 +36,20 @@ export default function MessagesPage() {
     }
   };
 
+  const filteredMessages = useMemo(() => {
+    return messages.filter((msg) => {
+      const matchesSearch = 
+        msg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        msg.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        msg.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        msg.message.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesDate = !dateFilter || (msg.createdAt && msg.createdAt.startsWith(dateFilter));
+      
+      return matchesSearch && matchesDate;
+    });
+  }, [messages, searchQuery, dateFilter]);
+
   const formatDate = (dateStr: string | null | undefined) => {
     if (!dateStr) return "N/A";
     try {
@@ -46,10 +62,32 @@ export default function MessagesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Messages</h1>
           <p className="text-slate-500 text-sm">View and manage contact form submissions</p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="text"
+              placeholder="Search messages..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 w-full sm:w-64 text-sm text-slate-900"
+            />
+          </div>
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="pl-10 pr-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 w-full text-sm text-slate-900"
+            />
+          </div>
         </div>
       </div>
 
@@ -61,13 +99,13 @@ export default function MessagesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {messages.length === 0 ? (
+          {filteredMessages.length === 0 ? (
             <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-slate-200">
               <MessageSquare className="mx-auto text-slate-300 mb-4" size={48} />
               <p className="text-slate-500 font-medium">No messages found</p>
             </div>
           ) : (
-            messages.map((msg, i) => (
+            filteredMessages.map((msg, i) => (
               <motion.div
                 key={msg.id}
                 initial={{ opacity: 0, y: 20 }}
