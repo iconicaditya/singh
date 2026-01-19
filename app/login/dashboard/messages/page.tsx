@@ -24,12 +24,23 @@ export default function MessagesPage() {
   const fetchMessages = async () => {
     try {
       const res = await fetch("/api/contact");
+      if (!res.ok) throw new Error("Failed to fetch messages");
       const data = await res.json();
-      setMessages(data);
+      setMessages(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const formatDate = (dateStr: string | null | undefined) => {
+    if (!dateStr) return "N/A";
+    try {
+      const date = new Date(dateStr);
+      return isNaN(date.getTime()) ? "Invalid Date" : date.toLocaleDateString();
+    } catch {
+      return "Invalid Date";
     }
   };
 
@@ -76,7 +87,7 @@ export default function MessagesPage() {
                     </div>
                   </div>
                   <div className="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2 py-1 rounded-lg">
-                    {new Date(msg.createdAt).toLocaleDateString()}
+                    {formatDate(msg.createdAt)}
                   </div>
                 </div>
                 

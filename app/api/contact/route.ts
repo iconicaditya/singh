@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { messages } from "@/lib/db/schema";
 import { NextResponse } from "next/server";
+import { desc } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
@@ -33,8 +34,8 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const data = await db.select().from(messages).orderBy(messages.createdAt);
-    return NextResponse.json(data);
+    const data = await db.select().from(messages).orderBy(desc(messages.createdAt));
+    return NextResponse.json(data || []);
   } catch (error) {
     console.error("Error fetching messages:", error);
     return NextResponse.json(
