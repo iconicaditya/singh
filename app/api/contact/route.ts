@@ -5,24 +5,43 @@ import { desc } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, subject, message } = body;
+    try {
+      const body = await req.json();
+      console.log("Contact form submission body:", body);
+      const { name, email, subject, message } = body;
+      
+      if (!name || !email || !message) {
+        return NextResponse.json(
+          { error: "Name, email, and message are required" },
+          { status: 400 }
+        );
+      }
 
-    if (!name || !email || !message) {
+      // Ensure we are using the messages table from the schema
+      const inserted = await db.insert(messages).values({
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        subject: (subject || "No Subject").trim(),
+        message: message.trim(),
+      }).returning();
+      
+      if (!inserted || inserted.length === 0) {
+        throw new Error("Failed to insert message: No data returned");
+      }
+
+      console.log("Message saved successfully:", inserted[0]);
+      return NextResponse.json(inserted[0]);
+    } catch (err: any) {
+      console.error("CRITICAL API ERROR:", {
+        message: err.message,
+        stack: err.stack,
+        name: err.name
+      });
       return NextResponse.json(
-        { error: "Name, email, and message are required" },
-        { status: 400 }
+        { error: err.message || "Internal Server Error" },
+        { status: 500 }
       );
     }
-
-    const newMessage = await db.insert(messages).values({
-      name,
-      email,
-      subject: subject || "No Subject",
-      message,
-    }).returning();
-
-    return NextResponse.json(newMessage[0]);
   } catch (error) {
     console.error("Error submitting contact form:", error);
     return NextResponse.json(
