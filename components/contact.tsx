@@ -8,6 +8,8 @@ import Image from "next/image";
 export default function Contact() {
   const [formState, setFormState] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState({ email: false });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -16,6 +18,33 @@ export default function Contact() {
       setErrors({ email: true });
     } else {
       setErrors({ email: false });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (errors.email || !formState.name || !formState.email || !formState.message) return;
+
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      if (res.ok) {
+        setSubmitStatus("success");
+        setFormState({ name: "", email: "", subject: "", message: "" });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -118,12 +147,15 @@ export default function Contact() {
 
           {/* Right Panel: Form */}
           <div className="lg:w-[60%] bg-white p-12 lg:p-16">
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-8" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-gray-700">Your Name <span className="text-red-500">*</span></label>
                   <input 
                     type="text" 
+                    required
+                    value={formState.name}
+                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                     placeholder="John Doe"
                     className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                   />
@@ -133,6 +165,8 @@ export default function Contact() {
                   <motion.input 
                     animate={errors.email ? { x: [-2, 2, -2, 2, 0] } : {}}
                     type="email" 
+                    required
+                    value={formState.email}
                     onChange={handleEmailChange}
                     placeholder="john@example.com"
                     className={`w-full px-5 py-3 rounded-xl bg-[#f8fafc] border outline-none focus:ring-2 transition-all text-sm text-black ${
@@ -146,6 +180,8 @@ export default function Contact() {
                 <label className="text-xs font-bold text-gray-700">Subject</label>
                 <input 
                   type="text" 
+                  value={formState.subject}
+                  onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                   placeholder="Research collaboration..."
                   className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm text-black"
                 />
@@ -155,18 +191,31 @@ export default function Contact() {
                 <label className="text-xs font-bold text-gray-700">Message <span className="text-red-500">*</span></label>
                 <textarea 
                   rows={6}
+                  required
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                   placeholder="How can we help you?"
                   className="w-full px-5 py-3 rounded-xl bg-[#f8fafc] border border-gray-100 outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm resize-none text-black"
                 ></textarea>
               </div>
 
+              {submitStatus === "success" && (
+                <p className="text-green-600 text-sm font-bold">Message sent successfully!</p>
+              )}
+              {submitStatus === "error" && (
+                <p className="text-red-600 text-sm font-bold">Failed to send message. Please try again.</p>
+              )}
+
               <motion.button 
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
-                className="w-full py-4 rounded-xl bg-[#2563eb] text-white font-bold text-sm flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all"
+                disabled={isSubmitting}
+                className={`w-full py-4 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-3 shadow-lg transition-all ${
+                  isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-[#2563eb] shadow-blue-500/20 hover:bg-blue-700"
+                }`}
               >
                 <Send size={18} />
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </motion.button>
             </form>
           </div>
