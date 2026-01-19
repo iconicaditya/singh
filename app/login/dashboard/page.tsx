@@ -6,7 +6,8 @@ import {
   BookOpen, 
   Users, 
   Activity,
-  ArrowUpRight
+  ArrowUpRight,
+  MessageSquare
 } from "lucide-react";
 import Link from "next/link";
 
@@ -15,6 +16,7 @@ export default function DashboardPage() {
     { name: "Total Research", value: "12", icon: FlaskConical, color: "bg-blue-500", path: "/login/dashboard/research" },
     { name: "Publications", value: "24", icon: BookOpen, color: "bg-purple-500", path: "/login/dashboard/publications" },
     { name: "Team Members", value: "8", icon: Users, color: "bg-emerald-500", path: "/login/dashboard/team" },
+    { name: "Messages", value: "New", icon: MessageSquare, color: "bg-rose-500", path: "/login/dashboard/messages" },
     { name: "Recent Activity", value: "45", icon: Activity, color: "bg-amber-500", path: "#" },
   ];
 
@@ -54,6 +56,10 @@ export default function DashboardPage() {
             <Link href="/login/dashboard/publications" className="p-5 md:p-6 bg-slate-50 rounded-2xl md:rounded-3xl hover:bg-purple-50 transition-colors group">
               <BookOpen className="text-slate-400 group-hover:text-purple-600 mb-2 md:mb-3" size={24} />
               <p className="font-bold text-sm md:text-base text-slate-900">Post Publication</p>
+            </Link>
+            <Link href="/login/dashboard/messages" className="p-5 md:p-6 bg-slate-50 rounded-2xl md:rounded-3xl hover:bg-rose-50 transition-colors group">
+              <MessageSquare className="text-slate-400 group-hover:text-rose-600 mb-2 md:mb-3" size={24} />
+              <p className="font-bold text-sm md:text-base text-slate-900">View Messages</p>
             </Link>
           </div>
         </div>

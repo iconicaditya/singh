@@ -65,3 +65,12 @@ export const team = pgTable("team", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const messages = pgTable("messages", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 255 }),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
