@@ -1,4 +1,4 @@
-import { pgTable, serial, text, varchar, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, varchar, integer, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
 
 export const research = pgTable("research", {
   id: serial("id").primaryKey(),
@@ -72,5 +72,6 @@ export const messages = pgTable("messages", {
   email: varchar("email", { length: 255 }).notNull(),
   subject: varchar("subject", { length: 255 }),
   message: text("message").notNull(),
+  isRead: boolean("is_read").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
