@@ -38,7 +38,7 @@ export default function OurTeam() {
   useEffect(() => {
     if (team.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % team.length);
+      setCurrentIndex((prev) => (prev === 0 ? team.length - 1 : prev - 1));
     }, 3000);
     return () => clearInterval(interval);
   }, [team.length]);
@@ -55,6 +55,8 @@ export default function OurTeam() {
   const visibleMembers = [];
   for (let i = 0; i < 3; i++) {
     if (team.length > 0) {
+      // Reverse selection for left-to-right logic if needed, 
+      // but simple index wrap works for continuous feel
       visibleMembers.push(team[(currentIndex + i) % team.length]);
     }
   }
@@ -69,16 +71,16 @@ export default function OurTeam() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-slate-900 mb-4"
           >
-            Our Team
+            Meet Our Research Team
           </motion.h2>
           <div className="w-20 h-0.5 bg-red-400 mx-auto mb-8" />
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-slate-500 max-w-3xl mx-auto text-base"
+            className="text-slate-500 max-w-3xl mx-auto text-lg leading-relaxed"
           >
-            We strive to do everything so that you can comfortably and productively work in our space and create amazing products and services.
+            Our multidisciplinary team of experts is dedicated to advancing scientific knowledge through rigorous research and collaborative innovation to address global challenges.
           </motion.p>
         </div>
 
@@ -88,12 +90,12 @@ export default function OurTeam() {
               {visibleMembers.map((member, index) => (
                 <motion.div
                   key={`${member.id}-${currentIndex}-${index}`}
-                  initial={{ x: 300, opacity: 0 }}
+                  initial={{ x: -300, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -300, opacity: 0 }}
+                  exit={{ x: 300, opacity: 0 }}
                   transition={{ 
-                    duration: 0.8, 
-                    ease: [0.4, 0, 0.2, 1] 
+                    duration: 1.2, 
+                    ease: [0.22, 1, 0.36, 1] 
                   }}
                   className="w-full md:w-1/3 bg-white p-6 rounded-sm border border-transparent hover:border-red-100 hover:shadow-xl transition-all duration-300 group"
                 >
