@@ -17,8 +17,8 @@ export default function Home() {
     <div>
       <Hero />
       <About />
-      <ResearchFocus />
       <ResearchThemes />
+      <ResearchFocus />
       <ProjectsPreview />
       <PublicationsSection />
       <OurTeam />

@@ -76,13 +76,12 @@ export default function ResearchFocus() {
             transition={{ duration: 1, ease: "circOut" }}
             className="lg:w-1/2 relative group"
           >
-            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl">
+            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[600px] lg:h-[700px]">
               <Image 
                 src="/researchfocus.png" 
                 alt="Research Focus Visualization" 
-                width={800} 
-                height={600}
-                className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                fill
+                className="object-cover transform transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
