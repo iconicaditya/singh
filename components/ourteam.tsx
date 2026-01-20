@@ -166,9 +166,21 @@ export default function OurTeam() {
                     <p className="text-sm text-slate-500 font-medium">{member.role}</p>
                     
                     <div className="flex justify-center gap-4 pt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Facebook className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
-                      <Twitter className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
-                      <Instagram className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                      {member.socialLinks?.facebook && (
+                        <a href={member.socialLinks.facebook} target="_blank" rel="noopener noreferrer">
+                          <Facebook className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                        </a>
+                      )}
+                      {member.socialLinks?.twitter && (
+                        <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
+                          <Twitter className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                        </a>
+                      )}
+                      {member.socialLinks?.instagram && (
+                        <a href={member.socialLinks.instagram} target="_blank" rel="noopener noreferrer">
+                          <Instagram className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </motion.div>
