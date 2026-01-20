@@ -32,49 +32,13 @@ export default function ResearchFocus() {
     <section className="py-20 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          {/* Text Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="lg:w-1/2"
-          >
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Our Research Focus</h2>
-            <div className="w-16 h-1 bg-blue-600 mb-8" />
-            
-            <p className="text-lg text-slate-600 mb-12 leading-relaxed">
-              We go beyond theoretical study to apply rigorous scientific methods to real-world problems. 
-              Our work informs policy, empowers communities, and contributes to the global body 
-              of sustainability knowledge.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {researchFocusData.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className="p-6 rounded-2xl bg-slate-50 border border-slate-100 transition-all hover:shadow-lg"
-                >
-                  <div className="mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Image Content */}
+          {/* Image Content - Now physically first in the DOM for mobile top appearance */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "circOut" }}
-            className="lg:w-1/2 relative group w-full"
+            className="w-full lg:w-1/2 lg:order-last relative group"
           >
             <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px] lg:h-[700px] w-full">
               <Image 
@@ -113,6 +77,42 @@ export default function ResearchFocus() {
               }}
               className="absolute -bottom-10 -left-10 w-80 h-80 bg-slate-100 rounded-full blur-3xl -z-0"
             />
+          </motion.div>
+
+          {/* Text Content */}
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="w-full lg:w-1/2"
+          >
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Our Research Focus</h2>
+            <div className="w-16 h-1 bg-blue-600 mb-8" />
+            
+            <p className="text-lg text-slate-600 mb-12 leading-relaxed">
+              We go beyond theoretical study to apply rigorous scientific methods to real-world problems. 
+              Our work informs policy, empowers communities, and contributes to the global body 
+              of sustainability knowledge.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {researchFocusData.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-2xl bg-slate-50 border border-slate-100 transition-all hover:shadow-lg"
+                >
+                  <div className="mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
