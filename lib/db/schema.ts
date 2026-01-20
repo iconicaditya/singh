@@ -75,3 +75,13 @@ export const messages = pgTable("messages", {
   isRead: boolean("is_read").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const collaborators = pgTable("collaborators", {
+  id: serial("id").primaryKey(),
+  companyName: varchar("company_name", { length: 255 }), // Optional company name
+  logoUrl: text("logo_url"), // Company logo image
+  imageUrl: text("image_url"), // Additional image (optional)
+  website: text("website"), // Company website URL
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});

@@ -91,6 +91,29 @@ CREATE TABLE IF NOT EXISTS gallery (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Team Table Schema
+CREATE TABLE IF NOT EXISTS team (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    social_links JSONB NOT NULL,         -- Object: { "linkedin": string, "twitter": string, "facebook": string, "instagram": string }
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Collaborators Table Schema
+CREATE TABLE IF NOT EXISTS collaborators (
+    id SERIAL PRIMARY KEY,
+    company_name VARCHAR(255),           -- Optional company name
+    logo_url TEXT,                       -- Company logo image URL
+    image_url TEXT,                      -- Additional image URL (optional)
+    website TEXT,                        -- Company website URL (optional)
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Messages Table Schema
 CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
@@ -98,5 +121,6 @@ CREATE TABLE IF NOT EXISTS messages (
     email VARCHAR(255) NOT NULL,
     subject VARCHAR(255),
     message TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

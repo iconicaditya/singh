@@ -7,6 +7,7 @@ import ResearchFocus from "@/components/researchfocus";
 import ProjectsPreview from "@/components/projects/ProjectsPreview";
 import PublicationsSection from "@/components/publications/PublicationsSection";
 import OurTeam from "@/components/ourteam";
+import Collaborator from "@/components/collaborator";
 import Activities from "@/components/activities";
 import Gallery from "@/components/gallery";
 import Contact from "@/components/contact";
@@ -21,6 +22,7 @@ export default function Home() {
       <ProjectsPreview />
       <PublicationsSection />
       <OurTeam />
+      <Collaborator />
       <Gallery />
       <Activities />
       <Contact />
