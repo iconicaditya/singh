@@ -36,13 +36,11 @@ export default function OurTeam() {
 
   const nextSlide = useCallback(() => {
     if (team.length === 0) return;
-    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % team.length);
   }, [team.length]);
 
   const prevSlide = useCallback(() => {
     if (team.length === 0) return;
-    setDirection(-1);
     setCurrentIndex((prev) => (prev === 0 ? team.length - 1 : prev - 1));
   }, [team.length]);
 
@@ -83,20 +81,20 @@ export default function OurTeam() {
   const visibleMembers = getVisibleMembers();
 
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
+    enter: {
+      x: 300,
       opacity: 0
-    }),
+    },
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1
     },
-    exit: (direction: number) => ({
+    exit: {
       zIndex: 0,
-      x: direction < 0 ? 100 : -100,
+      x: -300,
       opacity: 0
-    })
+    }
   };
 
   return (
@@ -139,11 +137,10 @@ export default function OurTeam() {
           </button>
 
           <div className="flex justify-center gap-8 min-h-[500px]">
-            <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+            <AnimatePresence mode="popLayout" initial={false}>
               {visibleMembers.map((member, index) => (
                 <motion.div
                   key={`${member.id}-${currentIndex}-${index}`}
-                  custom={direction}
                   variants={variants}
                   initial="enter"
                   animate="center"
