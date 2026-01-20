@@ -70,18 +70,20 @@ export default function ResearchFocus() {
 
           {/* Image Content */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "circOut" }}
-            className="lg:w-1/2 relative group"
+            className="lg:w-1/2 relative group w-full"
           >
-            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px] lg:h-[700px]">
+            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px] lg:h-[700px] w-full">
               <Image 
                 src="/researchfocus.png" 
                 alt="Research Focus Visualization" 
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover transform transition-transform duration-700 group-hover:scale-105"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
