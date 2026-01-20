@@ -89,13 +89,13 @@ export default function OurTeam() {
             <AnimatePresence mode="popLayout" initial={false}>
               {visibleMembers.map((member, index) => (
                 <motion.div
-                  key={`${member.id}-${currentIndex}-${index}`}
-                  initial={{ x: -300, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: 300, opacity: 0 }}
+                  key={`${member.id}`}
+                  initial={false}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ 
-                    duration: 1.2, 
-                    ease: [0.22, 1, 0.36, 1] 
+                    duration: 0.8, 
+                    ease: "easeInOut" 
                   }}
                   className="w-full md:w-1/3 bg-white p-6 rounded-sm border border-transparent hover:border-red-100 hover:shadow-xl transition-all duration-300 group"
                 >
