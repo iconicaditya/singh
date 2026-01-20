@@ -149,7 +149,7 @@ export default function OurTeam() {
                   animate="center"
                   exit="exit"
                   transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
+                    x: { type: "tween", duration: 0.8, ease: "easeInOut" },
                     opacity: { duration: 0.4 }
                   }}
                   className="w-full md:w-1/3 bg-white p-6 rounded-sm border border-transparent hover:border-red-100 hover:shadow-xl transition-all duration-300 group"
@@ -187,7 +187,7 @@ export default function OurTeam() {
           className="flex justify-center mt-12"
         >
           <Link
-            href="/all-teams"
+            href="/our-team"
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/25 group"
           >
             VIEW ALL OUR TEAMS <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
