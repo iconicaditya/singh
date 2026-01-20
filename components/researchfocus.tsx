@@ -76,7 +76,7 @@ export default function ResearchFocus() {
             transition={{ duration: 1, ease: "circOut" }}
             className="lg:w-1/2 relative group"
           >
-            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[600px] lg:h-[700px]">
+            <div className="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl h-[400px] md:h-[600px] lg:h-[700px]">
               <Image 
                 src="/researchfocus.png" 
                 alt="Research Focus Visualization" 
