@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { Facebook, Twitter, Instagram } from "lucide-react";
 
 interface TeamMember {
   id: number;
@@ -15,52 +16,32 @@ interface TeamMember {
 
 export default function OurTeam() {
   const [team, setTeam] = useState<TeamMember[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTeam = async () => {
-      try {
-        const res = await fetch("/api/team");
-        const data = await res.json();
-        setTeam(data);
-      } catch (error) {
-        console.error("Error fetching team:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTeam();
+  const fetchTeam = useCallback(async () => {
+    try {
+      const res = await fetch("/api/team");
+      const data = await res.json();
+      setTeam(data);
+    } catch (error) {
+      console.error("Error fetching team:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
+  useEffect(() => {
+    fetchTeam();
+  }, [fetchTeam]);
 
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.8,
-      y: 60,
-      rotate: -5
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 14,
-      },
-    },
-  };
+  useEffect(() => {
+    if (team.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % team.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [team.length]);
 
   if (loading) {
     return (
@@ -70,79 +51,77 @@ export default function OurTeam() {
     );
   }
 
+  // Determine which members to show (3 at a time)
+  const visibleMembers = [];
+  for (let i = 0; i < 3; i++) {
+    if (team.length > 0) {
+      visibleMembers.push(team[(currentIndex + i) % team.length]);
+    }
+  }
+
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-24 bg-[#fdf8f4] overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="mb-20">
+        <div className="text-center mb-16">
           <motion.h2
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-medium text-slate-900 mb-4 tracking-tight"
+            className="text-4xl md:text-5xl font-bold text-slate-900 mb-4"
           >
-            Staff
+            Our Team
           </motion.h2>
+          <div className="w-20 h-0.5 bg-red-400 mx-auto mb-8" />
           <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-slate-500 max-w-xl text-lg leading-relaxed"
+            className="text-slate-500 max-w-3xl mx-auto text-base"
           >
-            Our team brings a wealth of experience from some of the world's most 
-            formidable production studios, agencies and startups.
+            We strive to do everything so that you can comfortably and productively work in our space and create amazing products and services.
           </motion.p>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="relative min-h-[600px] flex flex-wrap justify-center items-start gap-4"
-        >
-          {team.map((member, index) => {
-            // Precise positional offsets for the "Stink Studios" organic look
-            const positionClasses = [
-              "mt-20",    // Member 1
-              "mt-44",    // Member 2
-              "mt-0",     // Member 3 (higher up)
-              "mt-64",    // Member 4 (lower down)
-              "mt-12",    // Member 5
-              "mt-80",    // Member 6
-              "mt-32",    // Member 7
-            ];
-            
-            const mobileStyles = "w-[45%] md:w-[22%] lg:w-[15%]";
-            const offsetClass = positionClasses[index % positionClasses.length];
-
-            return (
-              <motion.div
-                key={member.id}
-                variants={itemVariants}
-                className={`relative group ${mobileStyles} ${offsetClass} transition-all duration-700`}
-              >
-                <div className="relative aspect-[4/5] overflow-hidden shadow-sm transition-all duration-500 group-hover:shadow-2xl">
-                  <Image
-                    src={member.imageUrl}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 20vw"
-                    className="object-cover transform transition-transform duration-700 group-hover:scale-105"
-                  />
+        <div className="relative max-w-6xl mx-auto">
+          <div className="flex justify-center gap-8 min-h-[500px]">
+            <AnimatePresence mode="popLayout" initial={false}>
+              {visibleMembers.map((member, index) => (
+                <motion.div
+                  key={`${member.id}-${currentIndex}-${index}`}
+                  initial={{ x: 300, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -300, opacity: 0 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    ease: [0.4, 0, 0.2, 1] 
+                  }}
+                  className="w-full md:w-1/3 bg-white p-6 rounded-sm border border-transparent hover:border-red-100 hover:shadow-xl transition-all duration-300 group"
+                >
+                  <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-slate-100">
+                    <Image
+                      src={member.imageUrl}
+                      alt={member.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
                   
-                  {/* Minimal Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4">
-                    <div className="text-white">
-                      <h3 className="text-sm font-bold truncate">{member.name}</h3>
-                      <p className="text-[10px] uppercase tracking-tighter opacity-80">{member.role}</p>
+                  <div className="text-center space-y-2">
+                    <h3 className="text-xl font-bold text-slate-800">{member.name}</h3>
+                    <p className="text-sm text-slate-500 font-medium">{member.role}</p>
+                    
+                    <div className="flex justify-center gap-4 pt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Facebook className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                      <Twitter className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
+                      <Instagram className="w-4 h-4 text-red-400 cursor-pointer hover:text-red-600" />
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </section>
   );
