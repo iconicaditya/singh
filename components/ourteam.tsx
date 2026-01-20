@@ -10,7 +10,7 @@ interface TeamMember {
   role: string;
   description: string;
   imageUrl: string;
-  socialLinks: any;
+  socialLinks: Record<string, string>;
 }
 
 export default function OurTeam() {
@@ -94,37 +94,27 @@ export default function OurTeam() {
           className="flex flex-wrap justify-center gap-4 max-w-6xl mx-auto"
         >
           {team.map((member, index) => {
-            // Calculate pseudo-random offsets for the "organic" scattered look in the image
-            const offsets = [
-              "mt-0", "mt-12", "mt-24", "mt-4", "mt-32", "mt-16"
-            ];
-            const offsetClass = offsets[index % offsets.length];
-
             return (
               <motion.div
                 key={member.id}
                 variants={itemVariants}
-                className={`relative group w-64 ${offsetClass}`}
+                className="relative group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)]"
               >
-                <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-md transition-all duration-500 group-hover:rounded-[2rem] group-hover:shadow-2xl">
+                <div className="relative aspect-square overflow-hidden rounded-lg shadow-md transition-all duration-500 group-hover:rounded-2xl group-hover:shadow-2xl">
                   <Image
                     src={member.imageUrl}
                     alt={member.name}
                     fill
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />
                   
                   {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0">
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      whileHover={{ opacity: 1, x: 0 }}
-                      className="text-white"
-                    >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0">
+                    <div className="text-white">
                       <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                      <p className="text-blue-300 text-sm font-semibold uppercase tracking-wider">{member.role}</p>
-                    </motion.div>
+                      <p className="text-blue-400 text-sm font-semibold uppercase tracking-wider">{member.role}</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
