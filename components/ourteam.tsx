@@ -1,129 +1,135 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Facebook,
-  Twitter,
-  Linkedin,
-  ArrowRight,
-} from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const team = [
-  {
-    name: "Er. Aaditya Chaudhary",
-    role: "RESEARCH MEMBER",
-    image: "/ourteamimages/aaditya.png",
-    bio: "Focusing on environmental sustainability and social i...",
-    social: { facebook: "#", twitter: "#", linkedin: "#" },
-  },
-  {
-    name: "Dr. Nabin Rokaya",
-    role: "MANAGING DIRECTOR",
-    image: "/ourteamimages/nabin.png",
-    bio: "Specializing in community resilience and climate data...",
-    social: { facebook: "#", twitter: "#", linkedin: "#" },
-  },
-  {
-    name: "Mr. Bibas Ghatani",
-    role: "RESEARCH MEMBER",
-    image: "/ourteamimages/bibas.png",
-    bio: "Expert in waste management and resource efficiency.",
-    social: { facebook: "#", twitter: "#", linkedin: "#" },
-  },
-];
+interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  description: string;
+  imageUrl: string;
+  socialLinks: any;
+}
 
 export default function OurTeam() {
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const res = await fetch("/api/team");
+        const data = await res.json();
+        setTeam(data);
+      } catch (error) {
+        console.error("Error fetching team:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 50 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+      },
+    },
+  };
+
+  if (loading) {
+    return (
+      <div className="py-24 flex justify-center items-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
-    <section className="py-24 bg-white overflow-hidden relative">
-      <div className="container mx-auto px-6 text-center">
-        <div className="mb-16">
+    <section className="py-24 bg-white overflow-hidden">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-[#1e293b] mb-4"
+            className="text-4xl md:text-5xl font-bold text-slate-900 mb-4"
           >
-            Meet Our <span className="text-blue-600">Team</span>
+            Our Professional <span className="text-blue-600">Team</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 max-w-2xl mx-auto text-lg"
+            className="text-slate-600 max-w-2xl mx-auto text-lg"
           >
-            A dedicated group of researchers and professionals working towards a sustainable future.
+            Meet the dedicated minds driving our mission for a sustainable and resilient future.
           </motion.p>
         </div>
 
-        <div className="relative max-w-7xl mx-auto mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-            {team.map((member, idx) => (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center gap-4 max-w-6xl mx-auto"
+        >
+          {team.map((member, index) => {
+            // Calculate pseudo-random offsets for the "organic" scattered look in the image
+            const offsets = [
+              "mt-0", "mt-12", "mt-24", "mt-4", "mt-32", "mt-16"
+            ];
+            const offsetClass = offsets[index % offsets.length];
+
+            return (
               <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full transition-shadow hover:shadow-xl"
+                key={member.id}
+                variants={itemVariants}
+                className={`relative group w-64 ${offsetClass}`}
               >
-                <div className="relative h-72 overflow-hidden shrink-0 m-4 rounded-2xl">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-lg shadow-md transition-all duration-500 group-hover:rounded-[2rem] group-hover:shadow-2xl">
                   <Image
-                    src={member.image}
+                    src={member.imageUrl}
                     alt={member.name}
                     fill
-                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    className="object-cover transform transition-transform duration-700 group-hover:scale-110"
                   />
-                </div>
-
-                <div className="p-6 text-center flex flex-col flex-grow">
-                  <h3 className="text-xl font-bold text-[#1e293b] mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-blue-600 font-bold text-xs mb-3 uppercase tracking-widest">
-                    {member.role}
-                  </p>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                    {member.bio}
-                  </p>
                   
-                  <div className="mt-auto flex justify-center gap-4">
-                    <Link href={member.social.facebook} className="text-gray-400 hover:text-blue-600 transition-colors">
-                      <Facebook size={18} />
-                    </Link>
-                    <Link href={member.social.twitter} className="text-gray-400 hover:text-blue-400 transition-colors">
-                      <Twitter size={18} />
-                    </Link>
-                    <Link href={member.social.linkedin} className="text-gray-400 hover:text-blue-700 transition-colors">
-                      <Linkedin size={18} />
-                    </Link>
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 translate-y-4 group-hover:translate-y-0">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      whileHover={{ opacity: 1, x: 0 }}
+                      className="text-white"
+                    >
+                      <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+                      <p className="text-blue-300 text-sm font-semibold uppercase tracking-wider">{member.role}</p>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex justify-center gap-2 mb-12">
-          <div className="h-2 w-2 rounded-full bg-gray-200" />
-          <div className="h-2 w-8 rounded-full bg-blue-600" />
-          <div className="h-2 w-2 rounded-full bg-gray-200" />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex justify-center"
-        >
-          <Link
-            href="/all-teams"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/25 group"
-          >
-            VIEW ALL OUR TEAMS <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+            );
+          })}
         </motion.div>
       </div>
     </section>
