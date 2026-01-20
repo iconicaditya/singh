@@ -2,6 +2,7 @@
 
 import Hero from "@/components/hero";
 import About from "@/components/about";
+import ResearchFocus from "@/components/researchfocus";
 import ResearchThemes from "@/components/researchtheme";
 import ProjectsPreview from "@/components/projects/ProjectsPreview";
 import PublicationsSection from "@/components/publications/PublicationsSection";
@@ -16,6 +17,7 @@ export default function Home() {
     <div>
       <Hero />
       <About />
+      <ResearchFocus />
       <ResearchThemes />
       <ProjectsPreview />
       <PublicationsSection />
