@@ -19,6 +19,7 @@ import {
   Bell,
   ChevronDown,
   Menu,
+  Calendar,
   X as CloseIcon
 } from "lucide-react";
 
@@ -33,6 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Projects", icon: Briefcase, path: "/login/dashboard/projects" },
     { name: "Messages", icon: Mail, path: "/login/dashboard/messages" },
     { name: "Collaborators", icon: UserPlus, path: "/login/dashboard/collaborators" },
+    { name: "Activities", icon: Calendar, path: "/login/dashboard/activities" },
     { name: "Research", icon: FlaskConical, path: "/login/dashboard/research" },
     { name: "Publications", icon: BookOpen, path: "/login/dashboard/publications" },
     { name: "Resources", icon: Layers, path: "/login/dashboard/resources" },
