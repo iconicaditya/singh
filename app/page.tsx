@@ -14,12 +14,13 @@ export default function Home() {
   return (
     <div>
       <Hero />
+      <Activities />
       <About />
       <ResearchThemes />
       <ResearchFocus />
       <OurTeam />
       <Collaborator />
-      <Activities />
+
       <Gallery />
       <Contact />
     </div>

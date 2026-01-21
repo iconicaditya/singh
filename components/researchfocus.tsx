@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Microscope, Globe, Leaf, BarChart3 } from "lucide-react";
+import { Microscope, Globe, Leaf, BarChart3, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const researchFocusData = [
   {
@@ -49,7 +50,7 @@ export default function ResearchFocus() {
               of sustainability knowledge.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
               {researchFocusData.map((item, index) => (
                 <motion.div
                   key={index}
@@ -66,6 +67,21 @@ export default function ResearchFocus() {
                 </motion.div>
               ))}
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Link
+                href="/research"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl group"
+              >
+                Explore our research
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* Image Content */}
