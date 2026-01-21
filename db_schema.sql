@@ -114,6 +114,19 @@ CREATE TABLE IF NOT EXISTS collaborators (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Activities Table Schema
+CREATE TABLE IF NOT EXISTS activities (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    year VARCHAR(4) NOT NULL,
+    tags TEXT,
+    title_image TEXT,
+    content_sections JSONB NOT NULL,   -- Array of objects: { "title": string, "content": string, "image": string }
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Messages Table Schema
 CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,

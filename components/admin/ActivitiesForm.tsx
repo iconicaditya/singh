@@ -138,7 +138,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <input
                   type="text"
                   placeholder="Enter title of Activities"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-black"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
@@ -173,7 +173,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <label className="text-sm font-semibold text-slate-700">Year</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black"
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
                 />
@@ -184,7 +184,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <input
                   type="text"
                   placeholder="e.g. LCA, Sustainability"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
                 />
@@ -245,7 +245,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <input
                   type="text"
                   placeholder="Title eg- Introduction"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-blue-500 text-black"
                   value={section.title}
                   onChange={(e) => updateSection(idx, 'title', e.target.value)}
                 />
