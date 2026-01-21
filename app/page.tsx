@@ -18,8 +18,8 @@ export default function Home() {
       <ResearchThemes />
       <ResearchFocus />
       <OurTeam />
-      <Activities />
       <Collaborator />
+      <Activities />
       <Gallery />
       <Contact />
     </div>
