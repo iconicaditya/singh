@@ -76,12 +76,14 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const collaborators = pgTable("collaborators", {
+export const activities = pgTable("activities", {
   id: serial("id").primaryKey(),
-  companyName: varchar("company_name", { length: 255 }), // Optional company name
-  logoUrl: text("logo_url"), // Company logo image
-  imageUrl: text("image_url"), // Additional image (optional)
-  website: text("website"), // Company website URL
+  title: varchar("title", { length: 255 }).notNull(),
+  category: varchar("category", { length: 100 }).notNull(),
+  year: varchar("year", { length: 4 }).notNull(),
+  tags: text("tags"),
+  titleImage: text("title_image"),
+  contentSections: jsonb("content_sections").notNull(), // Array of objects {title, content, image}
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
