@@ -40,10 +40,11 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
     
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "research_preset"); // Ensure this preset exists in Cloudinary
+    formData.append("upload_preset", "research_preset");
 
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dq7v8t4y4"; // Fallback or ensure env is used
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
         body: formData,
       });

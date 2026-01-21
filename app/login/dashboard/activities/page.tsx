@@ -5,7 +5,7 @@ import { Plus, Search, Calendar, Tag, Trash2, Edit } from "lucide-react";
 import ActivitiesForm from "@/components/admin/ActivitiesForm";
 
 export default function ActivitiesDashboard() {
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,10 +13,16 @@ export default function ActivitiesDashboard() {
   const fetchActivities = async () => {
     try {
       const res = await fetch("/api/activities");
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("API Error Response:", text);
+        throw new Error(`API returned ${res.status}`);
+      }
       const data = await res.json();
-      setActivities(data);
+      setActivities(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching activities:", error);
+      setActivities([]);
     } finally {
       setLoading(false);
     }
