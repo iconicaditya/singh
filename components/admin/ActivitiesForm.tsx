@@ -49,12 +49,14 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
   const handleImageUpload = async (file: File, type: 'title' | number) => {
     if (type === 'title') setIsUploadingTitle(true);
     
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "research_preset");
-
     try {
-      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dq7v8t4y4";
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dbgq7ls4q";
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "research_preset";
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+
       const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
         body: formData,
