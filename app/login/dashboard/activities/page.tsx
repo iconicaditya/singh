@@ -8,6 +8,7 @@ export default function ActivitiesDashboard() {
   const [activities, setActivities] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingActivity, setEditingActivity] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const fetchActivities = async () => {
@@ -32,6 +33,29 @@ export default function ActivitiesDashboard() {
     fetchActivities();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this activity?")) return;
+    
+    try {
+      const res = await fetch(`/api/activities?id=${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        fetchActivities();
+      } else {
+        alert("Failed to delete activity");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Something went wrong");
+    }
+  };
+
+  const handleEdit = (activity: any) => {
+    setEditingActivity(activity);
+    setIsFormOpen(true);
+  };
+
   const filteredActivities = activities.filter((activity: any) =>
     activity.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     activity.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -45,7 +69,10 @@ export default function ActivitiesDashboard() {
           <p className="text-slate-500">Manage your research activities, events, and workshops</p>
         </div>
         <button
-          onClick={() => setIsFormOpen(true)}
+          onClick={() => {
+            setEditingActivity(null);
+            setIsFormOpen(true);
+          }}
           className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20"
         >
           <Plus size={20} /> Add New Activity
@@ -96,10 +123,16 @@ export default function ActivitiesDashboard() {
                   </div>
                 )}
                 <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-50">
-                  <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => handleEdit(activity)}
+                    className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
                     <Edit size={18} />
                   </button>
-                  <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <button 
+                    onClick={() => handleDelete(activity.id)}
+                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
                     <Trash2 size={18} />
                   </button>
                 </div>
@@ -111,8 +144,12 @@ export default function ActivitiesDashboard() {
 
       {isFormOpen && (
         <ActivitiesForm
-          onClose={() => setIsFormOpen(false)}
+          onClose={() => {
+            setIsFormOpen(false);
+            setEditingActivity(null);
+          }}
           onSuccess={fetchActivities}
+          initialData={editingActivity}
         />
       )}
     </div>

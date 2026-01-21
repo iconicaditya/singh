@@ -17,6 +17,7 @@ interface ContentSection {
 interface ActivitiesFormProps {
   onClose: () => void;
   onSuccess: () => void;
+  initialData?: any;
 }
 
 const CATEGORIES = ["RESEARCH", "EVENT", "WORKSHOP", "PUBLICATION"];
@@ -34,17 +35,17 @@ const modules = {
   ],
 };
 
-export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormProps) {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("RESEARCH");
+export default function ActivitiesForm({ onClose, onSuccess, initialData }: ActivitiesFormProps) {
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [category, setCategory] = useState(initialData?.category || "RESEARCH");
   const [newCategory, setNewCategory] = useState("");
-  const [year, setYear] = useState(new Date().getFullYear().toString());
-  const [tags, setTags] = useState("");
-  const [titleImage, setTitleImage] = useState("");
+  const [year, setYear] = useState(initialData?.year || new Date().getFullYear().toString());
+  const [tags, setTags] = useState(initialData?.tags || "");
+  const [titleImage, setTitleImage] = useState(initialData?.titleImage || "");
   const [isUploadingTitle, setIsUploadingTitle] = useState(false);
-  const [contentSections, setContentSections] = useState<ContentSection[]>([
-    { title: "", content: "", image: "" }
-  ]);
+  const [contentSections, setContentSections] = useState<ContentSection[]>(
+    initialData?.contentSections || [{ title: "", content: "", image: "" }]
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = async (file: File, type: 'title' | number) => {
@@ -121,17 +122,21 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
     setIsSubmitting(true);
 
     try {
+      const method = initialData ? "PUT" : "POST";
+      const body = {
+        ...(initialData && { id: initialData.id }),
+        title,
+        category: newCategory || category,
+        year,
+        tags,
+        titleImage,
+        contentSections,
+      };
+
       const res = await fetch("/api/activities", {
-        method: "POST",
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          category: newCategory || category,
-          year,
-          tags,
-          titleImage,
-          contentSections,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (res.ok) {

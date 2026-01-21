@@ -29,3 +29,44 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to create activity" }, { status: 500 });
   }
 }
+
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const { id, ...updateData } = body;
+    
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    const updatedActivity = await db.update(activities)
+      .set({
+        ...updateData,
+        updatedAt: new Date()
+      })
+      .where(eq(activities.id, id))
+      .returning();
+      
+    return NextResponse.json(updatedActivity[0]);
+  } catch (error) {
+    console.error("Error updating activity:", error);
+    return NextResponse.json({ error: "Failed to update activity" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    await db.delete(activities).where(eq(activities.id, parseInt(id)));
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting activity:", error);
+    return NextResponse.json({ error: "Failed to delete activity" }, { status: 500 });
+  }
+}
