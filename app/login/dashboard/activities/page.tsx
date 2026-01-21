@@ -1,8 +1,29 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Search, Calendar, Tag, Trash2, Edit } from "lucide-react";
+import { Plus, Search, Calendar, Tag, Trash2, Edit, Clock } from "lucide-react";
 import ActivitiesForm from "@/components/admin/ActivitiesForm";
+
+function TimeAgo({ date }: { date: string }) {
+  const [timeAgo, setTimeAgo] = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
+      
+      if (seconds < 60) setTimeAgo(`${seconds} sec ago`);
+      else if (seconds < 3600) setTimeAgo(`${Math.floor(seconds / 60)} min ago`);
+      else if (seconds < 86400) setTimeAgo(`${Math.floor(seconds / 3600)} hrs ago`);
+      else setTimeAgo(`${Math.floor(seconds / 86400)} days ago`);
+    };
+
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, [date]);
+
+  return <span className="flex items-center gap-1.5 text-slate-500 font-medium whitespace-nowrap"><Clock size={14} className="text-blue-500" /> {timeAgo}</span>;
+}
 
 export default function ActivitiesDashboard() {
   const [activities, setActivities] = useState<any[]>([]);
@@ -102,7 +123,7 @@ export default function ActivitiesDashboard() {
                 <tr className="bg-slate-50 border-b border-slate-100">
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activity</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Year</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Time Since Posted</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tags</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
                 </tr>
@@ -130,7 +151,7 @@ export default function ActivitiesDashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-sm font-medium text-slate-600">{activity.year}</span>
+                      <TimeAgo date={activity.createdAt} />
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1 max-w-[200px]">

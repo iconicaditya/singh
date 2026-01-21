@@ -208,17 +208,7 @@ export default function ActivitiesForm({ onClose, onSuccess, initialData }: Acti
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700">Year</label>
-                <input
-                  type="text"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
+              <div className="space-y-2 md:col-span-2">
                 <label className="text-sm font-semibold text-slate-700 uppercase tracking-wider text-[10px]">Tags (Comma Separated)</label>
                 <input
                   type="text"
