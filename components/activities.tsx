@@ -227,7 +227,7 @@ export default function Activities() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-3xl md:text-5xl font-black text-[#1e293b] leading-[1.2]"
+                    className="text-2xl md:text-3xl font-black text-[#1e293b] leading-[1.2]"
                   >
                     {selectedActivity?.title}
                   </motion.h2>
@@ -246,11 +246,21 @@ export default function Activities() {
                         transition={{ delay: 0.5 + (idx * 0.1) }}
                         className="mb-8"
                       >
-                        {section.title && <h3 className="text-2xl font-bold mb-4 text-[#1e293b]">{section.title}</h3>}
+                        {section.title && <h3 className="text-xl font-bold mb-4 text-[#1e293b]">{section.title}</h3>}
                         <div 
                           className="text-gray-600 leading-[1.8] activity-content text-lg"
                           dangerouslySetInnerHTML={{ __html: section.content }}
                         />
+                        {section.image && (
+                          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mt-4 mb-6">
+                            <Image
+                              src={section.image}
+                              alt={section.title || "Activity detail image"}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
                       </motion.div>
                     ))}
                   </motion.div>
