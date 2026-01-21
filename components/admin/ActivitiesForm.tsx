@@ -204,7 +204,18 @@ export default function ActivitiesForm({ onClose, onSuccess, initialData }: Acti
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
                   />
-                  <button type="button" className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors">Add</button>
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      if (newCategory.trim()) {
+                        setCategory(newCategory.trim());
+                        setNewCategory("");
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
                 </div>
               </div>
 
