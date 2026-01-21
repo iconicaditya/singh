@@ -23,6 +23,21 @@ interface Activity {
   createdAt?: string;
 }
 
+const formatRelativeTime = (dateString?: string) => {
+  if (!dateString) return "Just now";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return `${Math.max(1, diffInSeconds)} sec ago`;
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes} min ago`;
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours} hour ago`;
+  const diffInDays = Math.floor(diffInHours / 24);
+  return `${diffInDays} day ago`;
+};
+
 export default function Activities() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -194,6 +209,10 @@ export default function Activities() {
                   <div className="flex items-center gap-3 text-gray-500 text-sm font-medium">
                     <Calendar size={16} />
                     <span>{selectedActivity?.year}</span>
+                    <span className="w-1 h-1 rounded-full bg-gray-300" />
+                    <span className="text-blue-500 font-bold italic">
+                      {formatRelativeTime(selectedActivity?.createdAt)}
+                    </span>
                     {selectedActivity?.tags && (
                       <>
                         <span className="w-1 h-1 rounded-full bg-gray-300" />
