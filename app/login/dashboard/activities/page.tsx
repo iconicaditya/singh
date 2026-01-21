@@ -95,50 +95,83 @@ export default function ActivitiesDashboard() {
           <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent animate-spin rounded-full"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredActivities.map((activity: any) => (
-            <div key={activity.id} className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-              {activity.titleImage && (
-                <div className="aspect-video relative">
-                  <img src={activity.titleImage} className="w-full h-full object-cover" alt={activity.title} />
-                </div>
-              )}
-              <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase">
-                    {activity.category}
-                  </span>
-                  <span className="flex items-center gap-1 text-slate-400 text-sm">
-                    <Calendar size={14} /> {activity.year}
-                  </span>
-                </div>
-                <h3 className="font-bold text-slate-800 line-clamp-2">{activity.title}</h3>
-                {activity.tags && (
-                  <div className="flex flex-wrap gap-2">
-                    {activity.tags.split(",").map((tag: string, i: number) => (
-                      <span key={i} className="flex items-center gap-1 text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                        <Tag size={10} /> {tag.trim()}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-100">
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Activity</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Year</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tags</th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {filteredActivities.map((activity: any) => (
+                  <tr key={activity.id} className="hover:bg-slate-50/50 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                          {activity.titleImage ? (
+                            <img src={activity.titleImage} className="w-full h-full object-cover" alt="" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-300">
+                              <Calendar size={20} />
+                            </div>
+                          )}
+                        </div>
+                        <span className="font-bold text-slate-800 line-clamp-1">{activity.title}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full uppercase">
+                        {activity.category}
                       </span>
-                    ))}
-                  </div>
-                )}
-                <div className="pt-4 flex items-center justify-end gap-2 border-t border-slate-50">
-                  <button 
-                    onClick={() => handleEdit(activity)}
-                    className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button 
-                    onClick={() => handleDelete(activity.id)}
-                    className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-sm font-medium text-slate-600">{activity.year}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1 max-w-[200px]">
+                        {activity.tags?.split(",").slice(0, 2).map((tag: string, i: number) => (
+                          <span key={i} className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md whitespace-nowrap">
+                            {tag.trim()}
+                          </span>
+                        ))}
+                        {activity.tags?.split(",").length > 2 && (
+                          <span className="text-[10px] text-slate-400">+{activity.tags.split(",").length - 2}</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => handleEdit(activity)}
+                          className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit"
+                        >
+                          <Edit size={18} />
+                        </button>
+                        <button 
+                          onClick={() => handleDelete(activity.id)}
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {filteredActivities.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="text-slate-400 font-medium">No activities found matching your search.</p>
             </div>
-          ))}
+          )}
         </div>
       )}
 
