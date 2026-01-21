@@ -49,18 +49,19 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
   const handleImageUpload = async (file: File, type: 'title' | number) => {
     if (type === 'title') setIsUploadingTitle(true);
     
-    try {
-      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dbgq7ls4q";
-      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "research_preset";
-      
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", uploadPreset);
+    const formData = new FormData();
+    formData.append("file", file);
 
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+    try {
+      const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
+      
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      }
+      
       const data = await res.json();
       
       if (type === 'title') {
@@ -72,7 +73,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to upload image");
+      alert("Failed to upload image. Please try again.");
     } finally {
       if (type === 'title') setIsUploadingTitle(false);
     }
