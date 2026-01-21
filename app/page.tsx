@@ -18,9 +18,9 @@ export default function Home() {
       <ResearchThemes />
       <ResearchFocus />
       <OurTeam />
+      <Activities />
       <Collaborator />
       <Gallery />
-      <Activities />
       <Contact />
     </div>
   );
