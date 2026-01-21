@@ -224,28 +224,34 @@ export default function Activities() {
                   </div>
                   
                   <motion.h2 
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
                     className="text-3xl md:text-5xl font-black text-[#1e293b] leading-[1.2]"
                   >
                     {selectedActivity?.title}
                   </motion.h2>
 
                   <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
                     className="prose prose-blue max-w-none prose-lg"
                   >
                     {selectedActivity?.contentSections.map((section, idx) => (
-                      <div key={idx} className="mb-8">
+                      <motion.div 
+                        key={idx} 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 + (idx * 0.1) }}
+                        className="mb-8"
+                      >
                         {section.title && <h3 className="text-2xl font-bold mb-4 text-[#1e293b]">{section.title}</h3>}
                         <div 
                           className="text-gray-600 leading-[1.8] activity-content text-lg"
                           dangerouslySetInnerHTML={{ __html: section.content }}
                         />
-                      </div>
+                      </motion.div>
                     ))}
                   </motion.div>
                 </div>
@@ -272,22 +278,6 @@ export default function Activities() {
         .activity-content * {
           word-wrap: break-word;
           overflow-wrap: break-word;
-        }
-      `}</style>
-    </section>
-  );
-}
-      <style jsx global>{`
-        .activity-content p {
-          margin-bottom: 1rem;
-        }
-        .activity-content ul {
-          list-style-type: disc;
-          padding-left: 1.5rem;
-          margin-bottom: 1rem;
-        }
-        .activity-content li {
-          margin-bottom: 0.5rem;
         }
       `}</style>
     </section>
