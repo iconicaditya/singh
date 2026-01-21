@@ -20,6 +20,19 @@ interface ActivitiesFormProps {
 
 const CATEGORIES = ["RESEARCH", "EVENT", "WORKSHOP", "PUBLICATION"];
 
+const modules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'font': [] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'clean'],
+  ],
+};
+
 export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormProps) {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("RESEARCH");
@@ -33,8 +46,6 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
   ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleImageUpload = async (file: File, type: 'title' | number) => {
     if (type === 'title') setIsUploadingTitle(true);
     
@@ -43,7 +54,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
     formData.append("upload_preset", "research_preset");
 
     try {
-      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dq7v8t4y4"; // Fallback or ensure env is used
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dq7v8t4y4";
       const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
         method: "POST",
         body: formData,
@@ -149,11 +160,11 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <label className="text-sm font-semibold text-slate-700">Category</label>
                 <div className="relative">
                   <select
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none bg-white pr-10"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 appearance-none bg-white pr-10 text-black"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
-                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    {CATEGORIES.map(c => <option key={c} value={c} className="text-black">{c}</option>)}
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                 </div>
@@ -161,7 +172,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                   <input
                     type="text"
                     placeholder="New category name"
-                    className="flex-1 px-4 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500"
+                    className="flex-1 px-4 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black placeholder:text-slate-400"
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
                   />
@@ -184,7 +195,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <input
                   type="text"
                   placeholder="e.g. LCA, Sustainability"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-black placeholder:text-slate-400"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
                 />
@@ -194,7 +205,7 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
             <div className="space-y-2">
               <label className="text-sm font-semibold text-slate-700">Title Image</label>
               <div className="flex items-start gap-6">
-                <div className="w-32 h-32 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden relative">
+                <div className="w-32 h-32 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center bg-slate-50 overflow-hidden relative text-black">
                   {titleImage ? (
                     <img src={titleImage} className="w-full h-full object-cover" />
                   ) : (
@@ -245,24 +256,29 @@ export default function ActivitiesForm({ onClose, onSuccess }: ActivitiesFormPro
                 <input
                   type="text"
                   placeholder="Title eg- Introduction"
-                  className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-blue-500 text-black"
+                  className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-blue-500 text-black placeholder:text-slate-400"
                   value={section.title}
                   onChange={(e) => updateSection(idx, 'title', e.target.value)}
                 />
 
-                <div className="bg-white rounded-lg border border-slate-200 overflow-hidden min-h-[300px]">
+                <div className="bg-white rounded-lg border border-slate-200 overflow-hidden min-h-[400px]">
+                  <style>{`
+                    .ql-editor { color: black !important; min-height: 300px; }
+                    .ql-toolbar { background: #f8fafc; border-top: none !important; border-left: none !important; border-right: none !important; }
+                  `}</style>
                   <ReactQuill
                     theme="snow"
                     value={section.content}
                     onChange={(val) => updateSection(idx, 'content', val)}
-                    className="h-[250px]"
+                    modules={modules}
+                    className="h-[350px]"
                   />
                 </div>
 
                 <div className="space-y-3 pt-4">
                   <label className="text-sm font-semibold text-slate-700">Paragraph Image (Optional)</label>
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center bg-white overflow-hidden">
+                    <div className="w-16 h-16 border-2 border-dashed border-slate-200 rounded-lg flex items-center justify-center bg-white overflow-hidden text-black">
                       {section.image ? (
                         <img src={section.image} className="w-full h-full object-cover" />
                       ) : (
