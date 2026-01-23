@@ -1,39 +1,68 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Maximize2 } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
-const galleryData = [
-  { id: 1, title: "Plastic Pollution Research", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery1.jpg", description: "Documenting microplastic accumulation in natural water bodies." },
-  { id: 2, title: "Ocean Debris Analysis", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery2.jpg", description: "Studying the impact of non-biodegradable waste on marine ecosystems." },
-  { id: 3, title: "Coastal Cleanup Monitoring", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery3.jpg", description: "Tracking the effectiveness of coastal waste removal programs." },
-  { id: 4, title: "Riverine Waste Flow", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery4.jpg", description: "Analyzing how plastic waste travels through urban river systems." },
-  { id: 5, title: "Urban Litter Assessment", category: "PLASTIC WASTE", image: "/galleryimages/env_gallery5.jpg", description: "Statistical sampling of plastic litter in metropolitan green spaces." },
-  { id: 6, title: "Industrial Recycling Workflow", category: "RECYCLING", image: "/galleryimages/env_gallery6.jpg", description: "Optimizing sorting processes for multi-material recycling streams." },
-  { id: 7, title: "Material Recovery Analysis", category: "RECYCLING", image: "/galleryimages/env_gallery7.jpg", description: "Evaluating the purity of recovered secondary raw materials." },
-  { id: 8, title: "Circular Economy Research", category: "RECYCLING", image: "/galleryimages/env_gallery8.jpg", description: "Designing closed-loop systems for industrial byproduct management." },
-  { id: 9, title: "Waste-to-Energy Process", category: "RECYCLING", image: "/galleryimages/env_gallery9.jpg", description: "Monitoring thermal conversion of non-recyclable waste into energy." },
-  { id: 10, title: "Electronic Waste Sorting", category: "RECYCLING", image: "/galleryimages/env_gallery10.jpg", description: "Advanced separation techniques for high-value metal recovery from E-waste." },
-  { id: 11, title: "Landfill Methane Monitoring", category: "LANDFILL MGMT", image: "/galleryimages/env_gallery11.jpg", description: "Remote sensing of greenhouse gas emissions from active landfill sites." },
-  { id: 12, title: "Geosynthetic Barrier Audit", category: "LANDFILL MGMT", image: "/galleryimages/env_gallery12.jpg", description: "Inspecting integrity of containment systems for hazardous waste." },
-];
+interface GalleryItem {
+  id: number;
+  title: string;
+  category: string;
+  imageUrl: string;
+  description: string | null;
+}
 
-const CATEGORIES = ["ALL", "PLASTIC WASTE", "RECYCLING", "LANDFILL MGMT", "ORGANIC WASTE"];
+const CATEGORIES_KEYS = ["ALL_CATEGORIES", "PLASTIC_WASTE", "RECYCLING", "LANDFILL_MGMT", "ORGANIC_WASTE"];
 
 export default function Gallery() {
+  const { t } = useLanguage();
+  const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("ALL");
-  const [selectedImage, setSelectedImage] = useState<typeof galleryData[0] | null>(null);
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch("/api/gallery");
+        if (!response.ok) throw new Error("Failed to fetch gallery");
+        const data = await response.json();
+        setGalleryData(data);
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
+  }, []);
 
   const filteredItems = galleryData.filter(
-    (item) => activeCategory === "ALL" || item.category === activeCategory
+    (item) => activeCategory === "ALL_CATEGORIES" || item.category === t(activeCategory)
   ).slice(0, 12);
 
-  const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
+  const handleCategoryChange = (catKey: string) => {
+    setActiveCategory(catKey);
   };
+
+  if (loading) {
+    return (
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4">
+              {t("RESEARCH_GALLERY")} <span className="text-blue-600">{t("GALLERY_TITLE")}</span>
+            </h2>
+            <p className="text-gray-500 max-w-2xl mx-auto text-lg">{t("LOADING_GALLERY")}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 bg-white">
@@ -45,7 +74,7 @@ export default function Gallery() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4"
           >
-            Research <span className="text-blue-600">Gallery</span>
+            {t("RESEARCH_GALLERY")} <span className="text-blue-600">{t("GALLERY_TITLE")}</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -54,27 +83,27 @@ export default function Gallery() {
             transition={{ delay: 0.1 }}
             className="text-gray-500 max-w-2xl mx-auto text-lg"
           >
-            Visual documentation of our fieldwork and environmental research initiatives.
+            {t("GALLERY_DESCRIPTION")}
           </motion.p>
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {CATEGORIES.map((cat, idx) => (
+          {CATEGORIES_KEYS.map((catKey, idx) => (
             <motion.button
-              key={cat}
+              key={catKey}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              onClick={() => handleCategoryChange(cat)}
+              onClick={() => setActiveCategory(catKey)}
               className={`px-6 py-2 rounded-full text-xs font-black tracking-widest transition-all duration-300 ${
-                activeCategory === cat
+                activeCategory === catKey
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
                   : "bg-gray-50 text-gray-400 hover:bg-gray-100"
               }`}
             >
-              {cat}
+              {t(catKey)}
             </motion.button>
           ))}
         </div>
@@ -95,7 +124,7 @@ export default function Gallery() {
                 onClick={() => setSelectedImage(item)}
               >
                 <Image
-                  src={item.image}
+                  src={item.imageUrl}
                   alt={item.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -104,7 +133,7 @@ export default function Gallery() {
                   <span className="text-[10px] font-black tracking-widest text-blue-400 mb-2">{item.category}</span>
                   <h3 className="text-white font-bold text-sm leading-tight mb-1">{item.title}</h3>
                   <div className="flex items-center gap-2 text-white/60 text-[10px]">
-                    <Maximize2 size={12} /> Click to expand
+                    <Maximize2 size={12} /> {t("EXPAND")}
                   </div>
                 </div>
               </motion.div>
@@ -119,7 +148,7 @@ export default function Gallery() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-sm tracking-widest shadow-xl shadow-blue-200 flex items-center gap-3 transition-all"
             >
-              VIEW ALL IMAGES <ArrowRight size={20} />
+              {t("VIEW_ALL_IMAGES")} <ArrowRight size={20} />
             </motion.button>
           </Link>
         </div>
@@ -143,7 +172,7 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={selectedImage.image}
+                src={selectedImage.imageUrl}
                 alt={selectedImage.title}
                 fill
                 className="object-contain"

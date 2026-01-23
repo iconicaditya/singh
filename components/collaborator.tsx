@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Building2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface Collaborator {
   id: number;
@@ -14,6 +15,7 @@ interface Collaborator {
 }
 
 export default function Collaborator() {
+  const { t } = useLanguage();
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [startCol, setStartCol] = useState(0);
@@ -106,14 +108,14 @@ export default function Collaborator() {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1e293b] mb-2">
-              Our <span className="text-blue-600">Collaborators</span>
+              {t("OUR_COLLABORATORS")} <span className="text-blue-600">{t("COLLABORATORS")}</span>
             </h2>
             <p className="text-gray-600 text-base md:text-lg">
-              Partnering with leading institutions and organizations to advance environmental research and innovation.
+              {t("COLLABORATORS_DESCRIPTION")}
             </p>
           </div>
           <div className="flex items-center justify-center">
-            <div className="animate-pulse text-slate-400">Loading...</div>
+            <div className="animate-pulse text-slate-400">{t("LOADING")}</div>
           </div>
         </div>
       </section>
@@ -138,10 +140,10 @@ export default function Collaborator() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-[#1e293b] mb-2">
-            Our <span className="text-blue-600">Collaborators</span>
+            {t("OUR_COLLABORATORS")} <span className="text-blue-600">{t("COLLABORATORS")}</span>
           </h2>
           <p className="text-gray-600 text-base md:text-lg max-w-3xl mx-auto">
-            Partnering with leading institutions and organizations to advance environmental research and innovation.
+            {t("COLLABORATORS_DESCRIPTION")}
           </p>
         </motion.div>
 

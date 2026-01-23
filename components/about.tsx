@@ -2,23 +2,26 @@
 
 import { motion } from "framer-motion";
 import { Target, Lightbulb, Workflow } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function About() {
+  const { t } = useLanguage();
+  
   const cards = [
     {
-      title: "Our Vision",
+      titleKey: "OUR_VISION",
       icon: <Target className="w-8 h-8 text-[#3b82f6]" />,
-      description: "To integrate research, teaching, and local action to reduce environmental risks and improve environmental and social well-being."
+      descriptionKey: "VISION_DESC"
     },
     {
-      title: "Our Mission",
+      titleKey: "OUR_MISSION",
       icon: <Lightbulb className="w-8 h-8 text-[#3b82f6]" />,
-      description: "Produce high-quality policy-relevant research, train students in field methods, and engage communities in sustainability initiatives."
+      descriptionKey: "MISSION_DESC"
     },
     {
-      title: "Our Approach",
+      titleKey: "OUR_APPROACH",
       icon: <Workflow className="w-8 h-8 text-[#3b82f6]" />,
-      description: "Mixed methods research grounded in real-world contexts, emphasizing impact beyond academia and linking environmental, social, and economic dimensions."
+      descriptionKey: "APPROACH_DESC"
     }
   ];
 
@@ -38,7 +41,7 @@ export default function About() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
           >
-            About The Lab
+            {t("ABOUT_LAB")}
           </motion.h2>
           <motion.div 
             initial={{ width: 0 }}
@@ -53,14 +56,14 @@ export default function About() {
             transition={{ delay: 0.2 }}
             className="text-gray-400 text-lg leading-relaxed"
           >
-            The Singh Lab is an interdisciplinary research group at Kobe City University of Foreign Studies focused on understanding and addressing environmental challenges through applied research, education, and community engagement.
+            {t("ABOUT_LAB_DESCRIPTION")}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card, index) => (
             <motion.div
-              key={card.title}
+              key={card.titleKey}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -78,10 +81,10 @@ export default function About() {
                 {card.icon}
               </div>
               <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-blue-400 transition-colors">
-                {card.title}
+                {t(card.titleKey)}
               </h3>
               <p className="text-gray-400 leading-relaxed text-sm">
-                {card.description}
+                {t(card.descriptionKey)}
               </p>
             </motion.div>
           ))}

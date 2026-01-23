@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Search, MapPin, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import ProjectCard from "@/components/projects/ProjectCard";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function ProjectsPage() {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,10 +52,10 @@ export default function ProjectsPage() {
             className="max-w-3xl"
           >
             <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase">
-              Our <span className="text-blue-500">Projects</span>
+              {t("PROJECTS_PAGE_TITLE")}
             </h1>
             <p className="text-xl text-slate-400 font-medium leading-relaxed">
-              Discover our ongoing and completed initiatives in environmental conservation and sustainable development.
+              {t("PROJECTS_PAGE_DESCRIPTION")}
             </p>
           </motion.div>
         </div>
@@ -66,7 +68,7 @@ export default function ProjectsPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
             <input
               type="text"
-              placeholder="Search projects by title, category, or location..."
+              placeholder={t("SEARCH_PROJECTS")}
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -131,8 +133,8 @@ export default function ProjectsPage() {
 
               {!loading && paginatedProjects.length === 0 && (
                 <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100">
-                  <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase">No Projects Found</h3>
-                  <p className="text-slate-500 font-medium">Try adjusting your search criteria.</p>
+                  <h3 className="text-2xl font-black text-slate-900 mb-2 uppercase">{t("NO_PROJECTS_FOUND")}</h3>
+                  <p className="text-slate-500 font-medium">{t("TRY_ADJUSTING_SEARCH")}</p>
                 </div>
               )}
             </>

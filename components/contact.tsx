@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { Mail, MapPin, Facebook, Twitter, Linkedin, Globe, Send } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formState, setFormState] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState({ email: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,7 +60,7 @@ export default function Contact() {
             className="mb-8 p-6 bg-green-50 border border-green-100 rounded-2xl text-center"
           >
             <p className="text-green-800 font-bold">
-              Your message has been sent successfully. We will get back to you soon.
+              {t("CONTACT_SUCCESS")}
             </p>
           </motion.div>
         )}
@@ -70,11 +72,10 @@ export default function Contact() {
           className="text-center mb-16 space-y-4"
         >
           <h2 className="text-4xl md:text-5xl font-black text-[#1a2233] tracking-tight">
-            Let's Start a Conversation
+            {t("GET_IN_TOUCH")}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Have a question about our research or interested in collaboration? 
-            We're here to help you turn visionary ideas into reality.
+            {t("CONTACT_DESCRIPTION")}
           </p>
           <div className="w-20 h-1.5 bg-blue-600 mx-auto rounded-full" />
         </motion.div>
@@ -108,9 +109,9 @@ export default function Contact() {
             </div>
 
             <div className="relative z-10 h-full flex flex-col">
-              <h2 className="text-2xl font-black mb-6 tracking-tight">Contact Information</h2>
+              <h2 className="text-2xl font-black mb-6 tracking-tight">{t("CONTACT_INFORMATION")}</h2>
               <p className="text-gray-400 text-sm mb-12 leading-relaxed">
-                We are always open to discussing new projects, creative ideas or opportunities to be part of your visions.
+                {t("ALWAYS_OPEN_DISCUSSION")}
               </p>
 
               <div className="space-y-10">
@@ -119,11 +120,11 @@ export default function Contact() {
                     <MapPin size={18} className="text-gray-400 group-hover:text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white mb-1">Location</h4>
+                    <h4 className="font-bold text-sm text-white mb-1">{t("LOCATION")}</h4>
                     <p className="text-gray-400 text-xs leading-relaxed">
-                      Kobe City University of Foreign Studies<br />
-                      Kobe<br />
-                      Japan
+                      {t("UNIVERSITY_NAME")}<br />
+                      {t("UNIVERSITY_CITY")}<br />
+                      {t("UNIVERSITY_COUNTRY")}
                     </p>
                   </div>
                 </div>
@@ -133,7 +134,7 @@ export default function Contact() {
                     <Mail size={18} className="text-gray-400 group-hover:text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white mb-1">Email</h4>
+                    <h4 className="font-bold text-sm text-white mb-1">{t("EMAIL_LABEL")}</h4>
                     <p className="text-gray-400 text-xs">contact@singhlab.org</p>
                     <p className="text-gray-400 text-xs">research@singhlab.org</p>
                   </div>
@@ -144,7 +145,7 @@ export default function Contact() {
                     <Globe size={18} className="text-gray-400 group-hover:text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-white mb-4">Socials</h4>
+                    <h4 className="font-bold text-sm text-white mb-4">{t("SOCIALS")}</h4>
                     <div className="flex gap-4">
                       <Facebook size={16} className="text-gray-400 hover:text-white cursor-pointer transition-colors" />
                       <Twitter size={16} className="text-gray-400 hover:text-white cursor-pointer transition-colors" />
@@ -161,7 +162,7 @@ export default function Contact() {
             <form className="space-y-8" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-700">Your Name <span className="text-red-500">*</span></label>
+                  <label className="text-xs font-bold text-gray-700">{t("FULL_NAME")} <span className="text-red-500">*</span></label>
                   <input 
                     type="text" 
                     required
@@ -172,7 +173,7 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-gray-700">Your Email <span className="text-red-500">*</span></label>
+                  <label className="text-xs font-bold text-gray-700">{t("EMAIL")} <span className="text-red-500">*</span></label>
                   <motion.input 
                     animate={errors.email ? { x: [-2, 2, -2, 2, 0] } : {}}
                     type="email" 
@@ -188,7 +189,7 @@ export default function Contact() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-700">Subject</label>
+                <label className="text-xs font-bold text-gray-700">{t("SUBJECT")}</label>
                 <input 
                   type="text" 
                   value={formState.subject}
@@ -199,7 +200,7 @@ export default function Contact() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-gray-700">Message <span className="text-red-500">*</span></label>
+                <label className="text-xs font-bold text-gray-700">{t("MESSAGE")} <span className="text-red-500">*</span></label>
                 <textarea 
                   rows={6}
                   required
@@ -211,10 +212,10 @@ export default function Contact() {
               </div>
 
               {submitStatus === "success" && (
-                <p className="text-green-600 text-sm font-bold">Message sent successfully!</p>
+                <p className="text-green-600 text-sm font-bold">{t("CONTACT_SUCCESS")}</p>
               )}
               {submitStatus === "error" && (
-                <p className="text-red-600 text-sm font-bold">Failed to send message. Please try again.</p>
+                <p className="text-red-600 text-sm font-bold">{t("CONTACT_ERROR")}</p>
               )}
 
               <motion.button 
@@ -226,7 +227,7 @@ export default function Contact() {
                 }`}
               >
                 <Send size={18} />
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? "Sending..." : t("SEND_MESSAGE")}
               </motion.button>
             </form>
           </div>

@@ -2,43 +2,45 @@
 
 import { motion } from "framer-motion";
 import { Droplets, Recycle, ThermometerSun, Zap, Users, Globe2 } from "lucide-react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function ResearchThemes() {
+  const { t } = useLanguage();
   const themes = [
     {
-      title: "Plastics",
+      titleKey: "PLASTICS",
       icon: <Droplets className="w-10 h-10 text-blue-400" />,
-      points: ["Marine litter education", "Microplastics monitoring", "Plastic-climate nexus"],
+      pointKeys: ["MARINE_LITTER_EDUCATION", "MICROPLASTICS_MONITORING", "PLASTIC_CLIMATE_NEXUS"],
       gradient: "from-blue-500/20 to-cyan-500/20"
     },
     {
-      title: "Waste Management",
+      titleKey: "WASTE_MANAGEMENT",
       icon: <Recycle className="w-10 h-10 text-green-400" />,
-      points: ["Campus compost & LCA", "Open burning mitigation", "Municipal solid waste planning"],
+      pointKeys: ["CAMPUS_COMPOST", "OPEN_BURNING_MITIGATION", "MUNICIPAL_SOLID_WASTE"],
       gradient: "from-green-500/20 to-emerald-500/20"
     },
     {
-      title: "Climate Change",
+      titleKey: "CLIMATE_CHANGE",
       icon: <ThermometerSun className="w-10 h-10 text-orange-400" />,
-      points: ["Heat risk perception", "Mitigation co-benefits", "Community resilience"],
+      pointKeys: ["HEAT_RISK_PERCEPTION", "MITIGATION_CO_BENEFITS", "COMMUNITY_RESILIENCE"],
       gradient: "from-orange-500/20 to-red-500/20"
     },
     {
-      title: "Renewable Energy & Tech",
+      titleKey: "RENEWABLE_ENERGY_TECH",
       icon: <Zap className="w-10 h-10 text-yellow-400" />,
-      points: ["Solar adoption & behavior", "Energy efficiency research", "Community energy systems"],
+      pointKeys: ["SOLAR_ADOPTION", "ENERGY_EFFICIENCY", "COMMUNITY_ENERGY"],
       gradient: "from-yellow-500/20 to-amber-500/20"
     },
     {
-      title: "Social & Urban Systems",
+      titleKey: "SOCIAL_URBAN_SYSTEMS",
       icon: <Users className="w-10 h-10 text-purple-400" />,
-      points: ["Sustainable urban planning", "Environmental justice", "Public health & resilience"],
+      pointKeys: ["SUSTAINABLE_URBAN_PLANNING", "ENVIRONMENTAL_JUSTICE", "PUBLIC_HEALTH"],
       gradient: "from-purple-500/20 to-indigo-500/20"
     },
     {
-      title: "Others",
+      titleKey: "OTHERS_THEMES",
       icon: <Globe2 className="w-10 h-10 text-pink-400" />,
-      points: ["Fair trade impacts", "Biodiversity & plastics", "Policy design & SDGs"],
+      pointKeys: ["FAIR_TRADE_IMPACTS", "BIODIVERSITY_PLASTICS", "POLICY_DESIGN"],
       gradient: "from-pink-500/20 to-rose-500/20"
     }
   ];
@@ -57,7 +59,7 @@ export default function ResearchThemes() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black text-white mb-6"
           >
-            Research <span className="text-blue-500">Themes</span>
+            {t("RESEARCH")} <span className="text-blue-500">{t("THEMES")}</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -66,14 +68,14 @@ export default function ResearchThemes() {
             transition={{ delay: 0.1 }}
             className="text-gray-400 max-w-2xl mx-auto text-lg"
           >
-            Our interdisciplinary research spans multiple critical areas of environmental sustainability.
+            {t("RESEARCH_THEMES_DESCRIPTION")}
           </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {themes.map((theme, index) => (
             <motion.div
-              key={theme.title}
+              key={theme.titleKey}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -96,11 +98,11 @@ export default function ResearchThemes() {
                 </div>
                 
                 <h3 className="text-2xl font-bold text-white mb-6 text-center group-hover:text-blue-400 transition-colors">
-                  {theme.title}
+                  {t(theme.titleKey)}
                 </h3>
                 
                 <ul className="space-y-4 max-w-xs mx-auto flex flex-col items-center">
-                  {theme.points.map((point, pIndex) => (
+                  {theme.pointKeys.map((pointKey, pIndex) => (
                     <motion.li 
                       key={pIndex}
                       initial={{ opacity: 0, x: -10 }}
@@ -110,7 +112,7 @@ export default function ResearchThemes() {
                       className="flex items-center gap-3 text-gray-400 text-sm group-hover:text-gray-300 text-center"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                      {point}
+                      {t(pointKey)}
                     </motion.li>
                   ))}
                 </ul>

@@ -5,6 +5,7 @@ import { Calendar, ArrowRight, Bell, Tag, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface ContentSection {
   title: string;
@@ -39,6 +40,7 @@ const formatRelativeTime = (dateString?: string) => {
 };
 
 export default function Activities() {
+  const { t } = useLanguage();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,7 +96,7 @@ export default function Activities() {
                   className="text-xl font-black text-[#1e293b] flex items-center gap-2 uppercase tracking-tight"
                 >
                   <Bell className="text-blue-600" size={20} />
-                  Latest Updates
+                  {t("RECENT_ACTIVITIES")}
                 </motion.h3>
                 <div className="h-1 w-12 bg-blue-600 mt-2 rounded-full" />
               </div>

@@ -4,31 +4,33 @@ import { motion } from "framer-motion";
 import { Microscope, Globe, Leaf, BarChart3, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const researchFocusData = [
   {
     icon: <Microscope className="w-6 h-6 text-blue-600" />,
-    title: "Applied Environmental Science",
-    description: "Utilizing advanced data analysis and field methods to monitor environmental changes and assess ecosystem health.",
+    titleKey: "APPLIED_ENVIRONMENTAL_SCIENCE",
+    descriptionKey: "APPLIED_ENVIRONMENTAL_DESC",
   },
   {
     icon: <Globe className="w-6 h-6 text-blue-600" />,
-    title: "Global Sustainability Policy",
-    description: "Analyzing international frameworks and local implementations to bridge the gap between policy goals and community action.",
+    titleKey: "GLOBAL_SUSTAINABILITY_POLICY",
+    descriptionKey: "GLOBAL_SUSTAINABILITY_DESC",
   },
   {
     icon: <Leaf className="w-6 h-6 text-blue-600" />,
-    title: "Circular Economy Models",
-    description: "Developing practical models for waste reduction and resource efficiency in urban and rural settings.",
+    titleKey: "CIRCULAR_ECONOMY_MODELS",
+    descriptionKey: "CIRCULAR_ECONOMY_DESC",
   },
   {
     icon: <BarChart3 className="w-6 h-6 text-blue-600" />,
-    title: "Impact Assessment",
-    description: "Measuring the social and environmental outcomes of sustainability interventions to guide future decision-making.",
+    titleKey: "IMPACT_ASSESSMENT",
+    descriptionKey: "IMPACT_ASSESSMENT_DESC",
   },
 ];
 
 export default function ResearchFocus() {
+  const { t } = useLanguage();
   return (
     <section className="py-20 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
@@ -41,13 +43,11 @@ export default function ResearchFocus() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="w-full lg:w-1/2"
           >
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Our Research Focus</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">{t("RESEARCH_FOCUS")}</h2>
             <div className="w-16 h-1 bg-blue-600 mb-8" />
             
             <p className="text-lg text-slate-600 mb-12 leading-relaxed">
-              We go beyond theoretical study to apply rigorous scientific methods to real-world problems. 
-              Our work informs policy, empowers communities, and contributes to the global body 
-              of sustainability knowledge.
+              {t("RESEARCH_FOCUS_DESCRIPTION")}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
@@ -62,8 +62,8 @@ export default function ResearchFocus() {
                   className="p-6 rounded-2xl bg-slate-50 border border-slate-100 transition-all hover:shadow-lg"
                 >
                   <div className="mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+                  <h3 className="text-xl font-semibold text-slate-900 mb-2">{t(item.titleKey)}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">{t(item.descriptionKey)}</p>
                 </motion.div>
               ))}
             </div>
@@ -78,7 +78,7 @@ export default function ResearchFocus() {
                 href="/research"
                 className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl group"
               >
-                Explore our research
+                {t("EXPLORE_RESEARCH")}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>

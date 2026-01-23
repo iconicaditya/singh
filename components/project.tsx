@@ -5,8 +5,10 @@ import { Search, ChevronDown, ArrowRight, Rocket, Tag, ExternalLink, Loader2 } f
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Projects() {
+  const { t } = useLanguage();
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,7 +40,7 @@ export default function Projects() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black text-[#1e293b] mb-6"
           >
-            Our <span className="text-blue-600">Projects</span>
+            {t("OUR_PROJECTS")} <span className="text-blue-600">{t("PROJECTS_TITLE")}</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -47,7 +49,7 @@ export default function Projects() {
             transition={{ delay: 0.1 }}
             className="text-gray-600 text-lg leading-relaxed"
           >
-            Explore our ongoing and past initiatives dedicated to environmental sustainability and community engagement.
+            {t("PROJECTS_DESCRIPTION")}
           </motion.p>
         </div>
 
@@ -114,7 +116,7 @@ export default function Projects() {
                       className="flex items-center justify-center gap-2 w-full py-4 bg-slate-900 text-white rounded-xl text-xs font-black tracking-widest uppercase hover:bg-blue-600 transition-all active:scale-95 shadow-lg shadow-black/5"
                     >
                       <ExternalLink size={16} />
-                      Explore Project
+                      {t("EXPLORE_PROJECT")}
                     </Link>
                   </div>
                 </div>
@@ -135,7 +137,7 @@ export default function Projects() {
               href="/projects"
               className="inline-flex items-center gap-2 bg-[#2563eb] text-white px-10 py-4 rounded-full font-black hover:bg-[#1d4ed8] transition-all shadow-xl shadow-blue-500/25 group"
             >
-              VIEW ALL PROJECTS <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              {t("VIEW_ALL_PROJECTS")} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
         )}

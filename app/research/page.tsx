@@ -5,10 +5,12 @@ import { Search, ChevronDown, Calendar, Loader2, BookOpen, User, ArrowRight, Tag
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo, useEffect } from "react";
+import { useLanguage } from "@/lib/LanguageContext";
 
 const ITEMS_PER_PAGE = 9;
 
 export default function ResearchPage() {
+  const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
@@ -59,10 +61,10 @@ export default function ResearchPage() {
             className="max-w-3xl"
           >
             <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
-              Research Archive
+              {t("RESEARCH_ARCHIVE")}
             </h1>
             <p className="text-lg text-slate-600 font-medium leading-relaxed">
-              Explore our laboratory's scientific contributions and findings in environmental sustainability and social well-being.
+              {t("RESEARCH_ARCHIVE_DESCRIPTION")}
             </p>
           </motion.div>
         </div>
@@ -76,7 +78,7 @@ export default function ResearchPage() {
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text"
-                placeholder="Search publications..."
+                placeholder={t("SEARCH_PUBLICATIONS")}
                 value={searchTerm}
                 onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
                 className="w-full pl-11 pr-4 py-2.5 bg-slate-100 border-none rounded-lg focus:ring-2 focus:ring-blue-500/20 text-sm font-medium transition-all"
@@ -178,7 +180,7 @@ export default function ResearchPage() {
                           href={`/research/${item.id}`}
                           className="inline-flex items-center gap-1.5 text-sm font-bold text-blue-600 hover:gap-2.5 transition-all"
                         >
-                          View Research <ArrowRight size={16} />
+                          {t("VIEW_RESEARCH")} <ArrowRight size={16} />
                         </Link>
                       </div>
                     </div>
@@ -211,8 +213,8 @@ export default function ResearchPage() {
           ) : (
             <div className="text-center py-24 bg-white rounded-2xl border border-dashed border-slate-200">
               <BookOpen size={48} className="mx-auto text-slate-200 mb-4" />
-              <h3 className="text-xl font-bold text-slate-900 mb-2">No matching entries found</h3>
-              <p className="text-slate-500 text-sm">Try adjusting your filters or search terms.</p>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">{t("NO_MATCHING_ENTRIES")}</h3>
+              <p className="text-slate-500 text-sm">{t("TRY_ADJUSTING_FILTERS")}</p>
             </div>
           )}
         </div>

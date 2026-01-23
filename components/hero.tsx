@@ -3,31 +3,34 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const slides = [
-  {
-    image: "/heroimages/hero0.png",
-    title: "Understanding Environmental Challenges",
-    subtitle: "Addressing Climate Change & Biodiversity Loss",
-  },
-  {
-    image: "/heroimages/renewalenergy.jpg",
-    title: "Renewable Energy Solutions",
-    subtitle: "Powering the future with clean, sustainable energy.",
-  },
-  {
-    image: "/heroimages/wastemanagement.jpg",
-    title: "Waste Management Innovation",
-    subtitle: "Reducing our footprint through circular economy practices.",
-  },
-  {
-    image: "/heroimages/hero3.jpg",
-    title: "Community Driven Action",
-    subtitle: "Working together for a greener and cleaner planet.",
-  },
-];
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
+  
+  const slides = [
+    {
+      image: "/heroimages/hero0.png",
+      titleKey: "HERO_SLIDE_1_TITLE",
+      subtitleKey: "HERO_SLIDE_1_SUBTITLE",
+    },
+    {
+      image: "/heroimages/renewalenergy.jpg",
+      titleKey: "HERO_SLIDE_2_TITLE",
+      subtitleKey: "HERO_SLIDE_2_SUBTITLE",
+    },
+    {
+      image: "/heroimages/wastemanagement.jpg",
+      titleKey: "HERO_SLIDE_3_TITLE",
+      subtitleKey: "HERO_SLIDE_3_SUBTITLE",
+    },
+    {
+      image: "/heroimages/hero3.jpg",
+      titleKey: "HERO_SLIDE_4_TITLE",
+      subtitleKey: "HERO_SLIDE_4_SUBTITLE",
+    },
+  ];
+  
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="max-w-4xl text-3xl font-black md:text-7xl leading-tight"
         >
-          {slides[current].title}
+          {t(slides[current].titleKey)}
         </motion.h2>
         
         <motion.p
@@ -77,7 +80,7 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-4 md:mt-6 max-w-2xl text-base font-medium md:text-xl text-gray-200"
         >
-          {slides[current].subtitle}
+          {t(slides[current].subtitleKey)}
         </motion.p>
 
         <motion.div
@@ -87,7 +90,7 @@ export default function Hero() {
           className="mt-8 md:mt-10"
         >
           <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
-            Learn More <span>→</span>
+            {t("LEARN_MORE")} <span>→</span>
           </button>
         </motion.div>
 

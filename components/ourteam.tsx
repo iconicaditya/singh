@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { Facebook, Twitter, Instagram, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface TeamMember {
   id: number;
@@ -16,6 +17,7 @@ interface TeamMember {
 }
 
 export default function OurTeam() {
+  const { t } = useLanguage();
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +58,7 @@ export default function OurTeam() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-bold text-slate-900 mb-4"
           >
-            Meet Our Research Team
+            {t("MEET_OUR_RESEARCH_TEAM")}
           </motion.h2>
           <div className="w-20 h-0.5 bg-blue-600 mx-auto mb-8" />
           <motion.p
@@ -65,7 +67,7 @@ export default function OurTeam() {
             viewport={{ once: true }}
             className="text-slate-500 max-w-3xl mx-auto text-lg leading-relaxed"
           >
-            Our multidisciplinary team of experts is dedicated to advancing scientific knowledge through rigorous research and collaborative innovation to address global challenges.
+            {t("OUR_TEAM_DESCRIPTION")}
           </motion.p>
         </div>
       </div>
@@ -143,7 +145,7 @@ export default function OurTeam() {
             href="/our-team"
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-10 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-500/30 group"
           >
-            VIEW ALL OUR TEAMS <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            {t("VIEW_ALL_TEAMS")} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
       </div>
