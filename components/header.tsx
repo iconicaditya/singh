@@ -71,7 +71,7 @@ export default function Header() {
         </div>
 
         {/* Center: Marquee Animation */}
-        <div className="w-full md:max-w-md lg:max-w-xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative">
+        <div className="w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative">
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-50%" }}

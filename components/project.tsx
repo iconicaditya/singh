@@ -6,9 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translateProjectCategory } from "@/lib/dbTranslations";
+import { getTranslatedProjectList } from "@/lib/dynamicTranslations";
 
 export default function Projects() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +20,9 @@ export default function Projects() {
         const res = await fetch("/api/projects");
         const data = await res.json();
         if (Array.isArray(data)) {
-          setProjects(data.slice(0, 6));
+          // Apply dynamic translations
+          const translated = getTranslatedProjectList(data, language as 'en' | 'ja');
+          setProjects(translated.slice(0, 6));
         }
       } catch (err) {
         console.error(err);
@@ -27,7 +31,7 @@ export default function Projects() {
       }
     };
     fetchProjects();
-  }, []);
+  }, [language]);
 
   return (
     <section className="py-24 bg-gray-50/50" id="projects">
@@ -84,9 +88,9 @@ export default function Projects() {
                       <Rocket size={48} className="text-slate-200" />
                     </div>
                   )}
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 flex flex-col gap-2">
                     <span className="bg-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest text-white shadow-sm uppercase">
-                      {proj.status}
+                      {translateProjectCategory(proj.category, language as 'en' | 'ja')}
                     </span>
                   </div>
                 </div>

@@ -12,34 +12,41 @@ export interface DynamicTranslation {
 }
 
 // Research Content Translations
+// Add translations by matching the ID from your database
 export const researchTranslations: Record<string, Record<'en' | 'ja', DynamicTranslation>> = {
-  // Example: Add research translations here with research ID as key
-  // '1': {
-  //   'en': { title: 'Original Title', description: 'Original Description' },
-  //   'ja': { title: '翻訳されたタイトル', description: '翻訳された説明' }
-  // },
-  // '2': {
-  //   'en': { title: 'Another Paper', description: 'Research on climate change' },
-  //   'ja': { title: '別の論文', description: '気候変動に関する研究' }
-  // }
+  // Example for testing - replace IDs with actual database IDs
+  '1': {
+    'en': { title: 'Research Item 1', description: 'Description in English' },
+    'ja': { title: '研究項目 1', description: '日本語での説明' }
+  },
+  '2': {
+    'en': { title: 'Research Item 2', description: 'Environmental research description' },
+    'ja': { title: '研究項目 2', description: '環境研究の説明' }
+  }
 };
 
 // Project Content Translations
+// Add translations by matching the ID from your database  
 export const projectTranslations: Record<string, Record<'en' | 'ja', DynamicTranslation>> = {
-  // Example: Add project translations here with project ID as key
-  // '1': {
-  //   'en': { title: 'Project Name', description: 'Project description in English' },
-  //   'ja': { title: 'プロジェクト名', description: '日本語でのプロジェクト説明' }
-  // }
+  // Example for testing - replace IDs with actual database IDs
+  '1': {
+    'en': { title: 'Project One', description: 'Main project description' },
+    'ja': { title: 'プロジェクト 1', description: 'メインプロジェクトの説明' }
+  },
+  '2': {
+    'en': { title: 'Project Two', description: 'Secondary project details' },
+    'ja': { title: 'プロジェクト 2', description: 'セカンダリプロジェクトの詳細' }
+  }
 };
 
 // Activity Content Translations
+// Add translations by matching the ID from your database
 export const activityTranslations: Record<string, Record<'en' | 'ja', DynamicTranslation>> = {
-  // Example: Add activity translations here with activity ID as key
-  // '1': {
-  //   'en': { title: 'Activity Title', category: 'Workshop' },
-  //   'ja': { title: 'アクティビティのタイトル', category: 'ワークショップ' }
-  // }
+  // Example for testing - replace IDs with actual database IDs
+  '1': {
+    'en': { title: 'Activity Title', category: 'Workshop' },
+    'ja': { title: 'アクティビティのタイトル', category: 'ワークショップ' }
+  }
 };
 
 /**
