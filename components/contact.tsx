@@ -51,7 +51,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#f8fafc]">
+    <section id="contact" className="py-24 bg-[#f8fafc] scroll-mt-20">
       <div className="container mx-auto px-6 max-w-7xl">
         {submitStatus === "success" && (
           <motion.div
