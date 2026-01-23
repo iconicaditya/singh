@@ -21,7 +21,7 @@ export default function Gallery() {
   const { t } = useLanguage();
   const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("ALL");
+  const [activeCategory, setActiveCategory] = useState("ALL_CATEGORIES");
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
   useEffect(() => {
@@ -31,12 +31,12 @@ export default function Gallery() {
         if (!response.ok) throw new Error("Failed to fetch gallery");
         const data = await response.json();
         
-        // Transform the data to match GalleryItem interface if needed
+        // Transform the data to match GalleryItem interface
         const transformedData = data.map((item: any) => ({
           id: item.id,
           title: item.title,
           category: item.category,
-          imageUrl: item.image_url || item.imageUrl, // Handle both snake_case and camelCase
+          imageUrl: item.image_url || item.imageUrl,
           description: item.description
         }));
         
@@ -52,23 +52,26 @@ export default function Gallery() {
   }, []);
 
   const filteredItems = galleryData.filter(
-    (item) => activeCategory === "ALL_CATEGORIES" || 
-              item.category === activeCategory || 
-              item.category === t(activeCategory) ||
-              // Add a check for localized keys if the database stores keys like 'PLASTIC_WASTE'
-              activeCategory.toUpperCase() === item.category.toUpperCase()
+    (item) => {
+      if (activeCategory === "ALL_CATEGORIES") return true;
+      
+      // We want to match against the raw category key or the translated name
+      const categoryToMatch = item.category;
+      const activeCategoryKey = activeCategory;
+      const activeCategoryTranslated = t(activeCategory);
+      
+      return categoryToMatch === activeCategoryKey || 
+             categoryToMatch === activeCategoryTranslated ||
+             categoryToMatch.toUpperCase() === activeCategoryKey.toUpperCase();
+    }
   ).slice(0, 12);
-
-  const handleCategoryChange = (catKey: string) => {
-    setActiveCategory(catKey);
-  };
 
   if (loading) {
     return (
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4">
+            <h2 className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4">
               {t("RESEARCH_GALLERY")} <span className="text-blue-600">{t("GALLERY_TITLE")}</span>
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto text-lg">{t("LOADING_GALLERY")}</p>
@@ -137,12 +140,15 @@ export default function Gallery() {
                 className="group relative bg-gray-50 rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
                 onClick={() => setSelectedImage(item)}
               >
-                <Image
-                  src={item.imageUrl}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+                {item.imageUrl && (
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    unoptimized={item.imageUrl.startsWith('http')}
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                   <span className="text-[10px] font-black tracking-widest text-blue-400 mb-2">{item.category}</span>
                   <h3 className="text-white font-bold text-sm leading-tight mb-1">{item.title}</h3>
@@ -153,6 +159,11 @@ export default function Gallery() {
               </motion.div>
             ))}
           </AnimatePresence>
+          {filteredItems.length === 0 && !loading && (
+            <div className="col-span-full text-center py-20 bg-gray-50 rounded-3xl">
+              <p className="text-gray-400 font-medium">No images found in this category.</p>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-center mt-12">
@@ -185,12 +196,15 @@ export default function Gallery() {
               className="relative max-w-5xl w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={selectedImage.imageUrl}
-                alt={selectedImage.title}
-                fill
-                className="object-contain"
-              />
+              {selectedImage.imageUrl && (
+                <Image
+                  src={selectedImage.imageUrl}
+                  alt={selectedImage.title}
+                  fill
+                  className="object-contain"
+                  unoptimized={selectedImage.imageUrl.startsWith('http')}
+                />
+              )}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-8 md:p-12">
                 <span className="text-blue-500 font-black tracking-widest text-xs mb-3 block">{selectedImage.category}</span>
                 <h2 className="text-2xl md:text-3xl font-black text-white mb-2">{selectedImage.title}</h2>
