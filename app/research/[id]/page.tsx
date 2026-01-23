@@ -17,6 +17,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateResearchCategory } from "@/lib/dbTranslations";
+import { getTranslatedResearch } from "@/lib/dynamicTranslations";
 
 export default function ResearchDetail() {
   const params = useParams();
@@ -33,7 +34,9 @@ export default function ResearchDetail() {
           const data = await response.json();
           const found = data.find((r: any) => r.id.toString() === params.id);
           if (found) {
-            setItem(found);
+            // Apply dynamic translations
+            const translatedItem = getTranslatedResearch(found, language as 'en' | 'ja');
+            setItem(translatedItem);
           } else {
             setError("Document not found.");
           }
@@ -45,7 +48,7 @@ export default function ResearchDetail() {
       }
     };
     fetchResearch();
-  }, [params.id]);
+  }, [params.id, language]);
 
   const toc = useMemo(() => {
     if (!item?.contentSections) return [];

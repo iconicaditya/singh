@@ -17,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateProjectCategory, translateProjectStatus } from "@/lib/dbTranslations";
+import { getTranslatedProject, getTranslatedResearchList } from "@/lib/dynamicTranslations";
 
 export default function ProjectDetail() {
   const params = useParams();
@@ -34,7 +35,10 @@ export default function ProjectDetail() {
         const found = data.find((p: any) => p.id.toString() === params.id);
         
         if (found) {
-          setProject(found);
+          // Apply dynamic translations
+          const translatedProject = getTranslatedProject(found, language as 'en' | 'ja');
+          setProject(translatedProject);
+          
           if (found.attachedResearchIds && Array.isArray(found.attachedResearchIds) && found.attachedResearchIds.length > 0) {
             const resRes = await fetch("/api/research");
             const resData = await resRes.json();
@@ -43,7 +47,9 @@ export default function ProjectDetail() {
               found.attachedResearchIds.includes(r.id) ||
               found.attachedResearchIds.includes(Number(r.id))
             );
-            setRelatedResearch(related);
+            // Apply translations to related research
+            const translatedResearch = getTranslatedResearchList(related, language as 'en' | 'ja');
+            setRelatedResearch(translatedResearch);
           }
         }
       } catch (err) {
@@ -53,7 +59,7 @@ export default function ProjectDetail() {
       }
     };
     fetchProject();
-  }, [params.id]);
+  }, [params.id, language]);
 
   if (loading) return (
     <div className="min-h-screen bg-white flex items-center justify-center">

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateActivityCategory } from "@/lib/dbTranslations";
+import { getTranslatedActivityList } from "@/lib/dynamicTranslations";
 
 interface ContentSection {
   title: string;
@@ -69,9 +70,10 @@ export default function Activities() {
   const totalPages = Math.ceil(activities.length / activitiesPerPage);
   const indexOfLastActivity = currentPage * activitiesPerPage;
   const indexOfFirstActivity = indexOfLastActivity - activitiesPerPage;
-  const currentActivitiesList = activities.slice(indexOfFirstActivity, indexOfLastActivity);
+  const translatedActivities = getTranslatedActivityList(activities, language as 'en' | 'ja');
+  const currentActivitiesList = translatedActivities.slice(indexOfFirstActivity, indexOfLastActivity);
 
-  const selectedActivity = activities.find((a) => a.id === selectedId) || activities[0];
+  const selectedActivity = translatedActivities.find((a) => a.id === selectedId) || translatedActivities[0];
 
   if (loading) {
     return (

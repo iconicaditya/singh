@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState, useMemo, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateResearchCategory } from "@/lib/dbTranslations";
+import { getTranslatedResearchList } from "@/lib/dynamicTranslations";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -38,14 +39,17 @@ export default function ResearchPage() {
   const categories = useMemo(() => ["All Categories", ...new Set(researchList.map(p => p.category).filter(Boolean))], [researchList]);
 
   const filteredResearch = useMemo(() => {
-    return researchList.filter(item => {
+    // Apply dynamic translations first
+    const translatedList = getTranslatedResearchList(researchList, language as 'en' | 'ja');
+    
+    return translatedList.filter(item => {
       const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                            (item.category && item.category.toLowerCase().includes(searchTerm.toLowerCase())) ||
                            (item.tags && item.tags.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchesCategory = selectedCategory === "All Categories" || item.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchTerm, selectedCategory, researchList]);
+  }, [searchTerm, selectedCategory, researchList, language]);
 
   const totalPages = Math.ceil(filteredResearch.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

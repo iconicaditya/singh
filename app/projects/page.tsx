@@ -6,6 +6,7 @@ import { Search, MapPin, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateProjectCategory, translateProjectStatus } from "@/lib/dbTranslations";
+import { getTranslatedProjectList } from "@/lib/dynamicTranslations";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -39,7 +40,8 @@ export default function ProjectsPage() {
 
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProjects = filteredProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const translatedProjects = getTranslatedProjectList(filteredProjects, language as 'en' | 'ja');
+  const paginatedProjects = translatedProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   return (
     <main className="min-h-screen bg-slate-50">
