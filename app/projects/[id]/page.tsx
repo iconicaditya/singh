@@ -15,10 +15,13 @@ import {
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translateProjectCategory, translateProjectStatus } from "@/lib/dbTranslations";
 
 export default function ProjectDetail() {
   const params = useParams();
   const router = useRouter();
+  const { language } = useLanguage();
   const [project, setProject] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [relatedResearch, setRelatedResearch] = useState<any[]>([]);
@@ -131,14 +134,14 @@ export default function ProjectDetail() {
                   animate={{ opacity: 1, x: 0 }}
                   className="px-4 py-1.5 bg-blue-600 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md shadow-lg shadow-blue-600/20"
                 >
-                  {project.category}
+                  {translateProjectCategory(project.category, language as 'en' | 'ja')}
                 </motion.span>
                 <motion.span 
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md"
                 >
-                  {project.status}
+                  {translateProjectStatus(project.status, language as 'en' | 'ja')}
                 </motion.span>
                 <motion.span 
                   initial={{ opacity: 0, x: -10 }}

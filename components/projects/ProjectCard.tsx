@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translateProjectCategory } from "@/lib/dbTranslations";
 
 interface ProjectCardProps {
   project: {
@@ -18,6 +20,8 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const { language } = useLanguage();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -44,7 +48,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <div className="absolute inset-0 p-8 flex flex-col justify-end">
           <div className="mb-4">
             <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black tracking-widest uppercase rounded-full">
-              {project.category}
+              {translateProjectCategory(project.category, language as 'en' | 'ja')}
             </span>
           </div>
           

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translateActivityCategory } from "@/lib/dbTranslations";
 
 interface ContentSection {
   title: string;
@@ -40,7 +41,7 @@ const formatRelativeTime = (dateString?: string) => {
 };
 
 export default function Activities() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -121,7 +122,7 @@ export default function Activities() {
                       <div className="flex justify-between items-start gap-4">
                         <div className="flex-1">
                           <span className={`text-[10px] font-black uppercase tracking-widest block mb-1 transition-colors ${isActive ? 'text-blue-700' : 'text-blue-600'}`}>
-                            {activity.category}
+                            {translateActivityCategory(activity.category, language as 'en' | 'ja')}
                           </span>
                           <h4 className={`text-sm font-bold leading-snug transition-colors ${isActive ? 'text-blue-900' : 'text-[#1e293b]'}`}>
                             {activity.title}

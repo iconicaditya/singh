@@ -6,11 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translateResearchCategory } from "@/lib/dbTranslations";
 
 const ITEMS_PER_PAGE = 9;
 
 export default function ResearchPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
@@ -135,7 +136,7 @@ export default function ResearchPage() {
                       )}
                       <div className="absolute top-4 left-4">
                         <span className="px-2.5 py-1 bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider rounded">
-                          {item.category}
+                          {translateResearchCategory(item.category, language as 'en' | 'ja')}
                         </span>
                       </div>
                     </Link>

@@ -15,9 +15,12 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translateResearchCategory } from "@/lib/dbTranslations";
 
 export default function ResearchDetail() {
   const params = useParams();
+  const { language } = useLanguage();
   const [item, setItem] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -216,6 +219,26 @@ export default function ResearchDetail() {
           {/* Sidebar - Hidden on Print */}
           <aside className="lg:w-[35%] no-print">
             <div className="sticky top-24 space-y-8">
+              {/* Metadata */}
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+                className="bg-blue-50/50 rounded-3xl p-8 border border-blue-100"
+              >
+                <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-900 mb-6">Research Details</h4>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Category</p>
+                    <p className="text-sm font-bold text-slate-900">{translateResearchCategory(item.category, language as 'en' | 'ja')}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Year</p>
+                    <p className="text-sm font-bold text-slate-900">{item.year || "2026"}</p>
+                  </div>
+                </div>
+              </motion.div>
+
               {/* TOC */}
               <motion.div 
                 initial={{ opacity: 0, x: 20 }}

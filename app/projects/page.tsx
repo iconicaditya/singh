@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 import { Search, MapPin, ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translateProjectCategory, translateProjectStatus } from "@/lib/dbTranslations";
 
 const ITEMS_PER_PAGE = 6;
 
 export default function ProjectsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
