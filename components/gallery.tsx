@@ -52,7 +52,7 @@ export default function Gallery() {
   }, []);
 
   const filteredItems = galleryData.filter(
-    (item) => activeCategory === "ALL_CATEGORIES" || item.category === t(activeCategory)
+    (item) => activeCategory === "ALL_CATEGORIES" || item.category === activeCategory || item.category === t(activeCategory)
   ).slice(0, 12);
 
   const handleCategoryChange = (catKey: string) => {
