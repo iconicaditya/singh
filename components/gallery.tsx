@@ -52,7 +52,11 @@ export default function Gallery() {
   }, []);
 
   const filteredItems = galleryData.filter(
-    (item) => activeCategory === "ALL_CATEGORIES" || item.category === activeCategory || item.category === t(activeCategory)
+    (item) => activeCategory === "ALL_CATEGORIES" || 
+              item.category === activeCategory || 
+              item.category === t(activeCategory) ||
+              // Add a check for localized keys if the database stores keys like 'PLASTIC_WASTE'
+              activeCategory.toUpperCase() === item.category.toUpperCase()
   ).slice(0, 12);
 
   const handleCategoryChange = (catKey: string) => {
