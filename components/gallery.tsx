@@ -30,7 +30,17 @@ export default function Gallery() {
         const response = await fetch("/api/gallery");
         if (!response.ok) throw new Error("Failed to fetch gallery");
         const data = await response.json();
-        setGalleryData(data);
+        
+        // Transform the data to match GalleryItem interface if needed
+        const transformedData = data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          category: item.category,
+          imageUrl: item.image_url || item.imageUrl, // Handle both snake_case and camelCase
+          description: item.description
+        }));
+        
+        setGalleryData(transformedData);
       } catch (error) {
         console.error("Error fetching gallery:", error);
       } finally {
