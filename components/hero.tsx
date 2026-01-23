@@ -89,9 +89,11 @@ export default function Hero() {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="mt-8 md:mt-10"
         >
-          <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
-            {t("LEARN_MORE")} <span>→</span>
-          </button>
+          <Link href="/#about">
+            <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
+              {t("LEARN_MORE")} <span>→</span>
+            </button>
+          </Link>
         </motion.div>
 
         {/* Navigation Dots */}

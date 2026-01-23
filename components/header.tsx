@@ -15,7 +15,7 @@ export default function Header() {
   const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
-    { name: "HOME", labelKey: "HOME" },
+    { name: "HOME", labelKey: "HOME", href: "/" },
     { name: "ABOUT", labelKey: "ABOUT", href: "/#about" },
     { name: "OUR_TEAM", labelKey: "OUR_TEAM", href: "/our-team" },
     { name: "PROJECTS", labelKey: "PROJECTS", href: "/projects" },
@@ -71,7 +71,7 @@ export default function Header() {
         </div>
 
         {/* Center: Marquee Animation */}
-        <div className="w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative">
+        <div className="w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-50%" }}
