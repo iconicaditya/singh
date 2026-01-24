@@ -40,38 +40,38 @@ export default function Header() {
   );
 
   return (
-    <header className="w-full sticky top-0 z-50 shadow-md">
+    <header className="w-full sticky top-0 z-50 shadow-lg">
       {/* Top Part: Black Background */}
-      <div className="bg-black text-white py-3 px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-black text-white py-2 sm:py-3 px-3 sm:px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
         {/* Left: Logo and Name */}
-        <div className="flex items-center justify-between w-full md:w-auto gap-4">
-          <div className="flex items-center gap-4">
-            <div className="bg-white p-1.5 rounded shrink-0">
+        <div className="flex items-center justify-between w-full md:w-auto gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="bg-white p-1 sm:p-1.5 rounded shrink-0">
               <Image
                 src="/vercel.svg"
                 alt="Logo"
                 width={32}
                 height={32}
-                className="w-8 h-8 md:w-10 md:h-10"
+                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
               />
             </div>
-            <div className="leading-tight">
-              <h1 className="text-xl md:text-2xl font-black tracking-tighter text-[#3b82f6] leading-none">SINGHLAB</h1>
-              <p className="text-[8px] md:text-[10px] font-bold tracking-[0.2em] text-[#ef4444] uppercase mt-1">Environment</p>
+            <div className="leading-tight min-w-0">
+              <h1 className="text-base sm:text-xl md:text-2xl font-black tracking-tighter text-[#3b82f6] leading-none">SINGHLAB</h1>
+              <p className="text-[7px] sm:text-[8px] md:text-[10px] font-bold tracking-[0.15em] text-[#ef4444] uppercase mt-0.5">Environment</p>
             </div>
           </div>
           
           {/* Mobile Menu Toggle */}
           <button 
-            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
-        {/* Center: Marquee Animation */}
-        <div className="hidden sm:block w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
+        {/* Center: Marquee Animation - Hidden on Mobile */}
+        <div className="hidden md:block w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-50%" }}
@@ -80,7 +80,8 @@ export default function Header() {
               duration: 35,
               ease: "linear",
             }}
-            className="flex w-fit"
+            className="flex w-fit will-change-transform"
+            style={{ WebkitFontSmoothing: 'antialiased', backfaceVisibility: 'hidden' }}
           >
             <div className="flex shrink-0">
               <ScrollingContent />
@@ -180,7 +181,7 @@ export default function Header() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-[#1d4ed8] border-t border-white/10"
+              className="md:hidden bg-gradient-to-b from-[#1d4ed8] to-[#1540a0] border-t border-white/20"
             >
               <ul className="flex flex-col py-2 text-center">
                 {navLinks.map((link) => (
@@ -188,21 +189,21 @@ export default function Header() {
                     <Link 
                       href={link.href || "/"}
                       onClick={() => setIsMenuOpen(false)}
-                      className="block px-6 py-3 text-sm font-bold border-b border-white/5 last:border-0 text-white hover:bg-white/10 transition-colors"
+                      className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
                     >
                       {t(link.labelKey)}
                     </Link>
                   </li>
                 ))}
                 {/* Mobile Language Switcher */}
-                <li className="flex flex-col gap-2 py-4 border-t border-white/10 mt-2 px-6">
+                <li className="flex flex-col gap-2 py-4 border-t border-white/20 mt-2 px-4">
                   <button
                     onClick={() => {
                       setLanguage("en");
                       setIsMenuOpen(false);
                     }}
-                    className={`text-sm font-bold py-2 px-3 rounded transition-colors ${
-                      language === "en" ? "bg-blue-500 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                    className={`text-xs sm:text-sm font-bold py-2.5 px-3 rounded-lg transition-colors duration-150 ${
+                      language === "en" ? "bg-blue-400 text-white shadow-md" : "bg-white/15 text-white hover:bg-white/25"
                     }`}
                   >
                     {t("ENGLISH")}
@@ -212,19 +213,19 @@ export default function Header() {
                       setLanguage("ja");
                       setIsMenuOpen(false);
                     }}
-                    className={`text-sm font-bold py-2 px-3 rounded transition-colors ${
-                      language === "ja" ? "bg-blue-500 text-white" : "bg-white/10 text-white hover:bg-white/20"
+                    className={`text-xs sm:text-sm font-bold py-2.5 px-3 rounded-lg transition-colors duration-150 ${
+                      language === "ja" ? "bg-blue-400 text-white shadow-md" : "bg-white/15 text-white hover:bg-white/25"
                     }`}
                   >
                     {t("JAPANESE")}
                   </button>
                 </li>
                 {/* Mobile Social Icons */}
-                <li className="flex justify-center gap-6 py-6 border-t border-white/10 mt-2">
-                  <button className="text-white/70 hover:text-white"><Facebook size={20} /></button>
-                  <button className="text-white/70 hover:text-white"><Twitter size={20} /></button>
-                  <button className="text-white/70 hover:text-white"><Linkedin size={20} /></button>
-                  <button className="text-white/70 hover:text-white"><Youtube size={20} /></button>
+                <li className="flex justify-center gap-4 sm:gap-6 py-5 border-t border-white/20 mt-2">
+                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Facebook size={18} /></button>
+                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Twitter size={18} /></button>
+                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Linkedin size={18} /></button>
+                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Youtube size={18} /></button>
                 </li>
               </ul>
             </motion.div>
