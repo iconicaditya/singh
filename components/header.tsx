@@ -26,14 +26,14 @@ export default function Header() {
   ];
 
   const ScrollingContent = () => (
-    <div className="flex items-center gap-12 whitespace-nowrap">
-      <span className="text-gray-300 text-xs md:text-sm font-bold">
+    <div className="flex items-center gap-6 md:gap-12 whitespace-nowrap">
+      <span className="text-gray-300 text-[10px] md:text-xs lg:text-sm font-bold">
         <span className="text-blue-400">{t("RESEARCH_HIGHLIGHT")}</span>, education, and community action for a <span className="text-blue-400">{t("SUSTAINABLE_HIGHLIGHT")}</span> future.
       </span>
-      <span className="text-gray-300 text-xs md:text-sm font-bold">
+      <span className="text-gray-300 text-[10px] md:text-xs lg:text-sm font-bold">
         Empowering <span className="text-blue-400">{t("COMMUNITIES_HIGHLIGHT")}</span> through innovative environmental research.
       </span>
-      <span className="text-gray-300 text-xs md:text-sm font-bold">
+      <span className="text-gray-300 text-[10px] md:text-xs lg:text-sm font-bold">
         Working <span className="text-blue-400">{t("TOGETHER_HIGHLIGHT")}</span> for a greener and cleaner planet.
       </span>
     </div>
@@ -71,7 +71,7 @@ export default function Header() {
         </div>
 
         {/* Center: Marquee Animation */}
-        <div className="w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
+        <div className="hidden sm:block w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-50%" }}
@@ -84,11 +84,11 @@ export default function Header() {
           >
             <div className="flex shrink-0">
               <ScrollingContent />
-              <div className="w-12" /> {/* Spacer */}
+              <div className="w-8 md:w-12" /> {/* Spacer */}
             </div>
             <div className="flex shrink-0">
               <ScrollingContent />
-              <div className="w-12" /> {/* Spacer */}
+              <div className="w-8 md:w-12" /> {/* Spacer */}
             </div>
           </motion.div>
         </div>
