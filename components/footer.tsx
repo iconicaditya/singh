@@ -53,7 +53,7 @@ export default function Footer() {
           <h3 className="text-white font-bold tracking-wider uppercase text-sm border-b-2 border-[#2563eb] inline-block pb-1">{t("FOLLOW_US")}</h3>
           <div className="rounded-lg overflow-hidden h-32 w-full grayscale contrast-125 opacity-70 hover:opacity-100 transition-opacity">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.932908863615!2d135.0583483!3d34.6816667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x355490082f7c6997%3A0xe54d6e9f0d9b4b0e!2sKobe%20City%20University%20of%20Foreign%20Studies!5e0!3m2!1sen!2sjp!4v1700000000000!5m2!1sen!2sjp" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.5!2d135.0580!3d34.6778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x355490095c8c6997%3A0xe54d6e9f0d9b4b0e!2s9%20Chome-1%20Gakuen%20Higashimachi%2C%20Nishi%20Ward%2C%20Kobe%2C%20Hyogo%20651-2187%2C%20Japan!5e0!3m2!1sen!2sjp!4v1700000000000!5m2!1sen!2sjp" 
               width="100%" 
               height="100%" 
               style={{ border: 0 }} 
