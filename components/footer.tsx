@@ -53,7 +53,7 @@ export default function Footer() {
           <h3 className="text-white font-bold tracking-wider uppercase text-sm border-b-2 border-[#2563eb] inline-block pb-1">{t("FOLLOW_US")}</h3>
           <div className="rounded-lg overflow-hidden h-32 w-full grayscale contrast-125 opacity-70 hover:opacity-100 transition-opacity">
             <iframe 
-              src="google.com/maps/place/Kobe+City+University+of+Foreign+Studies/data=!4m2!3m1!1s0x0:0x668148a0445486eb?sa=X&ved=1t:2428&ictx=111 " 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.926!2d135.0606425!3d34.6799958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000813c015ac961:0x668148a0445486eb!2sKobe%20City%20University%20of%20Foreign%20Studies!5e0!3m2!1sen!2sjp!4v1705000000000" 
               width="100%" 
               height="100%" 
               style={{ border: 0 }} 
