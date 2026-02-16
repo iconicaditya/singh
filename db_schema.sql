@@ -146,3 +146,13 @@ CREATE TABLE IF NOT EXISTS research_themes (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
+
+-- Hero Table Schema
+CREATE TABLE IF NOT EXISTS hero (
+  id SERIAL PRIMARY KEY,
+  main_heading VARCHAR(500) NOT NULL,
+  subheading VARCHAR(500) NOT NULL,
+  background_image TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);

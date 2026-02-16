@@ -6,43 +6,79 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import Link from "next/link";
 
+interface HeroSlide {
+  id: number;
+  mainHeading: string;
+  subheading: string;
+  backgroundImage: string;
+}
+
 export default function Hero() {
   const { t } = useLanguage();
-  
-  const slides = [
-    {
-      image: "/heroimages/hero0.png",
-      titleKey: "HERO_SLIDE_1_TITLE",
-      subtitleKey: "HERO_SLIDE_1_SUBTITLE",
-    },
-    {
-      image: "/heroimages/renewalenergy.jpg",
-      titleKey: "HERO_SLIDE_2_TITLE",
-      subtitleKey: "HERO_SLIDE_2_SUBTITLE",
-    },
-    {
-      image: "/heroimages/wastemanagement.jpg",
-      titleKey: "HERO_SLIDE_3_TITLE",
-      subtitleKey: "HERO_SLIDE_3_SUBTITLE",
-    },
-    {
-      image: "/heroimages/hero3.jpg",
-      titleKey: "HERO_SLIDE_4_TITLE",
-      subtitleKey: "HERO_SLIDE_4_SUBTITLE",
-    },
-  ];
-  
+  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
+  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
 
+  // Fetch hero slides from database
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    const fetchHeroSlides = async () => {
+      try {
+        const res = await fetch("/api/hero", { cache: 'no-store' });
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setHeroSlides(data);
+        }
+      } catch (err) {
+        console.error("Error fetching hero slides:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHeroSlides();
   }, []);
 
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  // Auto-rotate slides
+  useEffect(() => {
+    if (heroSlides.length === 0) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  const nextSlide = () => setCurrent((prev) => (prev + 1) % heroSlides.length);
+  const prevSlide = () => setCurrent((prev) => (prev === 0 ? heroSlides.length - 1 : prev - 1));
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="relative h-[400px] md:h-[600px] w-full overflow-hidden bg-slate-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-sm font-medium">Loading Hero...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // No data state
+  if (heroSlides.length === 0) {
+    return (
+      <section className="relative h-[400px] md:h-[600px] w-full overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-center px-6">
+          <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl md:text-4xl font-bold mb-2">No Hero Slides Available</h2>
+          <p className="text-sm md:text-base text-gray-300">Please add hero slides from the admin dashboard.</p>
+        </div>
+      </section>
+    );
+  }
+
+  const currentSlide = heroSlides[current];
 
   return (
     <section className="relative h-[400px] md:h-[600px] w-full overflow-hidden bg-black">
@@ -57,7 +93,9 @@ export default function Hero() {
         >
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] ease-linear scale-110"
-            style={{ backgroundImage: `url(${slides[current].image})` }}
+            style={{ 
+              backgroundImage: `url(${currentSlide.backgroundImage})` 
+            }}
           />
           <div className="absolute inset-0 bg-black/50 md:bg-black/40" />
         </motion.div>
@@ -71,7 +109,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="max-w-4xl text-3xl font-black md:text-7xl leading-tight"
         >
-          {t(slides[current].titleKey)}
+          {currentSlide.mainHeading}
         </motion.h2>
         
         <motion.p
@@ -81,7 +119,7 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-4 md:mt-6 max-w-2xl text-base font-medium md:text-xl text-gray-200"
         >
-          {t(slides[current].subtitleKey)}
+          {currentSlide.subheading}
         </motion.p>
 
         <motion.div
@@ -99,7 +137,7 @@ export default function Hero() {
 
         {/* Navigation Dots */}
         <div className="absolute bottom-6 md:bottom-10 flex gap-2 md:gap-3">
-          {slides.map((_, i) => (
+          {heroSlides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}

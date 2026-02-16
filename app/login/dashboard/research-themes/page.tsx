@@ -16,6 +16,7 @@ export default function AdminResearchThemesPage() {
   const [editingTheme, setEditingTheme] = useState<ResearchTheme | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const fetchThemes = async () => {
     setIsLoading(true);
@@ -63,6 +64,17 @@ export default function AdminResearchThemesPage() {
       await fetchThemes();
       setIsFormOpen(false);
       setEditingTheme(null);
+      
+      // Show success message
+      const message = editingTheme 
+        ? "Research theme updated successfully!" 
+        : "Research theme added successfully!";
+      setSuccessMessage(message);
+      
+      // Auto-hide after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     } catch (error) {
       console.error("Research theme save error:", error);
       alert("Failed to save research theme.");
@@ -85,6 +97,18 @@ export default function AdminResearchThemesPage() {
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
+      {successMessage && (
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-4 text-emerald-700 font-semibold flex items-center justify-between animate-in fade-in slide-in-from-top-2 duration-300">
+          <span>{successMessage}</span>
+          <button 
+            onClick={() => setSuccessMessage(null)}
+            className="text-emerald-600 hover:text-emerald-800 font-bold text-xl leading-none"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">Research Themes <span className="text-blue-600">Management</span></h1>

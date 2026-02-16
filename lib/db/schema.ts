@@ -106,3 +106,12 @@ export const researchThemes = pgTable("research_themes", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const hero = pgTable("hero", {
+  id: serial("id").primaryKey(),
+  mainHeading: varchar("main_heading", { length: 500 }).notNull(),
+  subheading: varchar("subheading", { length: 500 }).notNull(),
+  backgroundImage: text("background_image").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
