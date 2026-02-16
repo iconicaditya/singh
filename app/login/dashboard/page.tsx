@@ -31,7 +31,7 @@ interface StatData {
 }
 
 interface RecentItem {
-  id: number;
+  id: string | number;
   title: string;
   category: string;
   created_at: string;
@@ -89,10 +89,10 @@ export default function DashboardPage() {
 
         // Combine recent items from all sources for the activity feed
         const allItems: RecentItem[] = [
-          ...(Array.isArray(research) ? research.slice(0, 2).map((r: any) => ({ ...r, type: "Research" })) : []),
-          ...(Array.isArray(publications) ? publications.slice(0, 2).map((p: any) => ({ ...p, type: "Publication" })) : []),
-          ...(Array.isArray(projects) ? projects.slice(0, 2).map((p: any) => ({ ...p, type: "Project" })) : []),
-          ...(Array.isArray(activities) ? activities.slice(0, 2).map((a: any) => ({ ...a, type: "Activity" })) : []),
+          ...(Array.isArray(research) ? research.slice(0, 2).map((r: any, idx: number) => ({ ...r, id: `research-${r.id}-${idx}`, type: "Research" })) : []),
+          ...(Array.isArray(publications) ? publications.slice(0, 2).map((p: any, idx: number) => ({ ...p, id: `publication-${p.id}-${idx}`, type: "Publication" })) : []),
+          ...(Array.isArray(projects) ? projects.slice(0, 2).map((p: any, idx: number) => ({ ...p, id: `project-${p.id}-${idx}`, type: "Project" })) : []),
+          ...(Array.isArray(activities) ? activities.slice(0, 2).map((a: any, idx: number) => ({ ...a, id: `activity-${a.id}-${idx}`, type: "Activity" })) : []),
         ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 5);
 
         setRecentItems(allItems);

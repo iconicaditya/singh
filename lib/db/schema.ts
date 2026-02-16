@@ -115,3 +115,32 @@ export const hero = pgTable("hero", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const people = pgTable("people", {
+  id: serial("id").primaryKey(),
+  fullName: varchar("full_name", { length: 255 }).notNull(),
+  roleDesignation: varchar("role_designation", { length: 255 }).notNull(), // Professor, Graduate students, Undergraduate students
+  profileImage: text("profile_image").notNull(),
+  nationality: varchar("nationality", { length: 255 }),
+  
+  // Professor fields
+  educationBackground: text("education_background"),
+  pastTeachingBackground: text("past_teaching_background"),
+  publications: jsonb("publications"), // Array of {link}
+  cvUrl: text("cv_url"),
+  cvLinks: jsonb("cv_links"), // Array of {title, link}
+  
+  // Student fields (Graduate & Undergraduate)
+  graduationYears: jsonb("graduation_years"), // Array of strings ["Class of 2025", etc]
+  researchTopic: varchar("research_topic", { length: 500 }),
+  conferencePresentation: text("conference_presentation"),
+  
+  // Social media links
+  linkedinUrl: text("linkedin_url"),
+  twitterUrl: text("twitter_url"),
+  facebookUrl: text("facebook_url"),
+  instagramUrl: text("instagram_url"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});

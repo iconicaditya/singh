@@ -156,3 +156,27 @@ CREATE TABLE IF NOT EXISTS hero (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
+
+-- People Table Schema
+CREATE TABLE IF NOT EXISTS people (
+  id SERIAL PRIMARY KEY,
+  full_name VARCHAR(255) NOT NULL,
+  role_designation VARCHAR(255) NOT NULL,
+  profile_image TEXT NOT NULL,
+  nationality VARCHAR(255),
+  
+  -- Professor fields
+  education_background TEXT,
+  past_teaching_background TEXT,
+  publications JSONB,
+  cv_url TEXT,
+  cv_links JSONB,
+  
+  -- Student fields
+  graduation_years JSONB,
+  research_topic VARCHAR(500),
+  conference_presentation TEXT,
+  
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);

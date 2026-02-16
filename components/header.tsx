@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, Facebook, Twitter, Linkedin, Youtube, Menu, X } from "lucide-react";
+import { Globe, Facebook, Twitter, Linkedin, Youtube, Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/LanguageContext";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isPeopleDropdownOpen, setIsPeopleDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
 
@@ -18,11 +19,18 @@ export default function Header() {
     { name: "HOME", labelKey: "HOME", href: "/" },
     { name: "ABOUT", labelKey: "ABOUT", href: "/#about" },
     { name: "OUR_TEAM", labelKey: "OUR_TEAM", href: "/our-team" },
+    { name: "PEOPLE", labelKey: "PEOPLE", href: null, hasDropdown: true },
     { name: "PROJECTS", labelKey: "PROJECTS", href: "/projects" },
     { name: "PUBLICATIONS", labelKey: "PUBLICATIONS", href: "/publications" },
     { name: "GALLERY", labelKey: "GALLERY", href: "/all-gallery" },
     { name: "RESEARCH", labelKey: "RESEARCH", href: "/research" },
     { name: "CONTACT", labelKey: "CONTACT", href: "/#contact" },
+  ];
+
+  const peopleCategories = [
+    { name: "Professor", href: "/people?role=professor" },
+    { name: "Graduate Students", href: "/people?role=graduate" },
+    { name: "Undergraduate Students", href: "/people?role=undergraduate" },
   ];
 
   const ScrollingContent = () => (
@@ -155,20 +163,58 @@ export default function Header() {
       </div>
 
       {/* Bottom Part: Blue Navigation */}
-      <nav className="bg-[#2563eb] text-white overflow-hidden">
+      <nav className="bg-[#2563eb] text-white overflow-visible">
         {/* Desktop Nav */}
         <div className="hidden md:block max-w-screen-xl mx-auto px-4">
           <ul className="flex items-center justify-center lg:justify-end gap-1 whitespace-nowrap text-[11px] lg:text-[12px] font-bold">
             {navLinks.map((link) => (
-              <li key={link.name}>
-                <Link 
-                  href={link.href || "/"}
-                  className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
-                    pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
-                  }`}
-                >
-                  {t(link.labelKey)}
-                </Link>
+              <li key={link.name} className="relative group">
+                {link.hasDropdown ? (
+                  <div className="relative">
+                    <button 
+                      className="inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white flex items-center gap-1.5"
+                      onMouseEnter={() => setIsPeopleDropdownOpen(true)}
+                      onMouseLeave={() => setIsPeopleDropdownOpen(false)}
+                    >
+                      {t(link.labelKey)}
+                      <ChevronDown size={14} className={`transition-transform duration-200 ${isPeopleDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    <AnimatePresence>
+                      {isPeopleDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl overflow-hidden min-w-max border-t-2 border-blue-500"
+                          onMouseEnter={() => setIsPeopleDropdownOpen(true)}
+                          onMouseLeave={() => setIsPeopleDropdownOpen(false)}
+                        >
+                          {peopleCategories.map((category, idx) => (
+                            <Link
+                              key={category.name}
+                              href={category.href}
+                              className={`block px-6 py-3.5 text-sm font-semibold transition-all duration-150 hover:bg-blue-50 text-slate-700 hover:text-blue-600 border-b border-slate-100 last:border-b-0 ${idx === 0 ? 'pt-4' : ''} ${idx === peopleCategories.length - 1 ? 'pb-4' : ''}`}
+                            >
+                              {category.name}
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link 
+                    href={link.href || "/"}
+                    className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                    }`}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -186,13 +232,44 @@ export default function Header() {
               <ul className="flex flex-col py-2 text-center">
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link 
-                      href={link.href || "/"}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
-                    >
-                      {t(link.labelKey)}
-                    </Link>
+                    {link.hasDropdown ? (
+                      <div>
+                        <button
+                          onClick={() => setIsPeopleDropdownOpen(!isPeopleDropdownOpen)}
+                          className="w-full px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 text-white hover:bg-white/20 transition-colors duration-150 flex items-center justify-center gap-2"
+                        >
+                          {t(link.labelKey)}
+                          <ChevronDown size={14} className={`transition-transform duration-200 ${isPeopleDropdownOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence>
+                          {isPeopleDropdownOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="bg-white border-t border-slate-200">
+                              {peopleCategories.map((category) => (
+                                <Link
+                                  key={category.name}
+                                  href={category.href}
+                                  className="block w-full px-4 py-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150 border-b border-slate-100 last:border-b-0"
+                                >
+                                  {category.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    ) : (
+                      <Link 
+                        href={link.href || "/"}
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                      >
+                        {t(link.labelKey)}
+                      </Link>
+                    )}
                   </li>
                 ))}
                 {/* Mobile Language Switcher */}

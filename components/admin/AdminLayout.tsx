@@ -32,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/login/dashboard" },
     { name: "Hero", icon: Sparkles, path: "/login/dashboard/hero" },
+    { name: "People", icon: Users, path: "/login/dashboard/people" },
     { name: "Projects", icon: Briefcase, path: "/login/dashboard/projects" },
     { name: "Messages", icon: Mail, path: "/login/dashboard/messages" },
     { name: "Collaborators", icon: UserPlus, path: "/login/dashboard/collaborators" },
