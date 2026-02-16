@@ -97,3 +97,12 @@ export const collaborators = pgTable("collaborators", {
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const researchThemes = pgTable("research_themes", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  iconImage: text("icon_image"),
+  points: jsonb("points").notNull(), // Array of strings
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});

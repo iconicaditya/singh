@@ -137,3 +137,12 @@ CREATE TABLE IF NOT EXISTS messages (
     is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS research_themes (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  icon_image TEXT,
+  points JSONB NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
