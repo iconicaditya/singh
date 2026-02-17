@@ -88,6 +88,54 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Update form fields when initialData changes (for edit mode)
+  useEffect(() => {
+    if (isOpen && initialData) {
+      setProfileImage(initialData.profileImage || "");
+      setFullName(initialData.fullName || "");
+      setRoleDesignation(initialData.roleDesignation || "");
+      setNationality(initialData.nationality || "");
+      setLinkedinUrl(initialData.linkedinUrl || "");
+      setTwitterUrl(initialData.twitterUrl || "");
+      setFacebookUrl(initialData.facebookUrl || "");
+      setInstagramUrl(initialData.instagramUrl || "");
+      setEducationBackground(initialData.educationBackground || "");
+      setPastTeachingBackground(initialData.pastTeachingBackground || "");
+      setPublications(initialData.publications || []);
+      setCvUrl(initialData.cvUrl || "");
+      setCvLinks(initialData.cvLinks || []);
+      setGraduationYears(initialData.graduationYears || []);
+      setResearchTopic(initialData.researchTopic || "");
+      setConferencePresentation(initialData.conferencePresentation || "");
+      
+      // Handle CV link URL
+      if (initialData.cvLinks && initialData.cvLinks.length > 0) {
+        setCvLinkUrl(initialData.cvLinks[0]?.link || "");
+      } else {
+        setCvLinkUrl(initialData.cvLink || "");
+      }
+    } else if (isOpen && !initialData) {
+      // Reset form for new entry
+      setProfileImage("");
+      setFullName("");
+      setRoleDesignation("");
+      setNationality("");
+      setLinkedinUrl("");
+      setTwitterUrl("");
+      setFacebookUrl("");
+      setInstagramUrl("");
+      setEducationBackground("");
+      setPastTeachingBackground("");
+      setPublications([]);
+      setCvUrl("");
+      setCvLinks([]);
+      setGraduationYears([]);
+      setResearchTopic("");
+      setConferencePresentation("");
+      setCvLinkUrl("");
+    }
+  }, [isOpen, initialData]);
+
   if (!isOpen) return null;
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

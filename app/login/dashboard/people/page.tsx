@@ -110,8 +110,14 @@ export default function AdminPeoplePage() {
 
       <PeopleForm
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSuccess={fetchPeople}
+        onClose={() => {
+          setIsFormOpen(false);
+          setEditingItem(null);
+        }}
+        onSuccess={() => {
+          fetchPeople();
+          setEditingItem(null);
+        }}
         initialData={editingItem}
       />
     </div>
