@@ -43,6 +43,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
   const [fullName, setFullName] = useState(initialData?.fullName || "");
   const [roleDesignation, setRoleDesignation] = useState(initialData?.roleDesignation || "");
   const [nationality, setNationality] = useState(initialData?.nationality || "");
+  const [labId, setLabId] = useState(initialData?.labId || "");
   
   // Social Media Links (Optional)
   const [linkedinUrl, setLinkedinUrl] = useState(initialData?.linkedinUrl || "");
@@ -95,6 +96,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
       setFullName(initialData.fullName || "");
       setRoleDesignation(initialData.roleDesignation || "");
       setNationality(initialData.nationality || "");
+      setLabId(initialData.labId || "");
       setLinkedinUrl(initialData.linkedinUrl || "");
       setTwitterUrl(initialData.twitterUrl || "");
       setFacebookUrl(initialData.facebookUrl || "");
@@ -120,6 +122,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
       setFullName("");
       setRoleDesignation("");
       setNationality("");
+      setLabId("");
       setLinkedinUrl("");
       setTwitterUrl("");
       setFacebookUrl("");
@@ -226,6 +229,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
       roleDesignation,
       profileImage,
       nationality,
+      labId,
       linkedinUrl,
       twitterUrl,
       facebookUrl,
@@ -366,7 +370,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
           {/* SECTION 2: NATIONALITY (Common) */}
           {roleDesignation && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <div className="space-y-2">
+              <div className="space-y-2 mb-6">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-600">Nationality</label>
                 <input
                   type="text"
@@ -374,6 +378,18 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
                   onChange={(e) => setNationality(e.target.value)}
                   className="w-full px-5 py-3.5 bg-white border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none font-medium text-slate-900 placeholder:text-slate-400"
                   placeholder="Enter nationality"
+                />
+              </div>
+
+              {/* Lab ID */}
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-600">Lab ID</label>
+                <input
+                  type="text"
+                  value={labId}
+                  onChange={(e) => setLabId(e.target.value)}
+                  className="w-full px-5 py-3.5 bg-white border-2 border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none font-medium text-slate-900 placeholder:text-slate-400"
+                  placeholder="Enter lab ID"
                 />
               </div>
             </motion.div>

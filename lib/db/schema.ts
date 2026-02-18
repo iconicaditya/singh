@@ -122,6 +122,7 @@ export const people = pgTable("people", {
   roleDesignation: varchar("role_designation", { length: 255 }).notNull(), // Professor, Graduate students, Undergraduate students
   profileImage: text("profile_image").notNull(),
   nationality: varchar("nationality", { length: 255 }),
+  labId: varchar("lab_id", { length: 100 }),
   
   // Professor fields
   educationBackground: text("education_background"),
