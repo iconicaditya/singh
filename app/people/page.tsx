@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, Users, Linkedin, Twitter, Facebook, Instagram, ExternalLink, ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import 'react-quill-new/dist/quill.snow.css';
-
-export const dynamic = 'force-dynamic';
 
 interface Person {
   id: number;
@@ -41,7 +39,7 @@ const roleQueryMaps: { [key: string]: string } = {
   undergraduate: "Undergraduate students",
 };
 
-export default function PeoplePage() {
+function PeoplePageContent() {
   const searchParams = useSearchParams();
   const roleParam = searchParams.get("role") || "professor";
   
@@ -668,4 +666,17 @@ export default function PeoplePage() {
       </div>
     </div>
   );
+}
+
+export default function PeoplePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center py-20 px-4">
+        <Loader2 className="animate-spin text-blue-600" size={48} />
+      </div>
+    }>
+      <PeoplePageContent />
+    </Suspense>
+  );
+}
 }
