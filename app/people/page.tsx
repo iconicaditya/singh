@@ -7,6 +7,8 @@ import { Loader2, Users, Linkedin, Twitter, Facebook, Instagram, ExternalLink, C
 import Link from "next/link";
 import 'react-quill-new/dist/quill.snow.css';
 
+export const dynamic = 'force-dynamic';
+
 interface Person {
   id: number;
   fullName: string;
