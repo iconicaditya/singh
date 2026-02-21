@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Hero from "@/components/hero";
 import About from "@/components/about";
@@ -12,7 +12,7 @@ import Activities from "@/components/activities";
 import Gallery from "@/components/gallery";
 import Contact from "@/components/contact";
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams();
   const [hasScrolled, setHasScrolled] = useState(false);
   const section = searchParams.get("section");
@@ -62,5 +62,13 @@ export default function Home() {
       <Gallery />
       <Contact />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50" />}> 
+      <HomeContent />
+    </Suspense>
   );
 }
