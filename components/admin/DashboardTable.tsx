@@ -40,7 +40,9 @@ export default function DashboardTable({
     const matchesSearch = Object.values(item).some(
       (val) => val && val.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+    // Support both category and publicationType fields
+    const itemCategory = item.category || item.publicationType;
+    const matchesCategory = activeCategory === "All" || itemCategory === activeCategory;
     return matchesSearch && matchesCategory;
   });
 

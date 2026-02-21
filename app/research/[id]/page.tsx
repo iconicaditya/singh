@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { 
   ArrowLeft, 
@@ -11,10 +11,12 @@ import {
   ChevronRight,
   Info,
   BookOpen,
-  List
+  List,
+  ExternalLink
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateResearchCategory } from "@/lib/dbTranslations";
 import { getTranslatedResearch } from "@/lib/dynamicTranslations";
@@ -194,26 +196,117 @@ export default function ResearchDetail() {
                   <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Related Publications</h2>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {item.relatedPublications.map((pub: any, idx: number) => (
-                    <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col h-full hover:shadow-md transition-shadow">
-                      <div className="flex justify-between items-start mb-4">
-                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[8px] font-bold uppercase tracking-widest rounded border border-blue-100">RESEARCH</span>
-                        <div className="text-slate-200"><FileText size={16} /></div>
-                      </div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-1 uppercase leading-tight">{pub.title}</h3>
-                      <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-4">{pub.subtitle}</p>
-                      
-                      <div className="flex items-center gap-2 mb-6 pt-4 border-t border-slate-50 mt-auto">
-                        <div className="w-6 h-6 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center"><User size={12} /></div>
-                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{pub.authors}</span>
-                      </div>
+                <div className="grid grid-cols-1 gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {item.relatedPublications.map((pub: any, idx: number) => (
+                      <motion.div
+                        key={pub.id}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ delay: idx * 0.05 }}
+                        className="group bg-white rounded-lg border border-slate-200 overflow-hidden hover:shadow-lg transition-all"
+                      >
+                        <div className="flex flex-col md:flex-row gap-0">
+                          {/* Left Image Section */}
+                          <div className="w-full md:w-64 h-48 md:h-auto bg-gradient-to-br from-blue-100 to-slate-100 relative flex-shrink-0 overflow-hidden">
+                            {pub.coverImageUrl || pub.imageUrl ? (
+                              <Image
+                                src={pub.coverImageUrl || pub.imageUrl}
+                                alt={pub.title}
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+                                <BookOpen size={48} className="text-blue-300" />
+                              </div>
+                            )}
+                          </div>
 
-                      <button className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-[9px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-slate-800 transition-colors no-print">
-                        VIEW PDF <FileText size={12} />
-                      </button>
-                    </div>
-                  ))}
+                          {/* Right Content Section */}
+                          <div className="flex-1 p-4 md:p-6 flex flex-col">
+                            {/* Top: Type and Date Badges */}
+                            <div className="flex flex-wrap items-center gap-2 mb-3">
+                              <span className="px-3 py-1 bg-gray-300 text-gray-700 text-xs font-bold tracking-widest uppercase rounded-sm border border-gray-400">
+                                {pub.publicationType || pub.category || "Publication"}
+                              </span>
+                              {pub.year && (
+                                <span className="text-gray-600 text-sm font-medium">
+                                  {pub.year}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Title as Link */}
+                            <h3 className="text-lg md:text-xl font-bold text-blue-600 hover:text-blue-700 mb-2 line-clamp-2 transition-colors leading-tight cursor-pointer">
+                              {pub.title}
+                            </h3>
+
+                            {/* Authors */}
+                            {pub.authors && (
+                              <div className="mb-2">
+                                <p className="text-sm text-slate-600 font-medium">
+                                  <span className="text-xs text-slate-500 uppercase tracking-widest block mb-1">Author:</span>
+                                  <span className="text-slate-900">{pub.authors}</span>
+                                </p>
+                              </div>
+                            )}
+
+                            {/* Journal/Conference Name */}
+                            {pub.journalConferenceName && (
+                              <p className="text-xs text-slate-600 italic mb-2 font-medium">
+                                {pub.journalConferenceName}
+                              </p>
+                            )}
+
+                            {/* Keywords */}
+                            {pub.keywords && (
+                              <div className="mb-2">
+                                <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Keywords:</p>
+                                <div className="flex flex-wrap gap-2">
+                                  {pub.keywords.split(',').slice(0, 4).map((keyword: string, keyIdx: number) => (
+                                    <span key={keyIdx} className="px-2 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded border border-slate-200">
+                                      {keyword.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Abstract */}
+                            {pub.abstract && (
+                              <p className="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-2">
+                                {pub.abstract}
+                              </p>
+                            )}
+
+                            {/* Old Description Field as backup */}
+                            {!pub.abstract && pub.description && (
+                              <p className="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-2">
+                                {pub.description}
+                              </p>
+                            )}
+
+                            {/* Bottom: View Link */}
+                            <div className="mt-auto pt-4 flex items-center gap-3">
+                              {pub.pdfUrl || pub.doiUrl ? (
+                                <a
+                                  href={pub.pdfUrl ? (pub.pdfUrl.includes('cloudinary.com') && !pub.pdfUrl.includes('/raw/upload/') ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : pub.pdfUrl) : pub.doiUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white font-bold text-xs tracking-widest uppercase rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+                                >
+                                  View <ExternalLink size={14} />
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
               </div>
             )}

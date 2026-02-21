@@ -1,7 +1,7 @@
 "use client";
 
 import { X, Plus, Trash2, Bold, Italic, Underline, Link as LinkIcon, Image as ImageIcon, AlignLeft, AlignCenter, AlignRight, List, ListOrdered, Undo2, Redo2, Palette, ChevronDown, Search, User, FileText, Loader2 } from "lucide-react";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from 'next/dynamic';
 import 'react-quill-new/dist/quill.snow.css';
@@ -45,6 +45,7 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     year: initialData?.year || "2026",
     tags: initialData?.tags || "",
     titleImage: initialData?.titleImage || "",
+    publication: initialData?.publication || "",
   });
 
   const [authors, setAuthors] = useState<any[]>(initialData?.authors || [{ name: "", image: "" }]);
@@ -53,6 +54,26 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
   );
   const [isUploading, setIsUploading] = useState(false);
   const [categories] = useState<string[]>(["RESEARCH", "PUBLICATION", "CASE STUDY", "WASTE MANAGEMENT", "CLIMATE CHANGE"]);
+  const [publicationSearchOpen, setPublicationSearchOpen] = useState(false);
+  const [publicationSearchQuery, setPublicationSearchQuery] = useState("");
+  const publicationDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Mock publications data - replace with actual data
+  const publications = [
+    "Nature Reviews Climate Change",
+    "Science of The Total Environment",
+    "Environmental Research Letters",
+    "Journal of Environmental Management",
+    "Environmental Science & Technology",
+    "Waste Management",
+    "Green Chemistry",
+    "Sustainability",
+  ];
+
+  const filteredPublications = useMemo(
+    () => publications.filter(pub => pub.toLowerCase().includes(publicationSearchQuery.toLowerCase())),
+    [publicationSearchQuery]
+  );
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'title' | 'author' | 'section', index?: number, sectionId?: string) => {
     const file = e.target.files?.[0];
@@ -129,6 +150,60 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
                 <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-blue-500 outline-none">
                   {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="text-[11px] font-bold text-slate-700 uppercase tracking-tight">Publication</label>
+              <div className="relative" ref={publicationDropdownRef}>
+                <div onClick={() => setPublicationSearchOpen(!publicationSearchOpen)} className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-blue-500 outline-none bg-white cursor-pointer flex items-center justify-between hover:border-blue-300 transition-colors">
+                  <span className={formData.publication ? "text-slate-900" : "text-slate-400"}>{formData.publication || "Select a publication"}</span>
+                  <ChevronDown size={18} className={`text-slate-400 transition-transform ${publicationSearchOpen ? "rotate-180" : ""}`} />
+                </div>
+                
+                <AnimatePresence>
+                  {publicationSearchOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+                    >
+                      <div className="p-3 border-b border-gray-100">
+                        <div className="relative">
+                          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                          <input
+                            type="text"
+                            placeholder="Search publications..."
+                            value={publicationSearchQuery}
+                            onChange={e => setPublicationSearchQuery(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2 rounded-md border border-gray-200 text-sm focus:border-blue-500 outline-none"
+                            autoFocus
+                          />
+                        </div>
+                      </div>
+                      <div className="max-h-60 overflow-y-auto">
+                        {filteredPublications.length > 0 ? (
+                          filteredPublications.map((pub, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => {
+                                setFormData({...formData, publication: pub});
+                                setPublicationSearchOpen(false);
+                                setPublicationSearchQuery("");
+                              }}
+                              className="px-4 py-2.5 hover:bg-blue-50 cursor-pointer text-sm text-slate-700 border-b border-gray-50 last:border-b-0 transition-colors"
+                            >
+                              {pub}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-4 py-3 text-slate-400 text-sm text-center">No publications found</div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </section>

@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, ArrowRight, FileText, User, Calendar } from "lucide-react";
+import { BookOpen, ArrowRight, FileText, User, Calendar, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function PublicationsSection() {
@@ -57,32 +58,96 @@ export default function PublicationsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col h-full"
+              className="group bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col h-full"
             >
-              <div className="mb-6">
-                <span className="px-4 py-1.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full">
-                  {pub.category}
-                </span>
+              {/* Cover Image */}
+              <div className="relative w-full h-48 bg-gradient-to-br from-blue-100 to-slate-100 overflow-hidden">
+                {pub.coverImageUrl ? (
+                  <Image
+                    src={pub.coverImageUrl}
+                    alt={pub.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <BookOpen size={48} className="text-blue-300" />
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
               </div>
-              <h3 className="text-xl font-black text-slate-900 mb-4 line-clamp-2 uppercase leading-tight group-hover:text-blue-600 transition-colors">
-                {pub.title}
-              </h3>
-              <p className="text-slate-500 text-sm font-medium mb-6 line-clamp-2">
-                {pub.description}
-              </p>
-              <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-slate-400 font-bold uppercase tracking-widest text-[9px]">
-                  <User size={12} className="text-blue-500" />
-                  <span className="truncate max-w-[120px]">{pub.authors}</span>
+
+              <div className="p-8 flex flex-col h-full">
+                {/* Publication Type and Year */}
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded-full border border-blue-200">
+                    {pub.publicationType}
+                  </span>
+                  <span className="px-3 py-1 bg-slate-50 text-slate-600 text-[10px] font-black tracking-widest flex items-center gap-1 rounded-full border border-slate-200">
+                    <Calendar size={12} /> {pub.year}
+                  </span>
                 </div>
-                <a 
-                  href={pub.pdfUrl ? (pub.pdfUrl.includes('cloudinary.com') && !pub.pdfUrl.includes('/raw/upload/') ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : pub.pdfUrl) : "#"} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:translate-x-1 transition-transform"
-                >
-                  <ArrowRight size={20} />
-                </a>
+
+                {/* Title */}
+                <h3 className="text-lg font-black text-slate-900 mb-3 line-clamp-2 uppercase leading-tight group-hover:text-blue-600 transition-colors">
+                  {pub.title}
+                </h3>
+
+                {/* Authors */}
+                <div className="flex items-start gap-2 mb-4 text-sla text-sm">
+                  <User size={14} className="text-blue-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 font-semibold line-clamp-2">{pub.authors}</span>
+                </div>
+
+                {/* Journal/Conference Name */}
+                {pub.journalConferenceName && (
+                  <p className="text-xs text-slate-500 font-medium mb-4 line-clamp-1 italic">
+                    {pub.journalConferenceName}
+                  </p>
+                )}
+
+                {/* Abstract */}
+                <p className="text-sm text-slate-600 font-medium mb-6 line-clamp-3 flex-grow">
+                  {pub.abstract}
+                </p>
+
+                {/* Keywords */}
+                {pub.keywords && (
+                  <div className="mb-6">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Keywords</p>
+                    <div className="flex flex-wrap gap-2">
+                      {pub.keywords.split(',').slice(0, 3).map((keyword, idx) => (
+                        <span key={idx} className="px-2 py-1 bg-slate-50 text-slate-600 text-[10px] font-bold rounded-md border border-slate-200">
+                          {keyword.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Footer with Links */}
+                <div className="pt-6 border-t border-slate-50 flex items-center gap-3">
+                  {pub.pdfUrl && (
+                    <a 
+                      href={pub.pdfUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs hover:bg-blue-100 transition-all flex items-center gap-2"
+                    >
+                      <FileText size={14} /> PDF
+                    </a>
+                  )}
+                  {pub.doiUrl && (
+                    <a 
+                      href={pub.doiUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-slate-50 text-slate-600 rounded-lg font-bold text-xs hover:bg-slate-100 transition-all flex items-center gap-2"
+                    >
+                      <ExternalLink size={14} /> View
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

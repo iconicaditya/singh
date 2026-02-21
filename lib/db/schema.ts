@@ -1,4 +1,5 @@
 import { pgTable, serial, text, varchar, integer, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const research = pgTable("research", {
   id: serial("id").primaryKey(),
@@ -9,6 +10,7 @@ export const research = pgTable("research", {
   titleImage: text("title_image"),
   authors: jsonb("authors").notNull(), // Array of objects {name, image}
   contentSections: jsonb("content_sections").notNull(), // Array of objects {title, content, image}
+  relatedPublications: jsonb("related_publications").default(sql`'[]'::jsonb`), // Array of publication objects
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -16,6 +18,7 @@ export const research = pgTable("research", {
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
+  subtitle: varchar("subtitle", { length: 500 }),
   category: varchar("category", { length: 100 }).notNull(),
   tags: text("tags"),
   teamMembers: jsonb("team_members"), // Array of {name, role}
@@ -25,7 +28,9 @@ export const projects = pgTable("projects", {
   imageUrl: text("image_url"),
   aboutProject: text("about_project"), // Rich text
   projectObjectives: jsonb("project_objectives"), // Changed from text to jsonb
-  projectDate: varchar("project_date", { length: 100 }), // Added date field
+  contentSections: jsonb("content_sections"), // Array of {title, content, image}
+  startDate: varchar("start_date", { length: 100 }),
+  endDate: varchar("end_date", { length: 100 }),
   attachedResearchIds: jsonb("attached_research_ids"), // Array of research IDs
   link: text("link"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -35,11 +40,19 @@ export const projects = pgTable("projects", {
 export const publications = pgTable("publications", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull(),
-  category: varchar("category", { length: 100 }).notNull(),
   authors: text("authors").notNull(),
+  year: varchar("year", { length: 4 }),
+  publicationType: varchar("publication_type", { length: 100 }),
+  abstract: text("abstract"),
+  keywords: text("keywords"),
+  journalConferenceName: varchar("journal_conference_name", { length: 255 }),
+  doiUrl: text("doi_url"),
+  pdfUrl: text("pdf_url"),
+  coverImageUrl: text("cover_image_url"),
+  // Old fields for backward compatibility
+  category: varchar("category", { length: 100 }),
   description: text("description"),
   tags: text("tags"),
-  pdfUrl: text("pdf_url").notNull(),
   imageUrl: text("image_url"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

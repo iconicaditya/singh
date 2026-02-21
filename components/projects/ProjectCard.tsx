@@ -1,83 +1,69 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Tag } from "lucide-react";
 import Link from "next/link";
-import { useLanguage } from "@/lib/LanguageContext";
-import { translateProjectCategory } from "@/lib/dbTranslations";
 
 interface ProjectCardProps {
   project: {
     id: number;
     title: string;
-    category: string;
-    description: string;
+    description?: string;
     imageUrl?: string;
-    location?: string;
     status: string;
-    tags?: string;
   };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const { language } = useLanguage();
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="group relative bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all h-[500px]"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      className="bg-white overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group"
     >
-      {/* Image Container */}
-      <div className="relative h-full w-full overflow-hidden">
-        {project.imageUrl ? (
-          <img
-            src={project.imageUrl}
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-          />
-        ) : (
-          <div className="w-full h-full bg-slate-900" />
-        )}
-        
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-
-        {/* Content - Always Visible */}
-        <div className="absolute inset-0 p-8 flex flex-col justify-end">
-          <div className="mb-4">
-            <span className="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-black tracking-widest uppercase rounded-full">
-              {translateProjectCategory(project.category, language as 'en' | 'ja')}
-            </span>
+      <Link href={`/projects/${project.id}`}>
+        <div className="relative">
+          {/* Project Image */}
+          <div className="relative h-72 overflow-hidden">
+            {project.imageUrl ? (
+              <motion.img
+                src={project.imageUrl}
+                alt={project.title}
+                className="w-full h-full object-cover"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+            )}
           </div>
-          
-          <h3 className="text-2xl font-black text-white mb-2 uppercase leading-tight group-hover:text-blue-400 transition-colors">
-            {project.title}
-          </h3>
-          
-          {project.location && (
-            <div className="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-widest mb-4">
-              <MapPin size={14} className="text-blue-500" />
-              {project.location}
-            </div>
-          )}
 
-          {/* Hover Details */}
-          <div className="max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-500 ease-in-out">
-            <p className="text-slate-300 text-sm font-medium mb-6 line-clamp-3">
-              {project.description}
-            </p>
-            
-            <Link
-              href={`/projects/${project.id}`}
-              className="inline-flex items-center gap-2 text-white font-black text-xs tracking-widest uppercase hover:text-blue-400 transition-colors"
+          {/* Status Badge - Top Right */}
+          <div className="absolute top-4 right-4">
+            <motion.span 
+              className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold uppercase"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
             >
-              View Details <ArrowRight size={16} />
-            </Link>
+              {project.status}
+            </motion.span>
+          </div>
+
+          {/* Content */}
+          <div className="p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-3 underline decoration-2 underline-offset-4 decoration-black">
+              {project.title}
+            </h3>
+            {project.description && (
+              <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+                {project.description}
+              </p>
+            )}
           </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }

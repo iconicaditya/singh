@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { 
   X, 
   Plus, 
@@ -13,9 +13,11 @@ import {
   ChevronDown,
   Upload,
   Calendar,
-  Tag as TagIcon
+  Tag as TagIcon,
+  Search
 } from "lucide-react";
 import dynamic from 'next/dynamic';
+import { motion, AnimatePresence } from 'framer-motion';
 import 'react-quill-new/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
@@ -40,12 +42,26 @@ const QUILL_MODULES = {
   ],
 };
 
+const QUILL_FORMATS = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike',
+  'color', 'background',
+  'list',
+  'align',
+  'link'
+];
+
 export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initialData }: ResearchFormProps) {
   const [loading, setLoading] = useState(false);
   const [newCategory, setNewCategory] = useState("");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "PROJECT"]);
   const [showCategoryMenu, setShowCategoryMenu] = useState(false);
+  const [publicationsLoading, setPublicationsLoading] = useState(false);
+  const [availablePublications, setAvailablePublications] = useState<any[]>([]);
+  const [publicationSearchQuery, setPublicationSearchQuery] = useState("");
+  const [showPublicationDropdown, setShowPublicationDropdown] = useState(false);
+  const publicationDropdownRef = useRef<HTMLDivElement>(null);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -79,6 +95,35 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
       });
     }
   }, [initialData, isOpen]);
+
+  // Fetch publications from database
+  useEffect(() => {
+    const fetchPublications = async () => {
+      setPublicationsLoading(true);
+      try {
+        const res = await fetch("/api/publications");
+        const data = await res.json();
+        setAvailablePublications(data || []);
+      } catch (err) {
+        console.error("Failed to fetch publications:", err);
+      } finally {
+        setPublicationsLoading(false);
+      }
+    };
+
+    if (isOpen) {
+      fetchPublications();
+    }
+  }, [isOpen]);
+
+  // Filter publications based on search query
+  const filteredPublications = useMemo(() => {
+    return availablePublications.filter(pub => 
+      !formData.relatedPublications.some(rp => rp.id === pub.id) &&
+      (pub.title.toLowerCase().includes(publicationSearchQuery.toLowerCase()) ||
+       pub.authors?.toLowerCase().includes(publicationSearchQuery.toLowerCase()))
+    );
+  }, [availablePublications, publicationSearchQuery, formData.relatedPublications]);
 
   if (!isOpen) return null;
 
@@ -120,6 +165,22 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   const removeSection = (index: number) => {
     const newSections = formData.contentSections.filter((_, i) => i !== index);
     setFormData({ ...formData, contentSections: newSections });
+  };
+
+  const addRelatedPublication = (publication: any) => {
+    setFormData(prev => ({
+      ...prev,
+      relatedPublications: [...prev.relatedPublications, publication]
+    }));
+    setPublicationSearchQuery("");
+    setShowPublicationDropdown(false);
+  };
+
+  const removeRelatedPublication = (publicationId: number) => {
+    setFormData(prev => ({
+      ...prev,
+      relatedPublications: prev.relatedPublications.filter(p => p.id !== publicationId)
+    }));
   };
 
   const handleAddCategory = () => {
@@ -488,6 +549,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                           setFormData({ ...formData, contentSections: newSects });
                         }}
                         modules={QUILL_MODULES}
+                        formats={QUILL_FORMATS}
                         placeholder="Write your research content here..."
                         className="h-64 mb-12"
                       />
@@ -541,14 +603,103 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
               </div>
               <span className="text-xs text-slate-400 font-medium">(Optional)</span>
             </div>
-            
-            <button 
-              type="button"
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all shadow-sm"
-            >
-              <PlusCircle size={18} />
-              Add Publication
-            </button>
+
+            {/* Search and Add Publications */}
+            <div className="relative" ref={publicationDropdownRef}>
+              <div className="space-y-3">
+                <div className="relative">
+                  <div 
+                    onClick={() => setShowPublicationDropdown(!showPublicationDropdown)}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white cursor-pointer flex items-center justify-between hover:border-blue-300 transition-colors"
+                  >
+                    <div className="flex items-center gap-2 text-slate-500">
+                      <Search size={16} />
+                      <span>Search & add publications...</span>
+                    </div>
+                    <ChevronDown size={18} className={`text-slate-400 transition-transform ${showPublicationDropdown ? "rotate-180" : ""}`} />
+                  </div>
+
+                  {showPublicationDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-lg z-50"
+                    >
+                      <div className="p-3 border-b border-slate-100">
+                        <div className="relative">
+                          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                          <input
+                            type="text"
+                            placeholder="Search by title or author..."
+                            value={publicationSearchQuery}
+                            onChange={e => setPublicationSearchQuery(e.target.value)}
+                            className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-200 text-sm focus:border-blue-500 outline-none"
+                            autoFocus
+                          />
+                        </div>
+                      </div>
+                      <div className="max-h-64 overflow-y-auto">
+                        {publicationsLoading ? (
+                          <div className="px-4 py-6 text-center text-slate-400 text-sm">Loading publications...</div>
+                        ) : filteredPublications.length > 0 ? (
+                          filteredPublications.map((pub) => (
+                            <div
+                              key={pub.id}
+                              className="px-4 py-3 hover:bg-blue-50 cursor-pointer border-b border-slate-50 last:border-b-0 transition-colors group"
+                              onClick={() => addRelatedPublication(pub)}
+                            >
+                              <div className="flex justify-between items-start gap-2">
+                                <div className="flex-1">
+                                  <p className="text-sm font-bold text-slate-900">{pub.title}</p>
+                                  <p className="text-xs text-slate-500 mt-1">{pub.authors}</p>
+                                  {pub.journalConferenceName && (
+                                    <p className="text-xs text-blue-600 mt-1">{pub.journalConferenceName}</p>
+                                  )}
+                                </div>
+                                <span className="text-xs text-slate-400 whitespace-nowrap">{pub.year}</span>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-4 py-6 text-center text-slate-400 text-sm">
+                            {publicationSearchQuery ? "No publications found" : "No more publications available"}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Selected Publications List */}
+            {formData.relatedPublications.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs text-slate-600 font-semibold">Added Publications ({formData.relatedPublications.length})</p>
+                <div className="space-y-2">
+                  {formData.relatedPublications.map((pub) => (
+                    <div key={pub.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-start justify-between gap-3 group hover:bg-slate-100 transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-900 truncate">{pub.title}</p>
+                        <p className="text-xs text-slate-500 mt-1">{pub.authors}</p>
+                        {pub.journalConferenceName && (
+                          <p className="text-xs text-blue-600 mt-1">{pub.journalConferenceName}</p>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeRelatedPublication(pub.id)}
+                        className="p-1 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Footer Actions */}

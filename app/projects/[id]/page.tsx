@@ -1,292 +1,423 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { 
-  MapPin, 
-  ArrowLeft, 
-  Loader2, 
-  Calendar, 
-  Tag, 
-  FileText,
-  Target,
-  CheckCircle2,
-  Share2
-} from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useLanguage } from "@/lib/LanguageContext";
-import { translateProjectCategory, translateProjectStatus } from "@/lib/dbTranslations";
-import { getTranslatedProject, getTranslatedResearchList } from "@/lib/dynamicTranslations";
+import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ExternalLink, FileText, Loader2 } from "lucide-react";
 
-export default function ProjectDetail() {
-  const params = useParams();
-  const router = useRouter();
-  const { language } = useLanguage();
-  const [project, setProject] = useState<any>(null);
+type TeamMember = {
+  name?: string;
+  role?: string;
+};
+
+type ContentSection = {
+  title?: string;
+  content?: string;
+  description?: string;
+  text?: string;
+  body?: string;
+  html?: string;
+  image?: string;
+  imageUrl?: string;
+  sectionImage?: string;
+  titleImage?: string;
+  url?: string;
+  images?: string[];
+};
+
+type ProjectObjective = {
+  title?: string;
+  description?: string;
+};
+
+type Project = {
+  id: number;
+  title: string;
+  subtitle: string | null;
+  category: string;
+  tags: string | null;
+  teamMembers: TeamMember[];
+  location: string | null;
+  description: string;
+  status: string;
+  imageUrl: string | null;
+  aboutProject: string | null;
+  projectObjectives: ProjectObjective[];
+  contentSections: ContentSection[];
+  startDate: string | null;
+  endDate: string | null;
+  attachedResearchIds: Array<string | number>;
+  link: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+};
+
+const pretty = (value?: string | null) => value || "—";
+
+const formatDate = (value?: string | null) => {
+  if (!value) return "—";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleDateString();
+};
+
+const parseTags = (tags?: string | null) => {
+  if (!tags) return [];
+  return tags
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
+
+const getContentImage = (section?: ContentSection) => {
+  if (!section) return "";
+
+  return (
+    section.image ||
+    section.imageUrl ||
+    section.sectionImage ||
+    section.titleImage ||
+    section.url ||
+    ""
+  ).trim();
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+
+const plainTextToHtml = (value: string) =>
+  escapeHtml(value)
+    .replace(/\n{2,}/g, "</p><p>")
+    .replace(/\n/g, "<br />");
+
+const getSectionContentHtml = (section?: ContentSection) => {
+  if (!section) return "";
+
+  const candidates = [section.content, section.html, section.description, section.text, section.body];
+  const firstText = candidates.find((value) => typeof value === "string" && value.trim().length > 0);
+
+  if (firstText) {
+    const trimmed = firstText.trim();
+    const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(trimmed);
+    return looksLikeHtml ? trimmed : `<p>${plainTextToHtml(trimmed)}</p>`;
+  }
+
+  const contentAsAny = (section as any)?.content;
+  if (contentAsAny && typeof contentAsAny === "object" && Array.isArray(contentAsAny.ops)) {
+    const deltaText = contentAsAny.ops
+      .map((operation: any) => (typeof operation?.insert === "string" ? operation.insert : ""))
+      .join("")
+      .trim();
+
+    return deltaText ? `<p>${plainTextToHtml(deltaText)}</p>` : "";
+  }
+
+  return "";
+};
+
+const getContentImages = (section?: ContentSection) => {
+  if (!section) return [] as string[];
+
+  const fromArray = Array.isArray(section.images)
+    ? section.images.filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    : [];
+
+  const single = getContentImage(section);
+  const merged = single ? [single, ...fromArray] : fromArray;
+
+  return Array.from(new Set(merged));
+};
+
+export default function ProjectDetailPage() {
+  const params = useParams<{ id: string }>();
+  const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
-  const [relatedResearch, setRelatedResearch] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProject = async () => {
+      if (!params?.id) return;
+
+      setLoading(true);
+      setError(null);
+
       try {
-        const res = await fetch("/api/projects");
-        const data = await res.json();
-        const found = data.find((p: any) => p.id.toString() === params.id);
-        
-        if (found) {
-          // Apply dynamic translations
-          const translatedProject = getTranslatedProject(found, language as 'en' | 'ja');
-          setProject(translatedProject);
-          
-          if (found.attachedResearchIds && Array.isArray(found.attachedResearchIds) && found.attachedResearchIds.length > 0) {
-            const resRes = await fetch("/api/research");
-            const resData = await resRes.json();
-            const related = resData.filter((r: any) => 
-              found.attachedResearchIds.includes(r.id.toString()) || 
-              found.attachedResearchIds.includes(r.id) ||
-              found.attachedResearchIds.includes(Number(r.id))
-            );
-            // Apply translations to related research
-            const translatedResearch = getTranslatedResearchList(related, language as 'en' | 'ja');
-            setRelatedResearch(translatedResearch);
-          }
+        const response = await fetch(`/api/projects/${params.id}`, { cache: "no-store" });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.error || "Failed to load project");
         }
-      } catch (err) {
-        console.error(err);
+
+        setProject(data);
+      } catch (fetchError: any) {
+        setError(fetchError?.message || "Failed to load project");
       } finally {
         setLoading(false);
       }
     };
+
     fetchProject();
-  }, [params.id, language]);
+  }, [params?.id]);
 
-  if (loading) return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
-        <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading Project Profile</p>
+  const tags = useMemo(() => parseTags(project?.tags), [project?.tags]);
+  const validObjectives = useMemo(() => {
+    if (!project?.projectObjectives || !Array.isArray(project.projectObjectives)) return [];
+
+    return project.projectObjectives.filter((objective: any) => {
+      if (typeof objective === "string") return objective.trim().length > 0;
+
+      if (objective && typeof objective === "object") {
+        const title = typeof objective.title === "string" ? objective.title.trim() : "";
+        const description = typeof objective.description === "string" ? objective.description.trim() : "";
+        return title.length > 0 || description.length > 0;
+      }
+
+      return false;
+    });
+  }, [project?.projectObjectives]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
+          <p className="text-sm text-slate-600">Loading project details...</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 
-  if (!project) return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-slate-50">
-      <h2 className="text-3xl font-black text-slate-900 mb-4 uppercase">Project Not Found</h2>
-      <Link href="/projects" className="px-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs tracking-widest uppercase hover:bg-blue-600 transition-all shadow-xl active:scale-95 flex items-center gap-3">
-        <ArrowLeft size={16} /> Back to Repository
-      </Link>
-    </div>
-  );
-
-  const isCompleted = project.status?.toLowerCase() === 'completed';
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: project.title,
-        text: project.description,
-        url: window.location.href,
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  };
-
-  const handleViewResearch = () => {
-    if (relatedResearch.length > 0) {
-      router.push(`/research/${relatedResearch[0].id}`);
-    } else {
-      router.push('/research');
-    }
-  };
+  if (error || !project) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 text-center shadow-sm">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Project not found</h1>
+          <p className="text-slate-600 mb-6 break-words">{error || "Unable to load this project."}</p>
+          <Link
+            href="/projects"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors"
+          >
+            <ArrowLeft size={16} />
+            Back to Projects
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
-      {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[70vh] flex items-end overflow-hidden pb-12 md:pb-16 bg-slate-950">
+    <main className="min-h-screen bg-slate-50">
+      <section className="relative">
         {project.imageUrl ? (
-          <motion.div 
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="absolute inset-0"
-          >
-            <img 
-              src={project.imageUrl} 
-              alt={project.title} 
-              className="w-full h-full object-cover"
-            />
-            {/* Dark transparency layer as per image */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-          </motion.div>
+          <div className="absolute inset-0">
+            <img src={project.imageUrl} alt={project.title} className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-slate-950/70" />
+          </div>
         ) : (
-          <div className="absolute inset-0 bg-slate-950" />
+          <div className="absolute inset-0 bg-slate-900" />
         )}
-        
-        <div className="container mx-auto px-6 sm:px-10 lg:px-16 max-w-7xl relative z-10">
-          <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
-            <div className="flex-1 w-full lg:max-w-4xl">
-              {/* Category, Status, Date Pills */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, staggerChildren: 0.1 }}
-                className="flex flex-wrap items-center gap-2 md:gap-3 mb-6"
-              >
-                <motion.span 
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="px-4 py-1.5 bg-blue-600 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md shadow-lg shadow-blue-600/20"
-                >
-                  {translateProjectCategory(project.category, language as 'en' | 'ja')}
-                </motion.span>
-                <motion.span 
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md"
-                >
-                  {translateProjectStatus(project.status, language as 'en' | 'ja')}
-                </motion.span>
-                <motion.span 
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="px-4 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-[11px] font-black uppercase tracking-widest rounded-md flex items-center gap-2"
-                >
-                  <Calendar size={12} className="shrink-0" />
-                  {project.projectDate}
-                </motion.span>
-              </motion.div>
 
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter mb-6 leading-[1.1] break-words drop-shadow-2xl"
-              >
-                {project.title}
-              </motion.h1>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-white/90 hover:text-white text-sm font-medium mb-8"
+          >
+            <ArrowLeft size={16} />
+            Back to Projects
+          </Link>
 
-              <div className="space-y-4">
-                {project.location && (
-                  <div className="flex items-center gap-2 text-white/80 text-sm md:text-base font-bold uppercase tracking-[0.2em]">
-                    <MapPin size={18} className="text-blue-500 shrink-0" />
-                    <span>{project.location}</span>
-                  </div>
-                )}
-                {project.tags && (
-                  <div className="flex flex-wrap gap-4">
-                    {project.tags.split(',').map((tag: string, i: number) => (
-                      <span key={i} className="text-white text-xs md:text-sm font-black uppercase tracking-widest opacity-90">
-                        #{tag.trim()}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {isCompleted && (
-              <div className="flex flex-col gap-3 shrink-0 w-full lg:w-72 mb-2">
-                <button 
-                  onClick={handleViewResearch}
-                  className="w-full px-8 py-4 bg-blue-600 text-white rounded-xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-900/40 active:scale-[0.98]"
-                >
-                  View Research
-                </button>
-                <button 
-                  onClick={handleShare}
-                  className="w-full px-8 py-4 bg-white text-slate-900 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-2 border border-transparent shadow-xl active:scale-[0.98]"
-                >
-                  <Share2 size={20} className="shrink-0" /> Share
-                </button>
-              </div>
+          <div className="max-w-4xl">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white break-words">
+              {project.title}
+            </h1>
+            {project.subtitle && (
+              <p className="mt-4 text-base sm:text-lg lg:text-xl text-white/90 break-words">{project.subtitle}</p>
             )}
           </div>
         </div>
       </section>
 
-      {/* Content Section */}
-      <div className="container mx-auto px-6 sm:px-10 lg:px-16 max-w-7xl py-16 md:py-24">
-        <div className="max-w-5xl mx-auto">
-          <div className="space-y-16 md:space-y-24">
-            {/* Overview */}
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="animate-in fade-in slide-in-from-bottom-4 duration-700"
-            >
-              <div className="flex items-center gap-4 mb-8">
-                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl shrink-0">
-                  <FileText size={28} />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-tight">Project Overview</h2>
-              </div>
-              <div className="prose prose-slate max-w-none">
-                <div 
-                  className="text-lg md:text-xl text-slate-600 leading-relaxed md:leading-loose rich-text-content overflow-hidden break-words"
-                  dangerouslySetInnerHTML={{ __html: project.aboutProject || project.description }}
-                />
-              </div>
-            </motion.section>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-2xl p-4 sm:p-6">
+              {project.contentSections.length > 0 ? (
+                <div className="space-y-4 sm:space-y-5">
+                  {project.contentSections.map((section, index) => {
+                    const contentTitle = section?.title?.trim() || "";
+                    const hasTitle = contentTitle.length > 0;
+                    const contentImageAlt = hasTitle ? contentTitle : project.title;
+                    const contentHtml = getSectionContentHtml(section);
+                    const contentImages = getContentImages(section);
 
-          {/* Key Objectives */}
-          {project.projectObjectives && Array.isArray(project.projectObjectives) && project.projectObjectives.length > 0 && (
-            <motion.section 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150"
-            >
-              <div className="flex items-center gap-3 mb-6 md:mb-8">
-                <div className="p-2 md:p-3 bg-emerald-50 text-emerald-600 rounded-xl shrink-0">
-                  <Target size={20} className="md:w-6 md:h-6" />
+                    return (
+                      <div key={index}>
+                        {contentImages.length > 0 && (
+                          <div
+                            className={`mb-4 sm:mb-5 ${
+                              contentImages.length === 1 ? "block" : "grid grid-cols-2 gap-3 sm:gap-4"
+                            }`}
+                          >
+                            {contentImages.map((imageUrl, imageIndex) => (
+                              <img
+                                key={`${index}-${imageIndex}`}
+                                src={imageUrl}
+                                alt={contentImageAlt}
+                                className={`w-full ${
+                                  contentImages.length === 1
+                                    ? "h-auto object-contain"
+                                    : "aspect-video object-cover"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        )}
+                        <div className="space-y-4 sm:space-y-5">
+                          {hasTitle && (
+                            <div className="flex items-center gap-3 sm:gap-4">
+                              <span className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-blue-100 text-blue-600 shrink-0">
+                                <FileText size={22} />
+                              </span>
+                              <h3 className="text-[16px] font-bold leading-normal text-slate-900 break-words">
+                                {contentTitle}
+                              </h3>
+                            </div>
+                          )}
+
+                          {contentHtml ? (
+                            <div
+                              className="project-content-rich text-slate-700 leading-relaxed break-words"
+                              dangerouslySetInnerHTML={{ __html: contentHtml }}
+                            />
+                          ) : (
+                            <p className="text-slate-700">—</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <h2 className="text-xl md:text-2xl font-black text-slate-900 uppercase tracking-tight">Key Objectives</h2>
-              </div>
-              <div className="grid grid-cols-1 gap-3 md:gap-4">
-                {project.projectObjectives.map((obj: any, idx: number) => (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    whileHover={{ scale: 1.01 }}
-                    className="flex items-start gap-4 p-4 md:p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 hover:border-emerald-200 transition-all shadow-sm hover:shadow-md"
-                  >
-                    <div className="shrink-0 text-emerald-600 mt-0.5">
-                      <CheckCircle2 size={20} className="md:w-6 md:h-6" />
+              ) : (
+                <p className="text-slate-700">—</p>
+              )}
+            </div>
+
+            {validObjectives.length > 0 && (
+              <div className="bg-white rounded-2xl p-4 sm:p-6">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-4">Objectives</h2>
+                <div className="space-y-3">
+                  {validObjectives.map((objective, index) => (
+                    <div key={index} className="rounded-xl p-3 sm:p-4 bg-slate-50">
+                      <p className="font-medium text-slate-900 break-words">{objective?.title || String(objective || "—")}</p>
+                      {objective?.description && (
+                        <p className="mt-2 text-slate-700 break-words">{objective.description}</p>
+                      )}
                     </div>
-                    <p className="text-slate-800 font-bold uppercase tracking-tight text-xs md:text-sm leading-snug break-all sm:break-words whitespace-normal overflow-hidden">
-                      {obj.title || obj}
-                    </p>
-                  </motion.div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </motion.section>
-          )}
-        </div>
-      </div>
-    </div>
+            )}
+          </div>
 
-    <style jsx global>{`
-        .rich-text-content p { margin-bottom: 1.25rem; }
-        .rich-text-content ul { list-style-type: disc; margin-left: 1.25rem; margin-bottom: 1.25rem; }
-        .rich-text-content ol { list-style-type: decimal; margin-left: 1.25rem; margin-bottom: 1.25rem; }
-        .rich-text-content .ql-align-center { text-align: center; }
-        .rich-text-content .ql-align-right { text-align: right; }
-        .rich-text-content .ql-align-justify { text-align: justify; }
-        @media (min-width: 768px) {
-          .rich-text-content p { margin-bottom: 1.5rem; }
-          .rich-text-content ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
-          .rich-text-content ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+          <aside className="space-y-6 lg:sticky lg:top-24 self-start">
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4">Project Information</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 text-sm">
+                <div><span className="font-semibold text-slate-800">ID:</span> <span className="text-slate-700">{project.id}</span></div>
+                <div><span className="font-semibold text-slate-800">Category:</span> <span className="text-slate-700 break-words">{pretty(project.category)}</span></div>
+                <div><span className="font-semibold text-slate-800">Status:</span> <span className="text-slate-700 break-words">{pretty(project.status)}</span></div>
+                <div><span className="font-semibold text-slate-800">Location:</span> <span className="text-slate-700 break-words">{pretty(project.location)}</span></div>
+                <div><span className="font-semibold text-slate-800">Start Date:</span> <span className="text-slate-700">{formatDate(project.startDate)}</span></div>
+                <div><span className="font-semibold text-slate-800">End Date:</span> <span className="text-slate-700">{formatDate(project.endDate)}</span></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4">Tags</h2>
+              {tags.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <span key={tag} className="px-3 py-1 text-xs sm:text-sm bg-slate-100 text-slate-800 rounded-full break-words">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-slate-700">—</p>
+              )}
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4">Team Members</h2>
+              {project.teamMembers.length > 0 ? (
+                <ul className="space-y-2">
+                  {project.teamMembers.map((member, index) => (
+                    <li key={index} className="text-slate-700 border border-slate-200 rounded-xl p-3">
+                      <p className="font-medium break-words">{pretty(member?.name)}</p>
+                      <p className="text-sm text-slate-600 break-words">{pretty(member?.role)}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-slate-700">—</p>
+              )}
+            </div>
+
+          </aside>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        .project-content-rich p {
+          margin-bottom: 1.1rem;
+          font-size: 14px;
+          line-height: 1.65;
+          color: #23375b;
+        }
+        .project-content-rich strong,
+        .project-content-rich b {
+          font-weight: 700;
+          color: inherit;
+        }
+        .project-content-rich em,
+        .project-content-rich i {
+          font-style: italic;
+        }
+        .project-content-rich ul,
+        .project-content-rich ol {
+          margin: 0.5rem 0 1.25rem;
+          padding-left: 1.35rem;
+        }
+        .project-content-rich ul {
+          list-style-type: disc;
+        }
+        .project-content-rich ol {
+          list-style-type: decimal;
+        }
+        .project-content-rich li {
+          margin-bottom: 0.65rem;
+          font-size: 14px;
+          line-height: 1.55;
+          color: #23375b;
+          display: list-item;
+        }
+        .project-content-rich li[data-list="bullet"] {
+          list-style-type: disc;
+        }
+        .project-content-rich li[data-list="ordered"] {
+          list-style-type: decimal;
+        }
+        .project-content-rich ul li::marker,
+        .project-content-rich ol li::marker {
+          color: #c7d2e3;
         }
       `}</style>
-    </div>
+    </main>
   );
 }

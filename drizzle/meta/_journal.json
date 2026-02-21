@@ -22,6 +22,27 @@
       "when": 1771388781547,
       "tag": "0002_new_eternals",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1771500000000,
+      "tag": "0003_update_publications",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1771427833752,
+      "tag": "0004_add_related_publications",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1771500001000,
+      "tag": "0005_add_projects_dates_and_contents",
+      "breakpoints": true
     }
   ]
 }

@@ -30,12 +30,13 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log('API POST Received:', body);
     
-    if (!body.title || !body.description || !body.status) {
+    if (!body.status) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
     const [savedItem] = await db.insert(projects).values({
       title: body.title,
+      subtitle: body.subtitle || "",
       category: body.category || "General",
       tags: body.tags || "",
       teamMembers: body.teamMembers || [],
@@ -45,7 +46,9 @@ export async function POST(req: Request) {
       imageUrl: body.imageUrl || "",
       aboutProject: body.aboutProject || "",
       projectObjectives: Array.isArray(body.projectObjectives) ? body.projectObjectives : [],
-      projectDate: body.projectDate || new Date().toISOString().split('T')[0],
+      contentSections: Array.isArray(body.contentSections) ? body.contentSections : [],
+      startDate: body.startDate || new Date().toISOString().split('T')[0],
+      endDate: body.endDate || "",
       attachedResearchIds: Array.isArray(body.attachedResearchIds) ? body.attachedResearchIds : [],
       link: body.link || "",
     }).returning();
@@ -81,6 +84,7 @@ export async function PUT(req: Request) {
     const [updatedItem] = await db.update(projects)
       .set({
         title: body.title,
+        subtitle: body.subtitle || "",
         category: body.category || "",
         tags: body.tags || "",
         teamMembers: body.teamMembers || [],
@@ -90,7 +94,9 @@ export async function PUT(req: Request) {
         imageUrl: body.imageUrl || "",
         aboutProject: body.aboutProject || "",
         projectObjectives: body.projectObjectives || [],
-        projectDate: body.projectDate || "",
+        contentSections: body.contentSections || [],
+        startDate: body.startDate || "",
+        endDate: body.endDate || "",
         attachedResearchIds: body.attachedResearchIds || [],
         link: body.link || "",
         updatedAt: new Date()

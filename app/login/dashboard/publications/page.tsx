@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, BookOpen, Trash2, Edit2, ExternalLink, FileText, Loader2, Search } from "lucide-react";
+import { Plus, BookOpen, Trash2, Edit2, ExternalLink, FileText, Loader2, Search, Download } from "lucide-react";
 import PublicationForm from "@/components/publications/PublicationForm";
 import DashboardTable from "@/components/admin/DashboardTable";
 
@@ -38,7 +38,7 @@ export default function AdminPublicationsPage() {
     }
   };
 
-  const categories = Array.from(new Set(publications.map(item => item.category)));
+  const publicationTypes = Array.from(new Set(publications.map(item => item.publicationType)));
 
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto bg-[#f8fafc] min-h-screen text-slate-900">
@@ -62,7 +62,7 @@ export default function AdminPublicationsPage() {
               description="Manage academic contributions."
               icon={BookOpen}
               data={publications}
-              categories={categories}
+              categories={publicationTypes}
               onAdd={() => { setEditingItem(null); setIsFormOpen(true); }}
               onEdit={(item) => { setEditingItem(item); setIsFormOpen(true); }}
               onDelete={(item) => handleDelete(item.id)}
@@ -78,8 +78,8 @@ export default function AdminPublicationsPage() {
                   )
                 },
                 {
-                  header: "Category",
-                  accessor: "category",
+                  header: "Type",
+                  accessor: "publicationType",
                   render: (value) => (
                     <span className="px-2 md:px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
                       {value}
@@ -87,17 +87,49 @@ export default function AdminPublicationsPage() {
                   )
                 },
                 {
+                  header: "Year",
+                  accessor: "year",
+                  render: (value) => (
+                    <span className="text-sm font-bold text-slate-600 whitespace-nowrap">
+                      {value}
+                    </span>
+                  )
+                },
+                {
+                  header: "Journal/Conference",
+                  accessor: "journalConferenceName",
+                  render: (value) => (
+                    <span className="text-[10px] md:text-xs text-slate-600 font-medium line-clamp-1 max-w-[150px]">
+                      {value || "—"}
+                    </span>
+                  )
+                },
+                {
                   header: "Resources",
                   accessor: "pdfUrl",
-                  render: (value) => (
-                    <a 
-                      href={value ? value.replace("/fl_attachment", "") : "#"} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-blue-600 font-bold hover:underline text-[10px] md:text-xs whitespace-nowrap"
-                    >
-                      <FileText size={14} /> PDF Link
-                    </a>
+                  render: (value, item) => (
+                    <div className="flex items-center gap-2">
+                      {value && (
+                        <a 
+                          href={value} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-blue-600 font-bold hover:text-blue-700 text-[10px] md:text-xs whitespace-nowrap"
+                        >
+                          <Download size={14} /> PDF
+                        </a>
+                      )}
+                      {item.doiUrl && (
+                        <a 
+                          href={item.doiUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-slate-600 font-bold hover:text-slate-700 text-[10px] md:text-xs whitespace-nowrap"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      )}
+                    </div>
                   )
                 }
               ]}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Users, Linkedin, Twitter, Facebook, Instagram, ExternalLink, ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import 'react-quill-new/dist/quill.snow.css';
@@ -13,6 +13,7 @@ interface Person {
   roleDesignation: string;
   profileImage: string;
   nationality?: string;
+  labId?: string;
   educationBackground?: string;
   pastTeachingBackground?: string;
   publications?: Array<{ link: string }>;
@@ -46,11 +47,23 @@ function PeoplePageContent() {
   const [peopleList, setPeopleList] = useState<Person[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeRole, setActiveRole] = useState(roleParam);
-  const [expandedIds, setExpandedIds] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isLimitOpen, setIsLimitOpen] = useState(false);
+  const [selectedClassYear, setSelectedClassYear] = useState("all");
+  const [isYearOpen, setIsYearOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveRole(roleParam);
+  }, [roleParam]);
+
+  useEffect(() => {
+    if (activeRole === "professor") {
+      setSelectedClassYear("all");
+      setIsYearOpen(false);
+    }
+  }, [activeRole]);
 
   useEffect(() => {
     const fetchPeople = async () => {
@@ -71,6 +84,18 @@ function PeoplePageContent() {
   }, []);
 
   // Filter people by role
+  const availableClassYears = Array.from(
+    new Set(
+      peopleList
+        .filter((person) => person.roleDesignation === roleQueryMaps[activeRole])
+        .flatMap((person) => person.graduationYears || [])
+    )
+  ).sort((a, b) => {
+    const yearA = parseInt(a.replace(/[^0-9]/g, ""), 10);
+    const yearB = parseInt(b.replace(/[^0-9]/g, ""), 10);
+    return yearA - yearB;
+  });
+
   const filteredPeople = peopleList.filter(
     (person) => person.roleDesignation === roleQueryMaps[activeRole]
   ).filter((person) => {
@@ -82,6 +107,10 @@ function PeoplePageContent() {
       person.nationality?.toLowerCase().includes(query) ||
       person.researchTopic?.toLowerCase().includes(query)
     );
+  }).filter((person) => {
+    if (activeRole === "professor") return true;
+    if (selectedClassYear === "all") return true;
+    return (person.graduationYears || []).includes(selectedClassYear);
   });
 
   // Pagination logic
@@ -101,11 +130,6 @@ function PeoplePageContent() {
     { key: "undergraduate", label: "Undergraduate Students" },
   ];
 
-  const toggleExpand = (id: number) => {
-    setExpandedIds(prev => 
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-    );
-  };
 
   if (loading) {
     return (
@@ -154,13 +178,13 @@ function PeoplePageContent() {
                 placeholder="Search by name, role, nationality, or research topic..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 sm:py-3.5 border-2 border-blue-600 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-700 transition-colors text-sm sm:text-base"
+                className="w-full pl-12 pr-4 py-3 sm:py-3.5 border-2 border-slate-300 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-700 transition-colors text-sm sm:text-base"
               />
             </div>
           </div>
 
-          {/* Role Filter Buttons */}
-          <div className="flex flex-wrap justify-center lg:justify-end gap-2 sm:gap-3">
+          {/* Role Filter Buttons + Year Dropdown */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-end gap-2 sm:gap-3">
             {roleButtons.map((button, idx) => (
               <motion.button
                 key={button.key}
@@ -179,6 +203,65 @@ function PeoplePageContent() {
                 {button.label}
               </motion.button>
             ))}
+
+            {(activeRole === "graduate" || activeRole === "undergraduate") && (
+              <div className="relative">
+                <motion.button
+                  onClick={() => setIsYearOpen(!isYearOpen)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-2 px-4 sm:px-5 md:px-6 py-3 sm:py-3.5 border-2 border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm md:text-base hover:border-blue-600 hover:text-blue-600 hover:shadow-sm transition-all"
+                >
+                  {selectedClassYear === "all" ? "Class: All" : selectedClassYear}
+                  <motion.div
+                    animate={{ rotate: isYearOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ChevronDown size={16} />
+                  </motion.div>
+                </motion.button>
+                <AnimatePresence>
+                  {isYearOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 mt-2 bg-white border border-slate-200 shadow-xl rounded-lg overflow-hidden min-w-[180px] z-20"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedClassYear("all");
+                          setIsYearOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                      >
+                        All Classes
+                      </button>
+                      {availableClassYears.map((year) => (
+                        <button
+                          key={year}
+                          type="button"
+                          onClick={() => {
+                            setSelectedClassYear(year);
+                            setIsYearOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                        >
+                          {year}
+                        </button>
+                      ))}
+                      {availableClassYears.length === 0 && (
+                        <div className="px-4 py-2.5 text-sm text-slate-500">
+                          No classes found
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -386,30 +469,13 @@ function PeoplePageContent() {
                         viewport={{ once: true, amount: 0.3 }}
                         transition={{ duration: 0.5 }}
                       >
-                        <motion.button
-                          onClick={() => toggleExpand(person.id)}
-                          whileHover={{ x: 4 }}
-                          className="flex items-center gap-2 text-[11px] sm:text-xs md:text-sm font-black text-slate-600 uppercase tracking-wider hover:text-blue-600 transition-colors"
-                        >
+                        <h3 className="text-[11px] sm:text-xs md:text-sm font-black text-slate-600 uppercase tracking-wider mb-2">
                           Conference Presentations
-                          <motion.div
-                            animate={{ rotate: expandedIds.includes(person.id) ? 180 : 0 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ChevronDown 
-                              size={14} 
-                            />
-                          </motion.div>
-                        </motion.button>
-                        {expandedIds.includes(person.id) && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="mt-2 text-slate-700 text-xs sm:text-sm md:text-base leading-relaxed [&>ul]:list-disc [&>ul]:ml-6 [&>ol]:list-decimal [&>ol]:ml-6 [&>p]:mb-2 [&>*]:text-inherit"
-                            dangerouslySetInnerHTML={{ __html: person.conferencePresentation }}
-                          />
-                        )}
+                        </h3>
+                        <div
+                          className="text-slate-700 text-xs sm:text-sm md:text-base leading-relaxed [&>ul]:list-disc [&>ul]:ml-6 [&>ol]:list-decimal [&>ol]:ml-6 [&>p]:mb-2 [&>*]:text-inherit"
+                          dangerouslySetInnerHTML={{ __html: person.conferencePresentation }}
+                        />
                       </motion.div>
                     )}
 
@@ -460,7 +526,7 @@ function PeoplePageContent() {
                       transition={{ duration: 0.6 }}
                     >
                       <motion.div 
-                        className="aspect-video sm:aspect-square lg:h-72 overflow-hidden shadow-lg bg-slate-100 cursor-pointer"
+                        className="w-full aspect-video sm:aspect-square lg:h-72 overflow-hidden shadow-lg bg-slate-100 cursor-pointer"
                         whileHover={{ scale: 1.02, boxShadow: "0 20px 30px rgba(0,0,0,0.15)" }}
                         transition={{ duration: 0.3 }}
                       >
@@ -482,6 +548,21 @@ function PeoplePageContent() {
                         )}
                       </motion.div>
                     </motion.div>
+
+                      {/* Lab ID Button */}
+                      {person.labId && (
+                        <motion.div
+                          className="w-full"
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={{ duration: 0.4 }}
+                        >
+                          <div className="w-full flex items-center justify-center bg-blue-600 text-white font-bold text-sm sm:text-base py-2.5 rounded-md shadow-md">
+                            Lab ID: {person.labId}
+                          </div>
+                        </motion.div>
+                      )}
 
                     {/* Social Links and CV Button Container */}
                     <motion.div 

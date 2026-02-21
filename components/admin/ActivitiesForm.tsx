@@ -35,6 +35,15 @@ const modules = {
   ],
 };
 
+const formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike',
+  'color', 'background',
+  'list',
+  'align',
+  'link'
+];
+
 export default function ActivitiesForm({ onClose, onSuccess, initialData }: ActivitiesFormProps) {
   const [title, setTitle] = useState(initialData?.title || "");
   const [category, setCategory] = useState(initialData?.category || "RESEARCH");
@@ -300,6 +309,7 @@ export default function ActivitiesForm({ onClose, onSuccess, initialData }: Acti
                     value={section.content}
                     onChange={(val) => updateSection(idx, 'content', val)}
                     modules={modules}
+                    formats={formats}
                     className="h-[350px]"
                   />
                 </div>

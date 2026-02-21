@@ -4,6 +4,7 @@ import { X, Plus, Trash2, Loader2, Upload, Calendar, MapPin, Tag, ChevronDown, S
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from 'next/dynamic';
+import imageCompression from 'browser-image-compression';
 
 // Dynamic import for ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill-new'), { 
@@ -11,6 +12,12 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
   loading: () => <div className="h-48 w-full bg-slate-50 animate-pulse rounded-xl border border-slate-200" />
 });
 import 'react-quill-new/dist/quill.snow.css';
+
+interface ContentSection {
+  title: string;
+  content: string;
+  images: string[];
+}
 
 const modules = {
   toolbar: [
@@ -28,7 +35,7 @@ const formats = [
   'bold', 'italic', 'underline', 'strike',
   'color', 'background',
   'align',
-  'list', 'bullet',
+  'list',
   'link'
 ];
 
@@ -44,8 +51,10 @@ const CATEGORIES = ["ENVIRONMENT", "SUSTAINABILITY", "WARE MANAGEMENT", "CONSERV
 export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }: ProjectFormProps) {
   const [formData, setFormData] = useState({
     title: "",
+    subtitle: "",
     category: "ENVIRONMENT",
-    projectDate: new Date().toISOString().split('T')[0],
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: "",
     tags: "",
     location: "",
     status: "ongoing",
@@ -57,6 +66,18 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     attachedResearchIds: [] as number[]
   });
 
+  const [contentSections, setContentSections] = useState<ContentSection[]>(() => {
+    if (!initialData?.contentSections || initialData.contentSections.length === 0) {
+      return [{ title: "", content: "", images: [] }];
+    }
+    // Convert old single image format to new multiple images format
+    return initialData.contentSections.map((section: any) => ({
+      title: section.title || "",
+      content: section.content || "",
+      images: Array.isArray(section.images) ? section.images : (section.image ? [section.image] : [])
+    }));
+  });
+  const [isUploadingContent, setIsUploadingContent] = useState<number | null>(null);
   const [availableResearch, setAvailableResearch] = useState<any[]>([]);
   const [researchSearch, setResearchSearch] = useState("");
   const [isResearchLoading, setIsResearchLoading] = useState(false);
@@ -124,8 +145,10 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     if (initialData) {
       setFormData({
         title: initialData.title || "",
+        subtitle: initialData.subtitle || "",
         category: initialData.category || "ENVIRONMENT",
-        projectDate: initialData.projectDate || new Date().toISOString().split('T')[0],
+        startDate: initialData.startDate || new Date().toISOString().split('T')[0],
+        endDate: initialData.endDate || "",
         tags: initialData.tags || "",
         location: initialData.location || "",
         status: initialData.status || "ongoing",
@@ -136,11 +159,22 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         description: initialData.description || "",
         attachedResearchIds: Array.isArray(initialData.attachedResearchIds) ? initialData.attachedResearchIds : []
       });
+      setContentSections(
+        Array.isArray(initialData.contentSections) && initialData.contentSections.length > 0
+          ? initialData.contentSections.map((section: any) => ({
+              title: section.title || "",
+              content: section.content || "",
+              images: Array.isArray(section.images) ? section.images : (section.image ? [section.image] : [])
+            }))
+          : [{ title: "", content: "", images: [] }]
+      );
     } else {
       setFormData({
         title: "",
+        subtitle: "",
         category: "ENVIRONMENT",
-        projectDate: new Date().toISOString().split('T')[0],
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: "",
         tags: "",
         location: "",
         status: "ongoing",
@@ -151,6 +185,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
         description: "",
         attachedResearchIds: []
       });
+      setContentSections([{ title: "", content: "", images: [] }]);
     }
   }, [initialData, isOpen]);
 
@@ -198,6 +233,80 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     setFormData(prev => ({ ...prev, teamMembers: newMembers }));
   };
 
+  const handleContentImageUpload = async (file: File, sectionIndex: number) => {
+    setIsUploadingContent(sectionIndex);
+    
+    try {
+      let fileToUpload = file;
+      
+      if (file.size > 5 * 1024 * 1024) {
+        const options = {
+          maxSizeMB: 5,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true
+        };
+        try {
+          fileToUpload = await imageCompression(file, options);
+        } catch (error) {
+          console.error("Compression error:", error);
+        }
+      }
+
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", fileToUpload);
+
+      const res = await fetch("/api/upload?folder=projects", {
+        method: "POST",
+        body: uploadFormData,
+      });
+      
+      if (!res.ok) {
+        throw new Error("Upload failed");
+      }
+      
+      const data = await res.json();
+      
+      const newSections = [...contentSections];
+      if (newSections[sectionIndex]) {
+        if (!Array.isArray(newSections[sectionIndex].images)) {
+          newSections[sectionIndex].images = [];
+        }
+        newSections[sectionIndex].images.push(data.secure_url);
+        setContentSections(newSections);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Failed to upload image. Please try again.");
+    } finally {
+      setIsUploadingContent(null);
+    }
+  };
+
+  const addContentSection = () => {
+    setContentSections([...contentSections, { title: "", content: "", images: [] }]);
+  };
+
+  const removeContentSection = (index: number) => {
+    if (contentSections.length > 1) {
+      const newSections = contentSections.filter((_, i) => i !== index);
+      setContentSections(newSections);
+    }
+  };
+
+  const removeContentImage = (sectionIndex: number, imageIndex: number) => {
+    const newSections = [...contentSections];
+    if (newSections[sectionIndex] && Array.isArray(newSections[sectionIndex].images)) {
+      newSections[sectionIndex].images.splice(imageIndex, 1);
+      setContentSections(newSections);
+    }
+  };
+
+  const updateSection = (index: number, field: 'title' | 'content', value: string) => {
+    const newSections = [...contentSections];
+    newSections[index][field] = value;
+    setContentSections(newSections);
+  };
+
   const addObjective = () => {
     setFormData(prev => ({
       ...prev,
@@ -225,15 +334,9 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
       const url = '/api/projects';
       const method = initialData?.id ? 'PUT' : 'POST';
       
-      // Validate mandatory fields
-      if (!formData.title || !formData.description || !formData.aboutProject || !formData.imageUrl || !formData.location || !formData.tags || formData.teamMembers.length === 0 || formData.projectObjectives.length === 0) {
-        alert("Please fill in all mandatory fields, including Image, Tags, Location, Team Members, and Objectives.");
-        setIsSubmitting(false);
-        return;
-      }
-
       const submissionData = {
         ...formData,
+        contentSections,
         id: initialData?.id
       };
 
@@ -291,19 +394,28 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-700 ml-1">Project Title *</label>
+                  <label className="text-xs font-bold text-slate-700 ml-1">Project Title</label>
                   <input
                     value={formData.title}
                     onChange={e => setFormData({ ...formData, title: e.target.value })}
-                    required
                     className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
                     placeholder="Enter project title"
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-700 ml-1">Project Subtitle</label>
+                  <input
+                    value={formData.subtitle}
+                    onChange={e => setFormData({ ...formData, subtitle: e.target.value })}
+                    className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
+                    placeholder="Enter project subtitle"
+                  />
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Category *</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Category</label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <div 
@@ -398,13 +510,25 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Project Date *</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Start Date</label>
                     <div className="relative">
                       <input
                         type="date"
-                        value={formData.projectDate}
-                        onChange={e => setFormData({ ...formData, projectDate: e.target.value })}
-                        required
+                        value={formData.startDate}
+                        onChange={e => setFormData({ ...formData, startDate: e.target.value })}
+                        className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-900 appearance-none transition-all"
+                      />
+                      <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={20} />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-700 ml-1">End Date</label>
+                    <div className="relative">
+                      <input
+                        type="date"
+                        value={formData.endDate}
+                        onChange={e => setFormData({ ...formData, endDate: e.target.value })}
                         className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-bold text-slate-900 appearance-none transition-all"
                       />
                       <Calendar className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={20} />
@@ -414,12 +538,11 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Tags (Comma Separated) *</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Tags (Comma Separated)</label>
                     <div className="relative">
                       <input
                         value={formData.tags}
                         onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                        required
                         className="w-full px-5 py-4 pl-12 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
                         placeholder="e.g. LCA, Waste Management"
                       />
@@ -428,12 +551,11 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-700 ml-1">Location *</label>
+                    <label className="text-xs font-bold text-slate-700 ml-1">Location</label>
                     <div className="relative">
                       <input
                         value={formData.location}
                         onChange={e => setFormData({ ...formData, location: e.target.value })}
-                        required
                         className="w-full px-5 py-4 pl-12 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400"
                         placeholder="Project site or city"
                       />
@@ -443,7 +565,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-xs font-bold text-slate-700 ml-1">Project Status *</label>
+                  <label className="text-xs font-bold text-slate-700 ml-1">Project Status</label>
                   <div className="flex gap-8 px-1">
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <div className="relative flex items-center justify-center">
@@ -537,15 +659,51 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                   )}
                 </AnimatePresence>
               </div>
-            </section>
 
-            {/* Team Members */}
-            <section className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Team Members *</h3>
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-slate-700 ml-1">Title Image</label>
+                <div 
+                  onClick={() => {
+                    const input = document.getElementById('project-image-upload');
+                    if (input) (input as HTMLInputElement).click();
+                  }}
+                  className="w-full h-40 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all"
+                >
+                  {formData.imageUrl ? (
+                    <>
+                      <img src={formData.imageUrl} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                         <p className="text-white text-[10px] font-black uppercase tracking-widest p-2">Change Image</p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-slate-300 flex flex-col items-center gap-2">
+                      <Upload size={24} />
+                      <p className="text-[10px] font-black uppercase tracking-widest">Upload Image</p>
+                    </div>
+                  )}
+                  <input 
+                    id="project-image-upload"
+                    type="file" 
+                    className="hidden" 
+                    onChange={handleImageUpload} 
+                    accept="image/*" 
+                  />
+                  {isUploading && (
+                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
+                      <Loader2 className="animate-spin text-blue-600" size={24} />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className="space-y-4">
+              {/* Team Members */}
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Team Members</h3>
+                </div>
+
+                <div className="space-y-4">
                 {formData.teamMembers.map((member, index) => (
                   <div key={index} className="grid grid-cols-1 md:grid-cols-[1fr,1fr,auto] gap-4 items-end">
                     <div className="space-y-2">
@@ -583,76 +741,99 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
                   <Plus size={16} /> Add Member
                 </button>
               </div>
+              </div>
             </section>
 
-            {/* 2. Media Section */}
+            {/* 2. Contents */}
             <section className="space-y-8">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">2</div>
-                <h3 className="text-lg font-black text-slate-900">Media Section *</h3>
+                <h3 className="text-lg font-black text-slate-900">Contents</h3>
               </div>
 
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div 
-                  onClick={() => {
-                    const input = document.getElementById('project-image-upload');
-                    if (input) (input as HTMLInputElement).click();
-                  }}
-                  className="w-full md:w-48 h-32 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all"
-                >
-                  {formData.imageUrl ? (
-                    <>
-                      <img src={formData.imageUrl} className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                         <p className="text-white text-[10px] font-black uppercase tracking-widest p-2">Change Image</p>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-slate-300 flex flex-col items-center gap-2">
-                      <Upload size={24} />
-                      <p className="text-[10px] font-black uppercase tracking-widest">Upload Image</p>
-                    </div>
+              {contentSections.map((section, idx) => (
+                <div key={idx} className="space-y-6 p-6 border border-slate-100 rounded-2xl bg-slate-50/30 relative">
+                  {idx > 0 && (
+                    <button 
+                      type="button"
+                      onClick={() => removeContentSection(idx)}
+                      className="absolute -right-2 -top-2 p-1.5 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition-colors"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   )}
-                  <input 
-                    id="project-image-upload"
-                    type="file" 
-                    className="hidden" 
-                    onChange={handleImageUpload} 
-                    accept="image/*" 
+                  
+                  <input
+                    type="text"
+                    placeholder="Title eg- Introduction"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white focus:outline-none focus:border-blue-500 text-black placeholder:text-slate-400"
+                    value={section.title}
+                    onChange={(e) => updateSection(idx, 'title', e.target.value)}
                   />
-                  {isUploading && (
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-                      <Loader2 className="animate-spin text-blue-600" size={24} />
+
+                  <div className="bg-white rounded-lg border border-slate-200 overflow-hidden min-h-[400px]">
+                    <style>{`
+                      .ql-editor { color: black !important; min-height: 300px; }
+                      .ql-toolbar { background: #f8fafc; border-top: none !important; border-left: none !important; border-right: none !important; }
+                    `}</style>
+                    <ReactQuill
+                      theme="snow"
+                      value={section.content}
+                      onChange={(val) => updateSection(idx, 'content', val)}
+                      modules={modules}
+                      formats={formats}
+                      className="h-[350px]"
+                    />
+                  </div>
+
+                  <div className="space-y-3 pt-4">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-semibold text-slate-700">Paragraph Images (Optional)</label>
+                      <label className="px-4 py-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors text-sm font-bold text-slate-700 bg-white">
+                        {isUploadingContent === idx ? "Uploading..." : "+ Add Image"}
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          disabled={isUploadingContent === idx}
+                          onChange={(e) => e.target.files?.[0] && handleContentImageUpload(e.target.files[0], idx)}
+                        />
+                      </label>
                     </div>
-                  )}
+                    {(section.images || []).length > 0 && (
+                      <div className="grid grid-cols-3 gap-3">
+                        {(section.images || []).map((imgUrl, imgIdx) => (
+                          <div key={imgIdx} className="relative group">
+                            <img src={imgUrl} className="w-full h-20 object-cover rounded-lg border border-slate-200" />
+                            <button
+                              type="button"
+                              onClick={() => removeContentImage(idx, imgIdx)}
+                              className="absolute -top-2 -right-2 p-1 bg-red-100 text-red-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-200"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={addContentSection}
+                className="w-full py-4 border-2 border-dashed border-slate-200 rounded-xl text-slate-500 hover:border-blue-300 hover:text-blue-600 transition-all flex items-center justify-center gap-2 font-bold text-sm bg-white"
+              >
+                <Plus size={18} /> Add Content Section
+              </button>
             </section>
 
-            {/* 3. Detailed Description */}
-            <section className="space-y-8">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
-                <h3 className="text-lg font-black text-slate-900">Detailed Description *</h3>
-              </div>
-
-              <div className="rounded-2xl border border-slate-200 overflow-hidden">
-                <ReactQuill
-                  theme="snow"
-                  value={formData.aboutProject}
-                  onChange={value => setFormData({ ...formData, aboutProject: value })}
-                  modules={modules}
-                  formats={formats}
-                  className="h-64 mb-12"
-                />
-              </div>
-            </section>
-
-            {/* 4. Project Objectives */}
+            {/* 3. Project Objectives */}
             <section className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">4</div>
-                <h3 className="text-lg font-black text-slate-900">Project Objectives *</h3>
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">3</div>
+                <h3 className="text-lg font-black text-slate-900">Project Objectives</h3>
               </div>
 
               <div className="space-y-4">
@@ -687,11 +868,10 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
 
             {/* Short Description (Admin Internal) */}
             <section className="space-y-4">
-              <label className="text-xs font-bold text-slate-700 ml-1">Card Summary *</label>
+              <label className="text-xs font-bold text-slate-700 ml-1">Card Summary</label>
               <textarea
                 value={formData.description}
                 onChange={e => setFormData({ ...formData, description: e.target.value })}
-                required
                 className="w-full px-5 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none font-semibold text-slate-900 transition-all placeholder:text-slate-400 h-24"
                 placeholder="Short summary for project cards..."
               />

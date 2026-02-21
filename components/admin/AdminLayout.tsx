@@ -56,35 +56,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col md:flex-row font-sans relative">
-      {/* Mobile Header */}
-      <div className="md:hidden bg-gradient-to-r from-[#1e293b] to-[#0f172a] text-white p-4 flex items-center justify-between sticky top-0 z-[10] shadow-xl h-16 border-b border-white/10">
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/30">
-            <FlaskConical className="text-white" size={20} />
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-base font-bold tracking-tight text-white">Singh Lab</h2>
-            <p className="text-[10px] text-blue-400 font-semibold uppercase tracking-widest">Admin</p>
-          </div>
-        </div>
-        <button onClick={toggleSidebar} className="p-2.5 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 ml-4">
-          {isSidebarOpen ? <CloseIcon size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
-        </button>
-      </div>
+      {/* Mobile Header - Hidden */}
+      {/* Navbar hidden on mobile devices as requested */}
 
-      {/* Sidebar Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[15] md:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+      {/* Sidebar Overlay - Hidden */}
 
-      {/* Sidebar */}
+      {/* Sidebar - Hidden on Mobile, Visible on Desktop */}
       <aside className={`
         w-72 bg-[#1e293b] text-white flex flex-col h-screen shadow-2xl z-[5] overflow-hidden transition-all duration-300
-        fixed md:sticky md:top-0 md:translate-x-0
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        hidden md:flex md:sticky md:top-0
       `}>
         <div className="p-6 md:p-8 mb-2 md:mb-4 border-b border-white/10">
           <div className="flex items-center gap-3">
@@ -131,9 +111,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-[calc(100vh-4rem)] md:min-h-screen flex flex-col overflow-hidden">
+      <main className="flex-1 min-h-screen flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-gradient-to-r from-white/95 to-slate-50/95 backdrop-blur-xl sticky top-16 md:top-0 z-10 flex items-center justify-between px-4 sm:px-6 md:px-10 border-b border-slate-200 h-16 md:h-20 lg:h-24 shadow-sm">
+        <header className="bg-gradient-to-r from-white/95 to-slate-50/95 backdrop-blur-xl sticky top-0 z-10 flex items-center justify-between px-4 sm:px-6 md:px-10 border-b border-slate-200 h-16 md:h-20 lg:h-24 shadow-sm">
           <div className="min-w-0 flex-1">
             <h1 className="text-base sm:text-lg md:text-2xl font-bold text-slate-900 truncate">{activeItem.name}</h1>
             <p className="text-[10px] sm:text-xs text-slate-500 font-medium hidden sm:block">Welcome back, Administrator</p>

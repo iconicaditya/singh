@@ -7,6 +7,7 @@ import { Globe, Facebook, Twitter, Linkedin, Youtube, Menu, X, ChevronDown } fro
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useScrollToSection } from "@/lib/useScrollToSection";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function Header() {
   const [isPeopleDropdownOpen, setIsPeopleDropdownOpen] = useState(false);
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
+  const { handleSectionScroll } = useScrollToSection();
 
   const navLinks = [
     { name: "HOME", labelKey: "HOME", href: "/" },
@@ -170,11 +172,13 @@ export default function Header() {
             {navLinks.map((link) => (
               <li key={link.name} className="relative group">
                 {link.hasDropdown ? (
-                  <div className="relative">
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setIsPeopleDropdownOpen(true)}
+                    onMouseLeave={() => setIsPeopleDropdownOpen(false)}
+                  >
                     <button 
                       className="inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white flex items-center gap-1.5"
-                      onMouseEnter={() => setIsPeopleDropdownOpen(true)}
-                      onMouseLeave={() => setIsPeopleDropdownOpen(false)}
                     >
                       {t(link.labelKey)}
                       <ChevronDown size={14} className={`transition-transform duration-200 ${isPeopleDropdownOpen ? 'rotate-180' : ''}`} />
@@ -189,8 +193,6 @@ export default function Header() {
                           exit={{ opacity: 0, y: -8 }}
                           transition={{ duration: 0.15 }}
                           className="absolute top-full left-0 mt-0 bg-white rounded-b-lg shadow-xl overflow-hidden min-w-max border-t-2 border-blue-500"
-                          onMouseEnter={() => setIsPeopleDropdownOpen(true)}
-                          onMouseLeave={() => setIsPeopleDropdownOpen(false)}
                         >
                           {peopleCategories.map((category, idx) => (
                             <Link
@@ -205,6 +207,26 @@ export default function Header() {
                       )}
                     </AnimatePresence>
                   </div>
+                ) : link.name === "CONTACT" ? (
+                  <Link
+                    href={link.href || "/"}
+                    onClick={handleSectionScroll(link.href || "/")}
+                    className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                    }`}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
+                ) : link.name === "ABOUT" ? (
+                  <Link
+                    href={link.href || "/"}
+                    onClick={handleSectionScroll(link.href || "/")}
+                    className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                    }`}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
                 ) : (
                   <Link 
                     href={link.href || "/"}
@@ -252,6 +274,10 @@ export default function Header() {
                                 <Link
                                   key={category.name}
                                   href={category.href}
+                                  onClick={() => {
+                                    setIsPeopleDropdownOpen(false);
+                                    setIsMenuOpen(false);
+                                  }}
                                   className="block w-full px-4 py-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150 border-b border-slate-100 last:border-b-0"
                                 >
                                   {category.name}
@@ -261,6 +287,28 @@ export default function Header() {
                           )}
                         </AnimatePresence>
                       </div>
+                    ) : link.name === "CONTACT" ? (
+                      <Link 
+                        href={link.href || "/"}
+                        onClick={(event) => {
+                          setIsMenuOpen(false);
+                          handleSectionScroll(link.href || "/")(event);
+                        }}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                      >
+                        {t(link.labelKey)}
+                      </Link>
+                    ) : link.name === "ABOUT" ? (
+                      <Link
+                        href={link.href || "/"}
+                        onClick={(event) => {
+                          setIsMenuOpen(false);
+                          handleSectionScroll(link.href || "/")(event);
+                        }}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                      >
+                        {t(link.labelKey)}
+                      </Link>
                     ) : (
                       <Link 
                         href={link.href || "/"}

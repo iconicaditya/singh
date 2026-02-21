@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
+import { useScrollToSection } from "@/lib/useScrollToSection";
 import Link from "next/link";
 
 interface HeroSlide {
@@ -15,6 +16,7 @@ interface HeroSlide {
 
 export default function Hero() {
   const { t } = useLanguage();
+  const { handleSectionScroll } = useScrollToSection();
   const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
   const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
@@ -128,11 +130,12 @@ export default function Hero() {
           transition={{ delay: 0.6, duration: 0.5 }}
           className="mt-8 md:mt-10"
         >
-          <Link href="/#about">
-            <button className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg">
-              {t("LEARN_MORE")} <span>→</span>
-            </button>
-          </Link>
+          <button 
+            onClick={handleSectionScroll("/#about")}
+            className="flex items-center gap-2 rounded-full bg-[#2563eb] px-6 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold transition-all hover:bg-[#1d4ed8] hover:scale-105 active:scale-95 shadow-lg"
+          >
+            {t("LEARN_MORE")} <span>→</span>
+          </button>
         </motion.div>
 
         {/* Navigation Dots */}

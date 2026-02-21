@@ -8,15 +8,6 @@ import {
   Trash2, 
   Layout,
   Loader2,
-  BookOpen,
-  Filter,
-  MoreVertical,
-  Calendar,
-  Tag,
-  Users,
-  ChevronRight,
-  List,
-  Grid,
   FilterX
 } from "lucide-react";
 import ProjectForm from "@/components/projects/ProjectForm";
@@ -25,6 +16,9 @@ export default function DashboardProjectsPage() {
   const [projectsList, setProjectsList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "ongoing" | "completed">("all");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<any>(null);
 
@@ -55,9 +49,34 @@ export default function DashboardProjectsPage() {
     }
   };
 
-  const filtered = projectsList.filter(p => 
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = projectsList.filter((project) => {
+    const titleMatches = (project.title || "").toLowerCase().includes(searchTerm.toLowerCase());
+
+    const normalizedStatus = (project.status || "").toLowerCase();
+    const statusMatches = statusFilter === "all" ? true : normalizedStatus === statusFilter;
+
+    const projectDateString = project.startDate || project.createdAt;
+    const projectDate = projectDateString ? new Date(projectDateString) : null;
+    const isProjectDateValid = projectDate ? !Number.isNaN(projectDate.getTime()) : false;
+
+    const fromDate = startDateFilter ? new Date(startDateFilter) : null;
+    const toDate = endDateFilter ? new Date(endDateFilter) : null;
+
+    const fromMatches = fromDate && isProjectDateValid ? projectDate! >= fromDate : true;
+    const toMatches = toDate && isProjectDateValid ? projectDate! <= toDate : true;
+
+    const dateMatches = fromDate || toDate
+      ? isProjectDateValid && fromMatches && toMatches
+      : true;
+
+    return titleMatches && statusMatches && dateMatches;
+  });
+
+  const clearFilters = () => {
+    setStatusFilter("all");
+    setStartDateFilter("");
+    setEndDateFilter("");
+  };
 
   return (
     <div className="p-0 bg-transparent text-slate-900">
@@ -85,6 +104,42 @@ export default function DashboardProjectsPage() {
         />
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6 md:mb-8">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as "all" | "ongoing" | "completed")}
+          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm"
+        >
+          <option value="all">All Status</option>
+          <option value="ongoing">Ongoing</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <input
+          type="date"
+          value={startDateFilter}
+          onChange={(e) => setStartDateFilter(e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm"
+          placeholder="Start date"
+        />
+
+        <input
+          type="date"
+          value={endDateFilter}
+          onChange={(e) => setEndDateFilter(e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 outline-none text-sm"
+          placeholder="End date"
+        />
+
+        <button
+          type="button"
+          onClick={clearFilters}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-sm font-semibold text-slate-600"
+        >
+          <FilterX size={16} /> Clear Filters
+        </button>
+      </div>
+
       {loading ? (
         <div className="flex justify-center py-24 md:py-32"><Loader2 className="animate-spin text-blue-600" size={40} /></div>
       ) : filtered.length === 0 ? (
@@ -96,20 +151,43 @@ export default function DashboardProjectsPage() {
           <p className="text-sm md:text-base text-slate-500 font-medium px-4">Get started by creating your first research project.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {filtered.map((proj) => (
-            <div key={proj.id} className="group bg-white p-5 md:p-6 rounded-2xl md:rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all flex flex-col">
-              <div className="aspect-video bg-slate-50 rounded-xl md:rounded-[2rem] mb-4 md:mb-6 overflow-hidden border border-slate-100 relative">
-                {proj.imageUrl ? <img src={proj.imageUrl} className="w-full h-full object-cover" /> : <div className="flex items-center justify-center h-full text-slate-200"><Layout size={40} /></div>}
-                <div className="absolute top-3 left-3 md:top-4 md:left-4">
-                  <span className="px-3 py-1 md:px-4 md:py-1.5 bg-white/95 rounded-full text-[8px] md:text-[10px] font-bold uppercase text-blue-600 border border-white/50 shadow-sm">{proj.status}</span>
-                </div>
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+          {filtered.map((proj, index) => (
+            <div
+              key={proj.id}
+              className={`flex flex-col md:flex-row md:items-center gap-4 p-4 md:p-5 ${index !== filtered.length - 1 ? "border-b border-slate-100" : ""}`}
+            >
+              <div className="w-full md:w-28 h-20 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 shrink-0">
+                {proj.imageUrl ? (
+                  <img src={proj.imageUrl} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-slate-200"><Layout size={24} /></div>
+                )}
               </div>
-              <h3 className="text-lg md:text-xl font-bold mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">{proj.title}</h3>
-              <p className="text-slate-500 text-xs md:text-sm mb-4 md:mb-6 line-clamp-3 font-medium">{proj.description}</p>
-              <div className="flex justify-end gap-2 pt-4 md:pt-6 border-t border-slate-50 mt-auto">
-                <button onClick={() => { setEditingProject(proj); setIsFormOpen(true); }} className="p-2 md:p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg md:rounded-xl transition-all"><Edit2 size={16} className="md:w-4.5 md:h-4.5" /></button>
-                <button onClick={() => handleDelete(proj.id)} className="p-2 md:p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg md:rounded-xl transition-all"><Trash2 size={16} className="md:w-4.5 md:h-4.5" /></button>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-base md:text-lg font-bold text-slate-900 truncate">{proj.title}</h3>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-blue-50 text-blue-600 border border-blue-100 shrink-0">
+                    {proj.status || "ongoing"}
+                  </span>
+                </div>
+                <p className="text-sm text-slate-500 line-clamp-2">{proj.description || "No summary"}</p>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 md:ml-4">
+                <button
+                  onClick={() => { setEditingProject(proj); setIsFormOpen(true); }}
+                  className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                >
+                  <Edit2 size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(proj.id)}
+                  className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             </div>
           ))}
