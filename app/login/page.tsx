@@ -3,22 +3,41 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Lock, User, ArrowRight } from "lucide-react";
+import { Lock, User, ArrowRight, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple hardcoded check for demonstration
-    if (username === "admin" && password === "admin123") {
-      localStorage.setItem("isAdmin", "true");
-      router.push("/login/dashboard");
-    } else {
-      setError("Invalid credentials");
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("isAdmin", "true");
+        localStorage.setItem("adminToken", data.token);
+        router.push("/login/dashboard");
+      } else {
+        setError(data.error || "Login failed");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,9 +82,19 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-blue-600/20 flex items-center justify-center gap-2"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-blue-600/20 flex items-center justify-center gap-2"
           >
-            LOGIN <ArrowRight size={18} />
+            {loading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                LOGGING IN...
+              </>
+            ) : (
+              <>
+                LOGIN <ArrowRight size={18} />
+              </>
+            )}
           </button>
         </form>
       </motion.div>
