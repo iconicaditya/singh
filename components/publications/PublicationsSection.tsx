@@ -5,6 +5,7 @@ import { BookOpen, ArrowRight, FileText, User, Calendar, ExternalLink } from "lu
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { getDocumentProxyUrl } from "@/lib/documentProxyUtils";
 
 export default function PublicationsSection() {
   const [publications, setPublications] = useState<any[]>([]);
@@ -129,7 +130,7 @@ export default function PublicationsSection() {
                 <div className="pt-6 border-t border-slate-50 flex items-center gap-3">
                   {pub.pdfUrl && (
                     <a 
-                      href={pub.pdfUrl} 
+                      href={getDocumentProxyUrl(pub.pdfUrl)}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs hover:bg-blue-100 transition-all flex items-center gap-2"

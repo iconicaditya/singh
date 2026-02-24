@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Users, Linkedin, Twitter, Facebook, Instagram, ExternalLink, ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { getDocumentProxyUrl } from "@/lib/documentProxyUtils";
 import 'react-quill-new/dist/quill.snow.css';
 
 interface Person {
@@ -82,6 +83,37 @@ function PeoplePageContent() {
     };
     fetchPeople();
   }, []);
+
+  // Handle CV action based on source (upload vs link)
+  const handleCVAction = (cvUrl: string | undefined, cvLinks: any[] | undefined) => {
+    try {
+      if (cvUrl && cvUrl.trim()) {
+        // If uploaded from form, download it via backend API
+        console.log('📥 Downloading CV');
+        const encodedUrl = encodeURIComponent(cvUrl);
+        const downloadUrl = `/api/cv-download?url=${encodedUrl}`;
+        
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'CV.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        console.log('✅ Download started');
+      } else if (cvLinks && cvLinks.length > 0 && cvLinks[0].link) {
+        // If it's a link, open in new tab
+        console.log('🔗 Opening CV link:', cvLinks[0].link);
+        window.open(cvLinks[0].link, '_blank');
+      } else {
+        alert('No CV available');
+      }
+    } catch (error) {
+      console.error('❌ Error handling CV:', error);
+      alert('Error opening CV');
+    }
+  };
+
+
 
   // Filter people by role
   const availableClassYears = Array.from(
@@ -648,17 +680,15 @@ function PeoplePageContent() {
 
                       {/* View CV Button */}
                       {(person.cvUrl || (person.cvLinks && person.cvLinks.length > 0)) && (
-                        <motion.a
-                          href={person.cvUrl || person.cvLinks?.[0]?.link || '#'}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <motion.button
+                          onClick={() => handleCVAction(person.cvUrl, person.cvLinks)}
                           initial={{ opacity: 0, y: 10 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true, amount: 0.3 }}
                           transition={{ duration: 0.4, delay: 0.3 }}
                           whileHover={{ scale: 1.02, backgroundColor: "rgb(239, 246, 255)" }}
                           whileTap={{ scale: 0.98 }}
-                          className="w-full px-4 sm:px-4 md:px-5 py-2.5 sm:py-3 border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-2 group text-xs sm:text-sm md:text-base"
+                          className="w-full px-4 sm:px-4 md:px-5 py-2.5 sm:py-3 border-2 border-blue-600 text-blue-600 font-bold hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-2 group text-xs sm:text-sm md:text-base cursor-pointer"
                         >
                           <span>View CV</span>
                           <motion.div
@@ -667,7 +697,7 @@ function PeoplePageContent() {
                           >
                             <ExternalLink size={14} />
                           </motion.div>
-                        </motion.a>
+                        </motion.button>
                       )}
                     </motion.div>
                   </div>

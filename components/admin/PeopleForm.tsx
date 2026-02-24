@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Upload, X, User, Loader2, Plus, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import dynamic from 'next/dynamic';
+import imageCompression from "browser-image-compression";
 import 'react-quill-new/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -29,6 +30,107 @@ const modules = {
 
 
 const formats = ['bold', 'italic', 'underline', 'strike', 'color', 'background', 'list', 'align', 'link'];
+
+const MAX_PROFILE_IMAGE_SIZE_BYTES = 500 * 1024;
+
+const loadImageElement = (file: File) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Failed to load image"));
+    };
+
+    img.src = url;
+  });
+};
+
+const canvasCompressToJpeg = async (file: File, maxWidthOrHeight: number, quality: number): Promise<File> => {
+  const img = await loadImageElement(file);
+  const longestSide = Math.max(img.width, img.height);
+  const ratio = longestSide > maxWidthOrHeight ? maxWidthOrHeight / longestSide : 1;
+  const width = Math.max(1, Math.round(img.width * ratio));
+  const height = Math.max(1, Math.round(img.height * ratio));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Canvas context unavailable");
+  }
+
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (result) => {
+        if (result) resolve(result);
+        else reject(new Error("Failed to generate compressed image"));
+      },
+      "image/jpeg",
+      quality
+    );
+  });
+
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+};
+
+const getPeopleProfileUploadFile = async (file: File): Promise<File> => {
+  if (file.size <= MAX_PROFILE_IMAGE_SIZE_BYTES) {
+    return file;
+  }
+
+  const attempts = [
+    { maxWidthOrHeight: 2048, quality: 0.88 },
+    { maxWidthOrHeight: 1600, quality: 0.8 },
+    { maxWidthOrHeight: 1280, quality: 0.72 },
+    { maxWidthOrHeight: 1024, quality: 0.64 },
+    { maxWidthOrHeight: 768, quality: 0.56 },
+    { maxWidthOrHeight: 640, quality: 0.48 },
+    { maxWidthOrHeight: 512, quality: 0.4 },
+    { maxWidthOrHeight: 384, quality: 0.32 },
+    { maxWidthOrHeight: 256, quality: 0.24 },
+    { maxWidthOrHeight: 160, quality: 0.16 },
+  ];
+
+  let current = file;
+
+  for (const attempt of attempts) {
+    try {
+      current = await imageCompression(current, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: attempt.maxWidthOrHeight,
+        useWebWorker: true,
+        initialQuality: attempt.quality,
+        maxIteration: 20,
+        fileType: "image/jpeg",
+      });
+    } catch {
+      current = await canvasCompressToJpeg(current, attempt.maxWidthOrHeight, attempt.quality);
+    }
+
+    if (current.size <= MAX_PROFILE_IMAGE_SIZE_BYTES) {
+      return current;
+    }
+  }
+
+  const finalAttempt = await canvasCompressToJpeg(current, 120, 0.1);
+  if (finalAttempt.size <= MAX_PROFILE_IMAGE_SIZE_BYTES) {
+    return finalAttempt;
+  }
+
+  throw new Error("Unable to compress image to 500KB");
+};
 
 interface PeopleFormProps {
   isOpen: boolean;
@@ -146,10 +248,12 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const fileToUpload = await getPeopleProfileUploadFile(file);
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -174,16 +278,38 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
+      console.log('📤 Uploading CV:', file.name, 'Size:', file.size);
+      const res = await fetch('/api/upload?folder=people', {
         method: 'POST',
         body: formData,
       });
+
+      console.log('📊 Response status:', res.status);
+      
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ Upload failed with status', res.status, ':', errorText);
+        alert(`Upload failed: ${res.status} ${res.statusText}`);
+        setIsUploading(false);
+        return;
+      }
+
       const data = await res.json();
+      console.log('📦 Response data:', data);
+      
       if (data.secure_url) {
         setCvUrl(data.secure_url);
+        console.log('✅ CV uploaded successfully:', data.secure_url);
+      } else if (data.error) {
+        console.error('❌ API error:', data.error);
+        alert('Upload failed: ' + data.error);
+      } else {
+        console.error('❌ Unexpected response:', data);
+        alert('Upload failed: Empty response');
       }
     } catch (err) {
-      console.error("Upload error:", err);
+      console.error("❌ Upload error:", err);
+      alert('Failed to upload CV. Please try again.');
     } finally {
       setIsUploading(false);
     }
@@ -304,10 +430,10 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
             {/* Profile Photo Upload */}
             <div className="flex flex-col items-center gap-4 mb-8 p-8 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl border border-slate-200">
               <div 
-                onClick={() => fileInputRef.current?.click()}
-                className="flex flex-col items-center justify-center w-40 h-40 rounded-full border-3 border-dashed border-slate-300 bg-white cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all group shadow-sm"
+                onClick={() => !isUploading && fileInputRef.current?.click()}
+                className={`flex flex-col items-center justify-center w-40 h-40 rounded-full border-3 border-dashed ${isUploading ? 'border-amber-400 bg-amber-50' : 'border-slate-300 bg-white hover:border-blue-500 hover:bg-blue-50/50'} cursor-pointer transition-all group shadow-sm ${isUploading ? 'opacity-75' : ''}`}
               >
-                {profileImage ? (
+                {profileImage && !isUploading ? (
                   <div className="relative w-full h-full rounded-full overflow-hidden">
                     <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -317,7 +443,12 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
                 ) : (
                   <>
                     {isUploading ? (
-                      <Loader2 className="animate-spin text-blue-600" size={40} />
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="animate-spin">
+                          <Loader2 className="text-amber-600" size={36} />
+                        </div>
+                        <p className="text-[9px] font-black text-amber-700 uppercase tracking-widest mt-2">Processing...</p>
+                      </div>
                     ) : (
                       <>
                         <User size={40} className="text-slate-400" />
@@ -332,6 +463,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
                   onChange={handleFileUpload} 
                   className="hidden" 
                   accept="image/*"
+                  disabled={isUploading}
                 />
               </div>
               <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center">Profile Photo is Mandatory</p>
@@ -547,6 +679,7 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
                     </label>
                     <button
                       type="button"
+                      disabled={isUploading}
                       onClick={() => {
                         const cvInput = document.createElement('input');
                         cvInput.type = 'file';
@@ -554,17 +687,31 @@ export default function PeopleForm({ isOpen, onClose, onSuccess, initialData }: 
                         cvInput.onchange = (e: any) => handleCVUpload(e);
                         cvInput.click();
                       }}
-                      className="w-full px-6 py-4 bg-gradient-to-br from-blue-50 to-blue-50/50 border-2 border-dashed border-blue-300 hover:border-blue-500 hover:bg-blue-100/30 rounded-2xl transition-all flex flex-col items-center justify-center gap-3 group cursor-pointer"
+                      className="w-full px-6 py-4 bg-gradient-to-br from-blue-50 to-blue-50/50 border-2 border-dashed border-blue-300 hover:border-blue-500 hover:bg-blue-100/30 rounded-2xl transition-all flex flex-col items-center justify-center gap-3 group cursor-pointer disabled:opacity-50 disabled:border-amber-300 disabled:bg-amber-50/30"
                     >
-                      <div className="p-3 bg-blue-500/10 group-hover:bg-blue-500/20 rounded-full transition-all">
-                        <Upload size={24} className="text-blue-600" />
-                      </div>
-                      <div className="text-center">
-                        <p className="font-black text-sm text-slate-900">Drop or Click to Upload</p>
-                        <p className="text-xs text-slate-500 mt-1">PDF, DOC, DOCX</p>
-                      </div>
+                      {isUploading ? (
+                        <>
+                          <div className="animate-spin">
+                            <div className="w-6 h-6 border-3 border-blue-300 border-t-blue-600 rounded-full"></div>
+                          </div>
+                          <div className="text-center">
+                            <p className="font-black text-sm text-amber-900">Processing Upload...</p>
+                            <p className="text-xs text-amber-700 mt-1">Please wait while your CV is being uploaded</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="p-3 bg-blue-500/10 group-hover:bg-blue-500/20 rounded-full transition-all">
+                            <Upload size={24} className="text-blue-600" />
+                          </div>
+                          <div className="text-center">
+                            <p className="font-black text-sm text-slate-900">Drop or Click to Upload</p>
+                            <p className="text-xs text-slate-500 mt-1">PDF, DOC, DOCX</p>
+                          </div>
+                        </>
+                      )}
                     </button>
-                    {cvUrl && (
+                    {cvUrl && !isUploading && (
                       <div className="p-4 bg-gradient-to-r from-green-50 to-green-50/50 border-2 border-green-300 rounded-xl flex items-center justify-between group hover:border-green-400 transition-all">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">

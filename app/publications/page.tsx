@@ -258,14 +258,27 @@ export default function PublicationsPage() {
                         {/* Bottom: View Link */}
                         <div className="mt-auto pt-4 flex items-center gap-3">
                           {pub.pdfUrl || pub.doiUrl ? (
-                            <a
-                              href={pub.pdfUrl ? (pub.pdfUrl.includes('cloudinary.com') && !pub.pdfUrl.includes('/raw/upload/') ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : pub.pdfUrl) : pub.doiUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <button
+                              onClick={() => {
+                                if (pub.pdfUrl) {
+                                  const isCloudinary = pub.pdfUrl.includes('cloudinary.com');
+                                  if (isCloudinary) {
+                                    const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(pub.pdfUrl)}&embedded=true`;
+                                    window.open(viewerUrl, '_blank');
+                                    console.log('📄 Opening Cloudinary PDF in viewer:', pub.pdfUrl);
+                                  } else {
+                                    window.open(pub.pdfUrl, '_blank');
+                                    console.log('🔗 Opening external PDF link:', pub.pdfUrl);
+                                  }
+                                } else if (pub.doiUrl) {
+                                  window.open(pub.doiUrl, '_blank');
+                                  console.log('🔗 Opening DOI:', pub.doiUrl);
+                                }
+                              }}
                               className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white font-bold text-xs tracking-widest uppercase rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
                             >
                               View <ExternalLink size={14} />
-                            </a>
+                            </button>
                           ) : null}
                         </div>
                       </div>

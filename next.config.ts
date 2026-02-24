@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: 'res.cloudinary.com',
+      },
+      {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
       },
@@ -17,7 +21,23 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'media.istockphoto.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**.fbcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lookaside.fbsbx.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'scontent.xx.fbcdn.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.xx.fbcdn.net',
       },
     ],
   },

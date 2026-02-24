@@ -14,37 +14,49 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(bytes);
 
     const uploadResponse = await new Promise((resolve, reject) => {
-      // Determine resource type based on file extension
-      const isPdf = file.name.toLowerCase().endsWith('.pdf');
+      const fileName = file.name.toLowerCase();
+      const isPdf = fileName.endsWith('.pdf');
+      const isWord = fileName.endsWith('.docx') || fileName.endsWith('.doc');
+      
       const { searchParams } = new URL(req.url);
       const folder = searchParams.get('folder') || 'research';
       
-      console.log('Uploading to Cloudinary:', { folder, isPdf, fileName: file.name });
+      console.log('📤 Uploading to Cloudinary:', { folder, isPdf, isWord, fileName: file.name });
 
       cloudinary.uploader.upload_stream(
         { 
-          resource_type: isPdf ? 'raw' : 'auto', 
+          resource_type: 'auto',
           folder: folder,
           access_mode: 'public',
-          // Explicitly set content_type for browser viewing
-          content_type: isPdf ? 'application/pdf' : undefined
+          content_type: isPdf 
+            ? 'application/pdf' 
+            : isWord 
+              ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+              : undefined
         },
         (error, result) => {
           if (error) {
-            console.error('Cloudinary Stream Error:', error);
+            console.error('❌ Cloudinary Error:', error);
             reject(error);
-          }
-          else {
-            console.log('Cloudinary Upload Success:', result?.secure_url);
+          } else {
+            console.log('✅ Cloudinary Success. URL:', result?.secure_url);
             resolve(result);
           }
         }
       ).end(buffer);
     });
 
+    if (!uploadResponse || !uploadResponse.secure_url) {
+      console.error('❌ No secure_url in upload response:', uploadResponse);
+      return NextResponse.json({ error: 'Upload succeeded but no URL returned' }, { status: 500 });
+    }
+
     return NextResponse.json(uploadResponse);
   } catch (error) {
-    console.error('Upload Error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    console.error('❌ Upload Error:', error);
+    return NextResponse.json({ 
+      error: 'Upload failed', 
+      details: error instanceof Error ? error.message : String(error)
+    }, { status: 500 });
   }
 }

@@ -14,10 +14,12 @@ import {
   Upload,
   Calendar,
   Tag as TagIcon,
-  Search
+  Search,
+  Loader2
 } from "lucide-react";
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 import 'react-quill-new/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
@@ -53,6 +55,9 @@ const QUILL_FORMATS = [
 
 export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initialData }: ResearchFormProps) {
   const [loading, setLoading] = useState(false);
+  const [uploadingTitle, setUploadingTitle] = useState(false);
+  const [uploadingAuthor, setUploadingAuthor] = useState<number | null>(null);
+  const [uploadingSection, setUploadingSection] = useState<number | null>(null);
   const [newCategory, setNewCategory] = useState("");
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>(["RESEARCH", "PUBLICATION", "PROJECT"]);
@@ -65,6 +70,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   
   const [formData, setFormData] = useState({
     title: "",
+    subtitle: "",
     category: "",
     year: new Date().getFullYear().toString(),
     tags: "",
@@ -78,6 +84,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
     if (initialData) {
       setFormData({
         ...initialData,
+        subtitle: initialData.subtitle || "",
         authors: initialData.authors || [{ name: "", image: "" }],
         contentSections: initialData.contentSections || [{ title: "", content: "", image: "" }],
         relatedPublications: initialData.relatedPublications || []
@@ -85,6 +92,7 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
     } else {
       setFormData({
         title: "",
+        subtitle: "",
         category: "RESEARCH",
         year: new Date().getFullYear().toString(),
         tags: "",
@@ -128,10 +136,16 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
   if (!isOpen) return null;
 
   const handleImageUpload = async (file: File, type: 'title' | 'section' | 'author', index?: number) => {
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
-    
+    // Set loading state
+    if (type === 'title') setUploadingTitle(true);
+    else if (type === 'author') setUploadingAuthor(index ?? null);
+    else if (type === 'section') setUploadingSection(index ?? null);
+
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: uploadFormData
@@ -152,6 +166,11 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
       }
     } catch (err) {
       console.error("Upload failed:", err);
+    } finally {
+      // Clear loading state
+      if (type === 'title') setUploadingTitle(false);
+      else if (type === 'author') setUploadingAuthor(null);
+      else if (type === 'section') setUploadingSection(null);
     }
   };
 
@@ -235,15 +254,26 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700">Title</label>
-                <input
-                  required
-                  value={formData.title}
-                  onChange={e => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
-                  placeholder="Research Title"
-                />
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Title</label>
+                  <input
+                    required
+                    value={formData.title}
+                    onChange={e => setFormData({ ...formData, title: e.target.value })}
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    placeholder="Research Title"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-slate-700">Subtitle</label>
+                  <input
+                    value={formData.subtitle || ""}
+                    onChange={e => setFormData({ ...formData, subtitle: e.target.value })}
+                    className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    placeholder="Research Subtitle"
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -418,7 +448,12 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
               <label className="text-sm font-semibold text-slate-700">Title Image</label>
               <div className="flex items-start gap-6">
                 <div className="w-32 h-32 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center gap-2 overflow-hidden relative">
-                  {formData.titleImage ? (
+                  {uploadingTitle ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <Loader2 size={24} className="text-blue-500 animate-spin" />
+                      <span className="text-xs text-slate-500 font-medium">Uploading...</span>
+                    </div>
+                  ) : formData.titleImage ? (
                     <img src={formData.titleImage} className="w-full h-full object-cover" />
                   ) : (
                     <>
@@ -428,13 +463,14 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                 </div>
                 <div className="space-y-2">
                   <div className="flex gap-2">
-                    <label className="cursor-pointer px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-slate-50 transition-colors">
-                      <Upload size={16} />
-                      Choose Image
+                    <label className="cursor-pointer px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" style={{ pointerEvents: uploadingTitle ? 'none' : 'auto', opacity: uploadingTitle ? 0.5 : 1 }}>
+                      {uploadingTitle ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                      {uploadingTitle ? "Uploading..." : "Choose Image"}
                       <input 
                         type="file" 
                         className="hidden" 
                         accept="image/*"
+                        disabled={uploadingTitle}
                         onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'title')}
                       />
                     </label>
@@ -471,12 +507,13 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                         className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all pr-12"
                       />
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-                        <label className="cursor-pointer p-1.5 text-slate-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-blue-50">
-                          <ImageIcon size={16} />
+                        <label className="cursor-pointer p-1.5 text-slate-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed" style={{ pointerEvents: uploadingAuthor === idx ? 'none' : 'auto', opacity: uploadingAuthor === idx ? 0.5 : 1 }}>
+                          {uploadingAuthor === idx ? <Loader2 size={16} className="animate-spin" /> : <ImageIcon size={16} />}
                           <input 
                             type="file" 
                             className="hidden" 
                             accept="image/*"
+                            disabled={uploadingAuthor === idx}
                             onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'author', idx)}
                           />
                         </label>
@@ -559,20 +596,26 @@ export default function ResearchGalleryForm({ isOpen, onClose, onSuccess, initia
                   <div className="space-y-3">
                     <label className="text-sm font-semibold text-slate-700">Paragraph Image (Optional)</label>
                     <div className="flex items-start gap-6">
-                      <div className="w-32 h-32 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden">
-                        {section.image ? (
+                      <div className="w-32 h-32 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden relative">
+                        {uploadingSection === idx ? (
+                          <div className="flex flex-col items-center gap-2">
+                            <Loader2 size={24} className="text-blue-500 animate-spin" />
+                            <span className="text-xs text-slate-500 font-medium">Uploading...</span>
+                          </div>
+                        ) : section.image ? (
                           <img src={section.image} className="w-full h-full object-cover" />
                         ) : (
                           <Upload size={24} className="text-slate-400" />
                         )}
                       </div>
-                      <label className="cursor-pointer px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-sm">
-                        <Upload size={18} />
-                        Upload Image
+                      <label className="cursor-pointer px-6 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed" style={{ pointerEvents: uploadingSection === idx ? 'none' : 'auto', opacity: uploadingSection === idx ? 0.5 : 1 }}>
+                        {uploadingSection === idx ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                        {uploadingSection === idx ? "Uploading..." : "Upload Image"}
                         <input 
                           type="file" 
                           className="hidden" 
                           accept="image/*"
+                          disabled={uploadingSection === idx}
                           onChange={e => e.target.files?.[0] && handleImageUpload(e.target.files[0], 'section', idx)}
                         />
                       </label>

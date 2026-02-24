@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Upload, X, Image as ImageIcon, Loader2, Plus } from "lucide-react";
 import { useState, useRef } from "react";
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 interface GalleryFormProps {
   isOpen: boolean;
@@ -10,8 +11,19 @@ interface GalleryFormProps {
 }
 
 export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }: GalleryFormProps) {
+  const defaultCategories = ["RESEARCH", "PROJECT", "PLASTIC WASTE", "RECYCLING", "LANDFILL MGMT", "ORGANIC WASTE"];
   const [isUploading, setIsUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
+  const [category, setCategory] = useState(initialData?.category || "");
+  const [newCategory, setNewCategory] = useState("");
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [categories, setCategories] = useState(() => {
+    const list = [...defaultCategories];
+    if (initialData?.category && !list.includes(initialData.category)) {
+      list.unshift(initialData.category);
+    }
+    return list;
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
@@ -21,10 +33,12 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -42,11 +56,16 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!imageUrl) {
+      alert("Please upload an image before saving.");
+      return;
+    }
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
     
     // Ensure we use the uploaded image URL
     data.imageUrl = imageUrl;
+    data.category = category;
 
     try {
       const url = initialData ? `/api/gallery?id=${initialData.id}` : "/api/gallery";
@@ -65,6 +84,17 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleAddCategory = () => {
+    const value = newCategory.trim();
+    if (!value) return;
+    if (!categories.includes(value)) {
+      setCategories((prev) => [value, ...prev]);
+    }
+    setCategory(value);
+    setNewCategory("");
+    setShowNewCategory(false);
   };
 
   return (
@@ -89,7 +119,7 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
         <form onSubmit={handleSubmit} className="p-4 md:p-8 space-y-4 md:space-y-6 overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="space-y-2">
-              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Title</label>
+              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Title</label>
               <input
                 name="title"
                 defaultValue={initialData?.title}
@@ -99,22 +129,54 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
               />
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Category</label>
-              <select
-                name="category"
-                defaultValue={initialData?.category || "PLASTIC WASTE"}
-                className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium appearance-none"
-              >
-                <option value="PLASTIC WASTE">PLASTIC WASTE</option>
-                <option value="RECYCLING">RECYCLING</option>
-                <option value="LANDFILL MGMT">LANDFILL MGMT</option>
-                <option value="ORGANIC WASTE">ORGANIC WASTE</option>
-              </select>
+              <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Category</label>
+              <div className="flex gap-2">
+                <select
+                  name="category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium appearance-none"
+                  required
+                >
+                  <option value="" disabled>
+                    Select category
+                  </option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowNewCategory((prev) => !prev)}
+                  className="shrink-0 px-4 md:px-5 py-3 md:py-4 rounded-xl md:rounded-2xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors"
+                  title="Add category"
+                >
+                  <Plus size={18} />
+                </button>
+              </div>
+              {showNewCategory && (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    placeholder="New category"
+                    className="flex-1 px-4 py-2 md:py-3 bg-slate-50 border border-slate-100 rounded-lg md:rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium text-[11px] md:text-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCategory}
+                    className="px-4 py-2 md:py-3 rounded-lg md:rounded-xl bg-blue-600 text-white text-[11px] md:text-xs font-bold hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Image Upload</label>
+            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Image Upload</label>
             <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-start">
               <div 
                 onClick={() => fileInputRef.current?.click()}
@@ -146,7 +208,7 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
               </div>
               
               <div className="w-full sm:w-48 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Direct URL (Optional)</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-900">Direct URL (Optional)</label>
                 <input
                   name="imageUrl"
                   value={imageUrl}
@@ -159,7 +221,7 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-400">Description</label>
+            <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Description</label>
             <textarea
               name="description"
               defaultValue={initialData?.description}

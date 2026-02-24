@@ -4,6 +4,7 @@ import { X, Plus, Trash2, Bold, Italic, Underline, Link as LinkIcon, Image as Im
 import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from 'next/dynamic';
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 import 'react-quill-new/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -79,9 +80,11 @@ export default function ResearchForm({ onClose, initialData }: ResearchFormProps
     const file = e.target.files?.[0];
     if (!file) return;
     setIsUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
       const data = await res.json();
       if (data.secure_url) {

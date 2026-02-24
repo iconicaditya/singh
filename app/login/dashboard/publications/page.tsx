@@ -110,14 +110,19 @@ export default function AdminPublicationsPage() {
                   render: (value, item) => (
                     <div className="flex items-center gap-2">
                       {value && (
-                        <a 
-                          href={value} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => {
+                            const isCloudinary = value.includes('cloudinary.com');
+                            if (isCloudinary) {
+                              window.open(`https://docs.google.com/gview?url=${encodeURIComponent(value)}&embedded=true`, '_blank');
+                            } else {
+                              window.open(value, '_blank');
+                            }
+                          }}
                           className="flex items-center gap-1 text-blue-600 font-bold hover:text-blue-700 text-[10px] md:text-xs whitespace-nowrap"
                         >
                           <Download size={14} /> PDF
-                        </a>
+                        </button>
                       )}
                       {item.doiUrl && (
                         <a 

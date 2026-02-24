@@ -39,6 +39,109 @@ const formats = [
   'link'
 ];
 
+const MAX_IMAGE_SIZE_BYTES = 500 * 1024;
+
+const loadImageElement = (file: File) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(img);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Failed to load image"));
+    };
+
+    img.src = url;
+  });
+};
+
+const canvasCompressToJpeg = async (file: File, maxWidthOrHeight: number, quality: number): Promise<File> => {
+  const img = await loadImageElement(file);
+  const longestSide = Math.max(img.width, img.height);
+  const ratio = longestSide > maxWidthOrHeight ? maxWidthOrHeight / longestSide : 1;
+  const width = Math.max(1, Math.round(img.width * ratio));
+  const height = Math.max(1, Math.round(img.height * ratio));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("Canvas context unavailable");
+  }
+
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const blob = await new Promise<Blob>((resolve, reject) => {
+    canvas.toBlob(
+      (result) => {
+        if (result) resolve(result);
+        else reject(new Error("Failed to generate compressed image"));
+      },
+      "image/jpeg",
+      quality
+    );
+  });
+
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+  return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+};
+
+const getProjectUploadFile = async (file: File): Promise<File> => {
+  if (file.size <= MAX_IMAGE_SIZE_BYTES) {
+    return file;
+  }
+
+  const attempts = [
+    { maxWidthOrHeight: 2560, quality: 0.9 },
+    { maxWidthOrHeight: 2048, quality: 0.85 },
+    { maxWidthOrHeight: 1920, quality: 0.8 },
+    { maxWidthOrHeight: 1600, quality: 0.75 },
+    { maxWidthOrHeight: 1280, quality: 0.68 },
+    { maxWidthOrHeight: 1024, quality: 0.6 },
+    { maxWidthOrHeight: 768, quality: 0.5 },
+    { maxWidthOrHeight: 640, quality: 0.4 },
+    { maxWidthOrHeight: 480, quality: 0.32 },
+    { maxWidthOrHeight: 360, quality: 0.24 },
+    { maxWidthOrHeight: 256, quality: 0.18 },
+    { maxWidthOrHeight: 160, quality: 0.12 },
+  ];
+
+  let current = file;
+
+  for (const attempt of attempts) {
+    try {
+      current = await imageCompression(current, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: attempt.maxWidthOrHeight,
+        useWebWorker: true,
+        initialQuality: attempt.quality,
+        maxIteration: 20,
+        fileType: "image/jpeg",
+      });
+    } catch {
+      current = await canvasCompressToJpeg(current, attempt.maxWidthOrHeight, attempt.quality);
+    }
+
+    if (current.size <= MAX_IMAGE_SIZE_BYTES) {
+      return current;
+    }
+  }
+
+  const finalAttempt = await canvasCompressToJpeg(current, 120, 0.1);
+  if (finalAttempt.size <= MAX_IMAGE_SIZE_BYTES) {
+    return finalAttempt;
+  }
+
+  throw new Error("Unable to compress image to 500KB");
+};
+
 interface ProjectFormProps {
   isOpen: boolean;
   onClose: () => void;
@@ -194,10 +297,12 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     if (!file) return;
 
     setIsUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
 
     try {
+      const fileToUpload = await getProjectUploadFile(file);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload?folder=projects', {
         method: 'POST',
         body: uploadFormData,
@@ -237,20 +342,7 @@ export default function ProjectForm({ isOpen, onClose, onSuccess, initialData }:
     setIsUploadingContent(sectionIndex);
     
     try {
-      let fileToUpload = file;
-      
-      if (file.size > 5 * 1024 * 1024) {
-        const options = {
-          maxSizeMB: 5,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true
-        };
-        try {
-          fileToUpload = await imageCompression(file, options);
-        } catch (error) {
-          console.error("Compression error:", error);
-        }
-      }
+      const fileToUpload = await getProjectUploadFile(file);
 
       const uploadFormData = new FormData();
       uploadFormData.append("file", fileToUpload);

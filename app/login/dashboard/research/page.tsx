@@ -82,57 +82,55 @@ export default function AdminResearchPage() {
           <Loader2 className="animate-spin text-blue-600" size={40} />
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {filtered.map((res) => (
-            <div 
+        <div className="border border-slate-200 rounded-2xl overflow-hidden">
+          {filtered.map((res, index) => (
+            <div
               key={res.id}
-              className="group bg-white p-4 md:p-6 rounded-3xl md:rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col"
+              className={`group flex items-center gap-4 md:gap-6 px-4 md:px-6 py-4 bg-white hover:bg-slate-50 transition-colors ${
+                index !== filtered.length - 1 ? "border-b border-slate-100" : ""
+              }`}
             >
-              <div className="aspect-video bg-slate-50 rounded-2xl md:rounded-3xl mb-4 md:mb-6 overflow-hidden border border-slate-100 relative">
+              <div className="w-20 h-14 md:w-28 md:h-16 shrink-0 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 flex items-center justify-center text-slate-300">
                 {res.titleImage ? (
-                  <img src={res.titleImage} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={res.titleImage} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-slate-200">
-                    <BookOpen size={48} />
+                  <BookOpen size={20} />
+                )}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm md:text-base font-black text-slate-900 truncate uppercase">{res.title}</h3>
+                <p className="text-[11px] md:text-xs text-slate-500 font-bold uppercase tracking-wider mt-1">
+                  {res.category} • {res.year}
+                </p>
+              </div>
+
+              <div className="hidden md:flex -space-x-2">
+                {res.authors?.slice(0, 3).map((a: any, i: number) => (
+                  <div key={i} className="w-7 h-7 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
+                    {a.image && <img src={a.image} className="w-full h-full object-cover" />}
+                  </div>
+                ))}
+                {res.authors?.length > 3 && (
+                  <div className="w-7 h-7 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold">
+                    +{res.authors.length - 3}
                   </div>
                 )}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-[8px] font-black uppercase tracking-widest text-blue-600 border border-white/50">
-                    {res.category}
-                  </span>
-                </div>
               </div>
-              
-              <h3 className="text-xl font-black text-slate-900 mb-2 truncate uppercase">{res.title}</h3>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-6">{res.year}</p>
 
-              <div className="mt-auto flex items-center justify-between pt-6 border-t border-slate-50">
-                <div className="flex -space-x-2">
-                   {res.authors?.slice(0, 3).map((a: any, i: number) => (
-                     <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
-                       {a.image && <img src={a.image} className="w-full h-full object-cover" />}
-                     </div>
-                   ))}
-                   {res.authors?.length > 3 && (
-                     <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-[10px] text-white font-bold">
-                       +{res.authors.length - 3}
-                     </div>
-                   )}
-                </div>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => { setEditingResearch(res); setIsFormOpen(true); }}
-                    className="p-2 text-slate-400 hover:text-blue-600 transition-all"
-                  >
-                    <Edit2 size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(res.id)}
-                    className="p-2 text-slate-400 hover:text-red-600 transition-all"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => { setEditingResearch(res); setIsFormOpen(true); }}
+                  className="p-2 text-slate-400 hover:text-blue-600 transition-all"
+                >
+                  <Edit2 size={16} />
+                </button>
+                <button
+                  onClick={() => handleDelete(res.id)}
+                  className="p-2 text-slate-400 hover:text-red-600 transition-all"
+                >
+                  <Trash2 size={16} />
+                </button>
               </div>
             </div>
           ))}

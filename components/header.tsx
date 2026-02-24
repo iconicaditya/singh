@@ -20,12 +20,12 @@ export default function Header() {
   const navLinks = [
     { name: "HOME", labelKey: "HOME", href: "/" },
     { name: "ABOUT", labelKey: "ABOUT", href: "/#about" },
-    { name: "OUR_TEAM", labelKey: "OUR_TEAM", href: "/our-team" },
     { name: "PEOPLE", labelKey: "PEOPLE", href: null, hasDropdown: true },
     { name: "PROJECTS", labelKey: "PROJECTS", href: "/projects" },
     { name: "PUBLICATIONS", labelKey: "PUBLICATIONS", href: "/publications" },
-    { name: "GALLERY", labelKey: "GALLERY", href: "/all-gallery" },
     { name: "RESEARCH", labelKey: "RESEARCH", href: "/research" },
+    { name: "COLLABORATORS", labelKey: "COLLABORATORS", href: "/#collaborators" },
+    { name: "GALLERY", labelKey: "GALLERY", href: "/all-gallery" },
     { name: "CONTACT", labelKey: "CONTACT", href: "/#contact" },
   ];
 
@@ -34,6 +34,20 @@ export default function Header() {
     { name: "Graduate Students", href: "/people?role=graduate" },
     { name: "Undergraduate Students", href: "/people?role=undergraduate" },
   ];
+
+  const getNavLabel = (name: string, labelKey: string) => {
+    const label = t(labelKey);
+    return name === "COLLABORATORS" ? label.toUpperCase() : label;
+  };
+
+  const handleHomeClick = (event?: React.MouseEvent<HTMLElement>) => {
+    if (pathname === "/") {
+      if (event) {
+        event.preventDefault();
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const ScrollingContent = () => (
     <div className="flex items-center gap-6 md:gap-12 whitespace-nowrap">
@@ -207,17 +221,27 @@ export default function Header() {
                       )}
                     </AnimatePresence>
                   </div>
-                ) : link.name === "CONTACT" ? (
+                ) : link.name === "HOME" ? (
                   <Link
                     href={link.href || "/"}
-                    onClick={handleSectionScroll(link.href || "/")}
+                    onClick={handleHomeClick}
                     className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
                       pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
                     }`}
                   >
-                    {t(link.labelKey)}
+                    {getNavLabel(link.name, link.labelKey)}
                   </Link>
-                ) : link.name === "ABOUT" ? (
+                ) : link.name === "COLLABORATORS" ? (
+                  <Link
+                    href={pathname === "/" ? (link.href || "/") : "/collaborators"}
+                    onClick={pathname === "/" ? handleSectionScroll(link.href || "/") : undefined}
+                    className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
+                      pathname === "/collaborators" ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                    }`}
+                  >
+                    {getNavLabel(link.name, link.labelKey)}
+                  </Link>
+                ) : link.name === "CONTACT" || link.name === "ABOUT" ? (
                   <Link
                     href={link.href || "/"}
                     onClick={handleSectionScroll(link.href || "/")}
@@ -225,7 +249,7 @@ export default function Header() {
                       pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
                     }`}
                   >
-                    {t(link.labelKey)}
+                    {getNavLabel(link.name, link.labelKey)}
                   </Link>
                 ) : (
                   <Link 
@@ -234,7 +258,7 @@ export default function Header() {
                       pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
                     }`}
                   >
-                    {t(link.labelKey)}
+                    {getNavLabel(link.name, link.labelKey)}
                   </Link>
                 )}
               </li>
@@ -287,7 +311,31 @@ export default function Header() {
                           )}
                         </AnimatePresence>
                       </div>
-                    ) : link.name === "CONTACT" ? (
+                    ) : link.name === "HOME" ? (
+                      <Link
+                        href={link.href || "/"}
+                        onClick={(event) => {
+                          setIsMenuOpen(false);
+                          handleHomeClick(event);
+                        }}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                      >
+                        {getNavLabel(link.name, link.labelKey)}
+                      </Link>
+                    ) : link.name === "COLLABORATORS" ? (
+                      <Link
+                        href={pathname === "/" ? (link.href || "/") : "/collaborators"}
+                        onClick={(event) => {
+                          setIsMenuOpen(false);
+                          if (pathname === "/") {
+                            handleSectionScroll(link.href || "/")(event);
+                          }
+                        }}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                      >
+                        {getNavLabel(link.name, link.labelKey)}
+                      </Link>
+                    ) : link.name === "CONTACT" || link.name === "ABOUT" ? (
                       <Link 
                         href={link.href || "/"}
                         onClick={(event) => {
@@ -296,18 +344,7 @@ export default function Header() {
                         }}
                         className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
                       >
-                        {t(link.labelKey)}
-                      </Link>
-                    ) : link.name === "ABOUT" ? (
-                      <Link
-                        href={link.href || "/"}
-                        onClick={(event) => {
-                          setIsMenuOpen(false);
-                          handleSectionScroll(link.href || "/")(event);
-                        }}
-                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
-                      >
-                        {t(link.labelKey)}
+                        {getNavLabel(link.name, link.labelKey)}
                       </Link>
                     ) : (
                       <Link 
@@ -315,7 +352,7 @@ export default function Header() {
                         onClick={() => setIsMenuOpen(false)}
                         className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
                       >
-                        {t(link.labelKey)}
+                        {getNavLabel(link.name, link.labelKey)}
                       </Link>
                     )}
                   </li>

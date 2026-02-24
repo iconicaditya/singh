@@ -6,7 +6,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Maximize2, ChevronLeft, ChevronRight } from "lucide-react";
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 18;
+
+const isDirectImageUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname.toLowerCase();
+    return /\.(avif|bmp|gif|ico|jpe?g|png|svg|webp)$/.test(pathname);
+  } catch {
+    return false;
+  }
+};
 
 export default function AllGalleryPage() {
   const [galleryItems, setGalleryItems] = useState<any[]>([]);
@@ -91,15 +101,25 @@ export default function AllGalleryPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="group relative bg-gray-50 rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
+                    className="group relative bg-gray-50 overflow-hidden aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
                     onClick={() => setSelectedImage(item)}
                   >
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    {isDirectImageUrl(item.imageUrl) ? (
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                       <span className="text-[10px] font-black tracking-widest text-blue-400 mb-2">{item.category}</span>
                       <h3 className="text-white font-bold text-lg leading-tight mb-2">{item.title}</h3>
@@ -117,7 +137,7 @@ export default function AllGalleryPage() {
                 <button
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="p-3 rounded-xl border border-gray-200 disabled:opacity-30 hover:bg-gray-50 transition-colors"
+                  className="p-3 rounded-xl border border-slate-400 text-slate-700 disabled:opacity-30 hover:bg-gray-50 transition-colors"
                 >
                   <ChevronLeft size={20} />
                 </button>
@@ -126,10 +146,10 @@ export default function AllGalleryPage() {
                     <button
                       key={i}
                       onClick={() => setCurrentPage(i + 1)}
-                      className={`w-12 h-12 rounded-xl font-bold transition-all ${
+                      className={`w-12 h-12 rounded-xl font-bold border border-slate-300 transition-all ${
                         currentPage === i + 1
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
-                          : "bg-gray-50 text-gray-500 hover:bg-gray-100"
+                          ? "bg-blue-600 text-white shadow-lg shadow-blue-200 border-blue-600"
+                          : "bg-gray-50 text-gray-600 hover:bg-gray-100"
                       }`}
                     >
                       {i + 1}
@@ -139,7 +159,7 @@ export default function AllGalleryPage() {
                 <button
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="p-3 rounded-xl border border-gray-200 disabled:opacity-30 hover:bg-gray-50 transition-colors"
+                  className="p-3 rounded-xl border border-slate-400 text-slate-700 disabled:opacity-30 hover:bg-gray-50 transition-colors"
                 >
                   <ChevronRight size={20} />
                 </button>
@@ -162,15 +182,25 @@ export default function AllGalleryPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-5xl w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl"
+              className="relative max-w-5xl w-full aspect-video bg-black overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={selectedImage.imageUrl}
-                alt={selectedImage.title}
-                fill
-                className="object-contain"
-              />
+              {isDirectImageUrl(selectedImage.imageUrl) ? (
+                <Image
+                  src={selectedImage.imageUrl}
+                  alt={selectedImage.title}
+                  fill
+                  className="object-contain"
+                />
+              ) : (
+                <img
+                  src={selectedImage.imageUrl}
+                  alt={selectedImage.title}
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              )}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-8 md:p-12">
                 <span className="text-blue-500 font-black tracking-widest text-xs mb-3 block">{selectedImage.category}</span>
                 <h2 className="text-2xl md:text-3xl font-black text-white mb-2">{selectedImage.title}</h2>

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
 import { useState, useRef } from "react";
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 interface HeroFormProps {
   isOpen: boolean;
@@ -21,10 +22,12 @@ export default function HeroForm({ isOpen, onClose, onSuccess, initialData }: He
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,

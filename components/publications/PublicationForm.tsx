@@ -2,7 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, FileText, Loader2, ChevronDown, Image as ImageIcon, Plus, Trash2 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 interface PublicationFormProps {
   isOpen: boolean;
@@ -37,15 +38,35 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
   const coverImageInputRef = useRef<HTMLInputElement>(null);
   const pdfInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync form state when initialData changes
+  useEffect(() => {
+    if (initialData && isOpen) {
+      setCoverImageUrl(initialData.coverImageUrl || "");
+      setPdfUrl(initialData.pdfUrl || "");
+      setPdfIsUrl(!!initialData.pdfUrl?.startsWith("http"));
+      setSelectedType(initialData.publicationType || "");
+      setSelectedYear(initialData.year || new Date().getFullYear().toString());
+    } else {
+      // Reset form when creating new
+      setCoverImageUrl("");
+      setPdfUrl("");
+      setPdfIsUrl(false);
+      setSelectedType("");
+      setSelectedYear(new Date().getFullYear().toString());
+    }
+  }, [initialData, isOpen]);
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
 
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 300 * 1024);
+      const formData = new FormData();
+      formData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
@@ -70,7 +91,7 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('/api/upload?folder=publications', {
         method: 'POST',
         body: formData,
       });
@@ -106,6 +127,10 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!coverImageUrl) {
+      alert("Please upload a cover image before saving.");
+      return;
+    }
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
@@ -314,12 +339,14 @@ export default function PublicationForm({ isOpen, onClose, onSuccess, initialDat
               <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Cover Image</label>
               <div 
                 onClick={() => coverImageInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-200 rounded-xl md:rounded-2xl p-4 flex items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all group h-32"
+                className="border-2 border-dashed border-slate-200 rounded-xl md:rounded-2xl p-4 flex items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all group h-32 overflow-hidden"
               >
                 {coverImageUrl ? (
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100 w-full overflow-hidden">
-                    <ImageIcon className="text-blue-600 shrink-0" size={20} />
-                    <p className="text-xs font-bold text-blue-900 truncate">Image Uploaded</p>
+                  <div className="relative w-full h-full">
+                    <img src={coverImageUrl} alt="Cover preview" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <ImageIcon className="text-white" size={20} />
+                    </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2">

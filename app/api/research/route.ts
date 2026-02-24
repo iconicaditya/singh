@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       // Ensure data is clean and valid
       const insertData: any = {
         title: String(body.title || "").trim(),
+        subtitle: String(body.subtitle || "").trim(),
         category: String(body.category || "").trim(),
         year: String(body.year || "").slice(0, 4),
         tags: String(body.tags || "").trim(),
@@ -81,6 +82,7 @@ export async function PUT(req: Request) {
 
     const updateData: any = {
       title: body.title,
+      subtitle: body.subtitle || "",
       category: body.category,
       year: body.year?.toString().slice(0, 4),
       tags: body.tags || "",

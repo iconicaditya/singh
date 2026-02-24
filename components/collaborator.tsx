@@ -104,7 +104,7 @@ export default function Collaborator() {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-white">
+      <section id="collaborators" className="scroll-mt-32 py-16 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1e293b] mb-2">
@@ -130,7 +130,7 @@ export default function Collaborator() {
   const windowColumns = columns.slice(startCol, startCol + columnsPerView + incomingCols);
 
   return (
-    <section className="py-16 bg-white overflow-hidden">
+    <section id="collaborators" className="scroll-mt-32 py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Header */}
         <motion.div

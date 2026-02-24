@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Image as ImageIcon, Plus, Trash2 } from "lucide-react";
 import FormModal from "@/components/admin/FormModal";
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 export interface ResearchThemeFormData {
   id?: number;
@@ -45,9 +46,11 @@ export default function ResearchThemeForm({
     const file = event.target.files?.[0];
     if (!file) return;
     setIsUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append("file", file);
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 300 * 1024);
+      const uploadFormData = new FormData();
+      uploadFormData.append("file", fileToUpload);
+
       const response = await fetch("/api/upload", {
         method: "POST",
         body: uploadFormData

@@ -20,6 +20,7 @@ import Image from "next/image";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateResearchCategory } from "@/lib/dbTranslations";
 import { getTranslatedResearch } from "@/lib/dynamicTranslations";
+import { getDocumentProxyUrl } from "@/lib/documentProxyUtils";
 
 export default function ResearchDetail() {
   const params = useParams();
@@ -293,7 +294,7 @@ export default function ResearchDetail() {
                             <div className="mt-auto pt-4 flex items-center gap-3">
                               {pub.pdfUrl || pub.doiUrl ? (
                                 <a
-                                  href={pub.pdfUrl ? (pub.pdfUrl.includes('cloudinary.com') && !pub.pdfUrl.includes('/raw/upload/') ? pub.pdfUrl.replace('/image/upload/', '/raw/upload/') : pub.pdfUrl) : pub.doiUrl}
+                                  href={pub.pdfUrl ? getDocumentProxyUrl(pub.pdfUrl) : pub.doiUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white font-bold text-xs tracking-widest uppercase rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"

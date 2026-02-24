@@ -8,20 +8,40 @@ import { ArrowRight, Maximize2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 interface GalleryItem {
-  id: number;
+  id: number | string;
   title: string;
   category: string;
   imageUrl: string;
   description: string | null;
 }
 
-const CATEGORIES_KEYS = ["ALL_CATEGORIES", "PLASTIC_WASTE", "RECYCLING", "LANDFILL_MGMT", "ORGANIC_WASTE"];
+const normalizeImageUrl = (url: string) => {
+  if (!url) return "";
+  const trimmed = url.trim();
+  if (trimmed.startsWith("http://res.cloudinary.com")) {
+    return trimmed.replace("http://", "https://");
+  }
+  if (trimmed.startsWith("http://") && /fbcdn\.net|fbsbx\.com/.test(trimmed)) {
+    return trimmed.replace("http://", "https://");
+  }
+  return trimmed;
+};
+
+const isDirectImageUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    const pathname = parsed.pathname.toLowerCase();
+    return /\.(avif|bmp|gif|ico|jpe?g|png|svg|webp)$/.test(pathname);
+  } catch {
+    return false;
+  }
+};
 
 export default function Gallery() {
   const { t } = useLanguage();
   const [galleryData, setGalleryData] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState("ALL_CATEGORIES");
+  const [activeCategory, setActiveCategory] = useState("ALL");
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
   useEffect(() => {
@@ -36,7 +56,7 @@ export default function Gallery() {
           id: item.id,
           title: item.title,
           category: item.category,
-          imageUrl: item.image_url || item.imageUrl,
+          imageUrl: normalizeImageUrl(item.image_url || item.imageUrl),
           description: item.description
         }));
         
@@ -51,20 +71,21 @@ export default function Gallery() {
     fetchGallery();
   }, []);
 
-  const filteredItems = galleryData.filter(
-    (item) => {
-      if (activeCategory === "ALL_CATEGORIES") return true;
-      
-      // We want to match against the raw category key or the translated name
-      const categoryToMatch = item.category;
-      const activeCategoryKey = activeCategory;
-      const activeCategoryTranslated = t(activeCategory);
-      
-      return categoryToMatch === activeCategoryKey || 
-             categoryToMatch === activeCategoryTranslated ||
-             categoryToMatch.toUpperCase() === activeCategoryKey.toUpperCase();
-    }
-  ).slice(0, 12);
+  const categories = [
+    "ALL",
+    ...Array.from(new Set(galleryData.map((item) => item.category).filter(Boolean))),
+  ];
+
+  const getCategoryLabel = (category: string) => {
+    if (category === "ALL") return t("ALL_CATEGORIES");
+    const key = category.replace(/\s+/g, "_").toUpperCase();
+    const translated = t(key);
+    return translated !== key ? translated : category;
+  };
+
+  const filteredItems = galleryData
+    .filter((item) => (activeCategory === "ALL" ? true : item.category === activeCategory))
+    .slice(0, 12);
 
   if (loading) {
     return (
@@ -106,21 +127,21 @@ export default function Gallery() {
 
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {CATEGORIES_KEYS.map((catKey, idx) => (
+          {categories.map((category, idx) => (
             <motion.button
-              key={catKey}
+              key={category}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              onClick={() => setActiveCategory(catKey)}
+              onClick={() => setActiveCategory(category)}
               className={`px-6 py-2 rounded-full text-xs font-black tracking-widest transition-all duration-300 ${
-                activeCategory === catKey
+                activeCategory === category
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
                   : "bg-gray-50 text-gray-400 hover:bg-gray-100"
               }`}
             >
-              {t(catKey)}
+              {getCategoryLabel(category)}
             </motion.button>
           ))}
         </div>
@@ -137,17 +158,27 @@ export default function Gallery() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
                 whileHover={{ y: -5 }}
-                className="group relative bg-gray-50 rounded-2xl overflow-hidden aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
+                className="group relative bg-gray-50 overflow-hidden aspect-[4/3] cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
                 onClick={() => setSelectedImage(item)}
               >
                 {item.imageUrl && (
-                  <Image
-                    src={item.imageUrl}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    unoptimized={item.imageUrl.startsWith('http')}
-                  />
+                  isDirectImageUrl(item.imageUrl) ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      unoptimized={item.imageUrl.startsWith('http')}
+                    />
+                  ) : (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                    />
+                  )
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                   <span className="text-[10px] font-black tracking-widest text-blue-400 mb-2">{item.category}</span>
@@ -193,17 +224,27 @@ export default function Gallery() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-5xl w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl"
+              className="relative max-w-5xl w-full aspect-video bg-black overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               {selectedImage.imageUrl && (
-                <Image
-                  src={selectedImage.imageUrl}
-                  alt={selectedImage.title}
-                  fill
-                  className="object-contain"
-                  unoptimized={selectedImage.imageUrl.startsWith('http')}
-                />
+                isDirectImageUrl(selectedImage.imageUrl) ? (
+                  <Image
+                    src={selectedImage.imageUrl}
+                    alt={selectedImage.title}
+                    fill
+                    className="object-contain"
+                    unoptimized={selectedImage.imageUrl.startsWith('http')}
+                  />
+                ) : (
+                  <img
+                    src={selectedImage.imageUrl}
+                    alt={selectedImage.title}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                  />
+                )
               )}
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 to-transparent p-8 md:p-12">
                 <span className="text-blue-500 font-black tracking-widest text-xs mb-3 block">{selectedImage.category}</span>

@@ -3,6 +3,7 @@
 import { X, Upload, Loader2, Save, Trash2, Linkedin, Twitter, Globe, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 interface TeamFormProps {
   isOpen: boolean;
@@ -53,10 +54,12 @@ export default function TeamForm({ isOpen, onClose, onSuccess, initialData }: Te
     if (!file) return;
 
     setIsUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
 
     try {
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', fileToUpload);
+
       const res = await fetch('/api/upload?folder=team', {
         method: 'POST',
         body: uploadFormData,

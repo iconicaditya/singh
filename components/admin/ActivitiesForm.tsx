@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { X, Upload, Plus, Trash2, ChevronDown } from "lucide-react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
-import imageCompression from 'browser-image-compression';
+import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -61,24 +61,7 @@ export default function ActivitiesForm({ onClose, onSuccess, initialData }: Acti
     if (type === 'title') setIsUploadingTitle(true);
     
     try {
-      let fileToUpload = file;
-      
-      // If image is larger than 1MB or simply to ensure it's optimized, compress it
-      // The user asked for "atleast 5MB if more than n then convert into 5mb or less"
-      // Usually Cloudinary free tier likes smaller files. I'll target < 5MB as requested.
-      if (file.size > 5 * 1024 * 1024) {
-        const options = {
-          maxSizeMB: 5,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true
-        };
-        try {
-          fileToUpload = await imageCompression(file, options);
-        } catch (error) {
-          console.error("Compression error:", error);
-          // Fallback to original file if compression fails
-        }
-      }
+      const fileToUpload = await compressImageToMaxBytes(file, 500 * 1024);
 
       const formData = new FormData();
       formData.append("file", fileToUpload);
