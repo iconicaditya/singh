@@ -1,8 +1,13 @@
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { LanguageProvider } from "@/lib/LanguageContext";
+
+export const metadata: Metadata = {
+  title: "SinghLab",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +36,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <Header />
-          <main className="min-h-screen">
+          <main className="min-h-screen pt-[112px] md:pt-[132px]">
             {children}
           </main>
           <Footer />

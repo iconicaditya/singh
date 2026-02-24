@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Footer() {
@@ -20,13 +20,14 @@ export default function Footer() {
         </div>
 
         {/* Column 2: Quick Links */}
-        <div className="space-y-6">
+          <div className="space-y-6">
           <h3 className="text-white font-bold tracking-wider uppercase text-sm border-b-2 border-[#2563eb] inline-block pb-1">{t("QUICK_LINKS")}</h3>
           <ul className="space-y-3 text-sm">
             <li><Link href="/" className="hover:text-white transition-colors">{t("HOME")}</Link></li>
             <li><Link href="/#about" className="hover:text-white transition-colors">{t("ABOUT")}</Link></li>
+            <li><Link href="/projects" className="hover:text-white transition-colors">{t("PROJECTS")}</Link></li>
             <li><Link href="/publications" className="hover:text-white transition-colors">{t("PUBLICATIONS")}</Link></li>
-            <li><Link href="/our-team" className="hover:text-white transition-colors">{t("OUR_TEAM")}</Link></li>
+            <li><Link href="/research" className="hover:text-white transition-colors">{t("RESEARCH")}</Link></li>
             <li><Link href="/#contact" className="hover:text-white transition-colors">{t("CONTACT")}</Link></li>
           </ul>
         </div>
@@ -65,11 +66,18 @@ export default function Footer() {
             ></iframe>
           </div>
           <div className="flex items-center gap-3">
-            {[Facebook, Twitter, Linkedin, Youtube].map((Icon, i) => (
-              <Link key={i} href="#" className="bg-[#1e293b] p-2 rounded hover:bg-[#334155] hover:text-white transition-all">
-                <Icon size={16} />
-              </Link>
-            ))}
+            <Link href="#" className="bg-[#1e293b] p-2 rounded hover:bg-[#334155] hover:text-white transition-all">
+              <Facebook size={16} />
+            </Link>
+            <Link href="#" className="bg-[#1e293b] p-2 rounded hover:bg-[#334155] hover:text-white transition-all">
+              <Twitter size={16} />
+            </Link>
+            <Link href="#" className="bg-[#1e293b] p-2 rounded hover:bg-[#334155] hover:text-white transition-all">
+              <Linkedin size={16} />
+            </Link>
+            <Link href="#" className="bg-[#1e293b] p-2 rounded hover:bg-[#334155] hover:text-white transition-all">
+              <Instagram size={16} />
+            </Link>
           </div>
         </div>
       </div>

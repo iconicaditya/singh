@@ -96,7 +96,7 @@ export default function ResearchDetail() {
       </div>
 
       {/* 1. Hero Header */}
-      <section className="relative w-full h-[60vh] flex items-end overflow-hidden print-section">
+      <section className="relative w-full h-[45vh] sm:h-[55vh] md:h-[60vh] flex items-end overflow-hidden print-section">
         {item.titleImage ? (
           <div className="absolute inset-0 w-full h-full">
             <img 
@@ -131,10 +131,10 @@ export default function ResearchDetail() {
               {item.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-6 mt-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-6">
               {item.authors?.map((author: any, idx: number) => (
                 <div key={idx} className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full border-2 border-white/30 overflow-hidden shadow-lg">
+                  <div className="w-12 h-12 rounded-full border-2 border-white/30 overflow-hidden shadow-lg flex-shrink-0">
                     {author.image ? (
                       <img src={author.image} alt={author.name} className="w-full h-full object-cover" />
                     ) : (
@@ -164,7 +164,7 @@ export default function ResearchDetail() {
         <div className="flex flex-col lg:flex-row gap-12">
           
           {/* Main Column */}
-          <main className="w-full lg:w-[65%] print-full-width space-y-16 overflow-hidden">
+          <main className="w-full lg:w-[65%] print-full-width space-y-16 overflow-hidden px-4 sm:px-0">
             {item.contentSections?.map((section: any, idx: number) => (
               <section key={idx} id={`section-${idx}`} className="scroll-mt-32 print-section px-4">
                 <div className="flex items-center gap-4 mb-8">
@@ -176,7 +176,7 @@ export default function ResearchDetail() {
 
                 {section.image && (
                   <div className="mb-8 rounded-2xl overflow-hidden shadow-xl border border-slate-200 w-full">
-                    <img src={section.image} alt={section.title} className="w-full h-auto object-cover" loading="lazy" />
+                    <img src={section.image} alt={section.title} className="w-full h-auto max-h-[60vh] object-cover" loading="lazy" />
                   </div>
                 )}
 
@@ -197,7 +197,7 @@ export default function ResearchDetail() {
                   <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Related Publications</h2>
                 </div>
                 
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
                   <AnimatePresence mode="popLayout">
                     {item.relatedPublications.map((pub: any, idx: number) => (
                       <motion.div
@@ -314,8 +314,8 @@ export default function ResearchDetail() {
           </main>
 
           {/* Sidebar - Hidden on Print */}
-          <aside className="lg:w-[35%] no-print">
-            <div className="sticky top-24 space-y-8">
+          <aside className="lg:w-[35%] no-print order-last lg:order-none">
+            <div className="space-y-8 lg:sticky lg:top-24">
               {/* Metadata */}
               <motion.div 
                 initial={{ opacity: 0, x: 20 }}

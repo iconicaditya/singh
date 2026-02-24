@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ExternalLink, FileText, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, FileText, Loader2, Share2 } from "lucide-react";
 
 type TeamMember = {
   name?: string;
@@ -240,6 +240,57 @@ export default function ProjectDetailPage() {
               <p className="mt-4 text-base sm:text-lg lg:text-xl text-white/90 break-words">{project.subtitle}</p>
             )}
           </div>
+          {/* Action buttons for completed projects */}
+          {String(project.status).toLowerCase() === "completed" && (
+            <div className="absolute right-4 bottom-4 flex gap-4 items-center">
+              <Link
+                href={project.attachedResearchIds && project.attachedResearchIds.length > 0 ? `/research/${project.attachedResearchIds[0]}` : `/research`}
+                aria-disabled={!(project.attachedResearchIds && project.attachedResearchIds.length > 0)}
+                className={`inline-flex items-center gap-3 px-8 py-3 sm:px-10 sm:py-4 bg-blue-600 text-white font-bold text-lg rounded-none border border-blue-600 hover:bg-blue-700 hover:shadow-lg transition-colors ${!(project.attachedResearchIds && project.attachedResearchIds.length > 0) ? 'opacity-60 pointer-events-none' : ''}`}
+              >
+                <span>View Research</span>
+                <ExternalLink size={16} />
+              </Link>
+
+              <button
+                onClick={async () => {
+                  try {
+                    const shareData = { title: project.title, text: project.subtitle || project.title, url: window.location.href };
+                    if ((navigator as any).share) {
+                      await (navigator as any).share(shareData);
+                    } else {
+                      await navigator.clipboard.writeText(window.location.href);
+                      // small non-blocking notice
+                      const prev = document.getElementById('project-share-toast');
+                      if (prev) prev.remove();
+                      const toast = document.createElement('div');
+                      toast.id = 'project-share-toast';
+                      toast.textContent = 'Link copied to clipboard';
+                      Object.assign(toast.style, {
+                        position: 'fixed',
+                        bottom: '20px',
+                        right: '20px',
+                        background: 'rgba(0,0,0,0.7)',
+                        color: 'white',
+                        padding: '8px 12px',
+                        borderRadius: '6px',
+                        zIndex: '9999'
+                      });
+                      document.body.appendChild(toast);
+                      setTimeout(() => { toast.remove(); }, 2500);
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert("Unable to share");
+                  }
+                }}
+                className="inline-flex items-center gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-transparent text-white/90 font-semibold rounded-none border border-white/60 hover:bg-white/5 transition-colors"
+              >
+                <span>Share</span>
+                <Share2 size={16} />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

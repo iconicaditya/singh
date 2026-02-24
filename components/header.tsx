@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, Facebook, Twitter, Linkedin, Youtube, Menu, X, ChevronDown } from "lucide-react";
+import { Globe, Facebook, Twitter, Linkedin, Instagram, Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -64,25 +64,19 @@ export default function Header() {
   );
 
   return (
-    <header className="w-full sticky top-0 z-50 shadow-lg">
+    <header className="w-full fixed top-0 left-0 z-[9999]">
       {/* Top Part: Black Background */}
       <div className="bg-black text-white py-2 sm:py-3 px-3 sm:px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
         {/* Left: Logo and Name */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3 sm:gap-4">
-          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-            <div className="bg-white p-1 sm:p-1.5 rounded shrink-0">
-              <Image
-                src="/vercel.svg"
-                alt="Logo"
-                width={32}
-                height={32}
-                className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
-              />
-            </div>
-            <div className="leading-tight min-w-0">
-              <h1 className="text-base sm:text-xl md:text-2xl font-black tracking-tighter text-[#3b82f6] leading-none">SINGHLAB</h1>
-              <p className="text-[7px] sm:text-[8px] md:text-[10px] font-bold tracking-[0.15em] text-[#ef4444] uppercase mt-0.5">Environment</p>
-            </div>
+          <div className="flex items-center min-w-0">
+            <Image
+              src="/logo2.png"
+              alt="Logo"
+              width={160}
+              height={48}
+              className="h-9 sm:h-11 md:h-14 w-auto max-w-[180px] object-contain shrink-0"
+            />
           </div>
           
           {/* Mobile Menu Toggle */}
@@ -173,7 +167,7 @@ export default function Header() {
             <Linkedin size={18} strokeWidth={1.5} />
           </Link>
           <Link href="#" className="hover:text-white transition-colors">
-            <Youtube size={18} strokeWidth={1.5} />
+            <Instagram size={18} strokeWidth={1.5} />
           </Link>
         </div>
       </div>
@@ -226,7 +220,7 @@ export default function Header() {
                     href={link.href || "/"}
                     onClick={handleHomeClick}
                     className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
-                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8]" : ""
                     }`}
                   >
                     {getNavLabel(link.name, link.labelKey)}
@@ -236,7 +230,7 @@ export default function Header() {
                     href={pathname === "/" ? (link.href || "/") : "/collaborators"}
                     onClick={pathname === "/" ? handleSectionScroll(link.href || "/") : undefined}
                     className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
-                      pathname === "/collaborators" ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                      pathname === "/collaborators" ? "bg-[#1d4ed8]" : ""
                     }`}
                   >
                     {getNavLabel(link.name, link.labelKey)}
@@ -246,7 +240,7 @@ export default function Header() {
                     href={link.href || "/"}
                     onClick={handleSectionScroll(link.href || "/")}
                     className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
-                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8]" : ""
                     }`}
                   >
                     {getNavLabel(link.name, link.labelKey)}
@@ -255,7 +249,7 @@ export default function Header() {
                   <Link 
                     href={link.href || "/"}
                     className={`inline-block px-3 py-4 transition-all duration-200 hover:bg-[#1d4ed8] text-white ${
-                      pathname === (link.href || "/") ? "bg-[#1d4ed8] border-b-2 border-white" : ""
+                      pathname === (link.href || "/") ? "bg-[#1d4ed8]" : ""
                     }`}
                   >
                     {getNavLabel(link.name, link.labelKey)}
@@ -387,7 +381,7 @@ export default function Header() {
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Facebook size={18} /></button>
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Twitter size={18} /></button>
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Linkedin size={18} /></button>
-                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Youtube size={18} /></button>
+                  <button className="text-white/70 hover:text-white transition-colors duration-150"><Instagram size={18} /></button>
                 </li>
               </ul>
             </motion.div>

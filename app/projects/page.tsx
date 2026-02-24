@@ -15,11 +15,13 @@ interface Project {
 }
 
 export default function ProjectsPage() {
+  const ITEMS_PER_PAGE = 18;
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -48,6 +50,15 @@ export default function ProjectsPage() {
     
     return matchesSearch && matchesStatus && matchesCategory;
   });
+
+  // Reset to first page when filters/search change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, categoryFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / ITEMS_PER_PAGE));
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const visibleProjects = filteredProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -133,7 +144,7 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-            {filteredProjects.map((project, index) => (
+            {visibleProjects.map((project, index) => (
               <motion.div
                 key={project.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -192,6 +203,25 @@ export default function ProjectsPage() {
                   </div>
                 </Link>
               </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!loading && totalPages > 1 && (
+          <div className="mt-8 flex justify-center items-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setCurrentPage(i + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className={`w-9 h-9 md:w-10 md:h-10 rounded-md text-sm font-bold transition-all ${
+                  currentPage === i + 1
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                    : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                }`}
+              >
+                {i + 1}
+              </button>
             ))}
           </div>
         )}
