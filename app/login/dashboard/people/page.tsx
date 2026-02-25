@@ -60,6 +60,21 @@ export default function AdminPeoplePage() {
               description="View and manage all people profiles."
               icon={Users}
               data={peopleList}
+              onReorder={async (newData) => {
+                setPeopleList(newData);
+                try {
+                  const res = await fetch('/api/people', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order: newData.map((p) => p.id) })
+                  });
+                  if (!res.ok) throw new Error('Failed to save order');
+                } catch (err) {
+                  console.error('Failed to persist people order', err);
+                  // reload from server to restore
+                  await fetchPeople();
+                }
+              }}
               onAdd={() => { setEditingItem(null); setIsFormOpen(true); }}
               onEdit={(item) => { setEditingItem(item); setIsFormOpen(true); }}
               onDelete={(item) => handleDelete(item.id)}

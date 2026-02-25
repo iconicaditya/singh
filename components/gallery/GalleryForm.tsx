@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Upload, X, Image as ImageIcon, Loader2, Plus } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { compressImageToMaxBytes } from "@/lib/imageUploadCompression";
 
 interface GalleryFormProps {
@@ -24,7 +24,24 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
     }
     return list;
   });
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(initialData?.description || "");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setImageUrl(initialData?.imageUrl || "");
+    setCategory(initialData?.category || "");
+    setTitle(initialData?.title || "");
+    setDescription(initialData?.description || "");
+    setCategories(() => {
+      const list = [...defaultCategories];
+      if (initialData?.category && !list.includes(initialData.category)) {
+        list.unshift(initialData.category);
+      }
+      return list;
+    });
+  }, [initialData, isOpen]);
 
   if (!isOpen) return null;
 
@@ -122,7 +139,8 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
               <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Title</label>
               <input
                 name="title"
-                defaultValue={initialData?.title}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 required
                 className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium"
                 placeholder="Item title..."
@@ -224,7 +242,8 @@ export default function GalleryForm({ isOpen, onClose, onSuccess, initialData }:
             <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-slate-900">Description</label>
             <textarea
               name="description"
-              defaultValue={initialData?.description}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               rows={3}
               className="w-full px-4 md:px-5 py-3 md:py-4 bg-slate-50 border border-slate-100 rounded-xl md:rounded-2xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all outline-none font-medium resize-none"
               placeholder="Detailed description..."

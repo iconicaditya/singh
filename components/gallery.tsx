@@ -92,10 +92,7 @@ export default function Gallery() {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4">
-              {t("RESEARCH_GALLERY")} <span className="text-blue-600">{t("GALLERY_TITLE")}</span>
-            </h2>
-            <p className="text-gray-500 max-w-2xl mx-auto text-lg">{t("LOADING_GALLERY")}</p>
+                <p className="text-gray-500 max-w-2xl mx-auto text-lg">{t("LOADING_GALLERY")}</p>
           </div>
         </div>
       </section>
@@ -112,7 +109,7 @@ export default function Gallery() {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-black text-[#1e293b] mb-4"
           >
-            {t("RESEARCH_GALLERY")} <span className="text-blue-600">{t("GALLERY_TITLE")}</span>
+            {t("RESEARCH_GALLERY")}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

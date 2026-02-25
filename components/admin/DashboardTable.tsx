@@ -20,6 +20,7 @@ interface DashboardTableProps {
   onEdit?: (item: any) => void;
   onDelete?: (item: any) => void;
   categories?: string[];
+  onReorder?: (newData: any[]) => void;
 }
 
 export default function DashboardTable({
@@ -32,9 +33,11 @@ export default function DashboardTable({
   onEdit,
   onDelete,
   categories = []
+  , onReorder
 }: DashboardTableProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [draggedId, setDraggedId] = useState<string | number | null>(null);
 
   const filteredData = data.filter((item) => {
     const matchesSearch = Object.values(item).some(
@@ -120,6 +123,27 @@ export default function DashboardTable({
               {filteredData.map((item, idx) => (
                 <motion.tr
                   key={item.id || idx}
+                  draggable={!!onReorder}
+                  onDragStart={(e) => {
+                    setDraggedId(item.id);
+                    try { e.dataTransfer?.setData('text/plain', String(item.id)); } catch {}
+                  }}
+                  onDragOver={(e) => { if (onReorder) e.preventDefault(); }}
+                  onDrop={(e) => {
+                    if (!onReorder) return;
+                    e.preventDefault();
+                    const sourceId = draggedId ?? e.dataTransfer?.getData('text/plain');
+                    const targetId = item.id;
+                    if (!sourceId) return;
+                    const newData = [...data];
+                    const sIdx = newData.findIndex(d => String(d.id) === String(sourceId));
+                    const tIdx = newData.findIndex(d => String(d.id) === String(targetId));
+                    if (sIdx === -1 || tIdx === -1) return;
+                    const [moved] = newData.splice(sIdx, 1);
+                    newData.splice(tIdx, 0, moved);
+                    setDraggedId(null);
+                    onReorder(newData);
+                  }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

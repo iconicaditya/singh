@@ -132,6 +132,21 @@ export default function AdminResearchThemesPage() {
               description="Manage themes and their key research points."
               icon={Layers}
               data={themes}
+              onReorder={async (newData) => {
+                setThemes(newData);
+                try {
+                  const res = await fetch('/api/research-themes', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order: newData.map(t => t.id) })
+                  });
+                  if (!res.ok) throw new Error('Failed to save order');
+                } catch (err) {
+                  console.error('Failed to persist new order', err);
+                  // refetch to restore server state
+                  await fetchThemes();
+                }
+              }}
               onAdd={() => {
                 setEditingTheme(null);
                 setIsFormOpen(true);

@@ -116,6 +116,7 @@ export const researchThemes = pgTable("research_themes", {
   title: varchar("title", { length: 255 }).notNull(),
   iconImage: text("icon_image"),
   points: jsonb("points").notNull(), // Array of strings
+  position: integer("position").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -155,6 +156,9 @@ export const people = pgTable("people", {
   facebookUrl: text("facebook_url"),
   instagramUrl: text("instagram_url"),
   
+  // position for ordering in the UI (admin reorder)
+  position: integer("position").default(0),
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

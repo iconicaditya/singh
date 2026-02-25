@@ -557,8 +557,8 @@ function PeoplePageContent() {
                       viewport={{ once: true, amount: 0.3 }}
                       transition={{ duration: 0.6 }}
                     >
-                      <motion.div 
-                        className="w-full aspect-video sm:aspect-square lg:h-72 overflow-hidden shadow-lg bg-slate-100 cursor-pointer"
+                        <motion.div 
+                        className="w-full aspect-video sm:aspect-square lg:h-80 overflow-hidden shadow-lg bg-slate-100 cursor-pointer"
                         whileHover={{ scale: 1.02, boxShadow: "0 20px 30px rgba(0,0,0,0.15)" }}
                         transition={{ duration: 0.3 }}
                       >
@@ -566,8 +566,8 @@ function PeoplePageContent() {
                           <motion.img
                             src={person.profileImage}
                             alt={person.fullName}
-                            className="w-full h-full object-cover"
-                            whileHover={{ scale: 1.05 }}
+                            className="w-full h-full object-cover object-top transform scale-95"
+                            whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.3 }}
                           />
                         ) : (
