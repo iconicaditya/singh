@@ -96,20 +96,42 @@ export default function Collaborator() {
           </p>
         </motion.div>
 
-        {/* Responsive Grid: auto-fit fills available space based on item count; rows equalized */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8"
-          style={{ gridAutoRows: '1fr' }}
-        >
-          {collaborators.map((c, idx) => (
-            <motion.div key={c.id} className="w-full" variants={itemVariants}>
-              <CollaboratorCard collaborator={c} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Single-row marquee carousel (right-to-left) */}
+        <div className="relative mb-8">
+          <div className="overflow-hidden">
+            <div
+              className="marquee flex items-center gap-6"
+              aria-hidden={false}
+            >
+              {/** Duplicate items for seamless looping */}
+              {[...collaborators, ...collaborators].map((c, idx) => (
+                <div
+                  key={`marq-${c.id}-${idx}`}
+                  style={{ flex: '0 0 25%', minWidth: 220 }}
+                  className="w-full"
+                  aria-hidden={idx >= collaborators.length}
+                >
+                  <CollaboratorCard collaborator={c} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <style>{`
+            .marquee { animation: marquee 24s linear infinite; }
+            .marquee:hover { animation-play-state: paused; }
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            @media (max-width: 1024px) {
+              .marquee > div { flex: 0 0 50%; min-width: 200px; }
+            }
+            @media (max-width: 640px) {
+              .marquee > div { flex: 0 0 80%; min-width: 180px; }
+            }
+          `}</style>
+        </div>
       </div>
     </section>
   );
