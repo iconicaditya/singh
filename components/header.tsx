@@ -80,8 +80,9 @@ export default function Header() {
           </div>
           
           {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+          <button
+            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg transition-colors flex-shrink-0 focus:outline-none focus:ring-0"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -89,7 +90,7 @@ export default function Header() {
         </div>
 
         {/* Center: Marquee Animation - Hidden on Mobile */}
-        <div className="hidden md:block w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border border-white/10 relative ml-4">
+        <div className="hidden md:block w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl overflow-hidden bg-white/5 py-2 rounded-full border-transparent relative ml-4">
           <motion.div
             initial={{ x: "0%" }}
             animate={{ x: "-50%" }}
@@ -267,7 +268,7 @@ export default function Header() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-gradient-to-b from-[#1d4ed8] to-[#1540a0]"
+              className="md:hidden bg-gradient-to-b from-[#1d4ed8] to-[#1540a0] border-t-0"
             >
               <ul className="flex flex-col py-2 text-center">
                 {navLinks.map((link) => (
