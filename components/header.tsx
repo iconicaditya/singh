@@ -267,7 +267,7 @@ export default function Header() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-gradient-to-b from-[#1d4ed8] to-[#1540a0] border-t border-white/20"
+              className="md:hidden bg-gradient-to-b from-[#1d4ed8] to-[#1540a0]"
             >
               <ul className="flex flex-col py-2 text-center">
                 {navLinks.map((link) => (
@@ -276,7 +276,7 @@ export default function Header() {
                       <div>
                         <button
                           onClick={() => setIsPeopleDropdownOpen(!isPeopleDropdownOpen)}
-                          className="w-full px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 text-white hover:bg-white/20 transition-colors duration-150 flex items-center justify-center gap-2"
+                          className="w-full px-4 py-3 text-xs sm:text-sm font-bold text-white hover:bg-white/20 transition-colors duration-150 flex items-center justify-center gap-2"
                         >
                           {t(link.labelKey)}
                           <ChevronDown size={14} className={`transition-transform duration-200 ${isPeopleDropdownOpen ? 'rotate-180' : ''}`} />
@@ -287,7 +287,7 @@ export default function Header() {
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
-                              className="bg-white border-t border-slate-200">
+                              className="bg-white">
                               {peopleCategories.map((category) => (
                                 <Link
                                   key={category.name}
@@ -296,7 +296,7 @@ export default function Header() {
                                     setIsPeopleDropdownOpen(false);
                                     setIsMenuOpen(false);
                                   }}
-                                  className="block w-full px-4 py-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150 border-b border-slate-100 last:border-b-0"
+                                  className="block w-full px-4 py-3 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors duration-150"
                                 >
                                   {category.name}
                                 </Link>
@@ -305,46 +305,18 @@ export default function Header() {
                           )}
                         </AnimatePresence>
                       </div>
-                    ) : link.name === "HOME" ? (
-                      <Link
-                        href={link.href || "/"}
-                        onClick={(event) => {
-                          setIsMenuOpen(false);
-                          handleHomeClick(event);
-                        }}
-                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
-                      >
-                        {getNavLabel(link.name, link.labelKey)}
-                      </Link>
-                    ) : link.name === "COLLABORATORS" ? (
-                      <Link
-                        href={pathname === "/" ? (link.href || "/") : "/collaborators"}
-                        onClick={(event) => {
-                          setIsMenuOpen(false);
-                          if (pathname === "/") {
-                            handleSectionScroll(link.href || "/")(event);
-                          }
-                        }}
-                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
-                      >
-                        {getNavLabel(link.name, link.labelKey)}
-                      </Link>
-                    ) : link.name === "CONTACT" || link.name === "ABOUT" ? (
-                      <Link 
-                        href={link.href || "/"}
-                        onClick={(event) => {
-                          setIsMenuOpen(false);
-                          handleSectionScroll(link.href || "/")(event);
-                        }}
-                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
-                      >
-                        {getNavLabel(link.name, link.labelKey)}
-                      </Link>
                     ) : (
                       <Link 
                         href={link.href || "/"}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block px-4 py-3 text-xs sm:text-sm font-bold border-b border-white/10 last:border-0 text-white hover:bg-white/20 transition-colors duration-150"
+                        onClick={(event) => {
+                          setIsMenuOpen(false);
+                          if (link.name === "HOME") {
+                            handleHomeClick(event);
+                          } else if (pathname === "/" && (link.name === "ABOUT" || link.name === "CONTACT" || link.name === "COLLABORATORS")) {
+                            handleSectionScroll(link.href || "/")(event);
+                          }
+                        }}
+                        className="block px-4 py-3 text-xs sm:text-sm font-bold text-white hover:bg-white/20 transition-colors duration-150"
                       >
                         {getNavLabel(link.name, link.labelKey)}
                       </Link>
@@ -352,7 +324,7 @@ export default function Header() {
                   </li>
                 ))}
                 {/* Mobile Language Switcher */}
-                <li className="flex flex-col gap-2 py-4 border-t border-white/20 mt-2 px-4">
+                <li className="flex flex-col gap-2 py-4 px-4">
                   <button
                     onClick={() => {
                       setLanguage("en");
@@ -377,7 +349,7 @@ export default function Header() {
                   </button>
                 </li>
                 {/* Mobile Social Icons */}
-                <li className="flex justify-center gap-4 sm:gap-6 py-5 border-t border-white/20 mt-2">
+                <li className="flex justify-center gap-4 sm:gap-6 py-5">
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Facebook size={18} /></button>
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Twitter size={18} /></button>
                   <button className="text-white/70 hover:text-white transition-colors duration-150"><Linkedin size={18} /></button>

@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <Header />
-          <main className="min-h-screen pt-[112px] md:pt-[132px]">
+          <main className="min-h-screen pt-[112px] md:pt-[128px]">
             {children}
           </main>
           <Footer />
