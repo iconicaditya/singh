@@ -1,9 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, ArrowRight, Bell, Tag, ChevronRight } from "lucide-react";
+import { Calendar, Bell, Tag, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translateActivityCategory } from "@/lib/dbTranslations";
@@ -86,13 +85,13 @@ export default function Activities() {
   if (activities.length === 0) return null;
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="flex flex-col md:flex-row gap-12 items-start">
-          {/* Left Sidebar (List) */}
-          <div className="w-full md:w-1/3 pt-0">
-            <div className="sticky top-24">
-              <div className="mb-8">
+    <section className="py-24 bg-white" style={{ height: '100vh', minHeight: '700px', maxHeight: '900px' }}>
+      <div className="container mx-auto px-6 max-w-7xl h-full">
+        <div className="flex flex-col md:flex-row gap-12 h-full">
+          {/* Left Sidebar (List) - Independently scrollable */}
+          <div className="w-full md:w-1/3 pt-0 h-full">
+            <div className="h-full flex flex-col overflow-hidden rounded-3xl bg-gray-50/50 p-6">
+              <div className="mb-8 shrink-0">
                 <motion.h3 
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -104,7 +103,7 @@ export default function Activities() {
                 <div className="h-1 w-12 bg-blue-600 mt-2 rounded-full" />
               </div>
 
-              <div className="space-y-4">
+              <div className="flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
                 {currentActivitiesList.map((activity, index) => {
                   const globalIndex = indexOfFirstActivity + index;
                   const isActive = selectedId === activity.id;
@@ -122,11 +121,11 @@ export default function Activities() {
                       }`}
                     >
                       <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <span className={`text-[10px] font-black uppercase tracking-widest block mb-1 transition-colors ${isActive ? 'text-blue-700' : 'text-blue-600'}`}>
                             {translateActivityCategory(activity.category, language as 'en' | 'ja')}
                           </span>
-                          <h4 className={`text-sm font-bold leading-snug transition-colors ${isActive ? 'text-blue-900' : 'text-[#1e293b]'}`}>
+                          <h4 className={`text-sm font-bold leading-snug transition-colors truncate ${isActive ? 'text-blue-900' : 'text-[#1e293b]'}`}>
                             {activity.title}
                           </h4>
                         </div>
@@ -145,11 +144,11 @@ export default function Activities() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-between gap-2">
+                <div className="mt-6 shrink-0 flex items-center justify-between gap-2 pt-4 border-t border-gray-200">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="p-2 rounded-xl border-2 border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-200 hover:bg-gray-50 transition-all"
+                    className="p-2 rounded-xl border-2 border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-200 hover:bg-gray-50 transition-all bg-white"
                   >
                     <ChevronRight size={20} className="rotate-180" />
                   </button>
@@ -171,7 +170,7 @@ export default function Activities() {
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="p-2 rounded-xl border-2 border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-200 hover:bg-gray-50 transition-all"
+                    className="p-2 rounded-xl border-2 border-gray-100 disabled:opacity-30 disabled:cursor-not-allowed hover:border-blue-200 hover:bg-gray-50 transition-all bg-white"
                   >
                     <ChevronRight size={20} />
                   </button>
@@ -180,98 +179,100 @@ export default function Activities() {
             </div>
           </div>
 
-          {/* Right Content Area (Main Display) */}
-          <div className="w-full md:w-2/3 relative min-h-[600px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedActivity?.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="space-y-8"
-              >
-                <motion.div 
-                  initial={{ scale: 0.95 }}
-                  animate={{ scale: 1 }}
-                  className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
+          {/* Right Content Area (Main Display) - Independently scrollable */}
+          <div className="w-full md:w-2/3 relative h-full">
+            <div className="h-full overflow-y-auto rounded-3xl pr-2 custom-scrollbar">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedActivity?.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="space-y-6"
                 >
-                  <Image
-                    src={selectedActivity?.titleImage || "/attached_assets/stock_images/professional_researc_2d676eab.jpg"}
-                    alt={selectedActivity?.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute top-6 left-6">
-                    <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
-                      {selectedActivity?.category}
-                    </span>
+                  <motion.div 
+                    initial={{ scale: 0.95 }}
+                    animate={{ scale: 1 }}
+                    className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl"
+                  >
+                    <Image
+                      src={selectedActivity?.titleImage || "/attached_assets/stock_images/professional_researc_2d676eab.jpg"}
+                      alt={selectedActivity?.title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute top-6 left-6">
+                      <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">
+                        {selectedActivity?.category}
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 text-gray-500 text-sm font-medium flex-wrap">
+                      <Calendar size={16} />
+                      <span>{selectedActivity?.year}</span>
+                      <span className="w-1 h-1 rounded-full bg-gray-300" />
+                      <span className="text-blue-500 font-bold italic">
+                        {formatRelativeTime(selectedActivity?.createdAt)}
+                      </span>
+                      {selectedActivity?.tags && (
+                        <>
+                          <span className="w-1 h-1 rounded-full bg-gray-300" />
+                          <span className="flex items-center gap-1">
+                            <Tag size={14} /> {selectedActivity.tags}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    
+                    <motion.h2 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2, duration: 0.6 }}
+                      className="text-2xl md:text-3xl font-black text-[#1e293b] leading-[1.2]"
+                    >
+                      {selectedActivity?.title}
+                    </motion.h2>
+
+                    <motion.div 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4, duration: 0.8 }}
+                      className="prose prose-blue max-w-none prose-lg"
+                    >
+                      {selectedActivity?.contentSections.map((section: ContentSection, idx: number) => (
+                        <motion.div 
+                          key={idx} 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 + (idx * 0.1) }}
+                          className="mb-8"
+                        >
+                          {section.title && <h3 className="text-xl font-bold mb-4 text-[#1e293b]">{section.title}</h3>}
+                          <div 
+                            className="text-gray-600 leading-[1.8] activity-content text-lg"
+                            dangerouslySetInnerHTML={{ __html: section.content }}
+                          />
+                          {section.image && (
+                            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mt-4 mb-6">
+                              <Image
+                                src={section.image}
+                                alt={section.title || "Activity detail image"}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </div>
                 </motion.div>
-
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3 text-gray-500 text-sm font-medium">
-                    <Calendar size={16} />
-                    <span>{selectedActivity?.year}</span>
-                    <span className="w-1 h-1 rounded-full bg-gray-300" />
-                    <span className="text-blue-500 font-bold italic">
-                      {formatRelativeTime(selectedActivity?.createdAt)}
-                    </span>
-                    {selectedActivity?.tags && (
-                      <>
-                        <span className="w-1 h-1 rounded-full bg-gray-300" />
-                        <span className="flex items-center gap-1">
-                          <Tag size={14} /> {selectedActivity.tags}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  
-                  <motion.h2 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
-                    className="text-2xl md:text-3xl font-black text-[#1e293b] leading-[1.2]"
-                  >
-                    {selectedActivity?.title}
-                  </motion.h2>
-
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    className="prose prose-blue max-w-none prose-lg"
-                  >
-                    {selectedActivity?.contentSections.map((section, idx) => (
-                      <motion.div 
-                        key={idx} 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5 + (idx * 0.1) }}
-                        className="mb-8"
-                      >
-                        {section.title && <h3 className="text-xl font-bold mb-4 text-[#1e293b]">{section.title}</h3>}
-                        <div 
-                          className="text-gray-600 leading-[1.8] activity-content text-lg"
-                          dangerouslySetInnerHTML={{ __html: section.content }}
-                        />
-                        {section.image && (
-                          <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg mt-4 mb-6">
-                            <Image
-                              src={section.image}
-                              alt={section.title || "Activity detail image"}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        )}
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>
@@ -294,8 +295,24 @@ export default function Activities() {
           word-wrap: break-word;
           overflow-wrap: break-word;
         }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #cbd5e1 transparent;
+        }
       `}</style>
     </section>
   );
 }
-
