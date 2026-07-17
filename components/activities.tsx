@@ -243,7 +243,7 @@ export default function Activities() {
                     transition={{ delay: 0.4, duration: 0.8 }}
                     className="prose prose-blue max-w-none prose-lg"
                   >
-                    {selectedActivity?.contentSections.map((section, idx) => (
+                    {selectedActivity?.contentSections.map((section: ContentSection, idx: number) => (
                       <motion.div 
                         key={idx} 
                         initial={{ opacity: 0, y: 10 }}
